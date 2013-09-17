@@ -12,7 +12,6 @@ Question your authorities
 parameters:
 
     q = the initial segement to match. If not given, q='' is assumed, which should match every term.
-    n = the number of matches to return. If not given, assumed to be 20. 
 
 returns a json object having the format
 
