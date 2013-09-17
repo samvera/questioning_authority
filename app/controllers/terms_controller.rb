@@ -24,7 +24,11 @@ class TermsController < ApplicationController
     params[:q].gsub!("*", "%2A")
 
     #use the appropriate class (get the name from the hash map) and retrieve the vocabulary
-    @results = vocabularies[params[:vocab]].constantize.new(params[:q])
+    if params[:sub_authority].present?
+      @results = vocabularies[params[:vocab]].constantize.new(params[:q], params[:sub_authority])
+    else
+      @results = vocabularies[params[:vocab]].constantize.new(params[:q])
+    end
     
     respond_to do |format|
       format.html { render :layout => false, :text => @results.to_json }
