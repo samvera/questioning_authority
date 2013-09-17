@@ -1,7 +1,7 @@
 :terms:
     - :id: pgm1
-      :name: Daytime Masters
+      :label: Daytime Masters
     - :id: pgm2
-      :name: Global Masters
+      :label: Global Masters
     - :id: pgm3
-      :name: Evening Masters
+      :label: Evening Masters

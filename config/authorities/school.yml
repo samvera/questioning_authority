@@ -1,7 +1,7 @@
 :terms:
     - :id: sch1
-      :name: College of Arts and Sciences
+      :label: College of Arts and Sciences
     - :id: sch2
-      :name: School of Business
+      :label: School of Business
     - :id: sch3
-      :name: School of Medicine
+      :label: School of Medicine
