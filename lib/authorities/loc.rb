@@ -6,9 +6,18 @@ module Authorities
     # Initialze the Loc class with a query and get the http response from LOC's server.
     # This is set to a JSON object
     def initialize(q, sub_authority='')
-      self.query_url =  "http://id.loc.gov/search/?q=#{q}&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F#{sub_authority}&format=json"
+      authority_url = authorityURL(sub_authority)
+      self.query_url =  "http://id.loc.gov/search/?q=#{q}&q=#{authority_url}&format=json"
 
       super
+    end
+
+    def authorityURL(sub_authority)
+      if sub_authority == ''
+        return ''
+      else
+         return 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F' + sub_authority
+      end
     end
 
     def self.sub_authorities
