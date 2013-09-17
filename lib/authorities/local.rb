@@ -5,7 +5,7 @@ module Authorities
     attr_accessor :response
     
     def initialize(q, sub_authority)
-      terms = YAML.load(File.read(File.join(Rails.root, AUTHORITIES_CONFIG[:local_path], "#{sub_authority}.yml")))[:terms]
+      terms = YAML.load(File.read(File.join(Rails.root, AUTHORITIES_CONFIG[:local_path], "#{sub_authority}.yml")))[:terms] || []
       if q.blank?
         self.response = terms
       else
@@ -15,11 +15,15 @@ module Authorities
       end
     end
 
-    def results
+    # def results
+    #   self.response.to_json
+    # end
+    # 
+    def parse_authority_response
       self.response.to_json
     end
     
-    def sub_authorities
+    def self.sub_authorities
       sub_auths = []
       Dir.foreach(File.join(Rails.root, AUTHORITIES_CONFIG[:local_path])) { |file| sub_auths << File.basename(file, File.extname(file)) }
       sub_auths
