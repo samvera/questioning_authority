@@ -7,6 +7,8 @@ module Authorities
     # This is set to a JSON object
     def initialize(q, sub_authority='')
       self.query_url =  "http://id.loc.gov/search/?q=#{q}&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F#{sub_authority}&format=json"
+
+      super
     end
 
     def sub_authorities
@@ -15,10 +17,8 @@ module Authorities
 
 
     def parse_authority_response
-      raw_response = super()
-
       result = []
-      raw_response.each do |single_response|
+      self.raw_response.each do |single_response|
         if single_response[0] == "atom:entry"
           id = nil
           label = ''
@@ -43,6 +43,9 @@ module Authorities
 
     def get_full_record(id)
       # implement me
+      specific_id = id.split('/').last
+      initialize(specific_id)
+
     end
 
     # TODO: there's other info in the self.response that might be worth making access to, such as

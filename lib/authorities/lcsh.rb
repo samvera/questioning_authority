@@ -1,5 +1,3 @@
-require 'curl'
-
 module Authorities
   class Lcsh < Authorities::Base
 
@@ -7,11 +5,12 @@ module Authorities
     # This is set to a JSON object
     def initialize(q, sub_authority='')
       self.query_url= "http://id.loc.gov/authorities/suggest/?q=" + q
+
+      super
     end
 
     def parse_authority_response
-      raw_response = super()
-      raw_response[1]
+      self.raw_response[1]
     end
 
 

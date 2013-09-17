@@ -2,12 +2,17 @@ require 'curl'
 
 module Authorities
   class Base
-    attr_accessor :response, :query_url
+    attr_accessor :response, :query_url, :raw_resonse
 
     def initialize(q, sub_authority='')
-      # Implement Me
+      # Implement Me and set self.query_url
 
-      #self.response = parse_authority_response(raw)
+      #Default implementation assumed query_url is set
+      http = Curl.get(self.query_url) do |http|
+        http.headers['Accept'] = 'application/json'
+      end
+
+      self.raw_response = JSON.parse(http.body_str)
     end
 
     def valid?(sub_authority)
@@ -19,15 +24,14 @@ module Authorities
     end
 
     def parse_authority_response
-      Curl.get(self.query_url) do |http|
-        http.headers['Accept'] = 'application/json'
-      end
 
-      JSON.parse(http.body_str)
+
+      # Extend me using raw_response = super() or completely overwrite
     end
 
     def get_full_record(id)
       # implement me
+      [{"id"=>id}]
     end
 
     # Parse the result from LOC, and return an JSON array of terms that match the query.
