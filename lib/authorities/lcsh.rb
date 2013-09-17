@@ -1,4 +1,6 @@
 require 'curl'
+require 'uri'
+require 'json'
 
 module Authorities
   class Lcsh
@@ -16,13 +18,37 @@ module Authorities
       self.response = JSON.parse(http.body_str)
     end
 
-    # Parse the result from LOC, and return an JSON array of terms that match the query.
-    def results
-      self.response[1].to_json
+    def query
+      self.response[0]
     end
 
-    # TODO: there's other info in the self.response that might be worth making access to, such as
-    # RDF links, etc.
+    def suggestions
+      self.response[1]
+    end
+
+    def urls_for_suggestions
+      self.response[3]
+    end
+
+    # Parse the result and assemble array of ids, terms and urls
+    def results terms = Array.new
+      self.suggestions.each_index do |i|
+        terms << {:id => get_id_from_url(urls_for_suggestions[i]), :label => suggestions[i]}
+      end
+      return terms
+    end
+
+    # Call this method directly to return our results in json format
+    def to_json
+      self.results.to_json
+    end
+
+    private
+
+    def get_id_from_url url
+      uri = URI(url)
+      return uri.path.split(/\//).last
+    end
 
   end
 end
