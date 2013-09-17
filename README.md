@@ -1,6 +1,8 @@
 Questioning Authority
 =====================
 
+[![Build Status](https://travis-ci.org/projecthydra/questioning_authority.png)](https://travis-ci.org/projecthydra/questioning_authority)
+
 Question your authorities
 
 # Routes
