@@ -10,7 +10,7 @@ module Authorities
     end
 
     def parse_authority_response
-      self.raw_response[1]
+      self.response = self.raw_response[1]
     end
 
 

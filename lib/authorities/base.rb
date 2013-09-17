@@ -35,7 +35,7 @@ module Authorities
 
     def get_full_record(id)
       # implement me
-      [{"id"=>id}]
+      [{"id"=>id}].to_json
     end
 
     # Parse the result from LOC, and return an JSON array of terms that match the query.
