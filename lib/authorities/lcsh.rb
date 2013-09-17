@@ -1,5 +1,6 @@
 require 'curl'
 require 'uri'
+require 'json'
 
 module Authorities
   class Lcsh
@@ -35,6 +36,11 @@ module Authorities
         terms << {:id => get_id_from_url(urls_for_suggestions[i]), :label => suggestions[i]}
       end
       return terms
+    end
+
+    # Call this method directly to return our results in json format
+    def to_json
+      self.results.to_json
     end
 
     private
