@@ -1,16 +1,6 @@
-require 'bundler/gem_tasks'
-require 'rspec/core/rake_task'
+# Add your own tasks in files placed in lib/tasks ending in .rake,
+# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
-require 'rdoc/task'
+require File.expand_path('../config/application', __FILE__)
 
-RDoc::Task.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'QuestioningAuthority'
-  rdoc.options << '--line-numbers'
-  rdoc.rdoc_files.include('README.rdoc')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
-
-RSpec::Core::RakeTask.new(:spec)
-
-task :default => :spec
+QuestioningAuthority::Application.load_tasks

@@ -1,2 +1,3 @@
-QuestioningAuthority::Engine.routes.draw do
+QuestioningAuthority::Application.routes.draw do
+  resources :terms
 end
