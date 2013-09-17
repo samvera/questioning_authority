@@ -2,7 +2,7 @@ require 'curl'
 
 module Authorities
   class Base
-    attr_accessor :response, :query_url, :raw_resonse
+    attr_accessor :response, :query_url, :raw_response
 
     def initialize(q, sub_authority='')
       # Implement Me and set self.query_url
