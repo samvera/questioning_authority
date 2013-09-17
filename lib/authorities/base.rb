@@ -19,11 +19,11 @@ module Authorities
       self.raw_response = JSON.parse(http.body_str)
     end
 
-    def valid?(sub_authority)
+    def self.authority_valid?(sub_authority)
       sub_authority == nil || sub_authorities.include?(sub_authority)
     end
 
-    def sub_authorities
+    def self.sub_authorities
       [] #Overwrite if you have sub_authorities
     end
 

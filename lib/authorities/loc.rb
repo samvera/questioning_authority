@@ -11,7 +11,7 @@ module Authorities
       super
     end
 
-    def sub_authorities
+    def self.sub_authorities
       ['iso639-2', 'subjects', 'names', 'classification', 'childrensSubjects', 'genreForms']
     end
 
