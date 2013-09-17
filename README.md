@@ -56,3 +56,5 @@ Base url: http://id.loc.gov/search/
 Example search (html): http://id.loc.gov/search/?q=eng&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fiso639-2
 
 Example search (json): http://id.loc.gov/search/?q=eng&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fiso639-2&format=json
+
+Example search (json, second page): http://id.loc.gov/search/?q=a*%20cs:http://id.loc.gov/vocabulary/countries&start=21&format=json
