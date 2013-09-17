@@ -3,7 +3,7 @@ class TermsController < ApplicationController
   def index
     
     #these are the supported vocabularies and the associated class names
-    vocabularies = {"lcsh"=>"Authorities::Lcsh", "loc"=>"Authorities::loc"}
+    vocabularies = {"lcsh"=>"Authorities::Lcsh", "loc"=>"Authorities::Loc"}
     
     #make sure vocab param is present
     if !params[:vocab].present?
@@ -20,9 +20,12 @@ class TermsController < ApplicationController
       raise Exception, 'Vocabulary not supported'
     end
     
+    #convert wildcard to be URI encoded
+    params[:q].gsub!("*", "%2A")
+
     #use the appropriate class (get the name from the hash map) and retrieve the vocabulary
     @results = vocabularies[params[:vocab]].constantize.new(params[:q])
-
+    
     respond_to do |format|
       format.html { render :layout => false, :text => @results.to_json }
       format.json { render :layout => false, :text => @results.to_json }
