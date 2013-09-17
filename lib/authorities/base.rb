@@ -7,6 +7,10 @@ module Authorities
     def initialize(q, sub_authority='')
       # Implement Me and set self.query_url
 
+      if self.query_url == nil
+        raise Exception 'query url in your authorities lib is not set (implement in initialize)'
+      end
+
       #Default implementation assumed query_url is set
       http = Curl.get(self.query_url) do |http|
         http.headers['Accept'] = 'application/json'
@@ -20,13 +24,13 @@ module Authorities
     end
 
     def sub_authorities
-      [] #Overwrite if different
+      [] #Overwrite if you have sub_authorities
     end
 
     def parse_authority_response
+      # Overwrite me unless your raw response needs no parsing
+      self.raw_response
 
-
-      # Extend me using raw_response = super() or completely overwrite
     end
 
     def get_full_record(id)
