@@ -6,29 +6,17 @@ module Authorities
     # Initialze the Loc class with a query and get the http response from LOC's server.
     # This is set to a JSON object
     def initialize(q, sub_authority='')
-      authority_url = getAuthorityURL(sub_authority)
-
-      http = Curl.get(
-          "http://id.loc.gov/search/?q=#{q}&q=#{authority_url}&format=json"
-      ) do |http|
-        http.headers['Accept'] = 'application/json'
-      end
-
-      self.response = parse_authority_response(JSON.parse(http.body_str))
+      self.query_url =  "http://id.loc.gov/search/?q=#{q}&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F#{sub_authority}&format=json"
     end
 
-    def getAuthorityURL(sub_authority)
-      case sub_authority
-        when ''    #This is equivalent to all vocabs
-          return ''
-        when 'iso639-2'
-          return 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fiso639-2'
-        else
-          raise Exception, 'The LOC vocabulary sub authority value is not a valid'
-      end
+    def sub_authorities
+      ['iso639-2', 'subjects', 'names', 'classification', 'childrensSubjects', 'genreForms']
     end
 
-    def parse_authority_response(raw_response)
+
+    def parse_authority_response
+      raw_response = super()
+
       result = []
       raw_response.each do |single_response|
         if single_response[0] == "atom:entry"
@@ -50,10 +38,12 @@ module Authorities
 
         end
       end
-      result
+      self.response = result
     end
 
-
+    def get_full_record(id)
+      # implement me
+    end
 
     # TODO: there's other info in the self.response that might be worth making access to, such as
     # RDF links, etc.
