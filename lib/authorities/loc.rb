@@ -1,9 +1,7 @@
 require 'curl'
 
 module Authorities
-  class Loc
-
-    attr_accessor :response
+  class Loc < Authorities::Base
 
     # Initialze the Loc class with a query and get the http response from LOC's server.
     # This is set to a JSON object
@@ -15,22 +13,22 @@ module Authorities
       ) do |http|
         http.headers['Accept'] = 'application/json'
       end
-      puts  parseAuthorityResponse(JSON.parse(http.body_str))
-      self.response = parseAuthorityResponse(JSON.parse(http.body_str))
+
+      self.response = parse_authority_response(JSON.parse(http.body_str))
     end
 
-    def getAuthorityURL(authority)
-      case authority # a_variable is the variable we want to compare
-        when ''    #compare to 1
+    def getAuthorityURL(sub_authority)
+      case sub_authority
+        when ''    #This is equivalent to all vocabs
           return ''
-        when 'iso639-2'    #compare to 2
+        when 'iso639-2'
           return 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fiso639-2'
         else
           raise Exception, 'The LOC vocabulary sub authority value is not a valid'
       end
     end
 
-    def parseAuthorityResponse(raw_response)
+    def parse_authority_response(raw_response)
       result = []
       raw_response.each do |single_response|
         if single_response[0] == "atom:entry"
@@ -55,10 +53,7 @@ module Authorities
       result
     end
 
-    # Parse the result from LOC, and return an JSON array of terms that match the query.
-    def results
-      self.response[1].to_json
-    end
+
 
     # TODO: there's other info in the self.response that might be worth making access to, such as
     # RDF links, etc.
