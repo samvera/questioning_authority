@@ -1,24 +1,63 @@
-require 'curl'
+require 'uri'
 
 module Authorities
-  class Loc
+  class Loc < Authorities::Base
 
-    attr_accessor :response
-
-    # Initialze the Lcsh class with a query and get the http response from LOC's server.
+    # Initialze the Loc class with a query and get the http response from LOC's server.
     # This is set to a JSON object
-    def initialize q
-      http = Curl.get(
-          "http://id.loc.gov/authorities/suggest/?q=" + q
-      ) do |http|
-        http.headers['Accept'] = 'application/json'
-      end
-      self.response = JSON.parse(http.body_str)
+    def initialize(q, sub_authority='')
+      authority_url = sub_authorityURL(sub_authority)
+      self.query_url =  "http://id.loc.gov/search/?q=#{q}&q=#{authority_url}&format=json"
+
+      super
     end
 
-    # Parse the result from LOC, and return an JSON array of terms that match the query.
-    def results
-      self.response[1].to_json
+    def sub_authorityURL(sub_authority)
+      case sub_authority
+        when 'names'
+          return 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fnames'
+        when 'iso639-2'
+          return 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F' + URI.escape(sub_authority)
+        else
+          return ''
+      end
+    end
+
+    def self.sub_authorities
+      ['iso639-2', 'subjects', 'names', 'classification', 'childrensSubjects', 'genreForms']
+    end
+
+
+    def parse_authority_response
+      result = []
+      self.raw_response.each do |single_response|
+        if single_response[0] == "atom:entry"
+          id = nil
+          label = ''
+          single_response.each do |result_part|
+            if(result_part[0] == 'atom:title')
+              label = result_part[2]
+            end
+
+            if(result_part[0] == 'atom:id')
+              id = result_part[2]
+            end
+
+          end
+
+          id ||= label
+          result << {"id"=>id, "label"=>label}
+
+        end
+      end
+      self.response = result
+    end
+
+    def get_full_record(id)
+      # implement me
+      specific_id = id.split('/').last
+      initialize(specific_id)
+
     end
 
     # TODO: there's other info in the self.response that might be worth making access to, such as
