@@ -37,14 +37,13 @@ describe TermsController do
       end
     end
 
-    it "should return nil if there's no query" do
-      get :index, { :q => nil, :use_route => :lcsh_suggest }
-      expect(assigns(:results)).to be_nil
-    end
+    describe "successful queries" do
 
-    it "should return a set of terms for a given query" do
-      get :index, { :use_route => :lcsh_suggest, :q => "Blues" }
-      expect(assigns(:results)).not_to be_nil
+      it "should return a set of terms for a lcsh query" do
+        get :index, { :q => "Blues", :vocab => "lcsh" }
+        response.should be_success
+      end
+
     end
   
   end

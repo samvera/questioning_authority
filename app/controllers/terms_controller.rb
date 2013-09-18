@@ -12,16 +12,7 @@ class TermsController < ApplicationController
     params[:q].gsub!("*", "%2A")
    
     #initialize the authority and run the search. if there's a sub-authority and it's valid, include that param
-    if params[:sub_authority].present?
-      if authority_class.constantize.authority_valid?(params[:sub_authority])
-        @authority = authority_class.constantize.new(params[:q], params[:sub_authority])
-      else
-        raise Exception, 'Sub-authority not valid'
-      end
-    else
-      @authority = authority_class.constantize.new(params[:q])
-    end
-    
+    @authority = params[:sub_authority].present? ? authority_class.constantize.new(params[:q], params[:sub_authority]) : authority_class.constantize.new(params[:q])
     #parse the results
     @authority.parse_authority_response
     
@@ -30,8 +21,6 @@ class TermsController < ApplicationController
       format.json { render :layout => false, :text => @authority.results }
       format.js   { render :layout => false, :text => @authority.results }
     end
-
-
 
   end
 
