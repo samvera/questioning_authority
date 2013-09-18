@@ -1,7 +1,7 @@
 :terms:
     - :id: A1
-      :label: Abc Term A1
+      :term: Abc Term A1
     - :id: A2
-      :label: Term A2
+      :term: Term A2
     - :id: A3
-      :label: Abc Term A3
+      :term: Abc Term A3

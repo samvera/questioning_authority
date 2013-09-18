@@ -15,7 +15,7 @@ module Authorities
         @response = @terms
       else
         sub_terms = []
-        @terms.each { |term| sub_terms << term if term[:label].start_with?(q) }
+        @terms.each { |term| sub_terms << term if term[:term].start_with?(q) }
         @response = sub_terms
       end
     end
@@ -24,9 +24,9 @@ module Authorities
       normalized_terms = []
       terms.each do |term|
         if term.is_a? String
-          normalized_terms << { :id => term, :label => term }
+          normalized_terms << { :id => term, :term => term }
         else
-          term[:id] = term[:id] || term[:label]
+          term[:id] = term[:id] || term[:term]
           normalized_terms << term 
         end
       end
@@ -34,7 +34,11 @@ module Authorities
     end
 
     def parse_authority_response
-      @response.to_json
+      parsed_response = []
+      @response.each do |res|
+        parsed_response << { :id => res[:id], :label => res[:term] }
+      end
+      parsed_response.to_json
     end
     
     def get_full_record(id)
