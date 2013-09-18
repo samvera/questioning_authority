@@ -30,6 +30,7 @@ group :doc do
 end
 
 gem 'curb'
+gem 'nokogiri', '~> 1.6.0'
 
 group :development, :test do
   gem 'rspec'
@@ -38,3 +39,9 @@ group :development, :test do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer', platforms: :ruby
 end 
+group :test do
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'webmock'
+end
+
