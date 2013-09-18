@@ -20,15 +20,15 @@ module Authorities
 
       case sub_authority
         when 'subjects'
-          return authority_base + URI.escape(sub_authority)
+          return authority_base_url + URI.escape(sub_authority)
         when 'names'
-          return authority_base + URI.escape(sub_authority)
+          return authority_base_url + URI.escape(sub_authority)
         when 'classification'
-          return authority_base + URI.escape(sub_authority)
+          return authority_base_url + URI.escape(sub_authority)
         when 'childrensSubjects'
-          return authority_base + URI.escape(sub_authority)
+          return authority_base_url + URI.escape(sub_authority)
         when 'genreForms'
-          return authority_base + URI.escape(sub_authority)
+          return authority_base_url + URI.escape(sub_authority)
         when 'graphicMaterials'
           return vocab_base_url + URI.escape(sub_authority)
         when 'organizations'
