@@ -1,6 +1,4 @@
-require 'curl'
 require 'uri'
-require 'json'
 
 module Authorities
   class Lcsh < Authorities::Base
