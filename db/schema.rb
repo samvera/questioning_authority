@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130917201026) do
+ActiveRecord::Schema.define(version: 20130918141523) do
 
   create_table "mesh_trees", force: true do |t|
     t.string "term_id"
@@ -25,9 +25,10 @@ ActiveRecord::Schema.define(version: 20130917201026) do
     t.string "term_id"
     t.string "term"
     t.text   "synonyms"
+    t.string "term_lower"
   end
 
-  add_index "subject_mesh_terms", ["term"], name: "index_subject_mesh_terms_on_term"
   add_index "subject_mesh_terms", ["term_id"], name: "index_subject_mesh_terms_on_term_id"
+  add_index "subject_mesh_terms", ["term_lower"], name: "index_subject_mesh_terms_on_term_lower"
 
 end

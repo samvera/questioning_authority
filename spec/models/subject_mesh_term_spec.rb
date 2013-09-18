@@ -13,4 +13,11 @@ describe SubjectMeshTerm do
   it "returns a list of trees" do
     @term.trees.should == []
   end
+  it "saves a synonym list" do
+    a = SubjectMeshTerm.new
+    a.term_id = 'a'
+    a.synonyms = ['b','c']
+    a.save
+    a.synonyms.should == ['b', 'c']
+  end
 end

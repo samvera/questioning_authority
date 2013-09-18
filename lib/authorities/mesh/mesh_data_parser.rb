@@ -33,6 +33,8 @@ class MeshDataParser
     return result
   end
 
+  ### XXX: delete everything below?
+
   def self.get_synonyms(record)
     return [] if record['ENTRY'].blank?
     record['ENTRY'].map { |synonym| synonym.split('|').first }

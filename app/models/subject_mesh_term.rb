@@ -12,14 +12,15 @@ class SubjectMeshTerm < ActiveRecord::Base
   end
 
   def synonyms
-    s = read_attribute("synonyms")
-    if s.nil?
-      []
-    else
-      s.split("|")
-    end
+    s = read_attribute(:synonyms)
+    s.nil? ? [] : s.split("|")
   end
 
   def synonyms=(syn_list)
+    write_attribute(:synonyms,  if syn_list.respond_to?(:join)
+                                  syn_list.join('|')
+                                else
+                                  syn_list
+                                end)
   end
 end
