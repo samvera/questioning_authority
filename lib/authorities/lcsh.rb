@@ -18,15 +18,15 @@ module Authorities
     end
 
     def query
-      self.response[0]
+      self.raw_response[0]
     end
 
     def suggestions
-      self.response[1]
+      self.raw_response[1]
     end
 
     def urls_for_suggestions
-      self.response[3]
+      self.raw_response[3]
     end
     
     private

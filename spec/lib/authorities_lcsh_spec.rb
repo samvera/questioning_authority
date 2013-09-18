@@ -8,29 +8,29 @@ describe Authorities::Lcsh do
 
   # TODO: These test the reponse from LOC's server and should be moved to
   # integration later once we can mock the response here
-  describe "the response from LOC" do
+  describe "response from LOC" do
 
     it "should have the query term for its first element" do
-      @terms.response[0].should be_kind_of String
-      @terms.response[0].should == "ABBA"
+      @terms.raw_response[0].should be_kind_of String
+      @terms.raw_response[0].should == "ABBA"
     end
 
     it "should have an array of results that match the query" do
-      @terms.response[1].should be_kind_of Array
-      @terms.response[1].should include "ABBA (Musical group)"
-      @terms.response[1].length.should == 10
+      @terms.raw_response[1].should be_kind_of Array
+      @terms.raw_response[1].should include "ABBA (Musical group)"
+      @terms.raw_response[1].length.should == 10
     end
 
     it "should have an array of strings that appear to have no use" do
-      @terms.response[2].should be_kind_of Array
-      @terms.response[2].collect { |v| v.should == "1 result" }
-      @terms.response[2].length.should == 10
+      @terms.raw_response[2].should be_kind_of Array
+      @terms.raw_response[2].collect { |v| v.should == "1 result" }
+      @terms.raw_response[2].length.should == 10
     end
 
     it "should have an array of the urls for each term" do
-      @terms.response[3].should be_kind_of Array
-      @terms.response[3].should include "http://id.loc.gov/authorities/names/n98029154"
-      @terms.response[3].length.should == 10
+      @terms.raw_response[3].should be_kind_of Array
+      @terms.raw_response[3].should include "http://id.loc.gov/authorities/names/n98029154"
+      @terms.raw_response[3].length.should == 10
     end
 
   end
