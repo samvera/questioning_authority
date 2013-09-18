@@ -17,19 +17,22 @@ describe Authorities::Local do
 
   context "retrieve all entries for a local sub_authority" do
     
+    let(:expected) { [ { :id => "A1", :label => "Abc Term A1" }, { :id => "A2", :label => "Term A2" }, { :id => "A3", :label => "Abc Term A3" } ].to_json }
+
     it "should return all the entries" do
       authorities = Authorities::Local.new("", "authority_A")
-      authorities.parse_authority_response.should include "Term A2"
+      authorities.parse_authority_response.should == expected
     end
     
   end
   
   context "retrieve a subset of entries for a local sub_authority" do
+
+    let(:expected) { [ { :id => "A1", :label => "Abc Term A1" }, { :id => "A3", :label => "Abc Term A3" } ].to_json }
     
     it "should return only entries matching the query term" do
       authorities = Authorities::Local.new("Abc", "authority_A")
-      authorities.parse_authority_response.should include "Abc Term A1"
-      authorities.parse_authority_response.should_not include "Term A2"
+      authorities.parse_authority_response.should == expected
     end
     
   end
