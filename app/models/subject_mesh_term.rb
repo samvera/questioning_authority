@@ -17,10 +17,11 @@ class SubjectMeshTerm < ActiveRecord::Base
   end
 
   def synonyms=(syn_list)
-    write_attribute(:synonyms,  if syn_list.respond_to?(:join)
-                                  syn_list.join('|')
-                                else
-                                  syn_list
-                                end)
+    write_attribute(:synonyms,
+                    if syn_list.respond_to?(:join)
+                      syn_list.join('|')
+                    else
+                      syn_list
+                    end)
   end
 end
