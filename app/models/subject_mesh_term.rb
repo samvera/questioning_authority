@@ -1,10 +1,8 @@
 class SubjectMeshTerm < ActiveRecord::Base
   has_many :mesh_trees, :foreign_key => "term_id"
 
-  attr_accessor :term_id, :term
-
   def self.from_tree_number(tree_id)
-    SubjectMeshTerm.joins(:mesh_trees).where('mesh_trees.tree_number = ?', tree_id)
+    SubjectMeshTerm.joins('INNER JOIN mesh_trees ON subject_mesh_terms.term_id = mesh_trees.term_id').where('mesh_trees.tree_number = ?', tree_id)
   end
 
   def trees

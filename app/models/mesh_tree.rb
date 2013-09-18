@@ -1,8 +1,6 @@
 class MeshTree < ActiveRecord::Base
   belongs_to :subject_mesh_term , :foreign_key => "term_id"
 
-  attr_accessor :term_id, :tree_number
-
   def self.get_term(mesh_tree)
     SubjectMeshEntry.where(subject_mesh_term_id:
                                             MeshTreeStructure.where('mesh_tree_structures.tree_structure' => mesh_tree).map(&:subject_mesh_term_id)
