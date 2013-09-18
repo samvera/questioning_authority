@@ -17,7 +17,7 @@ class MeshDataParser
         current_data = {}
       when /\A(?<term>[^=]+) = (?<value>.*)/
         current_data[Regexp.last_match(:term)] ||= []
-        current_data[Regexp.last_match(:term)] << Regexp.last_match(:value)
+        current_data[Regexp.last_match(:term)] << Regexp.last_match(:value).strip
       when /\A\n/
         yield(current_data) if in_record
         in_record = false
