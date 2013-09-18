@@ -7,7 +7,7 @@ class TermsController < ApplicationController
   def index
     
     #these are the supported vocabularies and the associated class names
-    authorities_classes = {"lcsh"=>"Authorities::Lcsh", "loc"=>"Authorities::Loc"}
+    authorities_classes = {"lcsh"=>"Authorities::Lcsh", "loc"=>"Authorities::Loc", "oclcts"=>"Authorities::Oclcts"}
     
     #make sure vocab param is present
     if !params[:vocab].present?
