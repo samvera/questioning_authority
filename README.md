@@ -59,3 +59,26 @@ Example search (html): http://id.loc.gov/search/?q=eng&q=cs%3Ahttp%3A%2F%2Fid.lo
 Example search (json): http://id.loc.gov/search/?q=eng&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fiso639-2&format=json
 
 Example search (json, second page): http://id.loc.gov/search/?q=a*%20cs:http://id.loc.gov/vocabulary/countries&start=21&format=json
+
+Local Authority Files
+=====================
+
+### YAML file of terms
+
+Two supported formats:
+
+#### List of terms
+
+	:terms:
+		- Term 1
+		- Term 2
+		
+#### List of id and label keys
+
+	:terms:
+		- :id: Id1
+		  :label: Term 1
+		- :id: Id2
+		  :label: Term 2
+		
+
