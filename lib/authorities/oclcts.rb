@@ -13,7 +13,6 @@ module Authorities
       self.sub_authority = sub_authority
       self.query_url = SRU_SERVER_CONFIG["url-pattern"]["prefix-query"].gsub(/\{query\}/, q).gsub(/\{authority\-id\}/, sub_authority)
       self.raw_response = Nokogiri::XML(open(self.query_url))
-      self.response = parse_authority_response(self.raw_response)
     end
 
     def self.authority_valid?(sub_authority)
@@ -28,12 +27,12 @@ module Authorities
       a
     end
 
-    def parse_authority_response(raw_response)
+    def parse_authority_response
       r = Array.new
-      raw_response.xpath('sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData', 'sru' => 'http://www.loc.gov/zing/srw/').each do |record|
+      self.raw_response.xpath('sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData', 'sru' => 'http://www.loc.gov/zing/srw/').each do |record|
         r.append({"id" => record.xpath('Zthes/term/termId').first.content, "label" => record.xpath('Zthes/term/termName').first.content})
       end
-      r
+      self.response = r
     end
 
     def get_full_record(id)

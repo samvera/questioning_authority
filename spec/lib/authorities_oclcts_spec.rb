@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Authorities::Oclcts do
 
   before :all do
-    @terms = Authorities::Oclcts.new("ball", "mesh").response
+    @terms = Authorities::Oclcts.new("ball", "mesh").parse_authority_response
   end
 
   # TODO: These test the reponse from SRU server and should be moved to
