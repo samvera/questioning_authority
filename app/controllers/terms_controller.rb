@@ -41,9 +41,7 @@ class TermsController < ApplicationController
 
   def check_sub_authority
     unless params[:sub_authority].nil?
-      unless authority_class.constantize.authority_valid?(params[:sub_authority])
-        redirect_to :status => 400
-      end
+      redirect_to :status => 400 unless authority_class.constantize.authority_valid?(params[:sub_authority])
     end
   end
 
