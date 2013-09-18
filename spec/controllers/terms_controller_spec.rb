@@ -3,7 +3,17 @@ require 'spec_helper'
 describe TermsController do
 
   describe "#index" do
+
+    it "should return 400 if no vocabulary is specified" do
+      get :index, { :vocab => nil}
+      response.code.should == "400"
+    end
   
+    it "should return 400 if no query is specified" do
+      get :index, { :q => nil}
+      response.code.should == "400"
+    end
+
     it "should return nil if there's no query" do
       get :index, { :q => nil, :use_route => :lcsh_suggest }
       expect(assigns(:results)).to be_nil

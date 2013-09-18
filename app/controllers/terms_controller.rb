@@ -3,23 +3,15 @@
 # super class so they implement the same methods.
 
 class TermsController < ApplicationController
+
+  before_action :check_params
   
   def index
     
     #these are the supported vocabularies and the associated class names
     authorities_classes = {"lcsh"=>"Authorities::Lcsh", "loc"=>"Authorities::Loc", "oclcts"=>"Authorities::Oclcts"}
-    
-    #make sure vocab param is present
-    if !params[:vocab].present?
-      raise Exception, 'The vocabulary was not specified'
-    end
-    
-    #make sure q param is present
-    if !params[:q].present?
-      raise Exception, 'The query was not specified'
-    end
-    
-    #make sure vocab param is valid
+
+  #make sure vocab param is valid
     if !authorities_classes.has_key? params[:vocab]
       raise Exception, 'Vocabulary not supported'
     end
@@ -49,6 +41,17 @@ class TermsController < ApplicationController
       format.json { render :layout => false, :text => @authority.results }
       format.js   { render :layout => false, :text => @authority.results }
     end
+
+
+
+  end
+
+
+  def check_params
+    unless params[:q].present? && params[:vocab].present?
+      redirect_to :status => 400
+    end
+
   end
 
 
