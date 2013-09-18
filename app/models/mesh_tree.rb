@@ -1,12 +1,6 @@
 class MeshTree < ActiveRecord::Base
   belongs_to :subject_mesh_term , :foreign_key => "term_id"
 
-  def self.get_term(mesh_tree)
-    SubjectMeshEntry.where(subject_mesh_term_id:
-                                            MeshTreeStructure.where('mesh_tree_structures.tree_structure' => mesh_tree).map(&:subject_mesh_term_id)
-                                          )
-  end
-
   def self.classify_all_trees
     MeshTreeStructure.find_each do |mts|
       mts.classify_tree!
@@ -33,19 +27,6 @@ class MeshTree < ActiveRecord::Base
       puts "After Join #{tree_path.inspect}"
       update_attribute(:eval_tree_path, tree_path)
     end
-  end
-
-  # Return all of the intial segements of our tree number,
-  # from most general to most specific
-  # e.g. 'D03.456.23.789' returns ['D03', 'D03.456', 'D03.456.23', 'D03.456.23.789']
-  def initial_segements_of(s)
-    result = []
-    loop do
-      result << s
-      s = s.rpartition('.').first
-      break if s.empty?
-    end
-    result.reverse
   end
 
   # given a tree id, return the main subject term

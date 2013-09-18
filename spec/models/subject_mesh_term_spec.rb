@@ -28,4 +28,19 @@ describe SubjectMeshTerm do
     a = SubjectMeshTerm.from_tree_number("D1.2.3.4")
     a.length.should == 1
   end
+
+  it "returns parents"
+  #do
+  #  SubjectMeshTerm.create(term_id: "1")
+  #  SubjectMeshTerm.create(term_id: "2")
+  #  SubjectMeshTerm.create(term_id: "3")
+  #  MeshTree.create(term_id: @term.term_id, tree_number: "D1.2.3")
+  #  MeshTree.create(term_id: @term.term_id, tree_number: "D1.A.3")
+  #  MeshTree.create(term_id: '2', tree_number: "D1.2")
+  #  MeshTree.create(term_id: '3', tree_number: "D1.A")
+  #  MeshTree.create(term_id: '1', tree_number: "D1")
+
+  #  @term.trees.should == ["D1.2.3", "D1.A.3"]
+  #  @term.parents.map { |p| p.term_id }.should == ["1", "2", "3"]
+  #end
 end

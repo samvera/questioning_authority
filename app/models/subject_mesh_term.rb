@@ -22,4 +22,24 @@ class SubjectMeshTerm < ActiveRecord::Base
                       syn_list
                     end)
   end
+
+  def parents
+    t = self.trees
+    t.map { |tn| initial_segements_of(tn) }.flatten.uniq.map { |tn| SubjectMeshTerm.from_tree_number(tn) }
+  end
+
+  private
+  # Return all of the intial segements of our tree number,
+  # from most general to most specific
+  # e.g. 'D03.456.23.789' returns ['D03', 'D03.456', 'D03.456.23', 'D03.456.23.789']
+  def initial_segements_of(s)
+    result = []
+    loop do
+      result << s
+      s = s.rpartition('.').first
+      break if s.empty?
+    end
+    result.reverse
+  end
+
 end
