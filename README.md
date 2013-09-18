@@ -76,9 +76,9 @@ Two supported formats:
 #### List of id and term keys
 
 	:terms:
-		- :id: Id1
+		- :id: id1
 		  :term: Term 1
-		- :id: Id2
+		- :id: id2
 		  :term: Term 2
 		
 
