@@ -51,7 +51,7 @@ EOS
   it 'parses a sample mesh file' do
     mesh = MeshDataParser.new(File.new(Rails.root + 'spec/fixtures/mesh.txt'))
     records = mesh.all_records
-    records.length.should == 4
+    records.length.should == 11
     records[0].should == {
       "RECTYPE" => ["D"],
       "MH" => ["Malaria"],

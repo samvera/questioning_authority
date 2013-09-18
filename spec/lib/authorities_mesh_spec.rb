@@ -14,6 +14,6 @@ describe Authorities::Mesh do
     where_unique_record(SubjectMeshTerm, {term_lower: "malaria"})
     where_unique_record(SubjectMeshTerm, {term: "Malaria"})
     where_unique_record(SubjectMeshTerm, {term_id: "D008288"})
-    SubjectMeshTerm.all.length.should == 4
+    SubjectMeshTerm.all.length.should == 11
   end
 end
