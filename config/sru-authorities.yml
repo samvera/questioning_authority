@@ -1,0 +1,7 @@
+authorities:
+  mesh:
+    name: MESH
+    url: http://tspilot.oclc.org/mesh/?query=oclcts.rootHeading+exact+%22{query}*%22&version=1.1&operation=searchRetrieve&recordSchema=http%3A%2F%2Fzthes.z3950.org%2Fxml%2F1.0%2F&maximumRecords=10&startRecord=1&resultSetTTL=300&recordPacking=xml&recordXPath=&sortKeys=
+  lcgft:
+    name: lcgft
+    url: http://tspilot.oclc.org/lcgft/?query=oclcts.rootHeading+exact+%22{query}*%22&version=1.1&operation=searchRetrieve&recordSchema=http%3A%2F%2Fzthes.z3950.org%2Fxml%2F1.0%2F&maximumRecords=10&startRecord=1&resultSetTTL=300&recordPacking=xml&recordXPath=&sortKeys=
