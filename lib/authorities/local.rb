@@ -10,7 +10,7 @@ module Authorities
       rescue
         sub_authority_hash = {}
       end
-      @terms = guarantee_ids(sub_authority_hash.fetch(:terms, []))
+      @terms = normalize_terms(sub_authority_hash.fetch(:terms, []))
       if q.blank?
         @response = @terms
       else
@@ -20,9 +20,17 @@ module Authorities
       end
     end
     
-    def guarantee_ids(terms)
-      terms.each { |term| term[:id] = term[:id] || term[:label] }
-      terms
+    def normalize_terms(terms)
+      normalized_terms = []
+      terms.each do |term|
+        if term.is_a? String
+          normalized_terms << { :id => term, :label => term }
+        else
+          term[:id] = term[:id] || term[:label]
+          normalized_terms << term 
+        end
+      end
+      normalized_terms
     end
 
     def parse_authority_response

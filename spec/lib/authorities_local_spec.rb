@@ -69,5 +69,13 @@ describe Authorities::Local do
       expect(authorities.parse_authority_response).to eq(expected)      
     end
   end
+  
+  context "authority YAML is a list of terms" do
+    let(:authorities) { Authorities::Local.new("", "authority_C") }
+    let(:expected) { [ { :id => "Term C1", :label => "Term C1" }, { :id => "Term C2", :label => "Term C2" }, { :id => "Term C3", :label => "Term C3" } ].to_json }
+    it "should use the terms as labels" do
+      expect(authorities.parse_authority_response).to eq(expected)      
+    end
+  end
 
 end
