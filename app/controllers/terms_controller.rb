@@ -8,10 +8,6 @@ class TermsController < ApplicationController
   
   def index
     
-    
-    #get the authority class
-    authority_class = authorities_classes[params[:vocab]]
-    
     #convert wildcard to be URI encoded
     params[:q].gsub!("*", "%2A")
    
@@ -48,11 +44,16 @@ class TermsController < ApplicationController
 
   def check_authority
     begin
-      ("Authorities::"+params[:vocab].capitalize).constantize
-      debugger
+      authority_class.constantize
     rescue
       redirect_to :status => 400
     end 
+  end
+
+  private
+
+  def authority_class
+    "Authorities::"+params[:vocab].capitalize
   end
 
 end
