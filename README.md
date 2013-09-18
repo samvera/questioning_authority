@@ -1,6 +1,8 @@
 Questioning Authority
 =====================
 
+[![Build Status](https://travis-ci.org/projecthydra/questioning_authority.png)](https://travis-ci.org/projecthydra/questioning_authority)
+
 Question your authorities
 
 # Routes
@@ -57,3 +59,28 @@ Example search (html): http://id.loc.gov/search/?q=eng&q=cs%3Ahttp%3A%2F%2Fid.lo
 Example search (json): http://id.loc.gov/search/?q=eng&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fiso639-2&format=json
 
 Example search (json, second page): http://id.loc.gov/search/?q=a*%20cs:http://id.loc.gov/vocabulary/countries&start=21&format=json
+
+Local Authority Files
+=====================
+
+### YAML file of terms
+
+Two supported formats:
+
+#### List of terms
+
+	:terms:
+		- Term 1
+		- Term 2
+		
+#### List of id and term keys and, optionally, active key
+
+	:terms:
+		- :id: id1
+		  :term: Term 1
+		  :active: true
+		- :id: id2
+		  :term: Term 2
+		  :active: false
+		
+

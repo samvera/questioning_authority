@@ -1,0 +1,10 @@
+:terms:
+    - :id: A1
+      :term: Abc Term A1
+      :active: true
+    - :id: A2
+      :term: Term A2
+      :active: false
+    - :id: A3
+      :term: Abc Term A3
+      :active: true
