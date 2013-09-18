@@ -4,17 +4,10 @@
 
 class TermsController < ApplicationController
 
-  before_action :check_params
+  before_action :check_params, :check_authority
   
   def index
     
-    #these are the supported vocabularies and the associated class names
-    authorities_classes = {"lcsh"=>"Authorities::Lcsh", "loc"=>"Authorities::Loc", "oclcts"=>"Authorities::Oclcts"}
-
-  #make sure vocab param is valid
-    if !authorities_classes.has_key? params[:vocab]
-      raise Exception, 'Vocabulary not supported'
-    end
     
     #get the authority class
     authority_class = authorities_classes[params[:vocab]]
@@ -51,8 +44,14 @@ class TermsController < ApplicationController
     unless params[:q].present? && params[:vocab].present?
       redirect_to :status => 400
     end
-
   end
 
+  def check_authority
+    begin
+      ("Authorities::"+params[:vocab]).constantize
+    rescue
+      redirect_to :status => 400
+    end 
+  end
 
 end

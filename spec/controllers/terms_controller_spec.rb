@@ -14,6 +14,11 @@ describe TermsController do
       response.code.should == "400"
     end
 
+    it "should return 400 if vocabulary is not valid" do
+      get :index, { :q => "foo", :vocab => "bar" }
+      response.code.should == "400"
+    end
+
     it "should return nil if there's no query" do
       get :index, { :q => nil, :use_route => :lcsh_suggest }
       expect(assigns(:results)).to be_nil
