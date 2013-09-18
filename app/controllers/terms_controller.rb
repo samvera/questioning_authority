@@ -4,7 +4,7 @@
 
 class TermsController < ApplicationController
 
-  before_action :check_params, :check_authority
+  before_action :check_params, :check_authority, :check_sub_authority
   
   def index
     
@@ -48,6 +48,14 @@ class TermsController < ApplicationController
     rescue
       redirect_to :status => 400
     end 
+  end
+
+  def check_sub_authority
+    unless params[:sub_authority].nil?
+      unless authority_class.constantize.authority_valid?(params[:sub_authority])
+        redirect_to :status => 400
+      end
+    end
   end
 
   private

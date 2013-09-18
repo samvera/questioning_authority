@@ -26,6 +26,15 @@ describe TermsController do
         response.code.should_not == "400"
       end
 
+      it "should return 400 if sub_authority is not valid" do
+        get :index, { :q => "foo", :vocab => "loc", :sub_authority => "foo" }
+        response.code.should == "400"
+      end
+
+      it "should not return 400 if sub_authority is valid" do
+        get :index, { :q => "foo", :vocab => "loc", :sub_authority => "relators" }
+        response.code.should_not == "400"
+      end
     end
 
     it "should return nil if there's no query" do
