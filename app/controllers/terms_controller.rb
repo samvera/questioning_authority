@@ -48,7 +48,8 @@ class TermsController < ApplicationController
 
   def check_authority
     begin
-      ("Authorities::"+params[:vocab]).constantize
+      ("Authorities::"+params[:vocab].capitalize).constantize
+      debugger
     rescue
       redirect_to :status => 400
     end 
