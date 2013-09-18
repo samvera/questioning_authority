@@ -13,18 +13,99 @@ module Authorities
     end
 
     def sub_authorityURL(sub_authority)
+      vocab_base_url = 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F'
+      authority_base_url = 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2F'
+      datatype_base_url = 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fdatatypes%2F'
+      vocab_preservation_base_url = 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fpreservation%2F'
+
       case sub_authority
+        when 'subjects'
+          return authority_base + URI.escape(sub_authority)
         when 'names'
-          return 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fnames'
+          return authority_base + URI.escape(sub_authority)
+        when 'classification'
+          return authority_base + URI.escape(sub_authority)
+        when 'childrensSubjects'
+          return authority_base + URI.escape(sub_authority)
+        when 'genreForms'
+          return authority_base + URI.escape(sub_authority)
+        when 'graphicMaterials'
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'organizations'
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'relators'
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'countries'
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'geographicAreas'
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'languages'
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'iso639-1'
+          return vocab_base_url + URI.escape(sub_authority)
         when 'iso639-2'
-          return 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F' + URI.escape(sub_authority)
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'iso639-5'
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'edtf'
+          return datatype_base_url + URI.escape(sub_authority)
+        when 'preservation'
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'actionsGranted'
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'agentType'
+          return vocab_base_url + URI.escape(sub_authority)
+        when 'contentLocationType'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'copyrightStatus'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'cryptographicHashFunctions'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'environmentCharacteristic'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'environmentPurpose'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'eventRelatedAgentRole'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'eventRelatedObjectRole'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'eventType'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'formatRegistryRole'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'hardwareType'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'inhibitorTarget'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'inhibitorType'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'objectCategory'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'preservationLevelRole'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'relationshipSubType'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'relationshipType'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'rightsBasis'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'rightsRelatedAgentRole'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'signatureEncoding'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'signatureMethod'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'softwareType'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
+        when 'storageMedium'
+          return vocab_preservation_base_url + URI.escape(sub_authority)
         else
           return ''
       end
     end
 
     def self.sub_authorities
-      ['iso639-2', 'subjects', 'names', 'classification', 'childrensSubjects', 'genreForms']
+      ['iso639-2', 'subjects', 'names', 'classification', 'childrensSubjects', 'genreForms', 'graphicMaterials', 'organizations', 'relators', 'countries', 'geographicAreas', 'languages', 'iso639-5', 'edtf', 'preservation', 'actionsGranted', 'agentType', 'contentLocationType', 'copyrightStatus', 'cryptographicHashFunctions', 'environmentCharacteristic', 'environmentPurpose', 'eventRelatedAgentRole', 'eventRelatedObjectRole', 'eventType', 'formatRegistryRole', 'hardwareType', 'inhibitorTarget', 'inhibitorType', 'objectCategory', 'preservationLevelRole', 'relationshipSubType', 'relationshipType', 'rightsBasis', 'rightsRelatedAgentRole', 'signatureEncoding', 'signatureMethod', 'softwareType', 'storageMedium']
     end
 
 
