@@ -1,4 +1,4 @@
-require 'curl'
+require 'uri'
 
 module Authorities
   class Loc < Authorities::Base
@@ -6,17 +6,20 @@ module Authorities
     # Initialze the Loc class with a query and get the http response from LOC's server.
     # This is set to a JSON object
     def initialize(q, sub_authority='')
-      authority_url = authorityURL(sub_authority)
+      authority_url = sub_authorityURL(sub_authority)
       self.query_url =  "http://id.loc.gov/search/?q=#{q}&q=#{authority_url}&format=json"
 
       super
     end
 
-    def authorityURL(sub_authority)
-      if sub_authority == ''
-        return ''
-      else
-         return 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F' + sub_authority
+    def sub_authorityURL(sub_authority)
+      case sub_authority
+        when 'names'
+          return 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fnames'
+        when 'iso639-2'
+          return 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F' + URI.escape(sub_authority)
+        else
+          return ''
       end
     end
 
