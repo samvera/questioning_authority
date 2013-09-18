@@ -10,22 +10,28 @@ module Authorities
       rescue
         sub_authority_hash = {}
       end
-      terms = sub_authority_hash.fetch(:terms, [])
+      @terms = sub_authority_hash.fetch(:terms, [])
       if q.blank?
-        self.response = terms
+        @response = @terms
       else
         sub_terms = []
-        terms.each { |term| sub_terms << term if term[:label].start_with?(q) }
-        self.response = sub_terms
+        @terms.each { |term| sub_terms << term if term[:label].start_with?(q) }
+        @response = sub_terms
       end
     end
 
-    # def results
-    #   self.response.to_json
-    # end
-    # 
     def parse_authority_response
-      self.response.to_json
+      @response.to_json
+    end
+    
+    def get_full_record(id)
+      target_term = {}
+      @terms.each do |term|
+        if term[:id] == id
+          target_term = term
+        end
+      end
+      target_term.to_json
     end
     
     def self.sub_authorities_path

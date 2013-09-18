@@ -40,5 +40,17 @@ describe Authorities::Local do
     end
     
   end
+  
+  context "retrieve full record for term" do
+    
+    context "term exists" do
+      let(:id) { "A2" }
+      let(:expected) { { :id => "A2", :label => "Term A2" }.to_json }
+      it "should return the full term record" do
+        authorities = Authorities::Local.new("", "authority_A")
+        expect(authorities.get_full_record(id)).to eq(expected)
+      end
+    end
+  end
 
 end
