@@ -10,6 +10,8 @@ describe Authorities::Oclcts do
     to_return(:body => File.new(Rails.root.join("spec/fixtures", "oclcts-response.txt")), :status => 200)
 
     @terms = Authorities::Oclcts.new("ball", "mesh").parse_authority_response
+    WebMock.allow_net_connect!
+
   end
 
   # TODO: These test the reponse from SRU server and should be moved to
