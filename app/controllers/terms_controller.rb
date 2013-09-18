@@ -3,44 +3,16 @@
 # super class so they implement the same methods.
 
 class TermsController < ApplicationController
+
+  before_action :check_params, :check_authority, :check_sub_authority
   
   def index
-    
-    #these are the supported vocabularies and the associated class names
-    authorities_classes = {"lcsh"=>"Authorities::Lcsh", "loc"=>"Authorities::Loc", "oclcts"=>"Authorities::Oclcts"}
-    
-    #make sure vocab param is present
-    if !params[:vocab].present?
-      raise Exception, 'The vocabulary was not specified'
-    end
-    
-    #make sure q param is present
-    if !params[:q].present?
-      raise Exception, 'The query was not specified'
-    end
-    
-    #make sure vocab param is valid
-    if !authorities_classes.has_key? params[:vocab]
-      raise Exception, 'Vocabulary not supported'
-    end
-    
-    #get the authority class
-    authority_class = authorities_classes[params[:vocab]]
     
     #convert wildcard to be URI encoded
     params[:q].gsub!("*", "%2A")
    
     #initialize the authority and run the search. if there's a sub-authority and it's valid, include that param
-    if params[:sub_authority].present?
-      if authority_class.constantize.authority_valid?(params[:sub_authority])
-        @authority = authority_class.constantize.new(params[:q], params[:sub_authority])
-      else
-        raise Exception, 'Sub-authority not valid'
-      end
-    else
-      @authority = authority_class.constantize.new(params[:q])
-    end
-    
+    @authority = params[:sub_authority].present? ? authority_class.constantize.new(params[:q], params[:sub_authority]) : authority_class.constantize.new(params[:q])
     #parse the results
     @authority.parse_authority_response
     
@@ -49,7 +21,34 @@ class TermsController < ApplicationController
       format.json { render :layout => false, :text => @authority.results }
       format.js   { render :layout => false, :text => @authority.results }
     end
+
   end
 
+
+  def check_params
+    unless params[:q].present? && params[:vocab].present?
+      redirect_to :status => 400
+    end
+  end
+
+  def check_authority
+    begin
+      authority_class.constantize
+    rescue
+      redirect_to :status => 400
+    end 
+  end
+
+  def check_sub_authority
+    unless params[:sub_authority].nil?
+      redirect_to :status => 400 unless authority_class.constantize.authority_valid?(params[:sub_authority])
+    end
+  end
+
+  private
+
+  def authority_class
+    "Authorities::"+params[:vocab].capitalize
+  end
 
 end
