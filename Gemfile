@@ -30,6 +30,7 @@ group :doc do
 end
 
 gem 'curb'
+gem 'nokogiri', '~> 1.6.0'
 
 group :development, :test do
   gem 'rspec'
