@@ -10,7 +10,7 @@ module Authorities
       rescue
         sub_authority_hash = {}
       end
-      @terms = sub_authority_hash.fetch(:terms, [])
+      @terms = guarantee_ids(sub_authority_hash.fetch(:terms, []))
       if q.blank?
         @response = @terms
       else
@@ -18,6 +18,11 @@ module Authorities
         @terms.each { |term| sub_terms << term if term[:label].start_with?(q) }
         @response = sub_terms
       end
+    end
+    
+    def guarantee_ids(terms)
+      terms.each { |term| term[:id] = term[:id] || term[:label] }
+      terms
     end
 
     def parse_authority_response

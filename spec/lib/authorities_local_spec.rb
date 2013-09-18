@@ -42,14 +42,31 @@ describe Authorities::Local do
   end
   
   context "retrieve full record for term" do
+
+    let(:authorities) { Authorities::Local.new("", "authority_A") }
     
     context "term exists" do
       let(:id) { "A2" }
       let(:expected) { { :id => "A2", :label => "Term A2" }.to_json }
       it "should return the full term record" do
-        authorities = Authorities::Local.new("", "authority_A")
         expect(authorities.get_full_record(id)).to eq(expected)
       end
+    end
+    
+    context "term does not exist" do
+      let(:id) { "NonID" }
+      let(:expected) { {}.to_json }
+      it "should return an empty hash" do
+        expect(authorities.get_full_record(id)).to eq(expected)
+      end
+    end
+  end
+  
+  context "term does not an id" do
+    let(:authorities) { Authorities::Local.new("", "authority_B") }
+    let(:expected) { [ { :id => "Term B1", :label => "Term B1" }, { :id => "Term B2", :label => "Term B2" }, { :id => "Term B3", :label => "Term B3" } ].to_json }
+    it "should set the id to be same as the label" do
+      expect(authorities.parse_authority_response).to eq(expected)      
     end
   end
 
