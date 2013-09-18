@@ -52,14 +52,11 @@ describe Authorities::Lcsh do
     end
   end
 
-  describe "#results" do
-    it "should include ids for the terms" do
-      @terms.results.first[:id].should be_kind_of String
-    end
-
-    it "should be an array of hashes" do
-      @terms.results.should be_kind_of Array
-      @terms.results.first.should be_kind_of Hash
+  describe "#parse_authority_response" do
+    it "should set .response to be an array of our suggested terms" do
+      @terms.parse_authority_response
+      @terms.response.should be_kind_of Array
+      @terms.response.should include "ABBA (Musical group)"
     end
   end
 

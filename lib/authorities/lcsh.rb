@@ -11,8 +11,10 @@ module Authorities
       super
     end
 
+    # We're only interested in the list of suggestions. Set this to .repsonse
+    # so the controller can do the rest. 
     def parse_authority_response
-      self.response = self.raw_response[1]
+      self.response = self.suggestions
     end
 
     def query
