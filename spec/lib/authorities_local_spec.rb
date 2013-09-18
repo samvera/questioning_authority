@@ -47,7 +47,7 @@ describe Authorities::Local do
     
     context "term exists" do
       let(:id) { "A2" }
-      let(:expected) { { :id => "A2", :term => "Term A2" }.to_json }
+      let(:expected) { { :id => "A2", :term => "Term A2", :active => false }.to_json }
       it "should return the full term record" do
         expect(authorities.get_full_record(id)).to eq(expected)
       end

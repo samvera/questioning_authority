@@ -73,12 +73,14 @@ Two supported formats:
 		- Term 1
 		- Term 2
 		
-#### List of id and term keys
+#### List of id and term keys and, optionally, active key
 
 	:terms:
 		- :id: id1
 		  :term: Term 1
+		  :active: true
 		- :id: id2
 		  :term: Term 2
+		  :active: false
 		
 
