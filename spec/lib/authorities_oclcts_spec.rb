@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Authorities::SRU do
+describe Authorities::Oclcts do
 
   before :all do
-    @terms = Authorities::SRU.new("ball", "mesh").response
+    @terms = Authorities::Oclcts.new("ball", "mesh").response
   end
 
   # TODO: These test the reponse from SRU server and should be moved to

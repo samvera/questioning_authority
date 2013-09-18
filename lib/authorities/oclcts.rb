@@ -3,9 +3,9 @@ require 'nokogiri'
 
 module Authorities
 
-  class SRU < Authorities::Base
+  class Oclcts < Authorities::Base
   
-    SRU_SERVER_CONFIG = YAML.load_file(Rails.root.join("config", "sru-authorities.yml"))
+    SRU_SERVER_CONFIG = YAML.load_file(Rails.root.join("config", "oclcts-authorities.yml"))
     
     attr_accessor :sub_authority
 
