@@ -73,12 +73,12 @@ Two supported formats:
 		- Term 1
 		- Term 2
 		
-#### List of id and label keys
+#### List of id and term keys
 
 	:terms:
 		- :id: Id1
-		  :label: Term 1
+		  :term: Term 1
 		- :id: Id2
-		  :label: Term 2
+		  :term: Term 2
 		
 
