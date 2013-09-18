@@ -29,13 +29,13 @@ module Authorities
 
     def parse_authority_response
       # Overwrite me unless your raw response needs no parsing
-      self.raw_response
+      self.response = self.raw_response
 
     end
 
     def get_full_record(id)
       # implement me
-      [{"id"=>id}].to_json
+      {"id"=>id}.to_json
     end
 
     # Parse the result from LOC, and return an JSON array of terms that match the query.
