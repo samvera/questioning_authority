@@ -3,13 +3,14 @@ require 'nokogiri'
 
 module Authorities
 
-  class SRU
+  class SRU < Authorities::Base
   
     SRU_SERVER_CONFIG = YAML.load_file(Rails.root.join("config", "sru-authorities.yml"))
     
-    attr_accessor :response, :query_url, :raw_response
+    attr_accessor :sub_authority
 
     def initialize(q, sub_authority='')
+      self.sub_authority = sub_authority
       self.query_url = SRU_SERVER_CONFIG["url-pattern"]["prefix-query"].gsub(/\{query\}/, q).gsub(/\{authority\-id\}/, sub_authority)
       self.raw_response = Nokogiri::XML(open(self.query_url))
       self.response = parse_authority_response(self.raw_response)
@@ -35,7 +36,7 @@ module Authorities
       r
     end
 
-    def get_full_record(id, sub_authority)
+    def get_full_record(id)
       if !self.raw_response.xpath("sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData/Zthes/term[termId='" + id + "']", 'sru' => 'http://www.loc.gov/zing/srw/').nil?
         parse_full_record(raw_xml, id)
       else
@@ -46,7 +47,6 @@ module Authorities
     
     def parse_full_record(raw_xml, id)
         zthes_record = raw_xml.xpath("sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData/Zthes/term[termId='" + id + "']");
-        
     end
 
     def results
