@@ -8,10 +8,11 @@ describe Authorities::Oclcts do
     stub_request(:get, "http://tspilot.oclc.org/mesh/?maximumRecords=10&operation=searchRetrieve&query=oclcts.rootHeading%20exact%20%22ball*%22&recordPacking=xml&recordSchema=http://zthes.z3950.org/xml/1.0/&recordXPath=&resultSetTTL=300&sortKeys=&startRecord=1&version=1.1").
     # TODO: Where should response text files go?
     to_return(:body => File.new(Rails.root.join("spec/fixtures", "oclcts-response.txt")), :status => 200)
-
     @terms = Authorities::Oclcts.new("ball", "mesh").parse_authority_response
-    WebMock.allow_net_connect!
+  end
 
+  after :all do
+    WebMock.allow_net_connect!
   end
 
   # TODO: These test the reponse from SRU server and should be moved to
