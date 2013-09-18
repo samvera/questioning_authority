@@ -135,14 +135,43 @@ module Authorities
     end
 
     def get_full_record(id)
-      # implement me
-      specific_id = id.split('/').last
-      initialize(specific_id)
+      full_record = nil
+      parsed_result = {}
+      self.raw_response.each do |single_response|
+        if single_response[0] == "atom:entry"
+
+          single_response.each do |result_part|
+            if(result_part[0] == 'atom:title')
+              if id == result_part[2]
+                full_record = single_response
+              end
+            end
+
+            if(result_part[0] == 'atom:id')
+              if id == result_part[2]
+                full_record = single_response
+              end
+            end
+
+          end
+
+        end
+      end
+
+
+      if full_record != nil
+        full_record.each do |section|
+           if section.class == Array
+             parsed_result[section[0].split(':').last.to_s] = section[2]
+           end
+        end
+      else
+        raise Exception 'Lookup without using a result search first not implemented yet'
+      end
+
+      parsed_result.to_json
 
     end
-
-    # TODO: there's other info in the self.response that might be worth making access to, such as
-    # RDF links, etc.
 
   end
 end
