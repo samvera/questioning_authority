@@ -39,6 +39,14 @@ describe Authorities::Local do
       end      
     end
     
+    context "search not case-sensitive" do
+      let(:expected) { [ { :id => "A1", :label => "Abc Term A1" }, { :id => "A3", :label => "Abc Term A3" } ] }
+      it "should return entries matching the query term without regard to case" do
+        authorities = Authorities::Local.new("aBc", "authority_A")
+        expect(authorities.parse_authority_response).to eq(expected)
+      end      
+    end
+    
   end
   
   context "retrieve full record for term" do
