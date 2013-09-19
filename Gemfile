@@ -46,5 +46,6 @@ group :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'webmock'
+  gem 'simplecov', require: false
 end
 
