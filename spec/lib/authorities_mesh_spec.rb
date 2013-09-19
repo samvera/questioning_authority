@@ -15,4 +15,19 @@ describe Authorities::Mesh do
     where_unique_record(SubjectMeshTerm, {term_id: "D008288"})
     SubjectMeshTerm.all.length.should == 11
   end
+
+  describe "#results" do
+    before(:all) do
+      SubjectMeshTerm.create(term_id: '1', term: 'Mr Plow', term_lower: 'mr plow')
+      SubjectMeshTerm.create(term_id: '2', term: 'Mr Snow', term_lower: 'mr snow')
+      SubjectMeshTerm.create(term_id: '3', term: 'Mrs Fields', term_lower: 'mrs fields')
+    end
+
+    it "handles queries" do
+      m = Authorities::Mesh.new('mr')
+      results = m.results
+      results.should include( {id: '1', label: 'Mr Plow'} )
+      results.length.should == 3
+    end
+  end
 end
