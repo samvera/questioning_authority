@@ -8,3 +8,8 @@ notifications:
 
 before_install:
   - gem install bundler
+
+# blacklist
+branches:
+  except:
+    - sample_app
