@@ -39,13 +39,13 @@ describe TermsController do
 
     describe "successful queries" do
 
-      before :all do
+      before :each do
         WebMock.disable_net_connect!
         stub_request(:get, "http://id.loc.gov/authorities/suggest/?q=Blues").
         to_return(:body => File.new(Rails.root.join("spec/fixtures", "lcsh-response.txt")), :status => 200)
       end
 
-      after :all do
+      after :each do
         WebMock.allow_net_connect!
       end
 
