@@ -15,7 +15,7 @@ module Authorities
         self.response = @terms
       else
         sub_terms = []
-        @terms.each { |term| sub_terms << term if term[:term].start_with?(q) }
+        @terms.each { |term| sub_terms << term if term[:term].downcase.start_with?(q.downcase) }
         self.response = sub_terms
       end
     end
