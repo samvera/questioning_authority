@@ -20,15 +20,15 @@ module Authorities
 
       case sub_authority
         when 'subjects'
-          return authority_base + URI.escape(sub_authority)
+          return authority_base_url + URI.escape(sub_authority)
         when 'names'
-          return authority_base + URI.escape(sub_authority)
+          return authority_base_url + URI.escape(sub_authority)
         when 'classification'
-          return authority_base + URI.escape(sub_authority)
+          return authority_base_url + URI.escape(sub_authority)
         when 'childrensSubjects'
-          return authority_base + URI.escape(sub_authority)
+          return authority_base_url + URI.escape(sub_authority)
         when 'genreForms'
-          return authority_base + URI.escape(sub_authority)
+          return authority_base_url + URI.escape(sub_authority)
         when 'graphicMaterials'
           return vocab_base_url + URI.escape(sub_authority)
         when 'organizations'
@@ -135,14 +135,65 @@ module Authorities
     end
 
     def get_full_record(id)
-      # implement me
-      specific_id = id.split('/').last
-      initialize(specific_id)
+      full_record = nil
+      parsed_result = {}
+      self.raw_response.each do |single_response|
+        if single_response[0] == "atom:entry"
+
+          single_response.each do |result_part|
+            if(result_part[0] == 'atom:title')
+              if id == result_part[2]
+                full_record = single_response
+              end
+            end
+
+            if(result_part[0] == 'atom:id')
+              if id == result_part[2]
+                full_record = single_response
+              end
+            end
+
+          end
+
+        end
+      end
+
+
+      if full_record != nil
+        full_record.each do |section|
+          if section.class == Array
+            label = section[0].split(':').last.to_s
+            case label
+              when 'title'
+                parsed_result[label] = section[2]
+              when 'link'
+                if section[1]['type'] != nil
+                  parsed_result[label + "||#{section[1]['type']}"] = section[1]["href"]
+                else
+                  parsed_result[label] = section[1]["href"]
+                end
+              when 'id'
+                parsed_result[label] = section[2]
+              when 'author'
+                author_list = []
+                #FIXME: Find example with two authors to better understand this data.
+                author_list << section[2][2]
+                parsed_result[label] = author_list
+              when 'updated'
+                parsed_result[label] = section[2]
+              when 'created'
+                parsed_result[label] = section[2]
+            end
+
+          end
+        end
+      else
+        raise Exception 'Lookup without using a result search first not implemented yet'
+      end
+
+      parsed_result
 
     end
-
-    # TODO: there's other info in the self.response that might be worth making access to, such as
-    # RDF links, etc.
 
   end
 end
