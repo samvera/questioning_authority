@@ -9,4 +9,5 @@ module Qa::Authorities
   autoload :MeshTools
   autoload :Oclcts
   autoload :Tgnlang
+  autoload :WebServiceBase
 end

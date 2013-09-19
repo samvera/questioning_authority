@@ -28,11 +28,17 @@ describe Qa::Authorities::Mesh do
     end
 
     it "handles queries" do
-      pending "Re-enable this test once Mesh#results is changed to return a hash of results instead of a single json string"
-      m = Authorities::Mesh.new('mr')
+      m = Qa::Authorities::Mesh.new
+      m.search('mr')
       results = m.results
       results.should include( {id: '1', label: 'Mr Plow'} )
       results.length.should == 3
+    end
+
+    it "gets full records" do
+      m = Qa::Authorities::Mesh.new
+      result = m.get_full_record('2')
+      result.should == {id: '2', label: 'Mr Snow', synonyms: []}
     end
   end
 end

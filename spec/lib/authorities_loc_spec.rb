@@ -6,7 +6,8 @@ describe Qa::Authorities::Loc do
     stub_request(:get, "http://id.loc.gov/search/?format=json&q=haw*&q=cs:http://id.loc.gov/vocabulary/geographicAreas").
       with(:headers => {'Accept'=>'application/json'}).
       to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
-    @authority = Qa::Authorities::Loc.new("haw*", "geographicAreas")
+    @authority = Qa::Authorities::Loc.new
+    @authority.search("haw*", "geographicAreas")
   end
   
   it "should instantiate with a query and return data" do
@@ -28,7 +29,7 @@ describe Qa::Authorities::Loc do
   
   it "should return JSON" do
     @authority.should_not be_nil
-    json = @authority.parse_authority_response
+    json = @authority.parse_authority_response(@authority.raw_response)
     expect(json).not_to be_empty
   end
 

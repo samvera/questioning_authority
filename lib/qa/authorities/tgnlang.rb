@@ -1,40 +1,55 @@
 require 'nokogiri'
-require 'json'
 
 module Qa::Authorities
   class Tgnlang
-    attr_accessor :response, :raw_response
-    def initialize(q,sub_authority='')
-      self.raw_response = getTgnLang(q)
+    attr_accessor :response
+
+    def initialize
+    end
+
+    def search(q, sub_authority='')
+      self.response = getTgnLang(q)
     end
 
     def getTgnLang(q)
-      str = File.expand_path("../../data/TGN_LANGUAGES.xml", __FILE__)
-      doc = Nokogiri::XML(File.open(str))
-      size = doc.css("Language_Name").size
-      i=0
-      lang_array = Array.new
-      while i < size do
-        lang_hash = Hash.new
-        lang_hash["id"] = doc.css("Language_Code")[i].text
-        lang_hash["label"] = doc.css("Language_Name")[i].text
-        lang_array.push(lang_hash)
-        i+=1
-      end
-      obj = Array.new      
-      lang_array.each do |h|
-        if h["label"].downcase.start_with?(q.downcase)  
+      obj = Array.new
+      Tgnlang.languages.each do |h|
+        if h["label"].downcase.start_with?(q.downcase)
           obj.push(h)
         end
       end
-      obj.to_json
+      obj
+    end
+
+    def self.languages
+      @languages ||=
+        begin
+          language_filename = File.expand_path("../../data/TGN_LANGUAGES.xml", __FILE__)
+          lang_array = []
+          File.open(language_filename) do |f|
+            doc = Nokogiri::XML(f)
+            lang_array = doc.css("Language").map do |lang|
+              id = lang.css("Language_Code").first.text
+              label = lang.css("Language_Name").first.text
+              {"id" => id, "label" => label}
+            end
+          end
+          lang_array
+        end
     end
 
     def results
-      self.raw_response
+      self.response
     end
-    def parse_authority_response
-      self.raw_response
+
+    def get_full_record(id, sub_authority)
+      id = id.downcase
+      Tgnlang.languages.each do |h|
+        if h["label"].downcase == id
+          return h
+        end
+      end
+      return {}
     end
   end
 end

@@ -58,3 +58,10 @@ end
 def local_authorities_path
   File.expand_path(File.join("../fixtures/authorities"),  __FILE__)
 end
+
+# returns the file contents
+def load_fixture_file(fname)
+  File.open(Rails.root.join("spec/fixtures", fname)) do |f|
+    return f.read
+  end
+end
