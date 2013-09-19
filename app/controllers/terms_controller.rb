@@ -4,15 +4,32 @@
 
 class TermsController < ApplicationController
 
-  before_action :check_params, :check_authority, :check_sub_authority
+  before_action :check_search_params, only:[:search]
+  before_action :check_vocab_param, :check_authority, :check_sub_authority
   
+  #search that returns all results
   def index
+    #initialize the authority and run the search. if there's a sub-authority and it's valid, include that param
+    @authority = authority_class.constantize.new(params[:q], params[:sub_authority])
+    
+    #parse the results
+    @authority.parse_authority_response
+    
+    respond_to do |format|
+      format.html { render :layout => false, :text => @authority.results }
+      format.json { render :layout => false, :text => @authority.results }
+      format.js   { render :layout => false, :text => @authority.results }
+    end
+  end
+  
+  def search
     
     #convert wildcard to be URI encoded
     params[:q].gsub!("*", "%2A")
    
     #initialize the authority and run the search. if there's a sub-authority and it's valid, include that param
-    @authority = params[:sub_authority].present? ? authority_class.constantize.new(params[:q], params[:sub_authority]) : authority_class.constantize.new(params[:q])
+    @authority = authority_class.constantize.new(params[:q], params[:sub_authority])
+    
     #parse the results
     @authority.parse_authority_response
     
@@ -24,8 +41,13 @@ class TermsController < ApplicationController
 
   end
 
-
-  def check_params
+  def check_vocab_param
+    unless params[:vocab].present?
+      redirect_to :status => 400
+    end
+  end
+  
+  def check_search_params
     unless params[:q].present? && params[:vocab].present?
       redirect_to :status => 400
     end

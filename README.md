@@ -65,15 +65,21 @@ Local Authority Files
 
 ### YAML file of terms
 
-Two supported formats:
+#### Location and Naming Convention
 
-#### List of terms
+Local authorities are specified in YAML files, one for each sub-authority.  By default, local authority YAML files are located in config/authorities/ .  This location can be changed by editing the :local_path entry in config/authorities.yml.  Relative paths are assumed to be relative to Rails.root.
+
+Local authority YAML files are named for the sub-authority they represent.  For example, a YAML file for the "states" sub-authority would be named states.yml.
+
+#### Supported formats
+
+##### List of terms
 
 	:terms:
 		- Term 1
 		- Term 2
 		
-#### List of id and term keys and, optionally, active key
+##### List of id and term keys and, optionally, active key
 
 	:terms:
 		- :id: id1
@@ -82,5 +88,3 @@ Two supported formats:
 		- :id: id2
 		  :term: Term 2
 		  :active: false
-		
-

@@ -3,11 +3,16 @@ require 'spec_helper'
 describe Authorities::Lcsh do
 
   before :all do
+    WebMock.disable_net_connect!
+    stub_request(:get, "http://id.loc.gov/authorities/suggest/?q=ABBA").
+    to_return(:body => File.new(Rails.root.join("spec/fixtures", "lcsh-response.txt")), :status => 200)
     @terms = Authorities::Lcsh.new "ABBA"
   end
 
-  # TODO: These test the reponse from LOC's server and should be moved to
-  # integration later once we can mock the response here
+  after :all do
+    WebMock.allow_net_connect!
+  end
+
   describe "response from LOC" do
 
     it "should have the query term for its first element" do

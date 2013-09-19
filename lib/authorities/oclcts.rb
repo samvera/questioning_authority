@@ -36,16 +36,24 @@ module Authorities
     end
 
     def get_full_record(id)
-      if !self.raw_response.xpath("sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData/Zthes/term[termId='" + id + "']", 'sru' => 'http://www.loc.gov/zing/srw/').nil?
-        parse_full_record(raw_xml, id)
+      unless self.raw_response.xpath("sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData/Zthes/term[termId='" + id + "']", 'sru' => 'http://www.loc.gov/zing/srw/').blank?
+        parse_full_record(self.raw_response, id)
       else
-        parse_full_record(Nokogiri::XML(open(SRU_SERVER_CONFIG["url-pattern"]["id-lookup-query"].gsub(/\{id\}/, id).gsub(/\{authority\-id\}/, sub_authority))))
+        url = SRU_SERVER_CONFIG["url-pattern"]["id-lookup"].gsub(/\{id\}/, id).gsub(/\{authority\-id\}/, self.sub_authority)
+        parse_full_record(Nokogiri::XML(open(url)), id)
       end
       
     end
     
     def parse_full_record(raw_xml, id)
-        zthes_record = raw_xml.xpath("sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData/Zthes/term[termId='" + id + "']");
+      a = {}
+      zthes_record = raw_xml.xpath("sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData/Zthes/term[termId='" + id + "']", 'sru' => 'http://www.loc.gov/zing/srw/');
+      zthes_record.children.each do | child | 
+        if (child.is_a? Nokogiri::XML::Element) && (!child.children.nil?) && (child.children.size == 1) && (child.children.first.is_a? Nokogiri::XML::Text)
+          a[child.name] = child.children.first.to_s;    
+        end
+      end
+      a;
     end
 
     def results

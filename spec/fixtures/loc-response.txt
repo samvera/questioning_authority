@@ -1,0 +1,147 @@
+[
+            "atom:feed",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress Authorities and Vocabulary Service: Search Results"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "href" : "http://id.loc.gov/search/?q=haw* cs:http://id.loc.gov/vocabulary/geographicAreas&start=1&format=atom", 
+                "rel" : "self"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/search/?q=haw*+cs:http://id.loc.gov/vocabulary/geographicAreas"
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2013-09-18T23:04:54.726545-04:00"
+            ],
+                            [
+            "opensearch:totalResults",
+            {
+                "xmlns:opensearch" : "http://a9.com/-/spec/opensearch/1.1/"
+            }
+            ,
+                "1"
+            ],
+                            [
+            "opensearch:startIndex",
+            {
+                "xmlns:opensearch" : "http://a9.com/-/spec/opensearch/1.1/"
+            }
+            ,
+                "1"
+            ],
+                            [
+            "opensearch:itemsPerPage",
+            {
+                "xmlns:opensearch" : "http://a9.com/-/spec/opensearch/1.1/"
+            }
+            ,
+                "20"
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Hawaii"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-us-hi"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-us-hi.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-us-hi.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/n-us-hi"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ]
+            ]

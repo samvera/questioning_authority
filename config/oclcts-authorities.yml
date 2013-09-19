@@ -5,7 +5,7 @@ authorities:
   lcgft:
     name: Library of Congress Genre/Form Terms for Library and Archival Materials (LCGFT)
   bisacsh:
-    name: bisacsh
+    name: Book Industry Study Group Subject Headings (BISAC®). Used with permission.
   fast:
     name: Faceted Application of Subject Terminology (FAST subject headings)
   gsafd:
