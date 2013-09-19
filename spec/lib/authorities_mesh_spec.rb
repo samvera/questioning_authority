@@ -23,6 +23,10 @@ describe Authorities::Mesh do
       SubjectMeshTerm.create(term_id: '3', term: 'Mrs Fields', term_lower: 'mrs fields')
     end
 
+    after(:all) do
+      SubjectMeshTerm.delete_all
+    end
+
     it "handles queries" do
       m = Authorities::Mesh.new('mr')
       results = m.results

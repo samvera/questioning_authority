@@ -7,6 +7,9 @@ describe SubjectMeshTerm do
     @term.term = "Glyphon"
     @term.save!
   end
+  after(:all) do
+    @term.destroy
+  end
   it "returns an empty synonym list" do
     @term.synonyms.should == []
   end
