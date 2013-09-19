@@ -20,7 +20,7 @@ namespace :mesh do
       return
     end
     timed_action "Importing #{fname}" do
-      m = Authorities::Mesh.new
+      m = Authorities::MeshTools::MeshImporter.new
       File.open(fname) do |f|
         m.import_from_file(f)
       end
