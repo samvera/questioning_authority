@@ -7,8 +7,8 @@ describe Authorities::Tgnlang do
   end
 
   describe "response from dataset" do
-    it "should return size 32 with query of Tibetan" do
-      @terms.results.size.should == 32
+    it "should return size 34 with query of Tibetan" do
+      @terms.results.size.should == 34
     end
     it "should return type string" do
       @terms.results.class.name.should == "String"

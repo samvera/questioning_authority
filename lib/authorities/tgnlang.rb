@@ -21,13 +21,13 @@ module Authorities
         lang_array.push(lang_hash)
         i+=1
       end
-      obj = nil      
+      obj = Array.new      
       lang_array.each do |h|
-        if q==h["label"]
-          obj = h.to_json
+        if h["label"].downcase.start_with?(q.downcase)  
+          obj.push(h)
         end
       end
-      obj
+      obj.to_json
     end
 
     def results

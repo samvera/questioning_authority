@@ -43,6 +43,10 @@ describe TermsController do
         get :index, { :q => "Blues", :vocab => "lcsh" }
         response.should be_success
       end
+      it "should return a set of terms for a tgnlang query" do
+        get :index, {:q => "Tibetan", :vocab => "tgnlang" }
+        response.should be_success
+      end
 
     end
   
