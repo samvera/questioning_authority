@@ -1,6 +1,6 @@
 module Authorities
   
-  class Local
+  class Local < Authorities::Base
     
     attr_accessor :response
     
