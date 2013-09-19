@@ -88,3 +88,22 @@ Local authority YAML files are named for the sub-authority they represent.  For 
 		- :id: id2
 		  :term: Term 2
 		  :active: false
+
+Medical Subject Headings (MeSH)
+===============================
+
+Provides autocompletion of [MeSH terms](http://www.nlm.nih.gov/mesh/introduction.html).
+This implementation is simple, and only provides *descriptors* and does not implement *qualifiers*
+(in the technical MeSH sense of these terms).
+The terms are stored in a local database, which is then queried to provide the suggestions.
+
+## Loading Terms
+
+To import the mesh terms into the local database, first download the MeSH descriptor dump in ASCII format (see [http://www.nlm.nih.gov/mesh/filelist.html][]).
+Once you have this file, the rake task `mesh:import` will load the entire file of terms into the database.
+It does not do an update (yet!).
+
+MESH_FILE=path/to/mesh.txt rake mesh:import
+
+This will take a few minutes to finish. (around 10 minutes?)
+
