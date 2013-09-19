@@ -9,7 +9,7 @@ module Authorities
       @results ||= begin
                      r = SubjectMeshTerm.where('term_lower LIKE ?', "#{@q}%").limit(10)
                      r.map { |t| {id: t.term_id, label: t.term} }
-                   end
+                   end.to_json
     end
 
     # satisfy TermsController
