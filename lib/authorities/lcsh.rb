@@ -22,13 +22,17 @@ module Authorities
     end
 
     def suggestions
-      self.raw_response[1]
+      return_hash = []
+      self.raw_response[1].each do |single_response|
+        return_hash << {"id"=>single_response, "label"=>single_response}
+      end
+      return_hash
     end
 
     def urls_for_suggestions
       self.raw_response[3]
     end
-    
+
     private
 
     def get_id_from_url url
