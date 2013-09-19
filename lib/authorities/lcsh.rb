@@ -11,10 +11,9 @@ module Authorities
       super
     end
 
-    # We're only interested in the list of suggestions. Set this to .repsonse
-    # so the controller can do the rest. 
+    # Format response to the correct JSON structure
     def parse_authority_response
-      self.response = self.suggestions
+      self.response = build_response
     end
 
     def query
@@ -22,11 +21,7 @@ module Authorities
     end
 
     def suggestions
-      return_hash = []
-      self.raw_response[1].each do |single_response|
-        return_hash << {"id"=>single_response, "label"=>single_response}
-      end
-      return_hash
+      self.raw_response[1]
     end
 
     def urls_for_suggestions
@@ -35,14 +30,17 @@ module Authorities
 
     private
 
+    def build_response a = Array.new
+      self.suggestions.each_index do |i|
+        a << {"id"=>get_id_from_url(urls_for_suggestions[i]), "label"=>suggestions[i]}
+      end
+      return a
+    end
+
     def get_id_from_url url
       uri = URI(url)
       return uri.path.split(/\//).last
     end
-
-
-    # TODO: there's other info in the self.response that might be worth making access to, such as
-    # RDF links, etc.
 
   end
 end

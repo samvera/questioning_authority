@@ -58,10 +58,11 @@ describe Authorities::Lcsh do
   end
 
   describe "#parse_authority_response" do
-    it "should set .response to be an array of our suggested terms" do
+    it "should set .response to be an array of hashes in the id/label structure" do
+      sample = { "id"=>"n92117993", "label"=>"Abba (Nigeria)" }
       @terms.parse_authority_response
       @terms.response.should be_kind_of Array
-      @terms.response.should include "ABBA (Musical group)"
+      @terms.response.should include sample
     end
   end
 
