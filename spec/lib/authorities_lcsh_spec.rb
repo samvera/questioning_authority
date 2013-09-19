@@ -48,7 +48,7 @@ describe Authorities::Lcsh do
 
     it "should give us an array of suggestions" do
       @terms.suggestions.should be_kind_of Array
-      @terms.suggestions.should include "ABBA (Musical group)"
+      @terms.suggestions.should include({"id"=>"ABBA (Musical group)", "label"=>"ABBA (Musical group)"})
     end
 
     it "should give us an array of urls for each suggestion" do
@@ -66,4 +66,4 @@ describe Authorities::Lcsh do
     end
   end
 
- end  
+end

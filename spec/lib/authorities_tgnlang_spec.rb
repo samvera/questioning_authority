@@ -7,16 +7,12 @@ describe Authorities::Tgnlang do
   end
 
   describe "response from dataset" do
-    it "should return size 34 with query of Tibetan" do
-      @terms.results.size.should == 34
+    it "should return unique record with query of Tibetan" do
+      @terms.results.should == [{"id"=>"75446", "label"=>"Tibetan"}]
     end
-    it "should return type string" do
-      @terms.results.class.name.should == "String"
+    it "should return type Array" do
+      @terms.results.class.should == Array
     end
-    it "should return a string it contains" do
-      @terms.results["Tibetan"].should == "Tibetan"
-    end
-
   end
 
 end
