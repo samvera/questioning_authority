@@ -39,6 +39,16 @@ describe TermsController do
 
     describe "successful queries" do
 
+      before :all do
+        WebMock.disable_net_connect!
+        stub_request(:get, "http://id.loc.gov/authorities/suggest/?q=Blues").
+        to_return(:body => File.new(Rails.root.join("spec/fixtures", "lcsh-response.txt")), :status => 200)
+      end
+
+      after :all do
+        WebMock.allow_net_connect!
+      end
+
       it "should return a set of terms for a lcsh query" do
         get :index, { :q => "Blues", :vocab => "lcsh" }
         response.should be_success
