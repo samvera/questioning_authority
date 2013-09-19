@@ -1,0 +1,28 @@
+<?xml version="1.0" ?> 
+<?xml-stylesheet type="text/xsl" href="/theme/searchRetrieveResponse.xsl"?>
+<searchRetrieveResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/zing/srw/ http://www.loc.gov/standards/sru/sru1-1archive/xml-files/srw-types.xsd" xmlns="http://www.loc.gov/zing/srw/"><version>1.1</version><numberOfRecords>1</numberOfRecords><resultSetId>ndch6a</resultSetId><resultSetIdleTime>300</resultSetIdleTime><records xmlns:ns1="http://www.loc.gov/zing/srw/"><record><recordSchema>http://zthes.z3950.org/xml/1.0/</recordSchema><recordPacking>xml</recordPacking><recordData><Zthes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://tspilot.oclc.org/schema/zthes-1.0u.xsd" xmlns="">
+  <term>
+    <termId>D031329Q000821</termId>
+    <termName>Ballota--virology</termName>
+    <termType>PT</termType>
+    <termLanguage>eng</termLanguage>
+    <termCategory>topical</termCategory>
+    <termStatus>active</termStatus>
+    <termApproval>approved</termApproval>
+    <termSortkey>ballota virology</termSortkey>
+    <termNote label="X-NOTE-856">Use of this resource is governed by the OCLC ResearchWorks terms of use. [text/html]</termNote>
+    <termNote label="Change">Original cataloging agency is DNLM.</termNote>
+    <termNote label="Change">Transcribing agency is DNLM.</termNote>
+    <termNote label="Change">Modifying agency is OCoLC-O.</termNote>
+    <termCreatedDate>2002-07-02T00:00:00</termCreatedDate>
+    <termCreatedBy>DNLM</termCreatedBy>
+    <termModifiedDate>2012-04-02T18:39:28.6</termModifiedDate>
+    <termModifiedBy>OCoLC-O</termModifiedBy>
+    <relation>
+      <relationType>X-ID</relationType>
+      <termId>(DNLM)D031329Q000821</termId>
+      <termName>Ballota--virology</termName>
+      <termType>X-ALT</termType>
+    </relation>
+  </term>
+</Zthes></recordData><recordPosition>1</recordPosition></record></records><echoedSearchRetrieveRequest xmlns:ns2="http://www.loc.gov/zing/srw/"><version>1.1</version><query>dc.identifier exact &quot;D031329Q000821&quot;</query><xQuery><ns3:searchClause xmlns:ns3="http://www.loc.gov/zing/cql/xcql/"><ns3:index>dc.identifier</ns3:index><ns3:relation><ns3:value>exact</ns3:value></ns3:relation><ns3:term>D031329Q000821</ns3:term></ns3:searchClause></xQuery><startRecord>1</startRecord><maximumRecords>10</maximumRecords><recordPacking>xml</recordPacking><recordSchema>http://zthes.z3950.org/xml/1.0/</recordSchema><resultSetTTL>300</resultSetTTL><sortKeys></sortKeys></echoedSearchRetrieveRequest><extraResponseData xmlns:ns4="http://www.loc.gov/zing/srw/"><ns5:extraData xmlns="http://oclc.org/srw/extraData" xmlns:ns5="http://oclc.org/srw/extraData"><ns5:databaseTitle>mesh &#x2014; Medical Subject Headings</ns5:databaseTitle></ns5:extraData></extraResponseData></searchRetrieveResponse>
