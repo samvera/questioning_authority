@@ -47,4 +47,7 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  # Disable Webmock if we choose so we can test against the authorities, instead of their mocks
+  WebMock.disable! if ENV["WEBMOCK"] == "disabled"
 end
