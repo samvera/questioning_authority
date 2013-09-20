@@ -30,12 +30,17 @@ describe Authorities::Mesh do
     # Re-enable this test once Mesh#results is changed to return a hash of results
     # instead of a single json string
 
-    it "handles queries"
-    #do
-    #  m = Authorities::Mesh.new('mr')
-    #  results = m.results
-    #  results.should include( {id: '1', label: 'Mr Plow'} )
-    #  results.length.should == 3
-    #end
+    it "handles queries" do
+      m = Authorities::Mesh.new('mr')
+      results = m.results
+      results.should include( {id: '1', label: 'Mr Plow'} )
+      results.length.should == 3
+    end
+
+    it "gets full records" do
+      m = Authorities::Mesh.new('')
+      result = m.get_full_record('2')
+      result.should == {id: '2', label: 'Mr Snow', synonyms: []}
+    end
   end
 end

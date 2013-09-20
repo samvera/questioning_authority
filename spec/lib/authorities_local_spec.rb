@@ -55,7 +55,7 @@ describe Authorities::Local do
     
     context "term exists" do
       let(:id) { "A2" }
-      let(:expected) { { :id => "A2", :term => "Term A2", :active => false }.to_json }
+      let(:expected) { { :id => "A2", :term => "Term A2", :active => false } }
       it "should return the full term record" do
         expect(authorities.get_full_record(id)).to eq(expected)
       end
@@ -63,7 +63,7 @@ describe Authorities::Local do
     
     context "term does not exist" do
       let(:id) { "NonID" }
-      let(:expected) { {}.to_json }
+      let(:expected) { {} }
       it "should return an empty hash" do
         expect(authorities.get_full_record(id)).to eq(expected)
       end

@@ -27,7 +27,7 @@ module Authorities
           obj.push(h)
         end
       end
-      obj.to_json
+      obj
     end
 
     def results

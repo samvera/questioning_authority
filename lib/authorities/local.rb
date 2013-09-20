@@ -48,7 +48,7 @@ module Authorities
           target_term = term
         end
       end
-      target_term.to_json
+      target_term
     end
     
     def self.sub_authorities_path

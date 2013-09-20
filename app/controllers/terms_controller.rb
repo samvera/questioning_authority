@@ -16,8 +16,8 @@ class TermsController < ApplicationController
     @authority.parse_authority_response
     
     respond_to do |format|
-      format.html { render :layout => false, :text => @authority.results }
-      format.json { render :layout => false, :text => @authority.results }
+      format.html { render :layout => false, :text => @authority.results.to_json }
+      format.json { render :layout => false, :text => @authority.results.to_json }
       format.js   { render :layout => false, :text => @authority.results }
     end
   end
@@ -34,11 +34,24 @@ class TermsController < ApplicationController
     @authority.parse_authority_response
     
     respond_to do |format|
-      format.html { render :layout => false, :text => @authority.results }
-      format.json { render :layout => false, :text => @authority.results }
+      format.html { render :layout => false, :text => @authority.results.to_json }
+      format.json { render :layout => false, :text => @authority.results.to_json }
       format.js   { render :layout => false, :text => @authority.results }
     end
 
+  end
+
+  def show
+    check_sub_authority
+    authority = authority_class.constantize.new("", params[:sub_authority])
+    authority.parse_authority_response
+    result = authority.get_full_record(params[:id])
+
+    respond_to do |format|
+      format.html { render :layout => false, :text => result.to_json }
+      format.json { render :layout => false, :text => result.to_json }
+      format.js   { render :layout => false, :text => result }
+    end
   end
 
   def check_vocab_param

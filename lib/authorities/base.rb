@@ -35,12 +35,12 @@ module Authorities
 
     def get_full_record(id)
       # implement me
-      {"id"=>id}.to_json
+      {"id"=>id}
     end
 
     # Parse the result from LOC, and return an JSON array of terms that match the query.
     def results
-      self.response.to_json
+      self.response
     end
 
     # TODO: there's other info in the self.response that might be worth making access to, such as

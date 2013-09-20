@@ -53,11 +53,11 @@ module Authorities
           a[child.name] = child.children.first.to_s;    
         end
       end
-      a;
+      a
     end
 
     def results
-      self.response.to_json
+      self.response
     end
   end
 end
