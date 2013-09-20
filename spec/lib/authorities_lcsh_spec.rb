@@ -3,18 +3,12 @@ require 'spec_helper'
 describe Authorities::Lcsh do
 
   before :all do
-    WebMock.disable_net_connect!
     stub_request(:get, "http://id.loc.gov/authorities/suggest/?q=ABBA").
     to_return(:body => File.new(Rails.root.join("spec/fixtures", "lcsh-response.txt")), :status => 200)
     @terms = Authorities::Lcsh.new "ABBA"
   end
 
-  after :all do
-    WebMock.allow_net_connect!
-  end
-
   describe "response from LOC" do
-
     it "should have the query term for its first element" do
       @terms.raw_response[0].should be_kind_of String
       @terms.raw_response[0].should == "ABBA"
@@ -37,11 +31,9 @@ describe Authorities::Lcsh do
       @terms.raw_response[3].should include "http://id.loc.gov/authorities/names/n98029154"
       @terms.raw_response[3].length.should == 10
     end
-
   end
 
   describe "presenting the results from LOC" do
-
     it "should give us the query term" do
       @terms.query.should == "ABBA"
     end

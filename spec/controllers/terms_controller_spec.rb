@@ -21,32 +21,24 @@ describe TermsController do
         response.code.should == "400"
       end
 
-      it "should not return 400 if vocabulary is valid" do
-        get :index, { :q => "foo", :vocab => "loc" }
-        response.code.should_not == "400"
-      end
-
       it "should return 400 if sub_authority is not valid" do
         get :index, { :q => "foo", :vocab => "loc", :sub_authority => "foo" }
         response.code.should == "400"
       end
 
-      it "should not return 400 if sub_authority is valid" do
-        get :index, { :q => "foo", :vocab => "loc", :sub_authority => "relators" }
-        response.code.should_not == "400"
-      end
     end
 
     describe "successful queries" do
 
       before :each do
-        WebMock.disable_net_connect!
         stub_request(:get, "http://id.loc.gov/authorities/suggest/?q=Blues").
-        to_return(:body => File.new(Rails.root.join("spec/fixtures", "lcsh-response.txt")), :status => 200)
-      end
-
-      after :each do
-        WebMock.allow_net_connect!
+          to_return(:body => File.new(Rails.root.join("spec/fixtures", "lcsh-response.txt")), :status => 200)
+        stub_request(:get, "http://id.loc.gov/search/?format=json&q=").
+          with(:headers => {'Accept'=>'application/json'}).
+          to_return(:body => File.new(Rails.root.join("spec/fixtures", "loc-response.txt")), :status => 200)
+        stub_request(:get, "http://id.loc.gov/search/?format=json&q=cs:http://id.loc.gov/vocabulary/relators").
+          with(:headers => {'Accept'=>'application/json'}).
+          to_return(:body => File.new(Rails.root.join("spec/fixtures", "loc-response.txt")), :status => 200)
       end
 
       it "should return a set of terms for a lcsh query" do
@@ -56,6 +48,16 @@ describe TermsController do
       it "should return a set of terms for a tgnlang query" do
         get :index, {:q => "Tibetan", :vocab => "tgnlang" }
         response.should be_success
+      end
+
+      it "should not return 400 if vocabulary is valid" do
+        get :index, { :q => "foo", :vocab => "loc" }
+        response.code.should_not == "400"
+      end
+
+      it "should not return 400 if sub_authority is valid" do
+        get :index, { :q => "foo", :vocab => "loc", :sub_authority => "relators" }
+        response.code.should_not == "400"
       end
 
     end
