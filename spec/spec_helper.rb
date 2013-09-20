@@ -47,6 +47,4 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
-  # Set WebMock to allow all HTTP requests until tests can be refactored
-  WebMock.allow_net_connect!
 end
