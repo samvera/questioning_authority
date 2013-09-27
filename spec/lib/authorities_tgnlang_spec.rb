@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Authorities::Tgnlang do
+describe Qa::Authorities::Tgnlang do
 
   before :all do
-    @terms = Authorities::Tgnlang.new("Tibetan")
+    @terms = Qa::Authorities::Tgnlang.new("Tibetan")
   end
 
   describe "response from dataset" do
