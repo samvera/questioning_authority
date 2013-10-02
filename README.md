@@ -22,25 +22,37 @@ results from a given vocabulary in the JSON format.  The controller does three t
 
 ### Sub-Authorities
 
-Some authorties, such as Library of Congress, allow sub-authorties which is an additional parameter that
+Some authorities, such as Library of Congress, allow sub-authorities which is an additional parameter that
 further defines the kind of authority to use with the context of a larger one.
+
+## How do use this?
+
+Add the gem to your Gemfile
+
+    gem 'qa'
+
+Add the engine to your config/routes.rb file
+
+    mount Qa::Engine => '/qa'
+
+Start questioning your authorities!
 
 ### Examples
 
 Return a complete list of terms:
 
-    /terms/:vocab
-    /terms/:vocab/:sub_authority
+    /qa/terms/:vocab
+    /qa/terms/:vocab/:sub_authority
 
 Return a set of terms matching a given query
 
-    /search/:vocab?q=search_term
-    /search/:vocab/:sub_authority?q=search_term
+    /qa/search/:vocab?q=search_term
+    /qa/search/:vocab/:sub_authority?q=search_term
 
 Return the complete information for a specific term given its identifier
 
-    /show/:vocab/:id
-    /show/:vocab/:sub_authority/:id
+    /qa/show/:vocab/:id
+    /qa/show/:vocab/:sub_authority/:id
 
 ### JSON Results
 
@@ -55,7 +67,7 @@ Results are returned in JSON in this format:
 
 Results for specific terms may vary according to the term.  For example:
 
-    /show/mesh/D000001
+    /qa/show/mesh/D000001
 
 Might return:
 
@@ -65,7 +77,7 @@ Might return:
       "synonyms" : ["A-23187", "A23187", "Antibiotic A23187", "A 23187", "A23187, Antibiotic"]
     }
 
-This is due to the varing nature of each authority source.  However, results for multiple terms, such as a search, we
+This is due to the varying nature of each authority source.  However, results for multiple terms, such as a search, we
 should always use the above id and label structure to ensure interoperability at the GUI level.
 
 # Authority Sources information
@@ -131,10 +143,19 @@ This may take a few minutes to finish.
 
 # TODOs
 
-* Make this an engine
 * Provide show method to TermsController to return individual terms
 
 check the issue list for more...
+
+# Developer Notes
+
+To develop this gem, clone the repository, then run:
+
+    bundle install
+    rake
+
+This will install the gems, create a dummy application under spec/internal and run the tests.  After you've made changes, remove the entire spec/internal
+directory so that further tests and run against a new dummy application.
 
 # Authors
 

@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe Authorities::Loc do
+describe Qa::Authorities::Loc do
   
   before :all do
     stub_request(:get, "http://id.loc.gov/search/?format=json&q=haw*&q=cs:http://id.loc.gov/vocabulary/geographicAreas").
       with(:headers => {'Accept'=>'application/json'}).
-      to_return(:body => File.new(Rails.root.join("spec/fixtures", "loc-response.txt")), :status => 200)
-    @authority = Authorities::Loc.new("haw*", "geographicAreas")
+      to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
+    @authority = Qa::Authorities::Loc.new("haw*", "geographicAreas")
   end
   
   it "should instantiate with a query and return data" do

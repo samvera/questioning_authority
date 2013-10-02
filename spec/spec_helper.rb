@@ -1,4 +1,8 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
+require File.expand_path("../internal/config/environment.rb",  __FILE__)
+require 'rspec/rails'
+require 'rspec/autorun'
+require 'webmock/rspec'
+
 ENV["RAILS_ENV"] ||= 'test'
 
 if ENV['COVERAGE']
@@ -6,11 +10,6 @@ if ENV['COVERAGE']
   SimpleCov.start 'rails'
   SimpleCov.command_name "spec"
 end
-
-require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/rails'
-require 'rspec/autorun'
-require 'webmock/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -30,7 +29,7 @@ RSpec.configure do |config|
   # config.mock_with :rr
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_path = "../spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -50,4 +49,12 @@ RSpec.configure do |config|
 
   # Disable Webmock if we choose so we can test against the authorities, instead of their mocks
   WebMock.disable! if ENV["WEBMOCK"] == "disabled"
+end
+
+def webmock_fixture fixture
+  File.new File.expand_path(File.join("../fixtures", fixture),  __FILE__)
+end
+
+def local_authorities_path
+  File.expand_path(File.join("../fixtures/authorities"),  __FILE__)
 end

@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe Authorities::MeshTools::MeshDataParser do
+describe Qa::Authorities::MeshTools::MeshDataParser do
 
   it "parses a record correctly" do
-    data = <<-EOS
+    data = <<-EOS 
 *NEWRECORD
 A = 45
 B = a = b = c = d
 B = more than one
 EOS
-    mesh = Authorities::MeshTools::MeshDataParser.new(StringIO.new(data))
+    mesh = Qa::Authorities::MeshTools::MeshDataParser.new(StringIO.new(data))
     records = mesh.all_records
     records.length.should == 1
     records[0].should == {'A'=>['45'],'B'=>['a = b = c = d','more than one']}
@@ -26,7 +26,7 @@ A = another field
 print entry = test
 
 EOS
-    mesh = Authorities::MeshTools::MeshDataParser.new(StringIO.new(data))
+    mesh = Qa::Authorities::MeshTools::MeshDataParser.new(StringIO.new(data))
     records = mesh.all_records
     records.length.should == 2
     records[0].should == {'A'=>['45'],'B'=>['a = b = c = d']}
@@ -41,7 +41,7 @@ B=no space
  space at beginning of line and no =
 *NEWRECORD
 EOS
-    mesh = Authorities::MeshTools::MeshDataParser.new(StringIO.new(data))
+    mesh = Qa::Authorities::MeshTools::MeshDataParser.new(StringIO.new(data))
     records = mesh.all_records
     records.length.should == 2
     records[0].should == {'A'=>['45']}
@@ -49,7 +49,7 @@ EOS
   end
 
   it 'parses a sample mesh file' do
-    mesh = Authorities::MeshTools::MeshDataParser.new(File.new(Rails.root + 'spec/fixtures/mesh.txt'))
+    mesh = Qa::Authorities::MeshTools::MeshDataParser.new(webmock_fixture('mesh.txt'))
     records = mesh.all_records
     records.length.should == 11
     records[0].should == {

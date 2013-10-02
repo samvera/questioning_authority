@@ -1,0 +1,2 @@
+module Qa::ApplicationHelper
+end

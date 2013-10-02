@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Authorities::Lcsh do
+describe Qa::Authorities::Lcsh do
 
   before :all do
     stub_request(:get, "http://id.loc.gov/authorities/suggest/?q=ABBA").
-    to_return(:body => File.new(Rails.root.join("spec/fixtures", "lcsh-response.txt")), :status => 200)
-    @terms = Authorities::Lcsh.new "ABBA"
+    to_return(:body => webmock_fixture("lcsh-response.txt"), :status => 200)
+    @terms = Qa::Authorities::Lcsh.new "ABBA"
   end
 
   describe "response from LOC" do
