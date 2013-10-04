@@ -1,19 +1,19 @@
 require 'spec_helper'
 
-describe Authorities::Oclcts do
+describe Qa::Authorities::Oclcts do
 
   before :each do
     stub_request(:get, "http://tspilot.oclc.org/mesh/?maximumRecords=10&operation=searchRetrieve&query=oclcts.rootHeading%20exact%20%22ball*%22&recordPacking=xml&recordSchema=http://zthes.z3950.org/xml/1.0/&recordXPath=&resultSetTTL=300&sortKeys=&startRecord=1&version=1.1").
-        to_return(:body => File.new(Rails.root.join("spec/fixtures", "oclcts-response-mesh-1.txt")), :status => 200)
+        to_return(:body => webmock_fixture("oclcts-response-mesh-1.txt"), :status => 200)
     stub_request(:get, "http://tspilot.oclc.org/mesh/?maximumRecords=10&operation=searchRetrieve&query=oclcts.rootHeading%20exact%20%22alph*%22&recordPacking=xml&recordSchema=http://zthes.z3950.org/xml/1.0/&recordXPath=&resultSetTTL=300&sortKeys=&startRecord=1&version=1.1").
-        to_return(:body => File.new(Rails.root.join("spec/fixtures", "oclcts-response-mesh-2.txt")), :status => 200)
+        to_return(:body => webmock_fixture("oclcts-response-mesh-2.txt"), :status => 200)
     stub_request(:get, "http://tspilot.oclc.org/mesh/?maximumRecords=10&operation=searchRetrieve&query=dc.identifier%20exact%20%22D031329Q000821%22&recordPacking=xml&recordSchema=http://zthes.z3950.org/xml/1.0/&recordXPath=&resultSetTTL=300&sortKeys=&startRecord=1&version=1.1").
-        to_return(:body => File.new(Rails.root.join("spec/fixtures", "oclcts-response-mesh-3.txt")), :status => 200)
+        to_return(:body => webmock_fixture("oclcts-response-mesh-3.txt"), :status => 200)
 
-    @first_query = Authorities::Oclcts.new("ball", "mesh")
+    @first_query = Qa::Authorities::Oclcts.new("ball", "mesh")
     @terms = @first_query.parse_authority_response
     @term_record = @first_query.get_full_record @terms.first["id"]
-    @second_query = Authorities::Oclcts.new("alph", "mesh")
+    @second_query = Qa::Authorities::Oclcts.new("alph", "mesh")
   end
 
   describe "a query for terms" do
