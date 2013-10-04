@@ -1,6 +1,6 @@
 # Questioning Authority
 
-[![Build Status](https://travis-ci.org/projecthydra/questioning_authority.png)](https://travis-ci.org/projecthydra/questioning_authority)
+[![Build Status](https://travis-ci.org/projecthydra/questioning_authority.png?branch=master)](https://travis-ci.org/projecthydra/questioning_authority)
 
 You should question your authorities.
 
@@ -159,12 +159,16 @@ directory so that further tests and run against a new dummy application.
 
 # Authors
 
-* Stephen Anderson
-* Don Brower
-* Jim Coble
-* Mike Durbin
-* Randall Floyd
-* Eric James
-* Mike Stroming
-* Adam Wead
+* [Stephen Anderson](https://github.com/scande3)
+* [Don Brower](https://github.com/dbrower)
+* [Jim Coble](https://github.com/coblej)
+* [Mike Durbin](https://github.com/mikedurbin)
+* [Randall Floyd](https://github.com/stormfin)
+* [Eric James](https://github.com/yulgit1)
+* [Mike Stroming](https://github.com/mstroming)
+* [Adam Wead](https://github.com/awead)
+
+### Special thanks to...
+
+[Jeremy Friesen](https://github.com/jeremyf) who gave us the name for our gem.
 
