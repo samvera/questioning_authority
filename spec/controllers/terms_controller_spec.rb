@@ -14,7 +14,7 @@ describe Qa::TermsController do
         get :index, { :vocab => nil}
         response.code.should == "400"
       end
-  
+
       it "should return 400 if no query is specified" do
         get :index, { :q => nil}
         response.code.should == "400"
@@ -65,6 +65,10 @@ describe Qa::TermsController do
       end
 
     end
-  
+
+    describe "#show" do
+      it "the path resolves"
+    end
+
   end
 end

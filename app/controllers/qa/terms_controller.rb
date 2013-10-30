@@ -6,50 +6,57 @@ class Qa::TermsController < ApplicationController
 
   before_action :check_search_params, only:[:search]
   before_action :check_vocab_param, :check_authority, :check_sub_authority
-  
+
   #search that returns all results
   def index
     #initialize the authority and run the search. if there's a sub-authority and it's valid, include that param
-    @authority = authority_class.constantize.new(params[:q], params[:sub_authority])
-    
-    #parse the results
-    @authority.parse_authority_response
-    
+    @authority = authority_class.constantize.new
+    @authority.search(params[:q], params[:sub_authority])
+
     respond_to do |format|
-      format.html { render :layout => false, :text => @authority.results }
-      format.json { render :layout => false, :text => @authority.results }
+      format.html { render :layout => false, json: @authority.results }
+      format.json { render :layout => false, json: @authority.results }
       format.js   { render :layout => false, :text => @authority.results }
     end
   end
-  
+
   def search
-    
     #convert wildcard to be URI encoded
     params[:q].gsub!("*", "%2A")
-   
+
     #initialize the authority and run the search. if there's a sub-authority and it's valid, include that param
-    @authority = authority_class.constantize.new(params[:q], params[:sub_authority])
-    
-    #parse the results
-    @authority.parse_authority_response
-    
+    @authority = authority_class.constantize.new
+    @authority.search(params[:q], params[:sub_authority])
+
     respond_to do |format|
-      format.html { render :layout => false, :text => @authority.results }
-      format.json { render :layout => false, :text => @authority.results }
+      format.html { render :layout => false, :text => @authority.results.to_json }
+      format.json { render :layout => false, :text => @authority.results.to_json }
       format.js   { render :layout => false, :text => @authority.results }
     end
 
+  end
+
+  def show
+    check_sub_authority
+    authority = authority_class.constantize.new
+    result = authority.get_full_record(params[:id], params[:sub_authority])
+
+    respond_to do |format|
+      format.html { render :layout => false, :text => result.to_json }
+      format.json { render :layout => false, :text => result.to_json }
+      format.js   { render :layout => false, :text => result }
+    end
   end
 
   def check_vocab_param
     unless params[:vocab].present?
-      redirect_to :status => 400
+      head :bad_request
     end
   end
-  
+
   def check_search_params
     unless params[:q].present? && params[:vocab].present?
-      redirect_to :status => 400
+      head :bad_request
     end
   end
 
@@ -57,13 +64,13 @@ class Qa::TermsController < ApplicationController
     begin
       authority_class.constantize
     rescue
-      redirect_to :status => 400
-    end 
+      head :bad_request
+    end
   end
 
   def check_sub_authority
     unless params[:sub_authority].nil?
-      redirect_to :status => 400 unless authority_class.constantize.authority_valid?(params[:sub_authority])
+      head :bad_request unless authority_class.constantize.authority_valid?(params[:sub_authority])
     end
   end
 
