@@ -2,8 +2,6 @@ module Qa::Authorities
 
   class Local < Qa::Authorities::Base
 
-    attr_accessor :response
-
     class << self
       def sub_authority(name)
         @sub_authorities ||= {}
@@ -23,7 +21,7 @@ module Qa::Authorities
     def search(q, sub_authority)
       terms = Local.sub_authority(sub_authority).terms
       r = q.blank? ? terms : terms.select { |term| term[:term].downcase.start_with?(q.downcase) }
-      self.response = r.map do |res|
+      r.map do |res|
         { :id => res[:id], :label => res[:term] }.with_indifferent_access
       end
     end
