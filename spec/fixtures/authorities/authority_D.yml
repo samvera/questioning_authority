@@ -1,0 +1,4 @@
+# this file is purposfully malformed so it should raise an error.
+:terms:
+  -:bar: baz
+   :biz: bzzz
