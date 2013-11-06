@@ -21,6 +21,13 @@ describe Qa::Authorities::Local do
       expect(authorities.response).to eq(expected)
     end
   end
+
+  context "a malformed authority file " do
+    it "should raise an error" do
+      authorities = Qa::Authorities::Local.new
+      expect{ authorities.search("", "authority_D") }.to raise_error Psych::SyntaxError
+    end
+  end
   
   context "retrieve a subset of entries for a local sub_authority" do
 
