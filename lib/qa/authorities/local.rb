@@ -32,7 +32,8 @@ module Qa::Authorities
       private
         def load_sub_authority_terms(sub_authority)
           sub_authority_hash = YAML.load(File.read(sub_authority_filename(sub_authority)))
-          @terms[sub_authority] = normalize_terms(sub_authority_hash.fetch(:terms, []))
+          terms = sub_authority_hash.with_indifferent_access.fetch(:terms, [])
+          @terms[sub_authority] = normalize_terms(terms)
         end
 
         def sub_authority_filename(sub_authority)
@@ -42,7 +43,7 @@ module Qa::Authorities
         def normalize_terms(terms)
           terms.map do |term|
             if term.is_a? String
-              { :id => term, :term => term }
+              { :id => term, :term => term }.with_indifferent_access
             else
               term[:id] ||= term[:term]
               term
@@ -58,7 +59,7 @@ module Qa::Authorities
       @terms = Local.terms(sub_authority)
       r = q.blank? ? @terms : @terms.select { |term| term[:term].downcase.start_with?(q.downcase) }
       self.response = r.map do |res|
-        { :id => res[:id], :label => res[:term] }
+        { :id => res[:id], :label => res[:term] }.with_indifferent_access
       end
     end
 
