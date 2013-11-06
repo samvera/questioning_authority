@@ -10,6 +10,13 @@ module Qa::Authorities
       @terms ||= load_sub_authority_terms
     end
 
+    def search(q)
+      r = q.blank? ? terms : terms.select { |term| /\b#{q.downcase}/.match(term[:term].downcase) }
+      r.map do |res|
+        { :id => res[:id], :label => res[:term] }.with_indifferent_access
+      end
+    end
+
     class << self
       def sub_authorities_path
         config_path = AUTHORITIES_CONFIG[:local_path]

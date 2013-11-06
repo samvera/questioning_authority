@@ -19,11 +19,7 @@ module Qa::Authorities
     end
 
     def search(q, sub_authority)
-      terms = Local.sub_authority(sub_authority).terms
-      r = q.blank? ? terms : terms.select { |term| term[:term].downcase.start_with?(q.downcase) }
-      r.map do |res|
-        { :id => res[:id], :label => res[:term] }.with_indifferent_access
-      end
+      Local.sub_authority(sub_authority).search(q)
     end
 
     def get_full_record(id, sub_authority)
