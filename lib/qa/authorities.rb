@@ -5,6 +5,7 @@ module Qa::Authorities
   autoload :Lcsh
   autoload :Loc
   autoload :Local
+  autoload :Subauthority, 'qa/authorities/local/subauthority'
   autoload :Mesh
   autoload :MeshTools
   autoload :Oclcts

@@ -5,12 +5,17 @@ describe Qa::Authorities::Local do
   before do
     AUTHORITIES_CONFIG[:local_path] = local_authorities_path
   end
-  
+
   context "valid local sub_authorities" do
     it "should validate the sub_authority" do
       Qa::Authorities::Local.sub_authorities.should include "authority_A"
       Qa::Authorities::Local.sub_authorities.should include "authority_B"
     end    
+
+    it "should return a sub_authority" do
+      expect { Qa::Authorities::Local.sub_authority('authority_Z')}.to raise_error ArgumentError, "Invalid sub-authority 'authority_Z'"
+      expect(Qa::Authorities::Local.sub_authority('authority_A')).to be_kind_of Qa::Authorities::Subauthority
+    end
   end
 
   context "retrieve all entries for a local sub_authority" do
