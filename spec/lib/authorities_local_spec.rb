@@ -24,8 +24,7 @@ describe Qa::Authorities::Local do
                        { 'id' => "A3", 'label' => "Abc Term A3" } ] }
     it "should return all the entries" do
       authorities = Qa::Authorities::Local.new
-      authorities.search("", "authority_A")
-      expect(authorities.response).to eq(expected)
+      expect(authorities.search("", "authority_A")).to eq(expected)
     end
   end
 
@@ -43,8 +42,7 @@ describe Qa::Authorities::Local do
                          { 'id' => "A3", 'label' => "Abc Term A3" } ] }
       it "should return only entries matching the query term" do
         authorities = Qa::Authorities::Local.new
-        authorities.search("Abc", "authority_A")
-        expect(authorities.response).to eq(expected)
+        expect(authorities.search("Abc", "authority_A")).to eq(expected)
       end
     end
     
@@ -52,8 +50,7 @@ describe Qa::Authorities::Local do
       let(:expected) { [] }
       it "should return an empty array" do
         authorities = Qa::Authorities::Local.new
-        authorities.search("def", "authority_A")
-        expect(authorities.response).to eq(expected)
+        expect(authorities.search("def", "authority_A")).to eq(expected)
       end
     end
     
@@ -62,8 +59,7 @@ describe Qa::Authorities::Local do
                          { 'id' => "A3", 'label' => "Abc Term A3" } ] }
       it "should return entries matching the query term without regard to case" do
         authorities = Qa::Authorities::Local.new
-        authorities.search("aBc", "authority_A")
-        expect(authorities.response).to eq(expected)
+        expect(authorities.search("aBc", "authority_A")).to eq(expected)
       end
     end
     

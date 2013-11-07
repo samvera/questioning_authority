@@ -11,8 +11,7 @@ describe Qa::Authorities::Oclcts do
         to_return(:body => webmock_fixture("oclcts-response-mesh-3.txt"), :status => 200)
 
     @first_query = Qa::Authorities::Oclcts.new
-    @first_query.search("ball", "mesh")
-    @terms = @first_query.response
+    @terms = @first_query.search("ball", "mesh")
     @term_record = @first_query.get_full_record(@terms.first["id"], "mesh")
     @second_query = Qa::Authorities::Oclcts.new
     @second_query.search("alph", "mesh")

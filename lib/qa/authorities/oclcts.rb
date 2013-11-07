@@ -25,7 +25,7 @@ module Qa::Authorities
       raw_response.xpath('sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData', 'sru' => 'http://www.loc.gov/zing/srw/').each do |record|
         r.append({"id" => record.xpath('Zthes/term/termId').first.content, "label" => record.xpath('Zthes/term/termName').first.content})
       end
-      self.response = r
+      r
     end
 
     def get_full_record(id, sub_authority)
@@ -42,10 +42,6 @@ module Qa::Authorities
         end
       end
       a
-    end
-
-    def results
-      self.response
     end
 
     def get_raw_response(query_type, id, sub_authority)
