@@ -44,6 +44,11 @@ describe Qa::Authorities::Local do
         authorities = Qa::Authorities::Local.new
         expect(authorities.search("Abc", "authority_A")).to eq(expected)
       end
+
+      it "should match parts of words in the middle of the term" do
+        authorities = Qa::Authorities::Local.new
+        expect(authorities.search("Term A1", "authority_A")).to eq([{"id"=>"A1", "label"=>"Abc Term A1"}])
+      end
     end
     
     context "no matching entries" do
