@@ -12,9 +12,17 @@ describe Qa::Authorities::Local do
       Qa::Authorities::Local.sub_authorities.should include "authority_B"
     end    
 
+    describe "the class" do
+      subject { Qa::Authorities::Local }
+      it "should return a sub_authority" do
+        expect { subject.sub_authority('authority_Z')}.to raise_error ArgumentError, "Invalid sub-authority 'authority_Z'"
+        expect(subject.sub_authority('authority_A')).to be_kind_of Qa::Authorities::Subauthority
+      end
+    end
+
     it "should return a sub_authority" do
-      expect { Qa::Authorities::Local.sub_authority('authority_Z')}.to raise_error ArgumentError, "Invalid sub-authority 'authority_Z'"
-      expect(Qa::Authorities::Local.sub_authority('authority_A')).to be_kind_of Qa::Authorities::Subauthority
+      expect { subject.sub_authority('authority_Z')}.to raise_error ArgumentError, "Invalid sub-authority 'authority_Z'"
+      expect(subject.sub_authority('authority_A')).to be_kind_of Qa::Authorities::Subauthority
     end
   end
 
@@ -78,14 +86,14 @@ describe Qa::Authorities::Local do
       let(:id) { "A2" }
       let(:expected) { { 'id' => "A2", 'term' => "Term A2", 'active' => false } }
       it "should return the full term record" do
-        record = authorities.get_full_record(id, "authority_A")
+        record = authorities.full_record(id, "authority_A")
         expect(record).to be_a HashWithIndifferentAccess
         expect(record).to eq(expected)
       end
     end
     context "source is a list" do
       it "should be indifferent access" do
-        record = authorities.get_full_record('Term C1', "authority_C")
+        record = authorities.full_record('Term C1', "authority_C")
         expect(record).to be_a HashWithIndifferentAccess
       end
     end
@@ -94,7 +102,15 @@ describe Qa::Authorities::Local do
       let(:id) { "NonID" }
       let(:expected) { {} }
       it "should return an empty hash" do
-        expect(authorities.get_full_record(id, "authority_A")).to eq(expected)
+        expect(authorities.full_record(id, "authority_A")).to eq(expected)
+      end
+    end
+
+    context "on a sub-authority" do
+      it "should return the full term record" do
+        record = authorities.sub_authority('authority_A').full_record('A2')
+        expect(record).to be_a HashWithIndifferentAccess
+        expect(record).to eq('id' => "A2", 'term' => "Term A2", 'active' => false)
       end
     end
 
