@@ -1,4 +1,4 @@
-require 'curl'
+require 'deprecation'
 
 module Qa::Authorities
   class Base

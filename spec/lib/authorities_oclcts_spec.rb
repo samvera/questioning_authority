@@ -12,7 +12,7 @@ describe Qa::Authorities::Oclcts do
 
     @first_query = Qa::Authorities::Oclcts.new
     @terms = @first_query.search("ball", "mesh")
-    @term_record = @first_query.get_full_record(@terms.first["id"], "mesh")
+    @term_record = @first_query.full_record(@terms.first["id"], "mesh")
     @second_query = Qa::Authorities::Oclcts.new
     @second_query.search("alph", "mesh")
   end
@@ -41,7 +41,7 @@ describe Qa::Authorities::Oclcts do
     end
     
     it "should succeed for valid ids, even if the id is not in the initial list of responses" do
-      record = @second_query.get_full_record(@terms.first["id"], "mesh")
+      record = @second_query.full_record(@terms.first["id"], "mesh")
       record.values.should include @terms.first["id"]
       record.values.should include @terms.first["label"]
     end
