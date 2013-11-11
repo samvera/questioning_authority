@@ -17,6 +17,10 @@ module Qa::Authorities
       end
     end
 
+    def full_record(id)
+      terms.find { |term| term[:id] == id } || {}
+    end
+
     class << self
       def sub_authorities_path
         config_path = AUTHORITIES_CONFIG[:local_path]

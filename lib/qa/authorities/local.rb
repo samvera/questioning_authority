@@ -1,6 +1,8 @@
+require 'deprecation'
 module Qa::Authorities
 
   class Local < Qa::Authorities::Base
+    extend Deprecation
 
     class << self
       def sub_authority(name)
@@ -18,16 +20,19 @@ module Qa::Authorities
       end
     end
 
+    delegate :sub_authority, to: self
+
     def search(q, sub_authority)
-      Local.sub_authority(sub_authority).search(q)
+      sub_authority(sub_authority).search(q)
+    end
+
+    def full_record(id, sub_authority)
+      sub_authority(sub_authority).full_record(id)
     end
 
     def get_full_record(id, sub_authority)
-      terms = Local.sub_authority(sub_authority).terms
-      terms.each do |term|
-        return term if term[:id] == id
-      end
-      return {}
+      Deprecation.warn(Local, "get_full_record is deprecated and will be removed in 0.1.0. Use full_record instead", caller)
+      full_record(id, sub_authority)
     end
 
   end
