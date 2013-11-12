@@ -37,7 +37,7 @@ describe Qa::Authorities::Mesh do
 
     it "gets full records" do
       m = Qa::Authorities::Mesh.new
-      result = m.get_full_record('2')
+      result = m.full_record('2')
       result.should == {id: '2', label: 'Mr Snow', synonyms: []}
     end
   end

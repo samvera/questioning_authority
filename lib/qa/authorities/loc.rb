@@ -2,6 +2,7 @@ require 'uri'
 
 module Qa::Authorities
   class Loc < Qa::Authorities::WebServiceBase
+    extend Deprecation
 
     # Initialze the Loc class with a query and get the http response from LOC's server.
     # This is set to a JSON object
@@ -124,6 +125,11 @@ module Qa::Authorities
     end
 
     def get_full_record(id, sub_authority)
+      Deprecation.warn(Loc, "get_full_record is deprecated and will be removed in 0.1.0. Use full_record instead", caller)
+      full_record(id, sub_authority)
+    end
+
+    def full_record(id, sub_authority)
       search(id, sub_authority)
       full_record = find_record_in_response(@raw_response, id)
 

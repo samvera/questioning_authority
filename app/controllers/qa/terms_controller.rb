@@ -39,7 +39,7 @@ class Qa::TermsController < ApplicationController
   def show
     check_sub_authority
     authority = authority_class.constantize.new
-    result = authority.get_full_record(params[:id], params[:sub_authority])
+    result = authority.full_record(params[:id], params[:sub_authority])
 
     respond_to do |format|
       format.html { render :layout => false, :text => result.to_json }

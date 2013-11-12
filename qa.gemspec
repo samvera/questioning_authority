@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", "~> 4.0.0"
-  s.add_dependency "curb"
   s.add_dependency "rest-client"
   s.add_dependency "nokogiri", "~> 1.6.0"
   s.add_dependency "activerecord-import", ">= 0.4.0"

@@ -1,5 +1,5 @@
-require 'curl'
 require 'rest_client'
+require 'deprecation'
 
 module Qa::Authorities
   class WebServiceBase

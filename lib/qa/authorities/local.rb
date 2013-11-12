@@ -1,4 +1,3 @@
-require 'deprecation'
 module Qa::Authorities
 
   class Local < Qa::Authorities::Base
