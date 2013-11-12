@@ -1,6 +1,6 @@
 # Questioning Authority
 
-[![Build Status](https://travis-ci.org/projecthydra/questioning_authority.png?branch=master)](https://travis-ci.org/projecthydra/questioning_authority)
+[![Build Status](https://travis-ci.org/projecthydra/questioning_authority.png?branch=master)](https://travis-ci.org/projecthydra/questioning_authority) [![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
 
 You should question your authorities.
 
