@@ -32,7 +32,7 @@ describe "mesh rake tasks" do
     it "should create or update all records in the config file" do
       ENV['MESH_FILE'] = "dummy"
       input = StringIO.new("*NEWRECORD\nUI = 5\nMH = test\n")
-      File.should_receive(:open).with("dummy").and_yield(input)
+      expect(File).to receive(:open).with("dummy").and_yield(input)
       @rake[@task_name].invoke
       term = Qa::SubjectMeshTerm.find_by_term_id(5)
       term.should_not be_nil
