@@ -67,4 +67,25 @@ describe Qa::Authorities::Loc do
  
   end
 
+  describe "#parse_authority_response" do
+    before :all  do
+      stub_request(:get, "http://id.loc.gov/search/?format=json&q=h&q=cs:http://id.loc.gov/authorities/subjects").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
+      @authority.search("h", "subjects")
+    end
+
+    let(:parsed_response) { @authority.parse_authority_response(@authority.raw_response) }
+
+    it "should return an array of entries returned in the JSON" do
+      expect(parsed_response.length).to eq(2)
+    end
+
+    it "should have a URI for the id and a string label" do
+      expect(parsed_response[0]["id"]).to eq("info:lc/authorities/names/n2008008718")
+      expect(parsed_response[0]["label"]).to eq("Haw, Lily, 1890?-1915")
+      expect(parsed_response[1]["id"]).to eq("info:lc/vocabulary/geographicAreas/n-us-hi")
+      expect(parsed_response[1]["label"]).to eq("Hawaii")
+    end
+  end
 end

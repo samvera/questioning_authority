@@ -15,7 +15,8 @@ module Qa::Authorities
         @response = nil
         return
       end
-      q += '*'
+
+      q = URI.escape(q)
       authority_fragment = sub_authorityURL(sub_authority)
       query_url =  "http://id.loc.gov/search/?q=#{q}&q=#{authority_fragment}&format=json"
       @raw_response = get_json(query_url)
@@ -89,26 +90,42 @@ module Qa::Authorities
       @sub_authorities ||= sub_authority_table.keys
     end
 
-
-    def parse_authority_response(raw_response)
-      result = []
-      raw_response.each do |single_response|
-        next if single_response[0] != "atom:entry"
-        id = nil
-        label = ''
-        single_response.each do |result_part|
-          case result_part[0]
-          when 'atom:title'
-            label = result_part[2]
-          when 'atom:id'
-            id = result_part[2]
-          end
-        end
-
-        id ||= label
-        result << {"id"=>id, "label"=>label}
+    def parse_authority_response(raw_responses)
+      raw_responses.select {|response| response[0] == "atom:entry"}.map do |response|
+        loc_response_to_qa(response_to_struct(response))
       end
-      result
+    end
+
+    # Converts most of the atom data into an OpenStruct object.
+    #
+    # Note that this is a pretty naive conversion.  There should probably just
+    # be a class that properly translates and stores the various pieces of
+    # data, especially if this logic could be useful in other auth lookups.
+    def response_to_struct(response)
+      result = response.each_with_object({}) do |result_parts, result|
+        next unless result_parts[0]
+        key = result_parts[0].sub('atom:', '').sub('dcterms:', '')
+        info = result_parts[1]
+        val = result_parts[2]
+
+        case key
+          when 'title', 'id', 'name', 'updated', 'created'
+            result[key] = val
+          when 'link'
+            result["links"] ||= []
+            result["links"] << [info["type"], info["href"]]
+        end
+      end
+
+      OpenStruct.new(result)
+    end
+
+    # Simple conversion from LoC-based struct to QA hash
+    def loc_response_to_qa(data)
+      {
+        "id" => data.id || data.title,
+        "label" => data.title
+      }
     end
 
     def find_record_in_response(raw_response, id)
