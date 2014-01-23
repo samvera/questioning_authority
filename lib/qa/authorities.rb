@@ -2,7 +2,6 @@ module Qa::Authorities
   extend ActiveSupport::Autoload
 
   autoload :Base
-  autoload :Lcsh
   autoload :Loc
   autoload :Local
   autoload :Subauthority, 'qa/authorities/local/subauthority'

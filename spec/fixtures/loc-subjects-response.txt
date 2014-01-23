@@ -1,0 +1,1733 @@
+[
+            "atom:feed",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress Authorities and Vocabulary Service: Search Results"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "href" : "http://id.loc.gov/search/?q=History--* cs:http://id.loc.gov/authorities/subjects&start=1&format=atom", 
+                "rel" : "self"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "href" : "http://id.loc.gov/search/?q=History--* cs:http://id.loc.gov/authorities/subjects&start=21&format=atom", 
+                "rel" : "next"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/search/?q=History--*+cs:http://id.loc.gov/authorities/subjects"
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2014-01-23T02:58:50.040986-05:00"
+            ],
+                            [
+            "opensearch:totalResults",
+            {
+                "xmlns:opensearch" : "http://a9.com/-/spec/opensearch/1.1/"
+            }
+            ,
+                "15094"
+            ],
+                            [
+            "opensearch:startIndex",
+            {
+                "xmlns:opensearch" : "http://a9.com/-/spec/opensearch/1.1/"
+            }
+            ,
+                "1"
+            ],
+                            [
+            "opensearch:itemsPerPage",
+            {
+                "xmlns:opensearch" : "http://a9.com/-/spec/opensearch/1.1/"
+            }
+            ,
+                "20"
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "History--Philosophy--History--20th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121753"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121753.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121753.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121753"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "History--Philosophy--History--19th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121752"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121752.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121752.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121752"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "History--Religious aspects--Christianity--History of doctrines--20th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061251"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061251.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061251.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh85061251"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2000-10-16T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2000-09-06T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "History--Religious aspects--Christianity--History of doctrines"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061249"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061249.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061249.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh85061249"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2000-10-16T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2000-09-06T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "History--Religious aspects--Christianity--History of doctrines--Middle Ages, 600-1500"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061250"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061250.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061250.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh85061250"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2000-10-16T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2000-09-06T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "History--Philosophy--History"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121724"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121724.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121724.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121724"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Historiography--Italy--History--20th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2009126426"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2009126426.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2009126426.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2009126426"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2009-10-27T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2009-10-27T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Historiography--Germany--History--20th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121719"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121719.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121719.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121719"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Historiography--Great Britain--History--To 1500"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008105656"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008105656.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008105656.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008105656"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-02-11T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-02-11T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Historiography--Great Britain--History--16th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121708"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121708.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121708.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121708"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Historiography--Great Britain--History--18th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2009126423"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2009126423.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2009126423.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2009126423"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2009-10-27T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2009-10-27T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Historiography--Great Britain--History--17th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121720"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121720.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121720.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121720"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Historiography--Great Britain--History--20th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121722"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121722.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121722.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121722"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Historiography--China--History--20th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2009126418"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2009126418.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2009126418.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2009126418"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2009-10-27T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2009-10-27T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Historiography--Great Britain--History--19th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121721"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121721.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121721.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121721"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Historiography--History--20th century"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121725"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121725.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121725.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121725"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "History--Periodization"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061222"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061222.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh85061222.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh85061222"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1986-02-11T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1986-02-11T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "History--Philosophy--Congresses"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008105689"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008105689.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008105689.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008105689"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-02-11T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-02-11T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "History--Bibliography--Catalogs"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121737"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121737.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121737.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121737"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "History--Philosophy--Early works to 1800"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121751"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121751.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/authorities/subjects/sh2008121751.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/authorities/subjects/sh2008121751"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "2008-04-25T00:00:00-04:00"
+            ]
+            ]
+            ]
