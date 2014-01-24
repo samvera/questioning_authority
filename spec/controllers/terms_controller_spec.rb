@@ -35,8 +35,6 @@ describe Qa::TermsController do
     describe "successful queries" do
 
       before :each do
-        stub_request(:get, "http://id.loc.gov/authorities/suggest/?q=Blues").
-          to_return(:body => webmock_fixture("lcsh-response.txt"), :status => 200)
         stub_request(:get, "http://id.loc.gov/search/?format=json&q=").
           with(:headers => {'Accept'=>'application/json'}).
           to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
@@ -45,10 +43,6 @@ describe Qa::TermsController do
           to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
       end
 
-      it "should return a set of terms for a lcsh query" do
-        get :index, { :q => "Blues", :vocab => "lcsh" }
-        response.should be_success
-      end
       it "should return a set of terms for a tgnlang query" do
         get :index, {:q => "Tibetan", :vocab => "tgnlang" }
         response.should be_success

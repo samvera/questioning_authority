@@ -6,10 +6,10 @@ You should question your authorities.
 
 ## What does this do?
 
-Provides a set of uniform RESTful routes to query any controlled vocabulary of set of authority terms.
-Results are returned in JSON, to be used in the context of a Rails application.  Primary examples would
-include providing auto-complete functionality via Javascript or populating a dropdown menu with a set
-of terms.
+Provides a set of uniform RESTful routes to query any controlled vocabulary or set of authority terms.
+Results are returned in JSON and can be used within the context of a Rails application or any other
+Ruby environment. Primary examples would include providing auto-complete functionality via Javascript 
+or populating a dropdown menu with a set of terms.
 
 ## How does it work?
 
@@ -19,6 +19,9 @@ results from a given vocabulary in the JSON format.  The controller does three t
 * provide a list of all terms (if allowed by the class)
 * return a set of terms matching a given query
 * return the complete information for a specific term given its identifier
+
+Depending on the kind of authority or its API, the controller may not do all of these things such
+as return a complete list of terms.
 
 ### Sub-Authorities
 
@@ -82,15 +85,25 @@ should always use the above id and label structure to ensure interoperability at
 
 # Authority Sources information
 
-### Library of Congress (example uses language):
+### Library of Congress
 
-Base url: http://id.loc.gov/search/
+LOC already provides a REST API to query their headings. QA provides a wrapper around this to augment its
+functionality and refine it so that it is congruent with the other authorities in QA.  For example,
+searching subject headings from LOC uses the subjects sub-authority.  Using QA, we'd construct the URL as:
 
-Example search (html): http://id.loc.gov/search/?q=eng&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fiso639-2
+    /qa/search/loc/subjects?q=History--
 
-Example search (json): http://id.loc.gov/search/?q=eng&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fiso639-2&format=json
+In turn, this URL is passed to LOC as:
 
-Example search (json, second page): http://id.loc.gov/search/?q=a*%20cs:http://id.loc.gov/vocabulary/countries&start=21&format=json
+    http://id.loc.gov/search/?format=json&q=History--&q=cs:http://id.loc.gov/authorities/subjects
+
+QA then presents this data to you in JSON format:
+
+    [
+        {"id":"info:lc/authorities/subjects/sh2008121753","label":"History--Philosophy--History--20th century"},
+        {"id":"info:lc/authorities/subjects/sh2008121752","label":"History--Philosophy--History--19th century"},
+        etc...
+    ]
 
 # Local Authority Files
 
