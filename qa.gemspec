@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 4.0.0"
   s.add_dependency "rest-client"
   s.add_dependency "nokogiri", "~> 1.6.0"
-  s.add_dependency "activerecord-import", ">= 0.4.0"
+  s.add_dependency "activerecord-import"
   s.add_dependency "deprecation"
 
   s.add_development_dependency "sqlite3"

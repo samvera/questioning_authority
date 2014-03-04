@@ -2,6 +2,8 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
+  - 2.1.0
+  - 2.1.1
 
 notifications:
   irc: "irc.freenode.org#projecthydra"
@@ -9,7 +11,7 @@ notifications:
 before_install:
   - gem install bundler
 
-# blacklist
-branches:
-  except:
-    - sample_app
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+ 
