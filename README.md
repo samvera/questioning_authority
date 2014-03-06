@@ -160,6 +160,17 @@ This may take a few minutes to finish.
 
 check the issue list for more...
 
+# Known Issues
+
+Some users have reported errors resulting from the curb gem.  When performing queries, the application will crash with the error:
+
+    Trace/BPT trap: 5
+
+The solution is to install the curb gem from the master branch on Github.  To do this, add the following line to the Gemfile of your
+application:
+
+    gem 'curb', github: 'taf2/curb'
+
 # Developer Notes
 
 To develop this gem, clone the repository, then run:
