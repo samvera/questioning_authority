@@ -137,14 +137,16 @@ for the "states" sub-authority would be named states.yml.
 		  :term: Term 2
 		  :active: false
 
-# Medical Subject Headings (MeSH)
+# Experimental Features
+
+## Medical Subject Headings (MeSH)
 
 Provides autocompletion of [MeSH terms](http://www.nlm.nih.gov/mesh/introduction.html). This
 implementation is simple, and only provides *descriptors* and does not implement *qualifiers* (in
 the technical MeSH sense of these terms). The terms are stored in a local database, which is then
 queried to provide the suggestions.
 
-## Loading Terms
+### Loading Terms
 
 To import the mesh terms into the local database, first download the MeSH descriptor dump in ASCII
 format  (see [http://www.nlm.nih.gov/mesh/filelist.html][]). Once you have this file, the rake task
@@ -154,24 +156,9 @@ format  (see [http://www.nlm.nih.gov/mesh/filelist.html][]). Once you have this 
 
 This may take a few minutes to finish.
 
-# TODOs
-
-* Provide show method to TermsController to return individual terms
-
-check the issue list for more...
-
-# Known Issues
-
-Some users have reported errors resulting from the curb gem.  When performing queries, the application will crash with the error:
-
-    Trace/BPT trap: 5
-
-The solution is to install the curb gem from the master branch on Github.  To do this, add the following line to the Gemfile of your
-application:
-
-    gem 'curb', github: 'taf2/curb'
-
 # Developer Notes
+
+[How to Contribute](./CONTRIBUTING.md)
 
 To develop this gem, clone the repository, then run:
 
@@ -181,7 +168,15 @@ To develop this gem, clone the repository, then run:
 This will install the gems, create a dummy application under spec/internal and run the tests.  After you've made changes, remove the entire spec/internal
 directory so that further tests and run against a new dummy application.
 
-# Authors
+## Dependencies and Compatability
+
+Rails 4
+
+# Help 
+
+For help with Questioning Authority, contact <hydra-tech@googlegroups.com>.
+
+# Original Authors
 
 * [Stephen Anderson](https://github.com/scande3)
 * [Don Brower](https://github.com/dbrower)
@@ -195,4 +190,3 @@ directory so that further tests and run against a new dummy application.
 ### Special thanks to...
 
 [Jeremy Friesen](https://github.com/jeremyf) who gave us the name for our gem.
-
