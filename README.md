@@ -158,7 +158,7 @@ This may take a few minutes to finish.
 
 # Developer Notes
 
-[How to Contribute](./CONTRRIBUTING.md)
+[How to Contribute](./CONTRIBUTING.md)
 
 To develop this gem, clone the repository, then run:
 
