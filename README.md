@@ -171,3 +171,22 @@ directory so that further tests and run against a new dummy application.
 ## Dependencies and Compatability
 
 Rails 4
+
+# Help 
+
+For help with Questioning Authority, contact <hydra-tech@googlegroups.com>.
+
+# Original Authors
+
+* [Stephen Anderson](https://github.com/scande3)
+* [Don Brower](https://github.com/dbrower)
+* [Jim Coble](https://github.com/coblej)
+* [Mike Durbin](https://github.com/mikedurbin)
+* [Randall Floyd](https://github.com/stormfin)
+* [Eric James](https://github.com/yulgit1)
+* [Mike Stroming](https://github.com/mstroming)
+* [Adam Wead](https://github.com/awead)
+
+### Special thanks to...
+
+[Jeremy Friesen](https://github.com/jeremyf) who gave us the name for our gem.
