@@ -1,9 +1,8 @@
 language: ruby
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1.0
-  - 2.1.1
+  - 2.1.2
 
 notifications:
   irc: "irc.freenode.org#projecthydra"
@@ -14,4 +13,3 @@ before_install:
 env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
- 
