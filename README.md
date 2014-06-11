@@ -34,9 +34,15 @@ Add the gem to your Gemfile
 
     gem 'qa'
 
-Add the engine to your config/routes.rb file
+Run bundler
 
-    mount Qa::Engine => '/qa'
+    bundle install
+
+Install the gem to your application
+
+    rails generate qa:install
+
+This will copy over some additional config files and add the engine's routes to your `config/route.rb`.
 
 Start questioning your authorities!
 
