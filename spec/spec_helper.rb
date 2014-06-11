@@ -1,7 +1,7 @@
 require File.expand_path("../internal/config/environment.rb",  __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
 require 'webmock/rspec'
+require 'engine_cart'
 
 ENV["RAILS_ENV"] ||= 'test'
 
@@ -10,6 +10,8 @@ if ENV['COVERAGE']
   SimpleCov.start 'rails'
   SimpleCov.command_name "spec"
 end
+
+EngineCart.load_application!
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -49,6 +51,8 @@ RSpec.configure do |config|
 
   # Disable Webmock if we choose so we can test against the authorities, instead of their mocks
   WebMock.disable! if ENV["WEBMOCK"] == "disabled"
+
+  config.infer_spec_type_from_file_location!
 end
 
 def webmock_fixture fixture

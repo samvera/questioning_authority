@@ -1,0 +1,24 @@
+url-pattern:
+  prefix-query: http://tspilot.oclc.org/{authority-id}/?query=oclcts.rootHeading+exact+%22{query}*%22&version=1.1&operation=searchRetrieve&recordSchema=http%3A%2F%2Fzthes.z3950.org%2Fxml%2F1.0%2F&maximumRecords=10&startRecord=1&resultSetTTL=300&recordPacking=xml&recordXPath=&sortKeys=
+  id-lookup: http://tspilot.oclc.org/{authority-id}/?query=dc.identifier+exact+%22{id}%22&version=1.1&operation=searchRetrieve&recordSchema=http%3A%2F%2Fzthes.z3950.org%2Fxml%2F1.0%2F&maximumRecords=10&startRecord=1&resultSetTTL=300&recordPacking=xml&recordXPath=&sortKeys=
+authorities:
+  lcgft:
+    name: Library of Congress Genre/Form Terms for Library and Archival Materials (LCGFT)
+  bisacsh:
+    name: Book Industry Study Group Subject Headings (BISAC®). Used with permission.
+  fast:
+    name: Faceted Application of Subject Terminology (FAST subject headings)
+  gsafd:
+    name: Form and genre headings for fiction and drama
+  lcshac:
+    name: Library of Congress AC Subject Headings
+  lcsh:
+    name: Library of Congress Subject Headings
+  mesh:
+    name: Medical Subject Headings (MeSH®)
+  lctgm:
+    name: "Thesaurus for graphic materials: TGM I, Subject terms"
+  gmgpc:
+    name: "Thesaurus for graphic materials: TGM II, Genre terms"
+  meta:
+    name: Controlled Vocabulary Metadata

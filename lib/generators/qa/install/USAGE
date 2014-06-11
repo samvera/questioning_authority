@@ -1,0 +1,5 @@
+Description:
+    Installs QA into your rails application.
+
+Example:
+    rails generate qa:install
