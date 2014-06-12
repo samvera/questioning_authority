@@ -1,6 +1,6 @@
 # Questioning Authority
 
-[![Build Status](https://travis-ci.org/projecthydra/questioning_authority.png?branch=master)](https://travis-ci.org/projecthydra/questioning_authority) [![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
+[![Build Status](https://travis-ci.org/projecthydra-labs/questioning_authority.png?branch=master)](https://travis-ci.org/projecthydra-labs/questioning_authority) [![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
 
 You should question your authorities.
 
@@ -174,9 +174,9 @@ To develop this gem, clone the repository, then run:
 This will install the gems, create a dummy application under spec/internal and run the tests.  After you've made changes, remove the entire spec/internal
 directory so that further tests and run against a new dummy application.
 
-## Dependencies and Compatability
+## Compatability
 
-Rails 4
+Currently, it is compatible with Rails 4.0 and 4.1 under both Ruby 2.0 and 2.1.
 
 # Help 
 
