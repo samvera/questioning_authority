@@ -1,5 +1,3 @@
 source "https://rubygems.org"
 
-gemspec
-
-#gem 'engine_cart'
+gemspec path: File.expand_path('..', __FILE__)
