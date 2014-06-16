@@ -32,7 +32,7 @@ describe Qa::TermsController do
 
     end
 
-    context "with successful queries" do
+    context "with a successful query" do
 
       before :each do
         stub_request(:get, "http://id.loc.gov/search/?format=json&q=").
@@ -60,9 +60,19 @@ describe Qa::TermsController do
 
     end
 
-    describe "#show" do
-      it "the path resolves"
+    context "when returning all terms" do
+
+      it "should return all local authority state terms" do
+        get :index, { :vocab => "local", :sub_authority => "states" }
+        response.should be_success
+      end
+
     end
 
   end
+
+  describe "#show" do
+    it "the path resolves"
+  end
+
 end

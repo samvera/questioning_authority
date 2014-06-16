@@ -7,7 +7,8 @@ class Qa::InstallGenerator < Rails::Generators::Base
     end
   end
 
-  def copy_configs
+  def copy_oclcts_configs
     copy_file "config/oclcts-authorities.yml", "config/oclcts-authorities.yml"
   end
+
 end

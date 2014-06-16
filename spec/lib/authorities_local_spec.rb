@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe Qa::Authorities::Local do
 
-  before do
-    AUTHORITIES_CONFIG[:local_path] = local_authorities_path
-  end
-
   context "valid local sub_authorities" do
     it "should validate the sub_authority" do
       Qa::Authorities::Local.sub_authorities.should include "authority_A"
