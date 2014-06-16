@@ -1,5 +1,7 @@
 Description:
     Installs QA into your rails application.
+      * adds the routes to your config/routes file
+      * adds the oclcts config file for using that authority
 
 Example:
     rails generate qa:install

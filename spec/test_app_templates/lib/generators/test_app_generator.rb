@@ -1,7 +1,7 @@
 require 'rails/generators'
 
 class TestAppGenerator < Rails::Generators::Base
-  source_root "./spec/test_app_templates"
+  source_root Rails.root
 
   def update_app
     Bundler.with_clean_env do
@@ -11,6 +11,14 @@ class TestAppGenerator < Rails::Generators::Base
 
   def run_qa_installer
     generate "qa:install"
+  end
+
+  def run_local_authority_installer
+    generate "qa:local"
+  end
+
+  def copy_local_authority_fixtures
+    directory "../fixtures/authorities", "config/authorities"
   end
 
   def run_migrations
