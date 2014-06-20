@@ -28,7 +28,7 @@ as return a complete list of terms.
 Some authorities, such as Library of Congress, allow sub-authorities which is an additional parameter that
 further defines the kind of authority to use with the context of a larger one.
 
-## How do use this?
+## How do I use this?
 
 Add the gem to your Gemfile
 
@@ -111,19 +111,38 @@ QA then presents this data to you in JSON format:
         etc...
     ]
 
-# Local Authority Files
+### Local Authorities
 
-### YAML file of terms
+For simple use cases when you have a few terms that don't change very often.
 
-#### Location and Naming Convention
+Run the generator to install configuration files and an example authority.
 
-Local authorities are specified in YAML files, one for each sub-authority.  By default, local
-authority YAML files are located in config/authorities/ .  This location can be changed by editing
-the :local_path entry in config/authorities.yml.  Relative paths are assumed to be relative to
-Rails.root.
+    rails generate qa:local
 
-Local authority YAML files are named for the sub-authority they represent.  For example, a YAML file
-for the "states" sub-authority would be named states.yml.
+This will install a sample states authority file that lists all the states in the U.S.  To query it,
+
+    /qa/search/local/states?q=Nor
+
+Results are in JSON.
+
+    [{"id":"NC","label":"North Carolina"},{"id":"ND","label":"North Dakota"}]
+
+The entire list can also be returned using:
+
+    /qa/terms/local/states/
+
+Local authorities are stored as YAML files, one for each sub-authority.  By default, local
+authority YAML files are located in `config/authorities/`.  This location can be changed by editing
+the `:local_path` entry in `config/authorities.yml`.  Relative paths are assumed to be relative to
+`Rails.root`.
+
+Local authority YAML files are named for the sub-authority they represent. The included example "states" sub-authority 
+is named states.yml.
+
+To create your own local authority, create a .yml file, place it in the configured directory and query it
+using the file's name as the sub-authority.  For example, if I create `foo.yml`, I would then search it using:
+
+    /qa/search/local/foo?q=search_term
 
 #### Supported formats
 
