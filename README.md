@@ -162,24 +162,33 @@ using the file's name as the sub-authority.  For example, if I create `foo.yml`,
 		  :term: Term 2
 		  :active: false
 
-# Experimental Features
-
-## Medical Subject Headings (MeSH)
+### Medical Subject Headings (MeSH)
 
 Provides autocompletion of [MeSH terms](http://www.nlm.nih.gov/mesh/introduction.html). This
 implementation is simple, and only provides *descriptors* and does not implement *qualifiers* (in
 the technical MeSH sense of these terms). The terms are stored in a local database, which is then
 queried to provide the suggestions.
 
-### Loading Terms
+To use, run the included rake task to copy over the relevant database migrations into your application:
+
+    rake qa:install:migrations
+
+Then, create the tables in your database
+
+    rake db:migrate
+
+Now that you've setup your application to use MeSH terms, you'll now need to load the tems into your
+database so you can query them locally.
 
 To import the mesh terms into the local database, first download the MeSH descriptor dump in ASCII
-format  (see [http://www.nlm.nih.gov/mesh/filelist.html][]). Once you have this file, the rake task
-`mesh:import` will load the entire file of terms into the database. It does not do an update (yet!).
+format. You can read about doing this [here](http://www.nlm.nih.gov/mesh/filelist.html). Once you have this file, use the
+following rake task to load the terms into your database:
 
     MESH_FILE=path/to/mesh.txt rake mesh:import
 
 This may take a few minutes to finish.
+
+**Note:** Updating the tables with new terms is currently not supported.
 
 # Developer Notes
 
@@ -188,12 +197,17 @@ This may take a few minutes to finish.
 To develop this gem, clone the repository, then run:
 
     bundle install
-    rake
+    rake ci
 
-This will install the gems, create a dummy application under spec/internal and run the tests.  After you've made changes, remove the entire spec/internal
-directory so that further tests and run against a new dummy application.
+This will install the gems, create a dummy application under spec/internal and run the tests.  After you've made changes, 
+make sure you've included tests and run the test suite with a new sample application:
 
-## Compatability
+    rake engine_cart:clean
+    rake ci
+
+Commit your features into a new branch and submit a pull request.
+
+## Compatibility
 
 Currently, it is compatible with Rails 4.0 and 4.1 under both Ruby 2.0 and 2.1.
 
