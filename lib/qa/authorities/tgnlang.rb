@@ -1,9 +1,8 @@
 require 'nokogiri'
 
 module Qa::Authorities
-  class Tgnlang
+  class Tgnlang < Base
     attr_accessor :response
-    extend Deprecation
 
     def initialize
     end

@@ -2,8 +2,7 @@ require 'open-uri'
 require 'nokogiri'
 
 module Qa::Authorities
-  class Oclcts < Qa::Authorities::Base
-    extend Deprecation
+  class Oclcts < Base
   
     SRU_SERVER_CONFIG = YAML.load_file(Rails.root.join("config", "oclcts-authorities.yml"))
     

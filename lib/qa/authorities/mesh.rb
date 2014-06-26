@@ -1,6 +1,5 @@
 module Qa::Authorities
-  class Mesh
-    extend Deprecation
+  class Mesh < Base
 
     def results
       @results ||= begin
@@ -17,6 +16,13 @@ module Qa::Authorities
       @results ||= begin
                      r = Qa::SubjectMeshTerm.where(term_id: id).limit(1).first
                      r.nil? ? nil : {id: r.term_id, label: r.term, synonyms: r.synonyms}
+                   end
+    end
+
+    def all(sub_authority = nil)
+      @results ||= begin
+                     r = Qa::SubjectMeshTerm.all
+                     r.map { |t| {id: t.term_id, label: t.term} }
                    end
     end
 

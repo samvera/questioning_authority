@@ -27,8 +27,9 @@ describe Qa::Authorities::Mesh do
       Qa::SubjectMeshTerm.delete_all
     end
 
+    let(:m) { Qa::Authorities::Mesh.new }
+
     it "handles queries" do
-      m = Qa::Authorities::Mesh.new
       m.search('mr')
       results = m.results
       results.should include( {id: '1', label: 'Mr Plow'} )
@@ -36,9 +37,13 @@ describe Qa::Authorities::Mesh do
     end
 
     it "gets full records" do
-      m = Qa::Authorities::Mesh.new
       result = m.full_record('2')
       result.should == {id: '2', label: 'Mr Snow', synonyms: []}
+    end
+
+    it "returns all records" do
+      m.all.count.should == 3
+      m.all.should include({:id=>"2", :label=>"Mr Snow"})
     end
   end
 end

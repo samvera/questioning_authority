@@ -28,14 +28,22 @@ describe Qa::Authorities::Local do
                        { 'id' => "A3", 'label' => "Abc Term A3" } ] }
     it "should return all the entries" do
       authorities = Qa::Authorities::Local.new
-      expect(authorities.search("", "authority_A")).to eq(expected)
+      expect(authorities.all("authority_A")).to eq(expected)
     end
   end
 
   context "a malformed authority file " do
     it "should raise an error" do
       authorities = Qa::Authorities::Local.new
-      expect{ authorities.search("", "authority_D") }.to raise_error Psych::SyntaxError
+      expect{ authorities.search("query", "authority_D") }.to raise_error Psych::SyntaxError
+    end
+  end
+
+  context "an empty query string" do
+    let(:expected) { [] }
+    it "should return no results" do
+      authorities = Qa::Authorities::Local.new
+      expect(authorities.search("", "authority_A")).to eq(expected)
     end
   end
   
@@ -118,7 +126,7 @@ describe Qa::Authorities::Local do
                        { 'id' => "Term B2", 'label' => "Term B2" },
                        { 'id' => "Term B3", 'label' => "Term B3" } ] }
     it "should set the id to be same as the label" do
-      expect(authorities.search("", "authority_B")).to eq(expected)
+      expect(authorities.all("authority_B")).to eq(expected)
     end
   end
   
@@ -129,7 +137,7 @@ describe Qa::Authorities::Local do
                        { 'id' => "Term C3", 'label' => "Term C3" } ] }
 
     it "should use the terms as labels" do
-      expect(authorities.search("", "authority_C")).to eq(expected)
+      expect(authorities.all("authority_C")).to eq(expected)
     end
 
   end

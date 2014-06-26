@@ -1,9 +1,5 @@
 module Qa::Authorities
-
-  class Local < Qa::Authorities::Base
-    extend Deprecation
-
-    attr_accessor :results
+  class Local < Base
 
     class << self
       def sub_authority(name)
@@ -24,7 +20,11 @@ module Qa::Authorities
     delegate :sub_authority, to: self
 
     def search(q, sub_authority)
-      @results = sub_authority(sub_authority).search(q)
+      self.response = sub_authority(sub_authority).search(q)
+    end
+
+    def all(sub_authority)
+      self.response = sub_authority(sub_authority).all
     end
 
     def full_record(id, sub_authority)
