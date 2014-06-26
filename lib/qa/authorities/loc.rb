@@ -143,11 +143,6 @@ module Qa::Authorities
       return nil
     end
 
-    def get_full_record(id, sub_authority)
-      Deprecation.warn(Loc, "get_full_record is deprecated and will be removed in 0.1.0. Use full_record instead", caller)
-      full_record(id, sub_authority)
-    end
-
     def full_record(id, sub_authority)
       search(id, sub_authority)
       full_record = find_record_in_response(@raw_response, id)

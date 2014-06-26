@@ -20,11 +20,6 @@ module Qa::Authorities
                    end
     end
 
-    def get_full_record(id)
-      Deprecation.warn(Mesh, "get_full_record is deprecated and will be removed in 0.1.0. Use full_record instead", caller)
-      full_record(id)
-    end
-
     # satisfy TermsController
     def parse_authority_response
     end

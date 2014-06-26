@@ -43,11 +43,6 @@ module Qa::Authorities
       self.response
     end
 
-    def get_full_record(id, sub_authority)
-      Deprecation.warn(Tgnlang, "get_full_record is deprecated and will be removed in 0.1.0. Use full_record instead", caller)
-      full_record(id, sub_authority)
-    end
-
     def full_record(id, sub_authority)
       id = id.downcase
       Tgnlang.languages.each do |h|
