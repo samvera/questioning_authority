@@ -1,3 +1,4 @@
+
 [
             "atom:feed",
             {
@@ -16,8 +17,17 @@
             "atom:link",
             {
                 "xmlns:atom" : "http://www.w3.org/2005/Atom", 
-                "href" : "http://id.loc.gov/search/?q=haw* cs:http://id.loc.gov/vocabulary/geographicAreas&start=1&format=atom", 
+                "href" : "http://id.loc.gov/search/?q=s* cs:http://id.loc.gov/vocabulary/geographicAreas&start=1&format=atom", 
                 "rel" : "self"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "href" : "http://id.loc.gov/search/?q=s* cs:http://id.loc.gov/vocabulary/geographicAreas&start=21&format=atom", 
+                "rel" : "next"
             }
             
             ],
@@ -27,7 +37,7 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom"
             }
             ,
-                "info:lc/search/?q=haw*+cs:http://id.loc.gov/vocabulary/geographicAreas"
+                "info:lc/search/?q=s*+cs:http://id.loc.gov/vocabulary/geographicAreas"
             ],
                             [
             "atom:updated",
@@ -35,7 +45,7 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom"
             }
             ,
-                "2013-09-18T23:04:54.726545-04:00"
+                "2014-06-27T12:59:38.190383-04:00"
             ],
                             [
             "opensearch:totalResults",
@@ -43,7 +53,7 @@
                 "xmlns:opensearch" : "http://a9.com/-/spec/opensearch/1.1/"
             }
             ,
-                "2"
+                "534"
             ],
                             [
             "opensearch:startIndex",
@@ -73,14 +83,14 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom"
             }
             ,
-                "Haw, Lily, 1890?-1915"
+                "West (U.S.)"
             ],
                             [
             "atom:link",
             {
                 "xmlns:atom" : "http://www.w3.org/2005/Atom", 
                 "rel" : "alternate", 
-                "href" : "http://id.loc.gov/authorities/names/n2008008718"
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-usp"
             }
             
             ],
@@ -90,7 +100,7 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom", 
                 "rel" : "alternate", 
                 "type" : "application/rdf+xml", 
-                "href" : "http://id.loc.gov/authorities/names/n2008008718.rdf"
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-usp.rdf"
             }
             
             ],
@@ -100,7 +110,7 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom", 
                 "rel" : "alternate", 
                 "type" : "application/json", 
-                "href" : "http://id.loc.gov/authorities/names/n2008008718.json"
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-usp.json"
             }
             
             ],
@@ -110,7 +120,7 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom"
             }
             ,
-                "info:lc/authorities/names/n2008008718"
+                "info:lc/vocabulary/geographicAreas/n-usp"
             ],
                             [
             "atom:author",
@@ -133,7 +143,7 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom"
             }
             ,
-                "2008-03-05T00:00:00-04:00"
+                "1970-01-01T00:00:00-04:00"
             ],
                             [
             "dcterms:created",
@@ -141,10 +151,10 @@
                 "xmlns:dcterms" : "http://purl.org/dc/terms/"
             }
             ,
-                "2008-02-05T00:00:00-04:00"
+                "1970-01-01T00:00:00-04:00"
             ]
             ],
-            [
+                            [
             "atom:entry",
             {
                 "xmlns:atom" : "http://www.w3.org/2005/Atom"
@@ -156,14 +166,14 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom"
             }
             ,
-                "Hawaii"
+                "Belarus"
             ],
                             [
             "atom:link",
             {
                 "xmlns:atom" : "http://www.w3.org/2005/Atom", 
                 "rel" : "alternate", 
-                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-us-hi"
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-bw"
             }
             
             ],
@@ -173,7 +183,7 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom", 
                 "rel" : "alternate", 
                 "type" : "application/rdf+xml", 
-                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-us-hi.rdf"
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-bw.rdf"
             }
             
             ],
@@ -183,7 +193,7 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom", 
                 "rel" : "alternate", 
                 "type" : "application/json", 
-                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-us-hi.json"
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-bw.json"
             }
             
             ],
@@ -193,7 +203,1501 @@
                 "xmlns:atom" : "http://www.w3.org/2005/Atom"
             }
             ,
-                "info:lc/vocabulary/geographicAreas/n-us-hi"
+                "info:lc/vocabulary/geographicAreas/e-bw"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Russia (Federation)"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-ru"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-ru.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-ru.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/e-ru"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Kazakhstan"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-kz"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-kz.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-kz.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/a-kz"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Kyrgyzstan"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-kg"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-kg.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-kg.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/a-kg"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Soviet Union"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-ur"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-ur.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-ur.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/e-ur"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Moldova"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-mv"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-mv.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/e-mv.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/e-mv"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Tajikistan"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-ta"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-ta.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-ta.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/a-ta"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Azerbaijan"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-aj"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-aj.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-aj.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/a-aj"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Uzbekistan"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-uz"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-uz.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-uz.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/a-uz"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Turkmenistan"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-tk"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-tk.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-tk.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/a-tk"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Armenia (Republic)"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-ai"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-ai.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-ai.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/a-ai"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Georgia (Republic)"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-gs"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-gs.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/a-gs.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/a-gs"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "East (U.S.)"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-usr"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-usr.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-usr.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/n-usr"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Northeastern States"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-use"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-use.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-use.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/n-use"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Algeria"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/f-ae"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/f-ae.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/f-ae.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/f-ae"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Saskatchewan"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-cn-sn"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-cn-sn.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/n-cn-sn.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/n-cn-sn"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "South Asia"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/az"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/az.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/az.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/az"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Spanish North Africa"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/f-sh"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/f-sh.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/f-sh.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/f-sh"
+            ],
+                            [
+            "atom:author",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:name",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Library of Congress"
+            ]
+            ],
+                            [
+            "atom:updated",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ],
+                            [
+            "dcterms:created",
+            {
+                "xmlns:dcterms" : "http://purl.org/dc/terms/"
+            }
+            ,
+                "1970-01-01T00:00:00-04:00"
+            ]
+            ],
+                            [
+            "atom:entry",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                        [
+            "atom:title",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "Baltic States"
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/eb"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/rdf+xml", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/eb.rdf"
+            }
+            
+            ],
+                            [
+            "atom:link",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom", 
+                "rel" : "alternate", 
+                "type" : "application/json", 
+                "href" : "http://id.loc.gov/vocabulary/geographicAreas/eb.json"
+            }
+            
+            ],
+                            [
+            "atom:id",
+            {
+                "xmlns:atom" : "http://www.w3.org/2005/Atom"
+            }
+            ,
+                "info:lc/vocabulary/geographicAreas/eb"
             ],
                             [
             "atom:author",

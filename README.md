@@ -217,7 +217,7 @@ For help with Questioning Authority, contact <hydra-tech@googlegroups.com>.
 
 # Original Authors
 
-* [Stephen Anderson](https://github.com/scande3)
+* [Steven Anderson](https://github.com/scande3)
 * [Don Brower](https://github.com/dbrower)
 * [Jim Coble](https://github.com/coblej)
 * [Mike Durbin](https://github.com/mikedurbin)
