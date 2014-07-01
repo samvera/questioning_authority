@@ -4,73 +4,43 @@
 
 class Qa::TermsController < ApplicationController
 
-  before_action :check_search_params, only:[:search]
-  before_action :check_vocab_param, :check_authority, :check_sub_authority
+  before_action :check_vocab_param, :init_authority, :check_sub_authority
 
-  #search that returns all results
+  # If the subauthority supports it, return a list of all terms in the authority
   def index
-    #initialize the authority and run the search. if there's a sub-authority and it's valid, include that param
-    @authority = authority_class.constantize.new
-    @authority.search(params[:q], params[:sub_authority])
-
-    respond_to do |format|
-      format.html { render :layout => false, json: @authority.results }
-      format.json { render :layout => false, json: @authority.results }
-      format.js   { render :layout => false, :text => @authority.results }
-    end
+    @authority.all(params[:sub_authority])
+    render json: @authority.response
   end
 
+  # Return a list of terms based on a query
+  # - converts query wildcards appropriately  
   def search
-    #convert wildcard to be URI encoded
-    params[:q].gsub!("*", "%2A")
-
-    #initialize the authority and run the search. if there's a sub-authority and it's valid, include that param
-    @authority = authority_class.constantize.new
+    params[:q].gsub!("*", "%2A") if params[:q]
     @authority.search(params[:q], params[:sub_authority])
-
-    respond_to do |format|
-      format.html { render :layout => false, :text => @authority.results.to_json }
-      format.json { render :layout => false, :text => @authority.results.to_json }
-      format.js   { render :layout => false, :text => @authority.results }
-    end
-
+    render json: @authority.response
   end
 
+  # If the subauthority supports it, return all the information for a given term
   def show
-    check_sub_authority
-    authority = authority_class.constantize.new
-    result = authority.full_record(params[:id], params[:sub_authority])
-
-    respond_to do |format|
-      format.html { render :layout => false, :text => result.to_json }
-      format.json { render :layout => false, :text => result.to_json }
-      format.js   { render :layout => false, :text => result }
-    end
+    result = @authority.full_record(params[:id], params[:sub_authority])
+    render json: result
   end
 
   def check_vocab_param
     unless params[:vocab].present?
-      head :bad_request
+      head :not_found
     end
   end
 
-  def check_search_params
-    unless params[:q].present? && params[:vocab].present?
-      head :bad_request
-    end
-  end
-
-  def check_authority
-    begin
-      authority_class.constantize
-    rescue
-      head :bad_request
-    end
+  def init_authority
+    @authority = authority_class.constantize.new
+  rescue
+    head :not_found
   end
 
   def check_sub_authority
     unless params[:sub_authority].nil?
-      head :bad_request unless authority_class.constantize.authority_valid?(params[:sub_authority])
+      head :not_found unless authority_class.constantize.authority_valid?(params[:sub_authority])
     end
   end
 

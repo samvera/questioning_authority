@@ -2,21 +2,26 @@ require 'deprecation'
 
 module Qa::Authorities
   class Base
+    extend Deprecation
 
-    # do an autocomplete search
-    def search(query, sub_authority=nil)
-    end
+    attr_accessor :response
 
-    # return information on a specific record
-    def get_full_record(id, sub_authority=nil)
-    end
-
+    # Validates any subauthority of a given authority
     def self.authority_valid?(sub_authority)
       sub_authority == nil || sub_authorities.include?(sub_authority)
     end
 
+    # By default, any authority has no subauthorities unless they
+    # are defined by the subclassed authority.
     def self.sub_authorities
-      [] #Overwrite if you have sub_authorities
+      []
+    end
+
+    # By default, #all is not implemented.
+    # If the subclassed authority does have this feature
+    # then you will overide the #all method in the subclassed authority.
+    # TODO: need to set some kind of error here
+    def all sub_authority = nil
     end
 
   end

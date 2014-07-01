@@ -1,9 +1,8 @@
 require 'rest_client'
-require 'deprecation'
 
 module Qa::Authorities
-  class WebServiceBase
-    attr_accessor :response, :raw_response
+  class WebServiceBase < Base
+    attr_accessor :raw_response
 
     # mix-in to retreive and parse JSON content from the web
     def get_json(url)
@@ -16,5 +15,6 @@ module Qa::Authorities
     def results
       self.response
     end
+  
   end
 end

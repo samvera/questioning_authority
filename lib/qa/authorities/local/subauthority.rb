@@ -11,8 +11,14 @@ module Qa::Authorities
     end
 
     def search(q)
-      r = q.blank? ? terms : terms.select { |term| /\b#{q.downcase}/.match(term[:term].downcase) }
+      r = q.blank? ? [] : terms.select { |term| /\b#{q.downcase}/.match(term[:term].downcase) }
       r.map do |res|
+        { :id => res[:id], :label => res[:term] }.with_indifferent_access
+      end
+    end
+
+    def all
+      terms.map do |res|
         { :id => res[:id], :label => res[:term] }.with_indifferent_access
       end
     end

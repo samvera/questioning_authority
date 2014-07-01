@@ -1,6 +1,5 @@
 module Qa::Authorities
-  class Mesh
-    extend Deprecation
+  class Mesh < Base
 
     def results
       @results ||= begin
@@ -20,9 +19,11 @@ module Qa::Authorities
                    end
     end
 
-    def get_full_record(id)
-      Deprecation.warn(Mesh, "get_full_record is deprecated and will be removed in 0.1.0. Use full_record instead", caller)
-      full_record(id)
+    def all(sub_authority = nil)
+      @results ||= begin
+                     r = Qa::SubjectMeshTerm.all
+                     r.map { |t| {id: t.term_id, label: t.term} }
+                   end
     end
 
     # satisfy TermsController

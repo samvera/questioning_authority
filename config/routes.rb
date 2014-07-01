@@ -1,9 +1,6 @@
 Qa::Engine.routes.draw do
-  match "/search/:vocab" => "terms#search", :via=>:get
-  match "/search/:vocab/:sub_authority" => "terms#search", :via=>:get
-  match "/terms/:vocab" => "terms#index", :via=>:get
-  match "/terms/:vocab/:sub_authority" => "terms#index", :via=>:get
-  match "/terms" => "terms#index", :via=>:get
-  match "/show/:vocab/:id" => "terms#show", :via=>:get
-  match "/show/:vocab/:sub_authority/:id" => "terms#show", :via=>:get
+  get "/terms/:vocab(/:sub_authority)",  controller: :terms, action: :index
+  get "/search/:vocab(/:sub_authority)", controller: :terms, action: :search
+  get "/show/:vocab/:id",                controller: :terms, action: :show
+  get "/show/:vocab/:sub_authority/:id", controller: :terms, action: :show
 end

@@ -6,67 +6,81 @@ describe Qa::TermsController do
     @routes = Qa::Engine.routes
   end
 
+  describe "#check_vocab_param" do
+    it "should return 404 if the vocabulary is missing" do
+      get :search, { :q => "a query", :vocab => "" }
+      expect(response.code).to eq("404")
+    end
+  end
+
+  describe "#init_authority" do
+    it "should return 404 if authority does not exist" do
+      get :search, { :q => "a query", :vocab => "non-existent-authority" }
+      expect(response.code).to eq("404")
+    end
+  end
+
+  describe "#check_sub_authority" do
+    it "should return 404 if sub_authority does not exist" do
+      get :search, { :q => "a query", :vocab => "loc", :sub_authority => "non-existent-subauthority" }
+      expect(response.code).to eq("404")
+    end
+  end
+
+  describe "#search" do
+
+    before :each do
+      stub_request(:get, "http://id.loc.gov/search/?format=json&q=").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
+      stub_request(:get, "http://id.loc.gov/search/?format=json&q=cs:http://id.loc.gov/vocabulary/relators").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
+    end
+
+    it "should return a set of terms for a tgnlang query" do
+      get :search, {:q => "Tibetan", :vocab => "tgnlang" }
+      expect(response).to be_success
+    end
+
+    it "should not return 404 if vocabulary is valid" do
+      get :search, { :q => "foo", :vocab => "loc" }
+      expect(response.code).to_not eq("404")
+    end
+
+    it "should not return 404 if sub_authority is valid" do
+      get :search, { :q => "foo", :vocab => "loc", :sub_authority => "relators" }
+      expect(response.code).to_not eq("404")
+    end
+
+  end
+
   describe "#index" do
 
-    context "with errors" do
-
-      it "should return 400 if no vocabulary is specified" do
-        get :index, { :vocab => nil}
-        expect(response.code).to  eq("400")
-      end
-
-      it "should return 400 if no query is specified" do
-        get :index, { :q => nil}
-        expect(response.code).to eq("400")
-      end
-
-      it "should return 400 if vocabulary is not valid" do
-        get :index, { :q => "foo", :vocab => "bar" }
-        expect(response.code).to eq("400")
-      end
-
-      it "should return 400 if sub_authority is not valid" do
-        get :index, { :q => "foo", :vocab => "loc", :sub_authority => "foo" }
-        expect(response.code).to eq("400")
-      end
-
-    end
-
-    context "with a successful query" do
-
-      before :each do
-        stub_request(:get, "http://id.loc.gov/search/?format=json&q=").
-          with(:headers => {'Accept'=>'application/json'}).
-          to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
-        stub_request(:get, "http://id.loc.gov/search/?format=json&q=cs:http://id.loc.gov/vocabulary/relators").
-          with(:headers => {'Accept'=>'application/json'}).
-          to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
-      end
-
-      it "should return a set of terms for a tgnlang query" do
-        get :index, {:q => "Tibetan", :vocab => "tgnlang" }
-        expect(response).to be_success
-      end
-
-      it "should not return 400 if vocabulary is valid" do
-        get :index, { :q => "foo", :vocab => "loc" }
-        expect(response.code).to_not eq("400")
-      end
-
-      it "should not return 400 if sub_authority is valid" do
-        get :index, { :q => "foo", :vocab => "loc", :sub_authority => "relators" }
-        expect(response.code).to_not eq("400")
-      end
-
-    end
-
-    context "when returning all terms" do
-
+    context "with supported authorities" do
       it "should return all local authority state terms" do
         get :index, { :vocab => "local", :sub_authority => "states" }
         response.should be_success
       end
+      it "should return all MeSH terms" do
+        get :index, { :vocab => "mesh" }
+        response.should be_success
+      end
+    end
 
+    context "when the authority does not support #all" do
+      it "should return null for tgnlang" do
+        get :index, { :vocab => "tgnlang"}
+        response.body.should == "null"
+      end
+      it "should return null for oclcts" do
+        get :index, { :vocab => "oclcts"}
+        response.body.should == "null"
+      end
+      it "should return null for LOC authorities" do
+        get :index, { :vocab => "loc", :sub_authority => "relators"}
+        response.body.should == "null"
+      end
     end
 
   end
