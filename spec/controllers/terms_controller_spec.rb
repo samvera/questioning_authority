@@ -14,28 +14,36 @@ describe Qa::TermsController do
   end
 
   describe "#init_authority" do
-    it "should return 404 if authority does not exist" do
-      get :search, { :q => "a query", :vocab => "non-existent-authority" }
-      expect(response.code).to eq("404")
+    context "when the authority does not exist" do
+      it "should return 404" do
+        get :search, { :q => "a query", :vocab => "non-existent-authority" }
+        expect(response.code).to eq("404")
+      end
     end
-  end
-
-  describe "#check_sub_authority" do
-    it "should return 404 if sub_authority does not exist" do
-      get :search, { :q => "a query", :vocab => "loc", :sub_authority => "non-existent-subauthority" }
-      expect(response.code).to eq("404")
+    context "when a sub-authority does not exist" do
+      it "should return 404 if a sub-authority does not exist" do
+        get :search, { :q => "a query", :vocab => "loc", :sub_authority => "non-existent-subauthority" }
+        expect(response.code).to eq("404")
+      end
+    end
+    context "when a sub-authority is absent" do
+      it "should return 404 for LOC" do
+        get :search, { :q => "a query", :vocab => "loc" }
+        expect(response.code).to eq("404")
+      end
+      it "should return 404 for oclcts" do
+        get :search, { :q => "a query", :vocab => "oclcts" }
+        expect(response.code).to eq("404")
+      end
     end
   end
 
   describe "#search" do
 
     before :each do
-      stub_request(:get, "http://id.loc.gov/search/?format=json&q=").
+      stub_request(:get, "http://id.loc.gov/search/?format=json&q=Berry&q=cs:http://id.loc.gov/authorities/names").
         with(:headers => {'Accept'=>'application/json'}).
-        to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
-      stub_request(:get, "http://id.loc.gov/search/?format=json&q=cs:http://id.loc.gov/vocabulary/relators").
-        with(:headers => {'Accept'=>'application/json'}).
-        to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
+        to_return(:body => webmock_fixture("loc-names-response.txt"), :status => 200)
     end
 
     it "should return a set of terms for a tgnlang query" do
@@ -43,14 +51,9 @@ describe Qa::TermsController do
       expect(response).to be_success
     end
 
-    it "should not return 404 if vocabulary is valid" do
-      get :search, { :q => "foo", :vocab => "loc" }
-      expect(response.code).to_not eq("404")
-    end
-
     it "should not return 404 if sub_authority is valid" do
-      get :search, { :q => "foo", :vocab => "loc", :sub_authority => "relators" }
-      expect(response.code).to_not eq("404")
+      get :search, { :q => "Berry", :vocab => "loc", :sub_authority => "names" }
+      expect(response).to be_success
     end
 
   end
@@ -70,15 +73,15 @@ describe Qa::TermsController do
 
     context "when the authority does not support #all" do
       it "should return null for tgnlang" do
-        get :index, { :vocab => "tgnlang"}
+        get :index, { :vocab => "tgnlang" }
         response.body.should == "null"
       end
       it "should return null for oclcts" do
-        get :index, { :vocab => "oclcts"}
+        get :index, { :vocab => "oclcts", :sub_authority => "mesh" }
         response.body.should == "null"
       end
       it "should return null for LOC authorities" do
-        get :index, { :vocab => "loc", :sub_authority => "relators"}
+        get :index, { :vocab => "loc", :sub_authority => "relators" }
         response.body.should == "null"
       end
     end
@@ -86,7 +89,32 @@ describe Qa::TermsController do
   end
 
   describe "#show" do
-    it "the path resolves"
+
+    context "with supported authorities" do
+
+      before do
+        stub_request(:get, "http://id.loc.gov/authorities/subjects/sh85077565.json").
+          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          to_return(:status => 200, :body => webmock_fixture("loc-names-response.txt"), :headers => {})
+      end
+
+      it "should return an individual state term" do
+        get :show, { :vocab => "local", :sub_authority => "states", id: "OH" }
+        response.should be_success
+      end
+
+      it "should return an individual MeSH term" do
+        get :show, { vocab: "mesh", id: "D000001" }
+        response.should be_success
+      end
+
+      it "should return an individual subject term" do
+        get :show, { vocab: "loc", sub_authority: "subjects", id: "sh85077565" }
+        response.should be_success
+      end
+
+    end
+
   end
 
 end

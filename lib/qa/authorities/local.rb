@@ -1,34 +1,56 @@
 module Qa::Authorities
   class Local < Base
 
-    class << self
-      def sub_authority(name)
-        @sub_authorities ||= {}
-        raise ArgumentError, "Invalid sub-authority '#{name}'" unless Subauthority.names.include?(name)
-        @sub_authorities[name] ||= Subauthority.new(name)
-      end
+    include Qa::Authorities::LocalSubauthority
 
-      def sub_authorities
-        Subauthority.names
-      end
+    def initialize *args
+      super
+      @sub_authority ||= args.first
+      raise "No sub-authority provided" if sub_authority.nil?
+    end
 
-      def terms(sub_authority)
-        sub_authority(sub_authority).terms
+    def sub_authorities
+      names
+    end
+
+    def search(q)
+      r = q.blank? ? [] : terms.select { |term| /\b#{q.downcase}/.match(term[:term].downcase) }
+      r.map do |res|
+        { :id => res[:id], :label => res[:term] }.with_indifferent_access
       end
     end
 
-    delegate :sub_authority, to: self
-
-    def search(q, sub_authority)
-      self.response = sub_authority(sub_authority).search(q)
+    def all
+      terms.map do |res|
+        { :id => res[:id], :label => res[:term] }.with_indifferent_access
+      end
     end
 
-    def all(sub_authority)
-      self.response = sub_authority(sub_authority).all
+    def find(id)
+      terms.find { |term| term[:id] == id } || {}
     end
 
-    def full_record(id, sub_authority)
-      sub_authority(sub_authority).full_record(id)
+    private 
+
+    def terms
+      sub_authority_hash = YAML.load(File.read(sub_authority_filename))
+      terms = sub_authority_hash.with_indifferent_access.fetch(:terms, [])
+      normalize_terms(terms)
+    end
+
+    def sub_authority_filename
+      File.join(sub_authorities_path, "#{sub_authority}.yml")
+    end
+
+    def normalize_terms(terms)
+      terms.map do |term|
+        if term.is_a? String
+          { :id => term, :term => term }.with_indifferent_access
+        else
+          term[:id] ||= term[:term]
+          term
+        end
+      end
     end
 
   end

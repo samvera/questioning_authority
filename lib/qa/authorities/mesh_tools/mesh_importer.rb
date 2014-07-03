@@ -34,8 +34,6 @@ module Qa::Authorities
         record[field].map { |s| s.split('|').first }
       end
 
-      def tree_number_to_term_list
-      end
     end
   end
 end

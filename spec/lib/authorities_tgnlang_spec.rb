@@ -2,17 +2,14 @@ require 'spec_helper'
 
 describe Qa::Authorities::Tgnlang do
 
-  before :all do
-    @terms = Qa::Authorities::Tgnlang.new
-    @terms.search("Tibetan")
-  end
+  let(:subject) { @terms = Qa::Authorities::Tgnlang.new }
 
-  describe "response from dataset" do
+  describe "#search" do
     it "should return unique record with query of Tibetan" do
-      @terms.results.should == [{"id"=>"75446", "label"=>"Tibetan"}]
+      subject.search("Tibetan").should == [{"id"=>"75446", "label"=>"Tibetan"}]
     end
     it "should return type Array" do
-      @terms.results.class.should == Array
+      subject.search("Tibetan").should be_kind_of(Array)
     end
   end
 

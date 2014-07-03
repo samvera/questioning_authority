@@ -4,16 +4,18 @@ module Qa::Authorities
   class Base
     extend Deprecation
 
-    attr_accessor :response
+    attr_accessor :sub_authority
 
-    # Validates any subauthority of a given authority
-    def self.authority_valid?(sub_authority)
-      sub_authority == nil || sub_authorities.include?(sub_authority)
+    # Registers the authority and its sub-authority if it has one
+    def initialize *args
+      if args.first
+        raise "Invalid sub-authority" unless sub_authorities.include?(args.first)
+      end
     end
 
-    # By default, any authority has no subauthorities unless they
+    # By default, an authority has no subauthorities unless they
     # are defined by the subclassed authority.
-    def self.sub_authorities
+    def sub_authorities
       []
     end
 
@@ -21,7 +23,19 @@ module Qa::Authorities
     # If the subclassed authority does have this feature
     # then you will overide the #all method in the subclassed authority.
     # TODO: need to set some kind of error here
-    def all sub_authority = nil
+    def all
+    end
+
+    # By default, #find is not implemented.
+    # If the subclassed authority does have this feature
+    # then you will overide the #find method in the subclassed authority.
+    # TODO: need to set some kind of error here
+    def find id
+    end
+
+    def full_record id, sub_authority=nil
+      Deprecation.warn(".full_record is deprecated. Use .find instead")
+      find(id)
     end
 
   end

@@ -10,11 +10,11 @@ describe Qa::Authorities::Oclcts do
     stub_request(:get, "http://tspilot.oclc.org/mesh/?maximumRecords=10&operation=searchRetrieve&query=dc.identifier%20exact%20%22D031329Q000821%22&recordPacking=xml&recordSchema=http://zthes.z3950.org/xml/1.0/&recordXPath=&resultSetTTL=300&sortKeys=&startRecord=1&version=1.1").
         to_return(:body => webmock_fixture("oclcts-response-mesh-3.txt"), :status => 200)
 
-    @first_query = Qa::Authorities::Oclcts.new
-    @terms = @first_query.search("ball", "mesh")
-    @term_record = @first_query.full_record(@terms.first["id"], "mesh")
-    @second_query = Qa::Authorities::Oclcts.new
-    @second_query.search("alph", "mesh")
+    @first_query = Qa::Authorities::Oclcts.new("mesh")
+    @terms = @first_query.search("ball")
+    @term_record = @first_query.find(@terms.first["id"])
+    @second_query = Qa::Authorities::Oclcts.new("mesh")
+    @second_query.search("alph")
   end
 
   describe "a query for terms" do
@@ -41,7 +41,7 @@ describe Qa::Authorities::Oclcts do
     end
     
     it "should succeed for valid ids, even if the id is not in the initial list of responses" do
-      record = @second_query.full_record(@terms.first["id"], "mesh")
+      record = @second_query.find(@terms.first["id"])
       record.values.should include @terms.first["id"]
       record.values.should include @terms.first["label"]
     end

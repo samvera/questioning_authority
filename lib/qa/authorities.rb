@@ -3,11 +3,13 @@ module Qa::Authorities
 
   autoload :Base
   autoload :Loc
+  autoload :LocSubauthority
   autoload :Local
-  autoload :Subauthority, 'qa/authorities/local/subauthority'
+  autoload :LocalSubauthority
   autoload :Mesh
   autoload :MeshTools
   autoload :Oclcts
   autoload :Tgnlang
   autoload :WebServiceBase
+  
 end
