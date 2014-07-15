@@ -16,7 +16,7 @@ describe Qa::Authorities::Mesh do
     Qa::SubjectMeshTerm.all.length.should == 11
   end
 
-  describe "#results" do
+  describe "the query interface" do
     before(:all) do
       Qa::SubjectMeshTerm.create(term_id: '1', term: 'Mr Plow', term_lower: 'mr plow')
       Qa::SubjectMeshTerm.create(term_id: '2', term: 'Mr Snow', term_lower: 'mr snow')
@@ -30,8 +30,7 @@ describe Qa::Authorities::Mesh do
     let(:m) { Qa::Authorities::Mesh.new }
 
     it "handles queries" do
-      m.search('mr')
-      results = m.results
+      results = m.search('mr')
       results.should include( {id: '1', label: 'Mr Plow'} )
       results.length.should == 3
     end

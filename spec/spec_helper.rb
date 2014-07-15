@@ -2,6 +2,7 @@ require File.expand_path("../internal/config/environment.rb",  __FILE__)
 require 'rspec/rails'
 require 'webmock/rspec'
 require 'engine_cart'
+require 'byebug' unless ENV['TRAVIS']
 
 ENV["RAILS_ENV"] ||= 'test'
 

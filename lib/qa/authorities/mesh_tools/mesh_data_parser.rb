@@ -35,31 +35,6 @@ module Qa::Authorities
         return result
       end
 
-      ### XXX: delete everything below?
-
-      def self.get_synonyms(record)
-        return [] if record['ENTRY'].blank?
-        record['ENTRY'].map { |synonym| synonym.split('|').first }
-      end
-
-      def self.get_print_synonyms(record)
-        return [] if record['PRINT ENTRY'].blank?
-        record['PRINT ENTRY'].map { |synonym| synonym.split('|').first }
-      end
-
-      def self.get_description(record)
-        return [] if record['MS'].blank?
-        record['MS']
-      end
-
-      def self.get_tree(record)
-        return [] if record['MN'].blank?
-        record['MN']
-      end
-
-      def self.get_term(record)
-        record['MH'].first
-      end
     end
   end
 end

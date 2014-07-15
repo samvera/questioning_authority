@@ -4,26 +4,25 @@
 
 class Qa::TermsController < ApplicationController
 
-  before_action :check_vocab_param, :init_authority, :check_sub_authority
+  before_action :check_vocab_param, :init_authority
 
   # If the subauthority supports it, return a list of all terms in the authority
   def index
-    @authority.all(params[:sub_authority])
-    render json: @authority.response
+    render json: @authority.all
   end
 
   # Return a list of terms based on a query
   # - converts query wildcards appropriately  
   def search
     params[:q].gsub!("*", "%2A") if params[:q]
-    @authority.search(params[:q], params[:sub_authority])
-    render json: @authority.response
+    terms = @authority.search(params[:q])
+    render json: terms
   end
 
   # If the subauthority supports it, return all the information for a given term
   def show
-    result = @authority.full_record(params[:id], params[:sub_authority])
-    render json: result
+    term = @authority.find(params[:id])
+    render json: term
   end
 
   def check_vocab_param
@@ -33,15 +32,9 @@ class Qa::TermsController < ApplicationController
   end
 
   def init_authority
-    @authority = authority_class.constantize.new
+    @authority = authority_class.constantize.new(params[:sub_authority])
   rescue
     head :not_found
-  end
-
-  def check_sub_authority
-    unless params[:sub_authority].nil?
-      head :not_found unless authority_class.constantize.authority_valid?(params[:sub_authority])
-    end
   end
 
   private

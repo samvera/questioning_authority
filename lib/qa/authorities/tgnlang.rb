@@ -2,13 +2,9 @@ require 'nokogiri'
 
 module Qa::Authorities
   class Tgnlang < Base
-    attr_accessor :response
 
-    def initialize
-    end
-
-    def search(q, sub_authority='')
-      self.response = getTgnLang(q)
+    def search(q)
+      getTgnLang(q)
     end
 
     def getTgnLang(q)
@@ -38,11 +34,7 @@ module Qa::Authorities
         end
     end
 
-    def results
-      self.response
-    end
-
-    def full_record(id, sub_authority)
+    def find(id)
       id = id.downcase
       Tgnlang.languages.each do |h|
         if h["label"].downcase == id
