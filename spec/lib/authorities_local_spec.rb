@@ -10,10 +10,10 @@ describe Qa::Authorities::Local do
   describe "::new" do
     context "without a sub-authority" do
       it "should raise an error is the sub-authority is not provided" do
-        lambda { Qa::Authorities::Local.new }.should raise_error
+        expect { Qa::Authorities::Local.new }.to raise_error
       end
       it "should raise an error is the sub-authority does not exist" do
-        lambda { Qa::Authorities::Local.new("foo") }.should raise_error
+        expect { Qa::Authorities::Local.new("foo") }.to raise_error
       end
     end
   end
@@ -23,7 +23,7 @@ describe Qa::Authorities::Local do
                        { 'id' => "A2", 'label'=> "Term A2" },
                        { 'id' => "A3", 'label' => "Abc Term A3" } ] }
     it "should return all the entries" do
-      authority_a.all.should eq(expected)
+      expect(authority_a.all).to eq(expected)
     end
     context "when terms do not have ids" do
       let(:expected) { [ { 'id' => "Term B1", 'label' => "Term B1" },
@@ -43,7 +43,7 @@ describe Qa::Authorities::Local do
     end
     context "YAML file is malformed" do
       it "should raise an error" do
-        lambda { authority_d.all }.should raise_error
+        expect { authority_d.all }.to raise_error
       end
     end
   end

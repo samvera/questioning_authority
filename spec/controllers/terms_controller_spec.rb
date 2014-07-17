@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Qa::TermsController do
+describe Qa::TermsController, :type => :controller do
 
   before do
     @routes = Qa::Engine.routes
@@ -9,6 +9,13 @@ describe Qa::TermsController do
   describe "#check_vocab_param" do
     it "should return 404 if the vocabulary is missing" do
       get :search, { :q => "a query", :vocab => "" }
+      expect(response.code).to eq("404")
+    end
+  end
+
+  describe "#check_query_param" do
+    it "should return 404 if the query is missing" do
+      get :search, { :q => "", :vocab => "tgnlang" }
       expect(response.code).to eq("404")
     end
   end
@@ -63,26 +70,26 @@ describe Qa::TermsController do
     context "with supported authorities" do
       it "should return all local authority state terms" do
         get :index, { :vocab => "local", :sub_authority => "states" }
-        response.should be_success
+        expect(response).to be_success
       end
       it "should return all MeSH terms" do
         get :index, { :vocab => "mesh" }
-        response.should be_success
+        expect(response).to be_success
       end
     end
 
     context "when the authority does not support #all" do
       it "should return null for tgnlang" do
         get :index, { :vocab => "tgnlang" }
-        response.body.should == "null"
+        expect(response.body).to eq("null")
       end
       it "should return null for oclcts" do
         get :index, { :vocab => "oclcts", :sub_authority => "mesh" }
-        response.body.should == "null"
+        expect(response.body).to eq("null")
       end
       it "should return null for LOC authorities" do
         get :index, { :vocab => "loc", :sub_authority => "relators" }
-        response.body.should == "null"
+        expect(response.body).to eq("null")
       end
     end
 
@@ -100,17 +107,17 @@ describe Qa::TermsController do
 
       it "should return an individual state term" do
         get :show, { :vocab => "local", :sub_authority => "states", id: "OH" }
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should return an individual MeSH term" do
         get :show, { vocab: "mesh", id: "D000001" }
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should return an individual subject term" do
         get :show, { vocab: "loc", sub_authority: "subjects", id: "sh85077565" }
-        response.should be_success
+        expect(response).to be_success
       end
 
     end

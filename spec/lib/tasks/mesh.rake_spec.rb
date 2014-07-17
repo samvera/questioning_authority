@@ -20,13 +20,13 @@ describe "mesh rake tasks" do
       $stdout = STDOUT
     end
     it "should have 'environment' as a prereq" do
-      @rake[@task_name].prerequisites.should include("environment")
+      expect(@rake[@task_name].prerequisites).to include("environment")
     end
     it "should require $MESH_FILE to be set" do
       old_mesh_file = ENV.delete('MESH_FILE')
       @rake[@task_name].invoke
       @output.seek(0)
-      @output.read.should =~ /Need to set \$MESH_FILE with path to file to ingest/
+      expect(@output.read).to match(/Need to set \$MESH_FILE with path to file to ingest/)
       ENV['MESH_FILE'] = old_mesh_file
     end
     it "should create or update all records in the config file" do
@@ -35,8 +35,8 @@ describe "mesh rake tasks" do
       expect(File).to receive(:open).with("dummy").and_yield(input)
       @rake[@task_name].invoke
       term = Qa::SubjectMeshTerm.find_by_term_id(5)
-      term.should_not be_nil
-      term.term.should == "test"
+      expect(term).not_to be_nil
+      expect(term.term).to eq("test")
       ENV['MESH_FILE'] = nil
     end
   end

@@ -12,14 +12,14 @@ describe Qa::Authorities::LocSubauthority do
   context "with a valid subauthority" do
     it "should return a url" do
       sub_authority_table.keys.each do |authority|
-        subject.get_url_for_authority(authority).should == sub_authority_table[authority]
+        expect(subject.get_url_for_authority(authority)).to eq(sub_authority_table[authority])
       end
     end
   end
 
   context "with a non-existent subauthority" do
     it "should return nil" do
-      subject.get_url_for_authority("fake").should be_nil
+      expect(subject.get_url_for_authority("fake")).to be_nil
     end
   end
 

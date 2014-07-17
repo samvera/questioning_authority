@@ -6,10 +6,10 @@ describe Qa::Authorities::Tgnlang do
 
   describe "#search" do
     it "should return unique record with query of Tibetan" do
-      subject.search("Tibetan").should == [{"id"=>"75446", "label"=>"Tibetan"}]
+      expect(subject.search("Tibetan")).to eq([{"id"=>"75446", "label"=>"Tibetan"}])
     end
     it "should return type Array" do
-      subject.search("Tibetan").should be_kind_of(Array)
+      expect(subject.search("Tibetan")).to be_kind_of(Array)
     end
   end
 

@@ -21,7 +21,7 @@ describe Qa::Authorities::LocalSubauthority do
         AUTHORITIES_CONFIG[:local_path] = "/full/path"
       end
       it "returns a full path" do
-        test.sub_authorities_path.should == AUTHORITIES_CONFIG[:local_path]
+        expect(test.sub_authorities_path).to eq(AUTHORITIES_CONFIG[:local_path])
       end
     end
     context "configured with a relative path" do
@@ -29,14 +29,14 @@ describe Qa::Authorities::LocalSubauthority do
         AUTHORITIES_CONFIG[:local_path] = "relative/path"
       end
       it "returns a path relative to the Rails applicaition" do
-        test.sub_authorities_path.should == File.join(Rails.root, AUTHORITIES_CONFIG[:local_path])
+        expect(test.sub_authorities_path).to eq(File.join(Rails.root, AUTHORITIES_CONFIG[:local_path]))
       end
     end
   end
 
   describe "#names" do  
     it "returns a list of yaml files" do
-      test.names.should include("authority_A", "authority_B", "authority_C", "authority_D", "states")
+      expect(test.names).to include("authority_A", "authority_B", "authority_C", "authority_D", "states")
     end
   end
 
