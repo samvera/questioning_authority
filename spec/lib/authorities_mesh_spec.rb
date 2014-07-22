@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Qa::Authorities::Mesh do
   def where_unique_record(klass, q)
-    klass.where(q).length.should == 1
+    expect(klass.where(q).length).to eq(1)
   end
 
   it "imports a mesh dump file" do
@@ -13,7 +13,7 @@ describe Qa::Authorities::Mesh do
     where_unique_record(Qa::SubjectMeshTerm, {term_lower: "malaria"})
     where_unique_record(Qa::SubjectMeshTerm, {term: "Malaria"})
     where_unique_record(Qa::SubjectMeshTerm, {term_id: "D008288"})
-    Qa::SubjectMeshTerm.all.length.should == 11
+    expect(Qa::SubjectMeshTerm.all.length).to eq(11)
   end
 
   describe "the query interface" do
@@ -31,18 +31,18 @@ describe Qa::Authorities::Mesh do
 
     it "handles queries" do
       results = m.search('mr')
-      results.should include( {id: '1', label: 'Mr Plow'} )
-      results.length.should == 3
+      expect(results).to include( {id: '1', label: 'Mr Plow'} )
+      expect(results.length).to eq(3)
     end
 
-    it "gets full records" do
-      result = m.full_record('2')
-      result.should == {id: '2', label: 'Mr Snow', synonyms: []}
+    it "returns individual records" do
+      result = m.find('2')
+      expect(result).to eq({id: '2', label: 'Mr Snow', synonyms: []})
     end
 
     it "returns all records" do
-      m.all.count.should == 3
-      m.all.should include({:id=>"2", :label=>"Mr Snow"})
+      expect(m.all.count).to eq(3)
+      expect(m.all).to include({:id=>"2", :label=>"Mr Snow"})
     end
   end
 end

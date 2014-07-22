@@ -5,17 +5,17 @@ describe Qa::Authorities::Loc do
   describe "#new" do
     context "without a sub-authority" do
       it "should raise an exception" do
-        lambda { Qa::Authorities::Loc.new }.should raise_error
+        expect { Qa::Authorities::Loc.new }.to raise_error
       end
     end
     context "with an invalid sub-authority" do
       it "should raise an exception" do
-        lambda { Qa::Authorities::Loc.new("foo") }.should raise_error
+        expect { Qa::Authorities::Loc.new("foo") }.to raise_error
       end
     end
     context "with a valid sub-authority" do
       it "should create the authority" do
-        Qa::Authorities::Loc.new("subjects").should be_kind_of Qa::Authorities::Loc
+        expect(Qa::Authorities::Loc.new("subjects")).to be_kind_of Qa::Authorities::Loc
       end
     end
   end
@@ -29,14 +29,14 @@ describe Qa::Authorities::Loc do
     context "for searching" do
       it "should return a url" do
         url = 'http://id.loc.gov/search/?q=foo&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects&format=json'
-        authority.build_query_url("foo").should eq(url)
+        expect(authority.build_query_url("foo")).to eq(url)
       end
     end
 
     context "for returning single terms" do
       it "returns a url with an authority and id" do
         url = "http://id.loc.gov/authorities/subjects/sh2002003586.json"
-        authority.find_url("sh2002003586").should eq(url)
+        expect(authority.find_url("sh2002003586")).to eq(url)
       end
     end
   
@@ -53,10 +53,10 @@ describe Qa::Authorities::Loc do
       end
 
       it "should retain the raw respsonse from the LC service in JSON" do
-        authority.raw_response.should be_nil
+        expect(authority.raw_response).to be_nil
         json = Qa::Authorities::WebServiceBase.new.get_json(authority.build_query_url("s"))
         authority.search("s")
-        authority.raw_response.should eq(json)
+        expect(authority.raw_response).to eq(json)
       end
 
       describe "the returned results" do
@@ -66,11 +66,11 @@ describe Qa::Authorities::Loc do
         end
 
         it "should have :id and :label elements" do
-          results.first["label"].should == "West (U.S.)"
-          results.first["id"].should == "info:lc/vocabulary/geographicAreas/n-usp"
-          results.last["label"].should == "Baltic States"
-          results.last["id"].should == "info:lc/vocabulary/geographicAreas/eb"
-          results.size.should == 20
+          expect(results.first["label"]).to eq("West (U.S.)")
+          expect(results.first["id"]).to eq("info:lc/vocabulary/geographicAreas/n-usp")
+          expect(results.last["label"]).to eq("Baltic States")
+          expect(results.last["id"]).to eq("info:lc/vocabulary/geographicAreas/eb")
+          expect(results.size).to eq(20)
         end
 
       end
@@ -84,11 +84,11 @@ describe Qa::Authorities::Loc do
         Qa::Authorities::Loc.new("subjects").search("History--")
       end
       it "should have a URI for the id and a string label" do
-        results.count.should == 20
-        results.first["label"].should == "History--Philosophy--History--20th century"
-        results.first["id"].should == "info:lc/authorities/subjects/sh2008121753"
-        results[1]["label"].should == "History--Philosophy--History--19th century"
-        results[1]["id"].should == "info:lc/authorities/subjects/sh2008121752"
+        expect(results.count).to eq(20)
+        expect(results.first["label"]).to eq("History--Philosophy--History--20th century")
+        expect(results.first["id"]).to eq("info:lc/authorities/subjects/sh2008121753")
+        expect(results[1]["label"]).to eq("History--Philosophy--History--19th century")
+        expect(results[1]["id"]).to eq("info:lc/authorities/subjects/sh2008121752")
       end
     end
 
@@ -100,7 +100,7 @@ describe Qa::Authorities::Loc do
             Qa::Authorities::Loc.new("names").search("Berry")
       end
       it "should retrieve names via search" do
-        results.first["label"].should == "Berry, James W. (James William), 1938-"
+        expect(results.first["label"]).to eq("Berry, James W. (James William), 1938-")
       end
     end
 
@@ -115,8 +115,8 @@ describe Qa::Authorities::Loc do
         Qa::Authorities::Loc.new("subjects").find("sh2002003586")
       end
       it "returns the complete record for a given subject" do
-        results.count.should eq(20)
-        results.first.should be_kind_of(Hash)
+        expect(results.count).to eq(20)
+        expect(results.first).to be_kind_of(Hash)
       end
     end
   end

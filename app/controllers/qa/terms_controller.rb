@@ -5,17 +5,16 @@
 class Qa::TermsController < ApplicationController
 
   before_action :check_vocab_param, :init_authority
+  before_action :check_query_param, only: :search
 
   # If the subauthority supports it, return a list of all terms in the authority
   def index
     render json: @authority.all
   end
 
-  # Return a list of terms based on a query
-  # - converts query wildcards appropriately  
+  # Return a list of terms based on a query 
   def search
-    params[:q].gsub!("*", "%2A") if params[:q]
-    terms = @authority.search(params[:q])
+    terms = @authority.search(url_search)
     render json: terms
   end
 
@@ -26,9 +25,7 @@ class Qa::TermsController < ApplicationController
   end
 
   def check_vocab_param
-    unless params[:vocab].present?
-      head :not_found
-    end
+    head :not_found unless params[:vocab].present?
   end
 
   def init_authority
@@ -37,10 +34,19 @@ class Qa::TermsController < ApplicationController
     head :not_found
   end
 
+  def check_query_param
+    head :not_found unless params[:q].present?
+  end
+
   private
 
   def authority_class
     "Qa::Authorities::"+params[:vocab].capitalize
+  end
+
+  # converts wildcards into URL-encoded characters
+  def url_search
+    params[:q].gsub("*", "%2A")
   end
 
 end

@@ -20,30 +20,30 @@ describe Qa::Authorities::Oclcts do
   describe "a query for terms" do
 
     it "should have an array of hashes that match the query" do
-      @terms.should be_kind_of Array
-      @terms.first.should be_kind_of Hash
-      @terms.first["label"].should be_kind_of String
-      @terms.first["label"].should include "Ballota"
+      expect(@terms).to be_kind_of Array
+      expect(@terms.first).to be_kind_of Hash
+      expect(@terms.first["label"]).to be_kind_of String
+      expect(@terms.first["label"]).to include "Ballota"
     end
 
     it "should have an array of hashes containing unique id and label" do
-      @terms.first.should have_key("id")
-      @terms.first.should have_key("label")
+      expect(@terms.first).to have_key("id")
+      expect(@terms.first).to have_key("label")
     end
 
   end
 
   describe "a query for a single item" do
     it "should have a hash of values that represent the item requested" do
-      @term_record.should be_kind_of Hash
-      @term_record.values.should include @terms.first["id"] 
-      @term_record.values.should include @terms.first["label"]
+      expect(@term_record).to be_kind_of Hash
+      expect(@term_record.values).to include @terms.first["id"] 
+      expect(@term_record.values).to include @terms.first["label"]
     end
     
     it "should succeed for valid ids, even if the id is not in the initial list of responses" do
       record = @second_query.find(@terms.first["id"])
-      record.values.should include @terms.first["id"]
-      record.values.should include @terms.first["label"]
+      expect(record.values).to include @terms.first["id"]
+      expect(record.values).to include @terms.first["label"]
     end
   end
 

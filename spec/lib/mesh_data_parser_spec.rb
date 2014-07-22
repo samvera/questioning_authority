@@ -11,8 +11,8 @@ B = more than one
 EOS
     mesh = Qa::Authorities::MeshTools::MeshDataParser.new(StringIO.new(data))
     records = mesh.all_records
-    records.length.should == 1
-    records[0].should == {'A'=>['45'],'B'=>['a = b = c = d','more than one']}
+    expect(records.length).to eq(1)
+    expect(records[0]).to eq({'A'=>['45'],'B'=>['a = b = c = d','more than one']})
   end
 
   it "handles two records" do
@@ -28,9 +28,9 @@ print entry = test
 EOS
     mesh = Qa::Authorities::MeshTools::MeshDataParser.new(StringIO.new(data))
     records = mesh.all_records
-    records.length.should == 2
-    records[0].should == {'A'=>['45'],'B'=>['a = b = c = d']}
-    records[1].should == {'A'=>['another field'], 'print entry'=>['test']}
+    expect(records.length).to eq(2)
+    expect(records[0]).to eq({'A'=>['45'],'B'=>['a = b = c = d']})
+    expect(records[1]).to eq({'A'=>['another field'], 'print entry'=>['test']})
   end
 
   it 'ignores bad input' do
@@ -43,16 +43,16 @@ B=no space
 EOS
     mesh = Qa::Authorities::MeshTools::MeshDataParser.new(StringIO.new(data))
     records = mesh.all_records
-    records.length.should == 2
-    records[0].should == {'A'=>['45']}
-    records[1].should == {}
+    expect(records.length).to eq(2)
+    expect(records[0]).to eq({'A'=>['45']})
+    expect(records[1]).to eq({})
   end
 
   it 'parses a sample mesh file' do
     mesh = Qa::Authorities::MeshTools::MeshDataParser.new(webmock_fixture('mesh.txt'))
     records = mesh.all_records
-    records.length.should == 11
-    records[0].should == {
+    expect(records.length).to eq(11)
+    expect(records[0]).to eq({
       "RECTYPE" => ["D"],
       "MH" => ["Malaria"],
       "AQ" => ["BL CF CI CL CN CO DH DI DT EC EH EM EN EP ET GE HI IM ME MI MO NU PA PC PP PS PX RA RH RI RT SU TH TM UR US VE VI"],
@@ -86,8 +86,8 @@ EOS
       "DA" => ["19990101"],
       "DC" => ["1"],
       "UI" => ["D008288"]
-    }
-    records[1].should == {
+    })
+    expect(records[1]).to eq({
       "RECTYPE" => ["D"],
       "MH" => ["Calcimycin"],
       "AQ" => ["AA AD AE AG AI AN BI BL CF CH CL CS CT DU EC HI IM IP ME PD PK PO RE SD ST TO TU UR"],
@@ -119,7 +119,7 @@ EOS
       "DC" => ["1"],
       "DX" => ["19840101"],
       "UI" => ["D000001"]
-    }
+    })
   end
 end
 
