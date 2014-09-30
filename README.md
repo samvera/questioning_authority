@@ -215,17 +215,6 @@ Currently, it is compatible with Rails 4.0 and 4.1 under both Ruby 2.0 and 2.1.
 
 For help with Questioning Authority, contact <hydra-tech@googlegroups.com>.
 
-# Original Authors
-
-* [Steven Anderson](https://github.com/scande3)
-* [Don Brower](https://github.com/dbrower)
-* [Jim Coble](https://github.com/coblej)
-* [Mike Durbin](https://github.com/mikedurbin)
-* [Randall Floyd](https://github.com/stormfin)
-* [Eric James](https://github.com/yulgit1)
-* [Mike Stroming](https://github.com/mstroming)
-* [Adam Wead](https://github.com/awead)
-
 ### Special thanks to...
 
 [Jeremy Friesen](https://github.com/jeremyf) who gave us the name for our gem.
