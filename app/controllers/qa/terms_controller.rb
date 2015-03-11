@@ -12,7 +12,7 @@ class Qa::TermsController < ApplicationController
     render json: @authority.all
   end
 
-  # Return a list of terms based on a query 
+  # Return a list of terms based on a query
   def search
     terms = @authority.search(url_search)
     render json: terms
