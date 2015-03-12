@@ -1,0 +1,108 @@
+{
+  "head" : {
+    "vars" : [ "s", "name" ]
+  },
+  "results" : {
+    "bindings" : [ {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/aat/300053264"
+      },
+      "name" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "photocopying"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/aat/300343368"
+      },
+      "name" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "photo archives"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/aat/300265224"
+      },
+      "name" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "Photoconceptualism"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/aat/300200516"
+      },
+      "name" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "photocomposition"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/aat/300379409"
+      },
+      "name" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "photodegradation"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/aat/300380180"
+      },
+      "name" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "photointerpretation"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/aat/300191635"
+      },
+      "name" : {
+        "xml:lang" : "en-us",
+        "type" : "literal",
+        "value" : "photoelasticity"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/aat/300191635"
+      },
+      "name" : {
+        "xml:lang" : "en-gb",
+        "type" : "literal",
+        "value" : "photo-elasticity"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/aat/300225875"
+      },
+      "name" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "photoacoustic spectroscopy"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/aat/300265560"
+      },
+      "name" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "photoscreenprints"
+      }
+    } ]
+  }
+}

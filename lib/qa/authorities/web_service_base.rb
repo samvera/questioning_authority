@@ -9,6 +9,5 @@ module Qa::Authorities
       r = RestClient.get url, {accept: :json}
       JSON.parse(r)
     end
-  
   end
 end

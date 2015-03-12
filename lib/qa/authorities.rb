@@ -2,6 +2,7 @@ module Qa::Authorities
   extend ActiveSupport::Autoload
 
   autoload :Base
+  autoload :Getty
   autoload :Loc
   autoload :LocSubauthority
   autoload :Local
@@ -11,5 +12,4 @@ module Qa::Authorities
   autoload :Oclcts
   autoload :Tgnlang
   autoload :WebServiceBase
-  
 end
