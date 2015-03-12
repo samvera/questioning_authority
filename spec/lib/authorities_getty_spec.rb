@@ -35,7 +35,6 @@ describe Qa::Authorities::Getty do
     context "authorities" do
       before do
         stub_request(:get, /vocab\.getty\.edu.*/).
-            with(:headers => {'Accept'=>'application/json'}).
             to_return(:body => webmock_fixture("aat-response.txt"), :status => 200)
       end
 
@@ -53,10 +52,9 @@ describe Qa::Authorities::Getty do
     context "using a subject id" do
       before do
         stub_request(:get, "http://vocab.getty.edu/aat/300265560.json").
-          with(headers: { 'Accept'=>'application/json' }).
           to_return(status: 200, body: webmock_fixture("getty-aat-find-response.json"))
       end
-      subject { described_class.new("aat").find("300265560") }
+      subject { authority.find("300265560") }
 
       it "returns the complete record for a given subject" do
         expect(subject['results']['bindings'].size).to eq 189
@@ -65,6 +63,11 @@ describe Qa::Authorities::Getty do
         expect(subject['results']['bindings']).to all(have_key('Object'))
       end
     end
+  end
+
+  describe "#request_options" do
+    subject { authority.request_options }
+    it { is_expected.to eq({}) }
   end
 
 end
