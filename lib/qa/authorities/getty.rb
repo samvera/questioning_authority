@@ -23,15 +23,22 @@ module Qa::Authorities
     end
 
     def build_query_url q
-      untainted = q.gsub(/[\w\s-]/, '')
+      query = URI.escape(sparql(untaint(q)))
+      "http://vocab.getty.edu/sparql.json?query=#{URI.escape(sparql(q))}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"
+    end
+
+    def sparql(q)
       sparql = "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                 SELECT * WHERE { ?s skos:prefLabel ?name .
                   ?s skos:inScheme <http://vocab.getty.edu/#{@sub_authority}/> .
                   ?s rdf:type <http://vocab.getty.edu/ontology#Concept> .
-                  FILTER regex(?name, \"#{untainted}\", \"i\") .
+                  FILTER regex(?name, \"#{untaint(q)}\", \"i\") .
                   FILTER langMatches( lang(?name), \"EN\" ) .
                 } LIMIT 10"
-      "http://vocab.getty.edu/sparql.json?query=#{URI.escape(sparql)}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"
+    end
+
+    def untaint(q)
+      q.gsub(/[^\w\s-]/, '')
     end
 
     def find id
