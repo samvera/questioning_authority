@@ -49,6 +49,20 @@ describe Qa::Authorities::Getty do
     end
   end
 
+  describe "#untaint" do
+    subject { authority.untaint(value) }
+
+    context "with a good string" do
+      let(:value) { 'Water-color paint' }
+      it { is_expected.to eq 'Water-color paint' }
+    end
+
+    context "bad stuff" do
+      let(:value) { './"' }
+      it { is_expected.to eq '' }
+    end
+  end
+
   describe "#find" do
     context "using a subject id" do
       before do
