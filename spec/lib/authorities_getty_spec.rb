@@ -81,7 +81,7 @@ describe Qa::Authorities::Getty do
 
   describe "#request_options" do
     subject { authority.request_options }
-    it { is_expected.to eq({}) }
+    it { is_expected.to eq(accept: "application/sparql-results+json") }
   end
 
 end

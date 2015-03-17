@@ -50,8 +50,7 @@ module Qa::Authorities
     end
 
     def request_options
-      # Don't pass a request header. See http://answers.semanticweb.com/questions/31906/getty-sparql-gives-a-404-if-you-pass-accept-applicationjson
-      { }
+      { accept: 'application/sparql-results+json'}
     end
 
     private
