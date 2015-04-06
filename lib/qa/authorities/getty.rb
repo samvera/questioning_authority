@@ -28,13 +28,14 @@ module Qa::Authorities
     end
 
     def sparql(q)
-      sparql = "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                SELECT * WHERE { ?s skos:prefLabel ?name .
-                  ?s skos:inScheme <http://vocab.getty.edu/#{@sub_authority}/> .
-                  ?s rdf:type <http://vocab.getty.edu/ontology#Concept> .
-                  FILTER regex(?name, \"#{untaint(q)}\", \"i\") .
-                  FILTER langMatches( lang(?name), \"EN\" ) .
-                } LIMIT 10"
+      search = untaint(q)
+      # The full text index matches on fields besides the term, so we filter to ensure the match is in the term.
+      sparql = "SELECT ?s ?name {
+              ?s a skos:Concept; luc:term \"#{search}\";
+                 skos:inScheme <http://vocab.getty.edu/#{@sub_authority}/> ;
+                 gvp:prefLabelGVP [skosxl:literalForm ?name].
+              FILTER regex(?name, \"#{search}\", \"i\") .
+            } LIMIT 10"
     end
 
     def untaint(q)
