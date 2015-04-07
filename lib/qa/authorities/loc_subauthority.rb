@@ -21,7 +21,7 @@ module Qa::Authorities::LocSubauthority
   end
 
   def vocabularies
-    [ 
+    [
       "graphicMaterials",
       "organizations",
       "relators",

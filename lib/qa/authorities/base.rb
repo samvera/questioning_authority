@@ -4,21 +4,6 @@ module Qa::Authorities
   class Base
     extend Deprecation
 
-    attr_accessor :sub_authority
-
-    # Registers the authority and its sub-authority if it has one
-    def initialize *args
-      if args.first
-        raise "Invalid sub-authority" unless sub_authorities.include?(args.first)
-      end
-    end
-
-    # By default, an authority has no subauthorities unless they
-    # are defined by the subclassed authority.
-    def sub_authorities
-      []
-    end
-
     # By default, #all is not implemented.
     # If the subclassed authority does have this feature
     # then you will overide the #all method in the subclassed authority.

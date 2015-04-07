@@ -29,9 +29,20 @@ class Qa::TermsController < ApplicationController
   end
 
   def init_authority
-    @authority = authority_class.constantize.new(params[:sub_authority])
-  rescue
-    head :not_found
+    begin
+      klass = authority_class.constantize
+    rescue NameError => e
+      logger.warn "Unable to initialize authority #{authority_class}"
+      head :not_found
+      return
+    end
+    args = [params[:sub_authority]].compact
+    begin
+      @authority = klass.new(*args)
+    rescue Qa::InvalidSubAuthority, Qa::MissingSubAuthority => e
+      logger.warn e.message
+      head :not_found
+    end
   end
 
   def check_query_param

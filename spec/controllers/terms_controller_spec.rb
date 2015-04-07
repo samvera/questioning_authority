@@ -23,12 +23,14 @@ describe Qa::TermsController, :type => :controller do
   describe "#init_authority" do
     context "when the authority does not exist" do
       it "should return 404" do
+        expect(Rails.logger).to receive(:warn).with("Unable to initialize authority Qa::Authorities::Non-existent-authority")
         get :search, { :q => "a query", :vocab => "non-existent-authority" }
         expect(response.code).to eq("404")
       end
     end
     context "when a sub-authority does not exist" do
       it "should return 404 if a sub-authority does not exist" do
+        expect(Rails.logger).to receive(:warn).with("Unable to initialize sub-authority non-existent-subauthority for Qa::Authorities::Loc")
         get :search, { :q => "a query", :vocab => "loc", :sub_authority => "non-existent-subauthority" }
         expect(response.code).to eq("404")
       end

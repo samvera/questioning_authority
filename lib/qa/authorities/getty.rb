@@ -1,13 +1,8 @@
 require 'uri'
 
 module Qa::Authorities
-  class Getty < WebServiceBase
-
-    def initialize *args
-      super
-      @sub_authority ||= args.first
-      raise "No sub-authority provided" if sub_authority.nil?
-    end
+  class Getty < AuthorityWithSubAuthority
+    include WebServiceBase
 
     def sub_authorities
       [ "aat" ]

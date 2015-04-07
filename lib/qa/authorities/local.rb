@@ -1,13 +1,7 @@
 module Qa::Authorities
-  class Local < Base
+  class Local < AuthorityWithSubAuthority
 
     include Qa::Authorities::LocalSubauthority
-
-    def initialize *args
-      super
-      @sub_authority ||= args.first
-      raise "No sub-authority provided" if sub_authority.nil?
-    end
 
     def sub_authorities
       names
