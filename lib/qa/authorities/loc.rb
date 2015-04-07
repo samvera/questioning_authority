@@ -1,15 +1,9 @@
 require 'uri'
 
 module Qa::Authorities
-  class Loc < WebServiceBase
-
-    include Qa::Authorities::LocSubauthority
-
-    def initialize *args
-      super
-      @sub_authority ||= args.first
-      raise "No sub-authority provided" if sub_authority.nil?
-    end
+  class Loc < AuthorityWithSubAuthority
+    include WebServiceBase
+    include LocSubauthority
 
     def sub_authorities
       authorities + vocabularies + datatypes + preservation

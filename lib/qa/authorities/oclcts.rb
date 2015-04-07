@@ -2,15 +2,10 @@ require 'open-uri'
 require 'nokogiri'
 
 module Qa::Authorities
-  class Oclcts < WebServiceBase
-  
-    SRU_SERVER_CONFIG = YAML.load_file(Rails.root.join("config", "oclcts-authorities.yml"))
+  class Oclcts < AuthorityWithSubAuthority
+    include WebServiceBase
 
-    def initialize *args
-      super
-      @sub_authority ||= args.first
-      raise "No sub-authority provided" if sub_authority.nil?
-    end
+    SRU_SERVER_CONFIG = YAML.load_file(Rails.root.join("config", "oclcts-authorities.yml"))
 
     def sub_authorities
       SRU_SERVER_CONFIG["authorities"].map { |sub_authority| sub_authority[0] }

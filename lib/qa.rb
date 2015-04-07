@@ -9,4 +9,10 @@ module Qa
 
   # Raised when the configuration directory for local authorities doesn't exist
   class ConfigDirectoryNotFound < StandardError; end
+
+  # Raised when a sub_authority is not passed into an authority
+  class MissingSubAuthority < ArgumentError; end
+
+  # Raised when a sub_authority is not valid
+  class InvalidSubAuthority < ArgumentError; end
 end

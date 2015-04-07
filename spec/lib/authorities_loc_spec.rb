@@ -53,10 +53,9 @@ describe Qa::Authorities::Loc do
       end
 
       it "should retain the raw respsonse from the LC service in JSON" do
-        expect(authority.raw_response).to be_nil
-        json = Qa::Authorities::WebServiceBase.new.get_json(authority.build_query_url("s"))
-        authority.search("s")
-        expect(authority.raw_response).to eq(json)
+        expect { authority.search("s") }.to change { authority.raw_response }.
+          from(nil).
+          to(JSON.parse(webmock_fixture("loc-response.txt").read))
       end
 
       describe "the returned results" do

@@ -1,6 +1,7 @@
 module Qa::Authorities
   extend ActiveSupport::Autoload
 
+  autoload :AuthorityWithSubAuthority
   autoload :Base
   autoload :Getty
   autoload :Loc
