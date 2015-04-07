@@ -12,6 +12,9 @@ module Qa::Authorities::LocalSubauthority
 
   # Local sub-authorities are any YAML files in the sub_authorities_path
   def names
+    unless Dir.exists? sub_authorities_path
+      raise Qa::ConfigDirectoryNotFound, "There's no directory at #{sub_authorities_path}. You must create it in order to use local authorities"
+    end
     Dir.entries(sub_authorities_path).map { |f| File.basename(f, ".yml") if f.match(/yml$/) }.compact
   end
 
