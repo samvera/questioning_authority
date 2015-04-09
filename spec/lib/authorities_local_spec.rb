@@ -2,18 +2,24 @@ require 'spec_helper'
 
 describe Qa::Authorities::Local do
 
-  let(:authority_a) { Qa::Authorities::Local.new("authority_A") }
-  let(:authority_b) { Qa::Authorities::Local.new("authority_B") }
-  let(:authority_c) { Qa::Authorities::Local.new("authority_C") }
-  let(:authority_d) { Qa::Authorities::Local.new("authority_D") }
+  let(:authority_a) { Qa::Authorities::Local.factory("authority_A") }
+  let(:authority_b) { Qa::Authorities::Local.factory("authority_B") }
+  let(:authority_c) { Qa::Authorities::Local.factory("authority_C") }
+  let(:authority_d) { Qa::Authorities::Local.factory("authority_D") }
 
-  describe "::new" do
+  describe "new" do
+    it "should raise an error" do
+      expect { Qa::Authorities::Local.new }.to raise_error
+    end
+  end
+
+  describe ".factory" do
     context "without a sub-authority" do
       it "should raise an error is the sub-authority is not provided" do
-        expect { Qa::Authorities::Local.new }.to raise_error
+        expect { Qa::Authorities::Local.factory }.to raise_error
       end
       it "should raise an error is the sub-authority does not exist" do
-        expect { Qa::Authorities::Local.new("foo") }.to raise_error
+        expect { Qa::Authorities::Local.factory("foo") }.to raise_error
       end
     end
   end
@@ -75,7 +81,7 @@ describe Qa::Authorities::Local do
       end
     end
   end
-  
+
   describe "#find" do
     context "source is a hash" do
       let(:id) { "A2" }

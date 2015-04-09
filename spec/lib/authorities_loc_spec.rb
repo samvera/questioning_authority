@@ -8,24 +8,26 @@ describe Qa::Authorities::Loc do
         expect { Qa::Authorities::Loc.new }.to raise_error
       end
     end
+  end
+
+  describe "#factory" do
     context "with an invalid sub-authority" do
       it "should raise an exception" do
-        expect { Qa::Authorities::Loc.new("foo") }.to raise_error
+        expect { Qa::Authorities::Loc.factory("foo") }.to raise_error
       end
     end
     context "with a valid sub-authority" do
       it "should create the authority" do
-        expect(Qa::Authorities::Loc.new("subjects")).to be_kind_of Qa::Authorities::Loc
+        expect(Qa::Authorities::Loc.factory("subjects")).to be_kind_of Qa::Authorities::Loc::GenericAuthority
       end
     end
   end
-    
-  describe "urls" do
 
+  describe "urls" do
     let :authority do
-      Qa::Authorities::Loc.new("subjects")
+      Qa::Authorities::Loc.factory("subjects")
     end
-    
+
     context "for searching" do
       it "should return a url" do
         url = 'http://id.loc.gov/search/?q=foo&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects&format=json'
@@ -39,7 +41,6 @@ describe Qa::Authorities::Loc do
         expect(authority.find_url("sh2002003586")).to eq(url)
       end
     end
-  
   end
 
   describe "#search" do
@@ -49,7 +50,7 @@ describe Qa::Authorities::Loc do
         stub_request(:get, "http://id.loc.gov/search/?format=json&q=s&q=cs:http://id.loc.gov/vocabulary/geographicAreas").
             with(:headers => {'Accept'=>'application/json'}).
             to_return(:body => webmock_fixture("loc-response.txt"), :status => 200)
-        Qa::Authorities::Loc.new("geographicAreas")
+        Qa::Authorities::Loc.factory("geographicAreas")
       end
 
       it "should retain the raw respsonse from the LC service in JSON" do
@@ -80,7 +81,7 @@ describe Qa::Authorities::Loc do
         stub_request(:get, "http://id.loc.gov/search/?format=json&q=History--&q=cs:http://id.loc.gov/authorities/subjects").
             with(:headers => {'Accept'=>'application/json'}).
             to_return(:body => webmock_fixture("loc-subjects-response.txt"), :status => 200)
-        Qa::Authorities::Loc.new("subjects").search("History--")
+        Qa::Authorities::Loc.factory("subjects").search("History--")
       end
       it "should have a URI for the id and a string label" do
         expect(results.count).to eq(20)
@@ -96,7 +97,7 @@ describe Qa::Authorities::Loc do
         stub_request(:get, "http://id.loc.gov/search/?format=json&q=Berry&q=cs:http://id.loc.gov/authorities/names").
             with(:headers => {'Accept'=>'application/json'}).
             to_return(:body => webmock_fixture("loc-names-response.txt"), :status => 200)
-            Qa::Authorities::Loc.new("names").search("Berry")
+            Qa::Authorities::Loc.factory("names").search("Berry")
       end
       it "should retrieve names via search" do
         expect(results.first["label"]).to eq("Berry, James W. (James William), 1938-")
@@ -111,7 +112,7 @@ describe Qa::Authorities::Loc do
         stub_request(:get, "http://id.loc.gov/authorities/subjects/sh2002003586.json").
           with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
           to_return(:status => 200, :body => webmock_fixture("loc-subject-find-response.txt"), :headers => {})
-        Qa::Authorities::Loc.new("subjects").find("sh2002003586")
+        Qa::Authorities::Loc.factory("subjects").find("sh2002003586")
       end
       it "returns the complete record for a given subject" do
         expect(results.count).to eq(20)
