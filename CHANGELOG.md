@@ -1,3 +1,9 @@
+### 0.4.3 (2015-04-09)
+* 2015-04-07: Log a helpful message when an authority or sub-authority can't be
+found [Justin Coyne]
+* 2015-04-07: Raise a helpful error message if the config direcotory is missing
+[Justin Coyne]
+
 ### 0.4.2 (2015-04-06)
 * 2015-03-13: Use fulltext indexing [Justin Coyne]
 * 2015-03-13: Set the proper accepts header for a sparql response See
