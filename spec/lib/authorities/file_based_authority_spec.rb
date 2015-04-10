@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Qa::Authorities::Local::FileBasedAuthority do
-  let(:authority_a) { Qa::Authorities::Local.factory("authority_A") }
-  let(:authority_b) { Qa::Authorities::Local.factory("authority_B") }
-  let(:authority_c) { Qa::Authorities::Local.factory("authority_C") }
-  let(:authority_d) { Qa::Authorities::Local.factory("authority_D") }
+  let(:authority_a) { Qa::Authorities::Local.subauthority_for("authority_A") }
+  let(:authority_b) { Qa::Authorities::Local.subauthority_for("authority_B") }
+  let(:authority_c) { Qa::Authorities::Local.subauthority_for("authority_C") }
+  let(:authority_d) { Qa::Authorities::Local.subauthority_for("authority_D") }
 
   describe "#all" do
     let(:expected) { [ { 'id'=> "A1", 'label' => "Abc Term A1" },

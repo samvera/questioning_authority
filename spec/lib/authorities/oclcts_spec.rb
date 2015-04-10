@@ -10,10 +10,10 @@ describe Qa::Authorities::Oclcts do
     stub_request(:get, "http://tspilot.oclc.org/mesh/?maximumRecords=10&operation=searchRetrieve&query=dc.identifier%20exact%20%22D031329Q000821%22&recordPacking=xml&recordSchema=http://zthes.z3950.org/xml/1.0/&recordXPath=&resultSetTTL=300&sortKeys=&startRecord=1&version=1.1").
         to_return(:body => webmock_fixture("oclcts-response-mesh-3.txt"), :status => 200)
 
-    @first_query = Qa::Authorities::Oclcts.factory("mesh")
+    @first_query = Qa::Authorities::Oclcts.subauthority_for("mesh")
     @terms = @first_query.search("ball")
     @term_record = @first_query.find(@terms.first["id"])
-    @second_query = Qa::Authorities::Oclcts.factory("mesh")
+    @second_query = Qa::Authorities::Oclcts.subauthority_for("mesh")
     @second_query.search("alph")
   end
 

@@ -168,7 +168,7 @@ using the file's name as the sub-authority.  For example, if I create `foo.yml`,
 If you'd like to add your own local authority that isn't necessarily backed by yaml, create an initializer and tell the local authority about your custom sub-authority:
 
 ```ruby
-Qa::Authorities::Local.register_factory('names', 'LocalNames')
+Qa::Authorities::Local.register_subauthority('names', 'LocalNames')
 ```
 
 The second argument is a name of a class that represents your local authority. Then when you go to:

@@ -6,7 +6,7 @@ module Qa::Authorities
     require 'qa/authorities/oclcts/generic_oclc_authority'
     extend AuthorityWithSubAuthority
 
-    def self.factory(sub_authority)
+    def self.subauthority_for(sub_authority)
       validate_sub_authority!(sub_authority)
       GenericOclcAuthority.new(sub_authority)
     end

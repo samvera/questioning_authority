@@ -8,25 +8,25 @@ describe Qa::Authorities::Getty do
     end
   end
 
-  describe "#factory" do
+  describe "#subauthority_for" do
     context "without a sub-authority" do
       it "should raise an exception" do
-        expect { described_class.factory }.to raise_error
+        expect { described_class.subauthority_for }.to raise_error
       end
     end
     context "with an invalid sub-authority" do
       it "should raise an exception" do
-        expect { described_class.factory("foo") }.to raise_error
+        expect { described_class.subauthority_for("foo") }.to raise_error
       end
     end
     context "with a valid sub-authority" do
       it "should create the authority" do
-        expect(described_class.factory("AAT")).to be_kind_of Qa::Authorities::Getty::AAT
+        expect(described_class.subauthority_for("AAT")).to be_kind_of Qa::Authorities::Getty::AAT
       end
     end
   end
 
-  let(:authority) { described_class.factory("AAT") }
+  let(:authority) { described_class.subauthority_for("AAT") }
   describe "#build_query_url" do
     subject { authority.build_query_url("foo") }
     it { is_expected.to  match /^http:\/\/vocab\.getty\.edu\// }

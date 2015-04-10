@@ -8,18 +8,18 @@ describe Qa::Authorities::Local do
     end
   end
 
-  describe ".factory" do
+  describe ".subauthority_for" do
     context "without a sub-authority" do
       it "should raise an error is the sub-authority is not provided" do
-        expect { described_class.factory }.to raise_error
+        expect { described_class.subauthority_for }.to raise_error
       end
       it "should raise an error is the sub-authority does not exist" do
-        expect { described_class.factory("foo") }.to raise_error
+        expect { described_class.subauthority_for("foo") }.to raise_error
       end
     end
 
     context "with a sub authority" do
-      subject { described_class.factory("authority_A") }
+      subject { described_class.subauthority_for("authority_A") }
       it "should return a file authority" do
         expect(subject).to be_kind_of Qa::Authorities::Local::FileBasedAuthority
       end
@@ -32,7 +32,7 @@ describe Qa::Authorities::Local do
         def initialize(one)
         end
       end
-      described_class.register_factory('new_sub', 'SolrAuthority')
+      described_class.register_subauthority('new_sub', 'SolrAuthority')
     end
 
     after { Object.send(:remove_const, :SolrAuthority) }
@@ -42,7 +42,7 @@ describe Qa::Authorities::Local do
     end
 
     it "creates authorities of the proper type" do
-      expect(described_class.factory('new_sub')).to be_kind_of SolrAuthority
+      expect(described_class.subauthority_for('new_sub')).to be_kind_of SolrAuthority
     end
   end
 end

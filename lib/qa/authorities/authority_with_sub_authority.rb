@@ -3,10 +3,10 @@ module Qa::Authorities
 
     # Registers the authority and its sub-authority if it has one
     def new(sub_authority=nil)
-      raise "Initializing with as sub authority is removed. use #{self.class}.factory(#{sub_authority.inspect}) instead"
+      raise "Initializing with as sub authority is removed. use #{self.class}.subauthority_for(#{sub_authority.inspect}) instead"
     end
 
-    def factory(sub_authority)
+    def subauthority_for(sub_authority)
       validate_sub_authority!(sub_authority)
       [self, sub_authority].join('::').classify.constantize.new
     end

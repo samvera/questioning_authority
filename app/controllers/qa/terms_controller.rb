@@ -41,7 +41,7 @@ class Qa::TermsController < ApplicationController
         mod.new
       else
         raise Qa::MissingSubAuthority, "No sub-authority provided" if params[:sub_authority].blank?
-        mod.factory(params[:sub_authority])
+        mod.subauthority_for(params[:sub_authority])
       end
     rescue Qa::InvalidSubAuthority, Qa::MissingSubAuthority => e
       logger.warn e.message

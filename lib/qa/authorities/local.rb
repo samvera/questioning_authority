@@ -5,7 +5,7 @@ module Qa::Authorities
     require 'qa/authorities/local/file_based_authority'
 
 
-    def self.factory(sub_authority)
+    def self.subauthority_for(sub_authority)
       validate_sub_authority!(sub_authority)
       registry.instance_for(sub_authority)
     end
@@ -19,7 +19,7 @@ module Qa::Authorities
     end
 
 
-    def self.register_factory(sub_authority, class_name)
+    def self.register_subauthority(sub_authority, class_name)
       registry.add(sub_authority, class_name)
     end
 
