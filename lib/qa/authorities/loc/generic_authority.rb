@@ -1,8 +1,8 @@
 module Qa::Authorities
   class Loc::GenericAuthority < Base
-    attr_reader :sub_authority
-    def initialize(sub_authority)
-      @sub_authority = sub_authority
+    attr_reader :subauthority
+    def initialize(subauthority)
+      @subauthority = subauthority
     end
 
     include WebServiceBase
@@ -14,7 +14,7 @@ module Qa::Authorities
 
     def build_query_url q
       escaped_query = URI.escape(q)
-      authority_fragment = Loc.get_url_for_authority(sub_authority) + URI.escape(sub_authority)
+      authority_fragment = Loc.get_url_for_authority(subauthority) + URI.escape(subauthority)
       return "http://id.loc.gov/search/?q=#{escaped_query}&q=#{authority_fragment}&format=json"
     end
 
@@ -23,7 +23,7 @@ module Qa::Authorities
     end
 
     def find_url id
-      "http://id.loc.gov/authorities/#{@sub_authority}/#{id}.json"
+      "http://id.loc.gov/authorities/#{@subauthority}/#{id}.json"
     end
 
     private

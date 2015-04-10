@@ -51,17 +51,17 @@ Start questioning your authorities!
 Return a complete list of terms:
 
     /qa/terms/:vocab
-    /qa/terms/:vocab/:sub_authority
+    /qa/terms/:vocab/:subauthority
 
 Return a set of terms matching a given query
 
     /qa/search/:vocab?q=search_term
-    /qa/search/:vocab/:sub_authority?q=search_term
+    /qa/search/:vocab/:subauthority?q=search_term
 
 Return the complete information for a specific term given its identifier
 
     /qa/show/:vocab/:id
-    /qa/show/:vocab/:sub_authority/:id
+    /qa/show/:vocab/:subauthority/:id
 
 ### JSON Results
 

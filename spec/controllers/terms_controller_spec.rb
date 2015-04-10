@@ -31,7 +31,7 @@ describe Qa::TermsController, :type => :controller do
     context "when a sub-authority does not exist" do
       it "should return 404 if a sub-authority does not exist" do
         expect(Rails.logger).to receive(:warn).with("Unable to initialize sub-authority non-existent-subauthority for Qa::Authorities::Loc. Valid sub-authorities are [\"subjects\", \"names\", \"classification\", \"childrensSubjects\", \"genreForms\", \"performanceMediums\", \"graphicMaterials\", \"organizations\", \"relators\", \"countries\", \"ethnographicTerms\", \"geographicAreas\", \"languages\", \"iso639-1\", \"iso639-2\", \"iso639-5\", \"preservation\", \"actionsGranted\", \"agentType\", \"edtf\", \"contentLocationType\", \"copyrightStatus\", \"cryptographicHashFunctions\", \"environmentCharacteristic\", \"environmentPurpose\", \"eventRelatedAgentRole\", \"eventRelatedObjectRole\", \"eventType\", \"formatRegistryRole\", \"hardwareType\", \"inhibitorTarget\", \"inhibitorType\", \"objectCategory\", \"preservationLevelRole\", \"relationshipSubType\", \"relationshipType\", \"rightsBasis\", \"rightsRelatedAgentRole\", \"signatureEncoding\", \"signatureMethod\", \"softwareType\", \"storageMedium\"]")
-        get :search, { :q => "a query", :vocab => "loc", :sub_authority => "non-existent-subauthority" }
+        get :search, { :q => "a query", :vocab => "loc", :subauthority => "non-existent-subauthority" }
         expect(response.code).to eq("404")
       end
     end
@@ -60,8 +60,8 @@ describe Qa::TermsController, :type => :controller do
       expect(response).to be_success
     end
 
-    it "should not return 404 if sub_authority is valid" do
-      get :search, { :q => "Berry", :vocab => "loc", :sub_authority => "names" }
+    it "should not return 404 if subauthority is valid" do
+      get :search, { :q => "Berry", :vocab => "loc", :subauthority => "names" }
       expect(response).to be_success
     end
 
@@ -71,7 +71,7 @@ describe Qa::TermsController, :type => :controller do
 
     context "with supported authorities" do
       it "should return all local authority state terms" do
-        get :index, { :vocab => "local", :sub_authority => "states" }
+        get :index, { :vocab => "local", :subauthority => "states" }
         expect(response).to be_success
       end
       it "should return all MeSH terms" do
@@ -86,11 +86,11 @@ describe Qa::TermsController, :type => :controller do
         expect(response.body).to eq("null")
       end
       it "should return null for oclcts" do
-        get :index, { :vocab => "oclcts", :sub_authority => "mesh" }
+        get :index, { :vocab => "oclcts", :subauthority => "mesh" }
         expect(response.body).to eq("null")
       end
       it "should return null for LOC authorities" do
-        get :index, { :vocab => "loc", :sub_authority => "relators" }
+        get :index, { :vocab => "loc", :subauthority => "relators" }
         expect(response.body).to eq("null")
       end
     end
@@ -108,7 +108,7 @@ describe Qa::TermsController, :type => :controller do
       end
 
       it "should return an individual state term" do
-        get :show, { :vocab => "local", :sub_authority => "states", id: "OH" }
+        get :show, { :vocab => "local", :subauthority => "states", id: "OH" }
         expect(response).to be_success
       end
 
@@ -118,7 +118,7 @@ describe Qa::TermsController, :type => :controller do
       end
 
       it "should return an individual subject term" do
-        get :show, { vocab: "loc", sub_authority: "subjects", id: "sh85077565" }
+        get :show, { vocab: "loc", subauthority: "subjects", id: "sh85077565" }
         expect(response).to be_success
       end
 

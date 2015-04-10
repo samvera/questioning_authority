@@ -1,8 +1,8 @@
 module Qa::Authorities
   class Local::FileBasedAuthority < Base
-    attr_reader :sub_authority
-    def initialize(sub_authority)
-      @sub_authority = sub_authority
+    attr_reader :subauthority
+    def initialize(subauthority)
+      @subauthority = subauthority
     end
 
     def search(q)
@@ -25,13 +25,13 @@ module Qa::Authorities
     private
 
     def terms
-      sub_authority_hash = YAML.load(File.read(sub_authority_filename))
-      terms = sub_authority_hash.with_indifferent_access.fetch(:terms, [])
+      subauthority_hash = YAML.load(File.read(subauthority_filename))
+      terms = subauthority_hash.with_indifferent_access.fetch(:terms, [])
       normalize_terms(terms)
     end
 
-    def sub_authority_filename
-      File.join(Local.sub_authorities_path, "#{sub_authority}.yml")
+    def subauthority_filename
+      File.join(Local.subauthorities_path, "#{subauthority}.yml")
     end
 
     def normalize_terms(terms)

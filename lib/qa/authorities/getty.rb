@@ -5,7 +5,7 @@ module Qa::Authorities
     require 'qa/authorities/getty/aat'
     extend AuthorityWithSubAuthority
 
-    def self.sub_authorities
+    def self.subauthorities
       [ "AAT" ]
     end
   end

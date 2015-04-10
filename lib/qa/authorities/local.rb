@@ -5,9 +5,9 @@ module Qa::Authorities
     require 'qa/authorities/local/file_based_authority'
 
 
-    def self.subauthority_for(sub_authority)
-      validate_sub_authority!(sub_authority)
-      registry.instance_for(sub_authority)
+    def self.subauthority_for(subauthority)
+      validate_subauthority!(subauthority)
+      registry.instance_for(subauthority)
     end
 
     def self.registry
@@ -19,11 +19,11 @@ module Qa::Authorities
     end
 
 
-    def self.register_subauthority(sub_authority, class_name)
-      registry.add(sub_authority, class_name)
+    def self.register_subauthority(subauthority, class_name)
+      registry.add(subauthority, class_name)
     end
 
-    def self.sub_authorities
+    def self.subauthorities
       registry.keys
     end
 
@@ -62,15 +62,15 @@ module Qa::Authorities
         @logger = logger
       end
 
-      def add(sub_authority, class_name)
-        Registry.logger.debug "Registering Local QA authority: #{sub_authority} - #{class_name}"
-        @hash[sub_authority] = RegistryEntry.new(sub_authority, class_name)
+      def add(subauthority, class_name)
+        Registry.logger.debug "Registering Local QA authority: #{subauthority} - #{class_name}"
+        @hash[subauthority] = RegistryEntry.new(subauthority, class_name)
       end
 
 
       class RegistryEntry
-        def initialize(sub_authority, class_name)
-          @sub_authority, @class_name = sub_authority, class_name
+        def initialize(subauthority, class_name)
+          @subauthority, @class_name = subauthority, class_name
         end
 
         def klass
@@ -78,7 +78,7 @@ module Qa::Authorities
         end
 
         def instance
-          klass.new(@sub_authority)
+          klass.new(@subauthority)
         end
       end
     end

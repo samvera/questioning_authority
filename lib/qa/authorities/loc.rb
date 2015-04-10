@@ -5,13 +5,13 @@ module Qa::Authorities
     extend AuthorityWithSubAuthority
 
     require 'qa/authorities/loc/generic_authority'
-    def self.subauthority_for(sub_authority)
-      validate_sub_authority!(sub_authority)
-      GenericAuthority.new(sub_authority)
+    def self.subauthority_for(subauthority)
+      validate_subauthority!(subauthority)
+      GenericAuthority.new(subauthority)
     end
 
     extend LocSubauthority
-    def self.sub_authorities
+    def self.subauthorities
       authorities + vocabularies + datatypes + preservation
     end
   end

@@ -37,8 +37,8 @@ describe Qa::Authorities::Local do
 
     after { Object.send(:remove_const, :SolrAuthority) }
 
-    it "adds an entry to sub_authorities" do
-      expect(described_class.sub_authorities).to include 'new_sub'
+    it "adds an entry to subauthorities" do
+      expect(described_class.subauthorities).to include 'new_sub'
     end
 
     it "creates authorities of the proper type" do

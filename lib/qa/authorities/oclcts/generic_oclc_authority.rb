@@ -1,9 +1,9 @@
 module Qa::Authorities
   class Oclcts::GenericOclcAuthority < Base
-    attr_reader :sub_authority
+    attr_reader :subauthority
 
-    def initialize(sub_authority)
-      @sub_authority = sub_authority
+    def initialize(subauthority)
+      @subauthority = subauthority
     end
     include WebServiceBase
 
@@ -35,7 +35,7 @@ module Qa::Authorities
     end
 
     def get_raw_response query_type, id
-      query_url = Oclcts.url_pattern(query_type).gsub("{query}", id).gsub("{id}", id).gsub("{authority-id}", sub_authority)
+      query_url = Oclcts.url_pattern(query_type).gsub("{query}", id).gsub("{id}", id).gsub("{authority-id}", subauthority)
       @raw_response = Nokogiri::XML(open(query_url))
     end
   end
