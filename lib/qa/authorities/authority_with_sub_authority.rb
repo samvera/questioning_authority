@@ -1,14 +1,17 @@
 module Qa::Authorities
   module AuthorityWithSubAuthority
 
-    # Registers the authority and its sub-authority if it has one
     def new(subauthority=nil)
       raise "Initializing with as sub authority is removed. use #{self.class}.subauthority_for(#{subauthority.inspect}) instead"
     end
 
     def subauthority_for(subauthority)
       validate_subauthority!(subauthority)
-      [self, subauthority].join('::').classify.constantize.new
+      subauthority_class(subauthority).new
+    end
+
+    def subauthority_class(name)
+      [self, name].join('::').classify.constantize
     end
 
     def validate_subauthority!(subauthority)

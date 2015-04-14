@@ -6,7 +6,11 @@ module Qa::Authorities
     extend AuthorityWithSubAuthority
 
     def self.subauthorities
-      [ "AAT" ]
+      [ "aat" ]
+    end
+
+    def self.subauthority_class(_)
+      AAT
     end
   end
 end

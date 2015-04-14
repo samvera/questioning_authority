@@ -21,12 +21,12 @@ describe Qa::Authorities::Getty do
     end
     context "with a valid sub-authority" do
       it "should create the authority" do
-        expect(described_class.subauthority_for("AAT")).to be_kind_of Qa::Authorities::Getty::AAT
+        expect(described_class.subauthority_for("aat")).to be_kind_of Qa::Authorities::Getty::AAT
       end
     end
   end
 
-  let(:authority) { described_class.subauthority_for("AAT") }
+  let(:authority) { described_class.subauthority_for("aat") }
   describe "#build_query_url" do
     subject { authority.build_query_url("foo") }
     it { is_expected.to  match /^http:\/\/vocab\.getty\.edu\// }
