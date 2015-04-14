@@ -20,7 +20,7 @@ module Qa::Authorities
       # The full text index matches on fields besides the term, so we filter to ensure the match is in the term.
       sparql = "SELECT ?s ?name {
               ?s a skos:Concept; luc:term \"#{search}\";
-                 skos:inScheme <http://vocab.getty.edu/#{@subauthority}/> ;
+                 skos:inScheme <http://vocab.getty.edu/aat/> ;
                  gvp:prefLabelGVP [skosxl:literalForm ?name].
               FILTER regex(?name, \"#{search}\", \"i\") .
             } LIMIT 10"
