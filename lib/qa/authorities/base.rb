@@ -18,7 +18,7 @@ module Qa::Authorities
     def find id
     end
 
-    def full_record id, sub_authority=nil
+    def full_record id, subauthority=nil
       Deprecation.warn(".full_record is deprecated. Use .find instead")
       find(id)
     end

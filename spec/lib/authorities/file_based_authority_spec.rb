@@ -1,22 +1,10 @@
 require 'spec_helper'
 
-describe Qa::Authorities::Local do
-
-  let(:authority_a) { Qa::Authorities::Local.new("authority_A") }
-  let(:authority_b) { Qa::Authorities::Local.new("authority_B") }
-  let(:authority_c) { Qa::Authorities::Local.new("authority_C") }
-  let(:authority_d) { Qa::Authorities::Local.new("authority_D") }
-
-  describe "::new" do
-    context "without a sub-authority" do
-      it "should raise an error is the sub-authority is not provided" do
-        expect { Qa::Authorities::Local.new }.to raise_error
-      end
-      it "should raise an error is the sub-authority does not exist" do
-        expect { Qa::Authorities::Local.new("foo") }.to raise_error
-      end
-    end
-  end
+describe Qa::Authorities::Local::FileBasedAuthority do
+  let(:authority_a) { Qa::Authorities::Local.subauthority_for("authority_A") }
+  let(:authority_b) { Qa::Authorities::Local.subauthority_for("authority_B") }
+  let(:authority_c) { Qa::Authorities::Local.subauthority_for("authority_C") }
+  let(:authority_d) { Qa::Authorities::Local.subauthority_for("authority_D") }
 
   describe "#all" do
     let(:expected) { [ { 'id'=> "A1", 'label' => "Abc Term A1" },
@@ -34,12 +22,12 @@ describe Qa::Authorities::Local do
       end
     end
     context "authority YAML file is a list of terms" do
-      let(:expected) { [ { 'id' => "Term C1", 'label' => "Term C1" }, 
+      let(:expected) { [ { 'id' => "Term C1", 'label' => "Term C1" },
                          { 'id' => "Term C2", 'label' => "Term C2" },
                          { 'id' => "Term C3", 'label' => "Term C3" } ] }
       it "should use the terms as labels" do
         expect(authority_c.all).to eq(expected)
-      end   
+      end
     end
     context "YAML file is malformed" do
       it "should raise an error" do
@@ -75,7 +63,7 @@ describe Qa::Authorities::Local do
       end
     end
   end
-  
+
   describe "#find" do
     context "source is a hash" do
       let(:id) { "A2" }

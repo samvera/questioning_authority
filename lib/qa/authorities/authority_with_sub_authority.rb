@@ -1,17 +1,26 @@
 module Qa::Authorities
-  class AuthorityWithSubAuthority < Base
-    attr_reader :sub_authority
+  module AuthorityWithSubAuthority
 
-    # Registers the authority and its sub-authority if it has one
-    def initialize(sub_authority=nil)
-      @sub_authority = sub_authority
-      raise Qa::MissingSubAuthority, "No sub-authority provided" if sub_authority.nil?
-      raise Qa::InvalidSubAuthority, "Unable to initialize sub-authority #{sub_authority} for #{self.class.name}" unless sub_authorities.include?(sub_authority)
+    def new(subauthority=nil)
+      raise "Initializing with as sub authority is removed. use #{self.class}.subauthority_for(#{subauthority.inspect}) instead"
+    end
+
+    def subauthority_for(subauthority)
+      validate_subauthority!(subauthority)
+      subauthority_class(subauthority).new
+    end
+
+    def subauthority_class(name)
+      [self, name].join('::').classify.constantize
+    end
+
+    def validate_subauthority!(subauthority)
+      raise Qa::InvalidSubAuthority, "Unable to initialize sub-authority #{subauthority} for #{self}. Valid sub-authorities are #{subauthorities.inspect}" unless subauthorities.include?(subauthority)
     end
 
     # By default, an authority has no subauthorities unless they
     # are defined by the subclassed authority.
-    def sub_authorities
+    def subauthorities
       []
     end
   end

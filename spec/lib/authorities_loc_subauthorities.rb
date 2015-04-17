@@ -11,8 +11,8 @@ describe Qa::Authorities::LocSubauthority do
 
   context "with a valid subauthority" do
     it "should return a url" do
-      sub_authority_table.keys.each do |authority|
-        expect(subject.get_url_for_authority(authority)).to eq(sub_authority_table[authority])
+      subauthority_table.keys.each do |authority|
+        expect(subject.get_url_for_authority(authority)).to eq(subauthority_table[authority])
       end
     end
   end
@@ -25,7 +25,7 @@ describe Qa::Authorities::LocSubauthority do
 
   # This is the original data structure that was used to define subauthority urls
   # It is retained here to ensure our refactor succeeded
-  def sub_authority_table
+  def subauthority_table
     begin
       vocab_base_url = 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F'
       authority_base_url = 'cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2F'

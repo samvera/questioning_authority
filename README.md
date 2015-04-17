@@ -51,17 +51,17 @@ Start questioning your authorities!
 Return a complete list of terms:
 
     /qa/terms/:vocab
-    /qa/terms/:vocab/:sub_authority
+    /qa/terms/:vocab/:subauthority
 
 Return a set of terms matching a given query
 
     /qa/search/:vocab?q=search_term
-    /qa/search/:vocab/:sub_authority?q=search_term
+    /qa/search/:vocab/:subauthority?q=search_term
 
 Return the complete information for a specific term given its identifier
 
     /qa/show/:vocab/:id
-    /qa/show/:vocab/:sub_authority/:id
+    /qa/show/:vocab/:subauthority/:id
 
 ### JSON Results
 
@@ -136,7 +136,7 @@ authority YAML files are located in `config/authorities/`.  This location can be
 the `:local_path` entry in `config/authorities.yml`.  Relative paths are assumed to be relative to
 `Rails.root`.
 
-Local authority YAML files are named for the sub-authority they represent. The included example "states" sub-authority 
+Local authority YAML files are named for the sub-authority they represent. The included example "states" sub-authority
 is named states.yml.
 
 To create your own local authority, create a .yml file, place it in the configured directory and query it
@@ -148,19 +148,35 @@ using the file's name as the sub-authority.  For example, if I create `foo.yml`,
 
 ##### List of terms
 
-	:terms:
+	terms:
 		- Term 1
 		- Term 2
-		
+
 ##### List of id and term keys and, optionally, active key
 
-	:terms:
-		- :id: id1
-		  :term: Term 1
-		  :active: true
-		- :id: id2
-		  :term: Term 2
-		  :active: false
+	terms:
+		- id: id1
+		  term: Term 1
+		  active: true
+		- id: id2
+		  term: Term 2
+		  active: false
+
+
+#### Adding your own local authorities
+
+If you'd like to add your own local authority that isn't necessarily backed by yaml, create an initializer and tell the local authority about your custom sub-authority:
+
+```ruby
+Qa::Authorities::Local.register_subauthority('names', 'LocalNames')
+```
+
+The second argument is a name of a class that represents your local authority. Then when you go to:
+
+    /qa/search/local/names?q=Zoia
+
+You'll be searching with an instance of `LocalNames`
+
 
 ### Medical Subject Headings (MeSH)
 

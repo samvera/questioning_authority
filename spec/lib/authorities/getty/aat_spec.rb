@@ -1,26 +1,9 @@
 require 'spec_helper'
 
-describe Qa::Authorities::Getty do
+describe Qa::Authorities::Getty::AAT do
 
-  describe "#new" do
-    context "without a sub-authority" do
-      it "should raise an exception" do
-        expect { described_class.new }.to raise_error
-      end
-    end
-    context "with an invalid sub-authority" do
-      it "should raise an exception" do
-        expect { described_class.new("foo") }.to raise_error
-      end
-    end
-    context "with a valid sub-authority" do
-      it "should create the authority" do
-        expect(described_class.new("aat")).to be_kind_of described_class
-      end
-    end
-  end
+  let(:authority) { described_class.new }
 
-  let(:authority) { described_class.new("aat") }
   describe "#build_query_url" do
     subject { authority.build_query_url("foo") }
     it { is_expected.to  match /^http:\/\/vocab\.getty\.edu\// }
@@ -84,5 +67,16 @@ describe Qa::Authorities::Getty do
     it { is_expected.to eq(accept: "application/sparql-results+json") }
   end
 
+  describe "#sparql" do
+    subject { authority.sparql('search_term') }
+    it { is_expected.to eq 'SELECT ?s ?name {
+              ?s a skos:Concept; luc:term "search_term";
+                 skos:inScheme <http://vocab.getty.edu/aat/> ;
+                 gvp:prefLabelGVP [skosxl:literalForm ?name].
+              FILTER regex(?name, "search_term", "i") .
+            } LIMIT 10' }
+  end
+
 end
+
 

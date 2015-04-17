@@ -15,13 +15,13 @@ describe Qa::Authorities::LocalSubauthority do
   before { @original_path = AUTHORITIES_CONFIG[:local_path] }
   after { AUTHORITIES_CONFIG[:local_path] = @original_path }
 
-  describe "#sub_authorities_path" do
+  describe "#subauthorities_path" do
     before { AUTHORITIES_CONFIG[:local_path] = path }
     context "configured with a full path" do
       let(:path) { "/full/path" }
 
       it "returns a full path" do
-        expect(test.sub_authorities_path).to eq(path)
+        expect(test.subauthorities_path).to eq(path)
       end
     end
 
@@ -29,7 +29,7 @@ describe Qa::Authorities::LocalSubauthority do
       let(:path) { "relative/path" }
 
       it "returns a path relative to the Rails applicaition" do
-        expect(test.sub_authorities_path).to eq(File.join(Rails.root, path))
+        expect(test.subauthorities_path).to eq(File.join(Rails.root, path))
       end
     end
   end
