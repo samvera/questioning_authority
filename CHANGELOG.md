@@ -1,3 +1,17 @@
+### 0.5.0 (2014-04-17)
+* 2015-04-14: Use a valid SPARQL query in the AAT authority [Justin Coyne]
+* 2015-04-14: Decouple the path from the subauthority class name. This ensures the
+route for getty aat hasn't changed. [Justin Coyne]
+* 2015-04-10: Subauthority is one word. It doesn't need an underscore [Justin
+Coyne]
+* 2015-04-10: Rename factory() to subauthority_for() [Justin Coyne]
+* 2015-04-09: Add custom local authority to the Readme. (ci skip) [Justin Coyne]
+* 2015-04-09: Add the ability to register new local vocabularies [Justin Coyne]
+* 2015-04-09: Extract FileBasedAuthority spec [Justin Coyne]
+* 2015-04-09: Move authorities specs to an authorities directory [Justin Coyne]
+* 2015-04-09: Extract sub-authorities to separate classes This helps pave the way
+for adding local authorities that are not backed by a yaml file. [Justin Coyne]
+
 ### 0.4.3 (2015-04-09)
 * 2015-04-07: Log a helpful message when an authority or sub-authority can't be
 found [Justin Coyne]
