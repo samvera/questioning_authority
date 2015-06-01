@@ -1,0 +1,10 @@
+{
+  "responseHeader":{
+    "status":0,
+    "QTime":38,
+    "params":{
+      "fl":"suggestall,idroot,auth,type",
+      "q":"suggestall:word+ling",
+      "rows":"20"}},
+  "response":{"numFound":0,"start":0,"docs":[]
+}}
