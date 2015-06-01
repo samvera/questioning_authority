@@ -30,7 +30,7 @@ class Qa::TermsController < ApplicationController
 
   def init_authority
     begin
-      mod = authority_class.constantize
+      mod = authority_class.camelize.constantize
     rescue NameError => e
       logger.warn "Unable to initialize authority #{authority_class}"
       head :not_found
