@@ -49,20 +49,34 @@ describe Qa::TermsController, :type => :controller do
 
   describe "#search" do
 
-    before :each do
-      stub_request(:get, "http://id.loc.gov/search/?format=json&q=Berry&q=cs:http://id.loc.gov/authorities/names").
-        with(:headers => {'Accept'=>'application/json'}).
-        to_return(:body => webmock_fixture("loc-names-response.txt"), :status => 200)
+    context "loc" do
+      before :each do
+        stub_request(:get, "http://id.loc.gov/search/?format=json&q=Berry&q=cs:http://id.loc.gov/authorities/names").
+          with(:headers => {'Accept'=>'application/json'}).
+          to_return(:body => webmock_fixture("loc-names-response.txt"), :status => 200)
+      end
+
+      it "should return a set of terms for a tgnlang query" do
+        get :search, {:q => "Tibetan", :vocab => "tgnlang" }
+        expect(response).to be_success
+      end
+
+      it "should not return 404 if subauthority is valid" do
+        get :search, { :q => "Berry", :vocab => "loc", :subauthority => "names" }
+        expect(response).to be_success
+      end
     end
 
-    it "should return a set of terms for a tgnlang query" do
-      get :search, {:q => "Tibetan", :vocab => "tgnlang" }
-      expect(response).to be_success
-    end
-
-    it "should not return 404 if subauthority is valid" do
-      get :search, { :q => "Berry", :vocab => "loc", :subauthority => "names" }
-      expect(response).to be_success
+    context "assign_fast" do
+      before do
+        stub_request(:get, "http://fast.oclc.org/searchfast/fastsuggest?query=word&queryIndex=suggest50&queryReturn=suggest50,idroot,auth,type&rows=20&suggest=autoSubject").
+          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          to_return(:body => webmock_fixture("assign-fast-topical-result.json"), :status => 200, :headers => {})
+      end
+      it "succeeds if authority class is camelcase" do
+        get :search, { :q => "word", :vocab => "assign_fast", :subauthority => "topical" }
+        expect(response).to be_success
+      end
     end
 
   end

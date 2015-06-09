@@ -13,4 +13,6 @@ module Qa::Authorities
   autoload :Oclcts
   autoload :Tgnlang
   autoload :WebServiceBase
+  autoload :AssignFast
+  autoload :AssignFastSubauthority
 end

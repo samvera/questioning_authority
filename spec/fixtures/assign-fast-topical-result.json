@@ -1,0 +1,130 @@
+{
+  "responseHeader":{
+    "status":0,
+    "QTime":1,
+    "params":{
+      "fl":"suggest50,idroot,auth,type",
+      "q":"suggest50:word",
+      "rows":"20"}},
+  "response":{"numFound":1608,"start":0,"docs":[
+      {
+        "idroot":"fst01168328",
+        "type":"alt",
+        "auth":"Vocabulary",
+        "suggest50":[
+          "Word books"]},
+      {
+        "idroot":"fst01168328",
+        "type":"alt",
+        "auth":"Vocabulary",
+        "suggest50":[
+          "Words, Stock of"]},
+      {
+        "idroot":"fst01180127",
+        "type":"auth",
+        "auth":"Word processing",
+        "suggest50":[
+          "Word processing"]},
+      {
+        "idroot":"fst01180127",
+        "type":"alt",
+        "auth":"Word processing",
+        "suggest50":[
+          "Processing, Word"]},
+      {
+        "idroot":"fst01180127",
+        "type":"alt",
+        "auth":"Word processing",
+        "suggest50":[
+          "Word processing--Computer programs"]},
+      {
+        "idroot":"fst01180127",
+        "type":"alt",
+        "auth":"Word processing",
+        "suggest50":[
+          "Word processing (Office practice)"]},
+      {
+        "idroot":"fst00911149",
+        "type":"alt",
+        "auth":"English language--Etymology",
+        "suggest50":[
+          "English language--Word history"]},
+      {
+        "idroot":"fst01180108",
+        "type":"auth",
+        "auth":"Word games",
+        "suggest50":[
+          "Word games"]},
+      {
+        "idroot":"fst01180108",
+        "type":"alt",
+        "auth":"Word games",
+        "suggest50":[
+          "Word puzzles"]},
+      {
+        "idroot":"fst01180168",
+        "type":"auth",
+        "auth":"Word recognition",
+        "suggest50":[
+          "Word recognition"]},
+      {
+        "idroot":"fst00884211",
+        "type":"alt",
+        "auth":"Crossword puzzles",
+        "suggest50":[
+          "Cross-word puzzles"]},
+      {
+        "idroot":"fst00900345",
+        "type":"alt",
+        "auth":"Dyslexia",
+        "suggest50":[
+          "Word-blindness, Partial"]},
+      {
+        "idroot":"fst01134080",
+        "type":"auth",
+        "auth":"Stories without words",
+        "suggest50":[
+          "Stories without words"]},
+      {
+        "idroot":"fst01134080",
+        "type":"alt",
+        "auth":"Stories without words",
+        "suggest50":[
+          "Wordless story books"]},
+      {
+        "idroot":"fst00992938",
+        "type":"auth",
+        "auth":"Last words",
+        "suggest50":[
+          "Last words"]},
+      {
+        "idroot":"fst00992938",
+        "type":"alt",
+        "auth":"Last words",
+        "suggest50":[
+          "Deathbed words"]},
+      {
+        "idroot":"fst00992938",
+        "type":"alt",
+        "auth":"Last words",
+        "suggest50":[
+          "Dying words"]},
+      {
+        "idroot":"fst01355332",
+        "type":"auth",
+        "auth":"Words of Jesus Christ",
+        "suggest50":[
+          "Words of Jesus Christ"]},
+      {
+        "idroot":"fst00911178",
+        "type":"auth",
+        "auth":"English language--Foreign words and phrases",
+        "suggest50":[
+          "English language--Foreign words and phrases"]},
+      {
+        "idroot":"fst00911178",
+        "type":"alt",
+        "auth":"English language--Foreign words and phrases",
+        "suggest50":[
+          "English language--Loan words"]}]
+  }}

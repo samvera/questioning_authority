@@ -1,0 +1,16 @@
+{
+  "responseHeader":{
+    "status":0,
+    "QTime":1,
+    "params":{
+      "fl":"suggestall,idroot,auth,type",
+      "q":"suggestall:ling suggestall:word",
+      "rows":"20"}},
+  "response":{"numFound":1,"start":0,"docs":[
+      {
+        "idroot":"fst01180101",
+        "type":"auth",
+        "auth":"Word (Linguistics)",
+        "suggestall":[
+          "Word (Linguistics)"]}]
+}}
