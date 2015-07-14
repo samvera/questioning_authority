@@ -1,5 +1,5 @@
 module Qa::Authorities
-  class Getty::AAT < Base
+  class Getty::TGN < Base
     include WebServiceBase
 
     attr_reader :subauthority
@@ -18,16 +18,19 @@ module Qa::Authorities
 
     def build_query_url q
       query = URI.escape(sparql(untaint(q)))
-      "http://vocab.getty.edu/sparql.json?query=#{URI.escape(sparql(q))}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"
+      "http://vocab.getty.edu/sparql.json?query=#{query}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"
+
     end
 
     def sparql(q)
       search = untaint(q)
       # The full text index matches on fields besides the term, so we filter to ensure the match is in the term.
-      sparql = "SELECT ?s ?name {
+      # Retrieve the parentString to help with disambiguation
+      sparql = "SELECT ?s ?name ?par {
               ?s a skos:Concept; luc:term \"#{search}\";
-                 skos:inScheme <http://vocab.getty.edu/aat/> ;
-                 gvp:prefLabelGVP [skosxl:literalForm ?name].
+                 skos:inScheme <http://vocab.getty.edu/tgn/> ;
+                 gvp:prefLabelGVP [skosxl:literalForm ?name] ;
+                  gvp:parentString ?par .
               FILTER regex(?name, \"#{search}\", \"i\") .
             } LIMIT 10"
     end
@@ -41,7 +44,7 @@ module Qa::Authorities
     end
 
     def find_url id
-      "http://vocab.getty.edu/aat/#{id}.json"
+      "http://vocab.getty.edu/tgn/#{id}.json"
     end
 
     def request_options
@@ -50,10 +53,11 @@ module Qa::Authorities
 
     private
 
-    # Reformats the data received from the LOC service
+    # Reformats the data received from the service
+    # Adds the parentString to the location name to enable disambiguation
     def parse_authority_response(response)
       response['results']['bindings'].map do |result|
-        { 'id' => result['s']['value'], 'label' => result['name']['value'] }
+        { 'id' => result['s']['value'], 'label' => result['name']['value']  + ' (' + result['par']['value'] + ')' }
       end
     end
 

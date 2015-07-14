@@ -15,7 +15,10 @@
 /log/*.log
 /tmp
 Gemfile.lock
-Gemfile.lock
 coverage
 pkg
 spec/internal
+
+# Ignore software specific files
+/.idea
+/questioning_authority.iml
