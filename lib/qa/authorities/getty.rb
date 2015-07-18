@@ -4,10 +4,11 @@ module Qa::Authorities
   module Getty
     require 'qa/authorities/getty/aat'
     require 'qa/authorities/getty/tgn'
+    require 'qa/authorities/getty/ulan'
     extend AuthorityWithSubAuthority
 
     def self.subauthorities
-      [ "aat" , "tgn" ]
+      [ "aat" , "tgn", "ulan" ]
     end
 
     def self.subauthority_for(subauthority)
@@ -16,6 +17,8 @@ module Qa::Authorities
         AAT.new(subauthority)
       elsif subauthority == 'tgn'
         TGN.new(subauthority)
+      elsif subauthority == 'ulan'
+        Ulan.new(subauthority)
       end
     end
   end

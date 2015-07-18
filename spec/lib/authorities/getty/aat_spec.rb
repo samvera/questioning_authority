@@ -74,7 +74,7 @@ describe Qa::Authorities::Getty::AAT do
                  skos:inScheme <http://vocab.getty.edu/aat/> ;
                  gvp:prefLabelGVP [skosxl:literalForm ?name].
               FILTER regex(?name, "search_term", "i") .
-            } LIMIT 10' }
+            } ORDER BY ?name' }
   end
 
 end

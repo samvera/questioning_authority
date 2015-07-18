@@ -29,7 +29,7 @@ module Qa::Authorities
                  skos:inScheme <http://vocab.getty.edu/aat/> ;
                  gvp:prefLabelGVP [skosxl:literalForm ?name].
               FILTER regex(?name, \"#{search}\", \"i\") .
-            } LIMIT 10"
+            } ORDER BY ?name"
     end
 
     def untaint(q)
@@ -50,7 +50,7 @@ module Qa::Authorities
 
     private
 
-    # Reformats the data received from the LOC service
+    # Reformats the data received from the Getty service
     def parse_authority_response(response)
       response['results']['bindings'].map do |result|
         { 'id' => result['s']['value'], 'label' => result['name']['value'] }

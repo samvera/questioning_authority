@@ -21,4 +21,4 @@ spec/internal
 
 # Ignore software specific files
 /.idea
-/questioning_authority.iml
+/*.iml
