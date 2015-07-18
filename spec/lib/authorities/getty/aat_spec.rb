@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Qa::Authorities::Getty::AAT do
 
-  let(:authority) { described_class.new("aat") }
+  let(:authority) { described_class.new }
 
   describe "#build_query_url" do
     subject { authority.build_query_url("foo") }

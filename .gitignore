@@ -18,7 +18,3 @@ Gemfile.lock
 coverage
 pkg
 spec/internal
-
-# Ignore software specific files
-/.idea
-/*.iml

@@ -11,14 +11,14 @@ module Qa::Authorities
       [ "aat" , "tgn", "ulan" ]
     end
 
-    def self.subauthority_for(subauthority)
-      validate_subauthority!(subauthority)
-      if subauthority == 'aat'
-        AAT.new(subauthority)
-      elsif subauthority == 'tgn'
-        TGN.new(subauthority)
-      elsif subauthority == 'ulan'
-        Ulan.new(subauthority)
+    def self.subauthority_class(subauthority)
+      case subauthority
+        when 'aat'
+          AAT
+        when 'tgn'
+          TGN
+        when 'ulan'
+          Ulan
       end
     end
   end

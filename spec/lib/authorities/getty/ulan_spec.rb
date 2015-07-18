@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Qa::Authorities::Getty::Ulan do
 
-  let(:authority) { described_class.new("ulan") }
+  let(:authority) { described_class.new }
 
   describe "#build_query_url" do
     subject { authority.build_query_url("foo") }
