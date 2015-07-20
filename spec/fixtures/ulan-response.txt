@@ -1,0 +1,1854 @@
+{
+  "head" : {
+    "vars" : [ "s", "name", "bio" ]
+  },
+  "results" : {
+    "bindings" : [ {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500233743"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Alan Turner and Associates"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architectural firm, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500235825"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Bailey, Henry Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter, illustrator, and educator, 1865-1931"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500187684"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Balfour & Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architectural firm, founded 1885"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500187028"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Blyth, Francis Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architect, active 1759"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500043559"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Breakiron, Margit Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter, active 1958"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500106881"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Brooks, Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architect, born 1943"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500284740"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Brown Craig Turner Architects"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architectural firm, founded 1969"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500115528"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Browne, Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American photographer, born 1949"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500005131"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Dannat, William Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter, 1853-1929"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500124655"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Davey, William Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English engraver, 1818-ca. 1890"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500216421"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "David Turner Associates"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architectural firm, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500020401"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Durrant, Roy Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English painter, 1925-1998"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500082360"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "English, James Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter and printmaker, born 1916"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500255465"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Haworth, Graham Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architect, born 1960"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500246626"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Hayes, Turner, Buttress & Partners"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architectural firm, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500218886"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Lewis, Turner Partnership"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architectural firm, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500258331"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Marsh, George Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Australian businessman, 1855-1932, active in San Francisco"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500022663"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Munns, Henry Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, 1832-1898"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500245684"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "R. Gregory Turner, AIA"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architectural firm, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500054147"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Reid, Albert Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American publisher, painter, and illustrator, 1873-1955"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500125575"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Sargent, Paul Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter and muralist, 1880-1946"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500063637"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Sevier, Alma Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American interior designer, active 20th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500000471"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Shaw, Mary Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Australian architect, 1905-1990"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500042565"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Smith, Barbara Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American performance artist, born 1931"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500269981"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner Brooks Architects"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architectural firm, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500051490"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, A. A. B."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "painter"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500014266"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Alan"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter and printmaker, born 1943"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500237702"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Alan"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architect, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500344323"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Alwyn Scott"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American photographer, born 1936"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500175670"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Andre"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active 1974"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500021568"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Austin Augustus"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American photographer and photolithographer, ca. 1831 - 1866"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500037129"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Benjamin Brecknell"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English photographer and painter, 1815-1894"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500128579"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Bill"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Maori woodcarver, active 1952"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500090844"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Bruce"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, ca.1894-ca.1963"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500273349"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Bryce"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architect, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500008107"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, C."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active 1799-1800"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500012106"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Charles"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English engraver and draftsman, 1774-1857"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500021569"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Charles E."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, 1883-1965"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500015164"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Charles F."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter, active 20th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500022922"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Charles Yardley"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter, 1850-1918"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500078054"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Cholmley"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English artist, active ca. 1708, died 1757"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500240231"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Claude Allen Porter"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architect, engineer, writer, 1869-1955"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500124274"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Daniel"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active 1782-1817"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500124275"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, David"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active from 1880"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500327252"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Dawson"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English banker, 1775-1858"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500095550"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Diane E."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American artist, born 1932"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500051011"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Don LaViere"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter and printmaker, born 1929"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500021486"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, E. J."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, died 1907"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500032186"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Edward"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active 1858-1877"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500190964"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Edwin Page"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active 1880-1884"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500027721"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Elizabeth"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British miniaturist, active 1819-1841"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500175684"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, F."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active 1844"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500000797"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, F. E."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active 19th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500347596"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Frances"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "photographer, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500332091"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Francis"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American quiltmaker, active 1846"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500006685"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Francis"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active 1838-1871"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500031966"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Francis Calcroft"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active 1782, died 1846"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500013522"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Frank"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active 1862"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500095485"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, G. A."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active 1836-1845"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500270888"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, G. D."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American carpenter, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500020045"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, George"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, 1752-ca. 1820"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500024064"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, George, II"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English painter, 1843-1910"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500096518"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Gordon"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English landscape gardener and restorer, active late 20th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500031808"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, H. A."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active 1851"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500198518"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Harriet"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, 1806-1869"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500198564"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Helen"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Scottish artist, born 1937"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500016459"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Helen Maria"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter, 1858-1958"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500123560"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Helen Monro"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Scottish illustrator, glass engraver, and teacher, 1901-1977"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500068020"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Henry"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British cabinetmaker, active 1834-1843"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500044052"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Hoppey"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Northern European painter"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500264028"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Huw"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Australian architect, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500021460"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, J."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active 19th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500197394"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, J."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, 19th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500175693"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, J. A."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active 1900"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500010409"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Jack"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Canadian painter, born 1889"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500106211"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Jacqueline"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active from 1985"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500002614"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, James"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American engraver, active 1744, died 1759"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500009960"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, James A."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Australian painter and photographer, 1850-1908"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500239490"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Janet"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British lighting designer, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500043763"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Johann Christoph"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Austrian artist, ca.1690-1744"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500012639"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, John"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British ceramicist, 1739-1786"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500187067"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, John"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architect, active from 1756, died 1827"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500012638"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, John"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Canadian architect, 1807-1887"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500004024"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, John Damon"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, 1873-1938"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500021981"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, John F. C."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architect, active late 20th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500033954"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Joseph"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architect and builder, ca. 1729-1807"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500026846"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Joseph Mallord William"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English painter and draftsman, 1775-1851"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500026825"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Judith"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American photographer, born 1939"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500336415"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Julius C."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "German printmaker, 1881-1948"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500098354"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Katherine"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active 1900-1938"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500064752"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Ken"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British floral gardener and floral designer, active mid- to late 20th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500175701"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Laura"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Belgian artist, 1888-1983"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500091782"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, LeRoy"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter and sculptor, born 1905"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500123918"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Leslie Holland"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American illustrator and cartoonist, 1899 or 1900-1988"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500198517"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Mary Anne"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, 1797-1854"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500331499"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Mary E."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American quiltmaker, active 1846"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500286830"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Mary Lynn"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American interior designer, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500096400"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, N. B."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active 1876"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500086410"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Nancy"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter and muralist, born 1955"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500292755"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Newell"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American journalist, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500191287"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Patricia"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active 1964"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500228379"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Patricio"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Chilean architect, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500343124"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Pete"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American photographer, born 1934"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500196254"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Philip"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English sculptor, born 1918"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500051491"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, R."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "painter, active before 1807"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500028580"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Raphael Angelo"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British draftsman, born 1784"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500247158"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Raymond"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British industrial designer, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500051004"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Raymond"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American sculptor, 1903-1985"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500022026"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Richard"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American artist, born 1943"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500285124"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Richard"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architect, 1945-2005"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500002455"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Richard"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Irish iron founder, engineer, ca.1798-1881"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500020614"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Robert"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architect, active late 20th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500003095"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Robert Chapman"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American ceramicist, born 1913"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500072738"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Ross Sterling"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter, 1847-1915"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500033953"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Samuel"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architect and builder, active second half of 18th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500330544"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Susan Amanda"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American quiltmaker, active 1846"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500332090"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Susanna"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American quiltmaker, active 1846"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500225078"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Suzanne"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American landscape architect, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500282660"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Ted"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American businessman, born 1938"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500188041"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Thackeray"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architect and china painter, 1853-1937"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500175705"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Thomas"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "Australian artist, 1813-1895"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500232658"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Thomas P."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architect, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500109234"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Tommy Neil"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American designer, active late 20th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500191288"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Tony"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British artist, active 1978"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500048756"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Virginia"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American painter, active mid-20th century"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500026848"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, W. H. M."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active 1849-1887"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500279618"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, W. T."
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American architect, contemporary"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500061561"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Weldon"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "contemporary American architect"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500015941"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British ceramicist, 1762-1835"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500060915"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English artist, born 1877"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500240979"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British architect, flourished  1848"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500222026"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "American interior designer, 1935-1989"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500003526"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, 1789-1862"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500018322"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, 1767-1826"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500018227"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William Eddowes"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English animal painter, active 1858-1894"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500230035"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William George"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British urban planner, 1942-1991"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500009986"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William Hamilton"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, ca. 1802-ca. 1879"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500032307"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William Lakin"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English painter, 1867-1936"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500031122"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William, II"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British patron, ca. 1713-1759"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500002113"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, William, of Walthamstow"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "British painter, active 1787-1816"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500196256"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Turner, Winifred"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English sculptor, 1903-1983"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/ulan/500023812"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Warren, Charles Turner"
+      },
+      "bio" : {
+        "type" : "literal",
+        "value" : "English engraver, 1762-1823"
+      }
+    } ]
+  }
+}

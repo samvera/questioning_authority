@@ -1,0 +1,87 @@
+{
+  "head" : {
+    "vars" : [ "s", "name", "par" ]
+  },
+  "results" : {
+    "bindings" : [ {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/tgn/2058300"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Cawood"
+      },
+      "par" : {
+        "type" : "literal",
+        "value" : "Andrew, Missouri, United States, North and Central America, World"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/tgn/2227675"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Cawood Hollow"
+      },
+      "par" : {
+        "type" : "literal",
+        "value" : "Rhea, Tennessee, United States, North and Central America, World"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/tgn/2038117"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Cawood"
+      },
+      "par" : {
+        "type" : "literal",
+        "value" : "Harlan, Kentucky, United States, North and Central America, World"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/tgn/2227674"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Cawood Branch"
+      },
+      "par" : {
+        "type" : "literal",
+        "value" : "Claiborne, Tennessee, United States, North and Central America, World"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/tgn/1028772"
+      },
+      "name" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "Cawood"
+      },
+      "par" : {
+        "type" : "literal",
+        "value" : "North Yorkshire, England, United Kingdom, Europe, World"
+      }
+    }, {
+      "s" : {
+        "type" : "uri",
+        "value" : "http://vocab.getty.edu/tgn/7022503"
+      },
+      "name" : {
+        "type" : "literal",
+        "value" : "Cawood Branch"
+      },
+      "par" : {
+        "type" : "literal",
+        "value" : "Kentucky, United States, North and Central America, World"
+      }
+    } ]
+  }
+}
