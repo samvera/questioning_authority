@@ -111,6 +111,43 @@ QA then presents this data to you in JSON format:
         etc...
     ]
 
+### FAST
+
+In the same manner, QA provides a wrapper around OCLC's FAST autocomplete
+service. The following subauthorities are available:
+
+* all
+* personal
+* corporate
+* event
+* uniform
+* topical
+* geographic
+* form_genre
+
+Example qa URL: /qa/search/assign_fast/all?q=periodic+table
+
+The result includes both 'label' and 'value' to help users select the correct
+heading, e.g.:
+
+    [
+        {
+            "id":"fst01789629",
+            "label":"Periodic table",
+            "value":"Periodic table"
+        },
+        {
+            "id":"fst01789629",
+            "label":"Periodic table (Saunders, N.) USE Periodic table",
+            "value":"Periodic table"
+        },...
+    ]
+
+Make sure you handle these correctly in your form.
+
+For more details on this OCLC API, see
+http://www.oclc.org/developer/develop/web-services/fast-api/assign-fast.en.html
+
 ### Local Authorities
 
 For simple use cases when you have a few terms that don't change very often.
