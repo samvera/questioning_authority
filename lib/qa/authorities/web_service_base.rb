@@ -1,4 +1,4 @@
-require 'rest_client'
+require 'faraday'
 
 module Qa::Authorities
   module WebServiceBase
@@ -6,12 +6,14 @@ module Qa::Authorities
 
     # mix-in to retreive and parse JSON content from the web
     def get_json(url)
-      r = RestClient.get url, request_options
+      r = response(url).body
       JSON.parse(r)
     end
 
-    def request_options
-      { accept: :json }
+    def response(url)
+      Faraday.get(url) do |req|
+        req.headers['Accept'] = 'application/json'
+      end
     end
   end
 end

@@ -110,7 +110,7 @@ describe Qa::Authorities::Loc do
     context "using a subject id" do
       let :results do
         stub_request(:get, "http://id.loc.gov/authorities/subjects/sh2002003586.json").
-          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          with(:headers => {'Accept'=>'application/json'}).
           to_return(:status => 200, :body => webmock_fixture("loc-subject-find-response.txt"), :headers => {})
         Qa::Authorities::Loc.subauthority_for("subjects").find("sh2002003586")
       end
