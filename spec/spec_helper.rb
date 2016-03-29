@@ -1,6 +1,4 @@
-require File.expand_path("../internal/config/environment.rb",  __FILE__)
-require 'rspec/rails'
-require 'webmock/rspec'
+
 require 'engine_cart'
 require 'simplecov'
 require 'byebug' unless ENV['TRAVIS']
@@ -10,6 +8,9 @@ ENV["RAILS_ENV"] ||= "test"
 SimpleCov.start "rails"
 SimpleCov.command_name "spec"
 EngineCart.load_application!
+
+require 'rspec/rails'
+require 'webmock/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

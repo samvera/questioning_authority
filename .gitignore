@@ -17,4 +17,4 @@
 Gemfile.lock
 coverage
 pkg
-spec/internal
+.internal_test_app
