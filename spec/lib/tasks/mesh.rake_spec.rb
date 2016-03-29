@@ -6,7 +6,7 @@ describe "mesh rake tasks" do
   before do
     @rake = Rake::Application.new
     Rake.application = @rake
-    Rake.application.rake_require "mesh", ["#{Rails.root}/lib/tasks", "#{Rails.root}/../../lib/tasks"], []
+    Rake.application.rake_require "mesh", ["#{Rails.root}/lib/tasks", "#{Rails.root}/../lib/tasks"], []
     Rake::Task.define_task(:environment)  # rspec has loaded rails
   end
 

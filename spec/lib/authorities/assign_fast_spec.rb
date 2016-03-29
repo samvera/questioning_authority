@@ -45,7 +45,7 @@ describe Qa::Authorities::AssignFast do
       # server returns 200 with empty response; JSON throws a ParserError
       before do
         stub_request(:get, "http://fast.oclc.org/searchfast/fastsuggest?query=word%20ling&queryIndex=suggestall&queryReturn=suggestall,idroot,auth,type&rows=20&suggest=autoSubject").
-         with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+         with(:headers => {'Accept'=>'application/json'}).
          to_return(:status => 200, :body => "", :headers => {})
       end
       it "logs an info and returns an empty array" do
@@ -59,7 +59,7 @@ describe Qa::Authorities::AssignFast do
       # server returns results but no results header
       let :results do
         stub_request(:get, "http://fast.oclc.org/searchfast/fastsuggest?&query=&queryIndex=suggestall&queryReturn=suggestall%2Cidroot%2Cauth%2Ctype&suggest=autoSubject&rows=20").
-          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          with(:headers => {'Accept'=>'application/json'}).
           to_return(:body => webmock_fixture("assign-fast-noheader.json"), :status => 200, :headers => {})
         authority.search("")
        end
@@ -71,7 +71,7 @@ describe Qa::Authorities::AssignFast do
     context "with no results" do
       let :results do
         stub_request(:get, "http://fast.oclc.org/searchfast/fastsuggest?query=word%20ling&queryIndex=suggestall&queryReturn=suggestall,idroot,auth,type&rows=20&suggest=autoSubject").
-          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          with(:headers => {'Accept'=>'application/json'}).
           to_return(:body => webmock_fixture("assign-fast-noresults.json"), :status => 200, :headers => {})
         authority.search("word (ling")
       end
@@ -83,7 +83,7 @@ describe Qa::Authorities::AssignFast do
     context "with suggestall results" do
       let :results do
         stub_request(:get, "http://fast.oclc.org/searchfast/fastsuggest?query=word%20ling&queryIndex=suggestall&queryReturn=suggestall,idroot,auth,type&rows=20&suggest=autoSubject").
-          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          with(:headers => {'Accept'=>'application/json'}).
           to_return(:body => webmock_fixture("assign-fast-oneresult.json"), :status => 200, :headers => {})
         authority.search("word (ling")
       end
@@ -99,7 +99,7 @@ describe Qa::Authorities::AssignFast do
     context "with topical results" do
       let :results do
         stub_request(:get, "http://fast.oclc.org/searchfast/fastsuggest?query=word&queryIndex=suggest50&queryReturn=suggest50,idroot,auth,type&rows=20&suggest=autoSubject").
-          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          with(:headers => {'Accept'=>'application/json'}).
           to_return(:body => webmock_fixture("assign-fast-topical-result.json"), :status => 200, :headers => {})
         Qa::Authorities::AssignFast.subauthority_for("topical").search("word")
       end

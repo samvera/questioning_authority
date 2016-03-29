@@ -70,7 +70,7 @@ describe Qa::TermsController, :type => :controller do
     context "assign_fast" do
       before do
         stub_request(:get, "http://fast.oclc.org/searchfast/fastsuggest?query=word&queryIndex=suggest50&queryReturn=suggest50,idroot,auth,type&rows=20&suggest=autoSubject").
-          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          with(:headers => {'Accept'=>'application/json'}).
           to_return(:body => webmock_fixture("assign-fast-topical-result.json"), :status => 200, :headers => {})
       end
       it "succeeds if authority class is camelcase" do
@@ -117,7 +117,7 @@ describe Qa::TermsController, :type => :controller do
 
       before do
         stub_request(:get, "http://id.loc.gov/authorities/subjects/sh85077565.json").
-          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip, deflate', 'User-Agent'=>'Ruby'}).
+          with(:headers => {'Accept'=>'application/json'}).
           to_return(:status => 200, :body => webmock_fixture("loc-names-response.txt"), :headers => {})
       end
 

@@ -18,7 +18,7 @@ class TestAppGenerator < Rails::Generators::Base
   end
 
   def copy_local_authority_fixtures
-    directory "../fixtures/authorities", "config/authorities"
+    directory "../spec/fixtures/authorities", "config/authorities"
   end
 
   def run_migrations

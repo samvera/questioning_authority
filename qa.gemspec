@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", ">= 3.2.13", "< 5.0"
-  s.add_dependency "rest-client"
+  s.add_dependency "faraday"
   s.add_dependency "nokogiri", "~> 1.6.0"
   s.add_dependency "activerecord-import"
   s.add_dependency "deprecation"
@@ -27,6 +27,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "webmock"
   s.add_development_dependency "simplecov"
-  s.add_development_dependency "engine_cart"
+  s.add_development_dependency "engine_cart", '~> 0.8'
   s.add_development_dependency "byebug"
 end
