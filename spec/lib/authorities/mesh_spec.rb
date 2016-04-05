@@ -30,9 +30,11 @@ describe Qa::Authorities::Mesh do
     let(:m) { Qa::Authorities::Mesh.new }
 
     it "handles queries" do
-      results = m.search('mr')
+      results = m.search('mr ')
+      expect(results.length).to eq(2)
       expect(results).to include( {id: '1', label: 'Mr Plow'} )
-      expect(results.length).to eq(3)
+      expect(results).to include( {id: '2', label: 'Mr Snow'} )
+      expect(results).not_to include( {id: '3', label: 'Mrs Fields'} )
     end
 
     it "returns individual records" do
