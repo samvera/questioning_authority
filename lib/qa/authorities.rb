@@ -4,6 +4,7 @@ module Qa::Authorities
   autoload :AuthorityWithSubAuthority
   autoload :Base
   autoload :Getty
+  autoload :Geonames
   autoload :Loc
   autoload :LocSubauthority
   autoload :Local

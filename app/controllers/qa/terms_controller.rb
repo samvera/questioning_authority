@@ -1,6 +1,7 @@
-# This controller is used for all requests to all authorities. It will verify params and figure out
-# which class to instantiate based on the "vocab" param. All the authotirty classes inherit from a
-# super class so they implement the same methods.
+# This controller is used for all requests to all authorities. It will verify
+# params and figure out which class to instantiate based on the "vocab" param.
+# All the authority classes inherit from a super class so they implement the
+# same methods.
 
 class Qa::TermsController < ApplicationController
 

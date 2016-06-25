@@ -148,6 +148,22 @@ Make sure you handle these correctly in your form.
 For more details on this OCLC API, see
 http://www.oclc.org/developer/develop/web-services/fast-api/assign-fast.en.html
 
+### Geonames
+Make sure you register an account and enable it to see search results.
+
+Ensure you can run a query like this:
+
+```
+http://api.geonames.org/searchJSON?q=port&&maxRows=10username=MY_ACCOUNT_NAME
+```
+
+Then you can set your username like this:
+
+```ruby
+Qa::Authorities::Geonames.username = 'myAccountName'
+
+```
+
 ### Local Authorities
 
 For simple use cases when you have a few terms that don't change very often.
