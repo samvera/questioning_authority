@@ -2,7 +2,11 @@ module Qa::Authorities
   class Geonames < Base
     include WebServiceBase
 
-    class_attribute :username
+    class_attribute :username, :label
+
+    self.label = -> (item) do
+      [item['name'], item['adminName1'], item['countryName']].compact.join(', ')
+    end
 
     def search q
       parse_authority_response(json(build_query_url(q)))
@@ -36,8 +40,9 @@ module Qa::Authorities
     def parse_authority_response(response)
       response['geonames'].map do |result|
         { 'id' => "http://sws.geonames.org/#{result['geonameId']}",
-          'label' => result['name'] }
+          'label' => label.call(result) }
       end
     end
+
   end
 end

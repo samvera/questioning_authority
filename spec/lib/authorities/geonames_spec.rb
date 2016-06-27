@@ -27,12 +27,27 @@ describe Qa::Authorities::Geonames do
 
       subject { authority.search('whatever') }
 
-      it "has id and label keys" do
-        expect(subject.first).to eq("id" => 'http://sws.geonames.org/2088122',
-                                    "label" => "Port Moresby")
-        expect(subject.last).to eq("id" => 'http://sws.geonames.org/377039',
-                                   "label" => "Port Sudan")
-        expect(subject.size).to eq(10)
+      context "with default label" do
+        it "has id and label keys" do
+          expect(subject.first).to eq("id" => 'http://sws.geonames.org/2088122',
+                                      "label" => "Port Moresby, National Capital, Papua New Guinea")
+          expect(subject.last).to eq("id" => 'http://sws.geonames.org/377039',
+                                     "label" => "Port Sudan, Red Sea, Sudan")
+          expect(subject.size).to eq(10)
+        end
+      end
+
+      context "with custom label" do
+        before do
+          @original_label = described_class.label
+          described_class.label = -> (item) { item['name'] }
+        end
+        after do
+          described_class.label = @original_label
+        end
+        it "uses the lambda" do
+          expect(subject.first['label']).to eq("Port Moresby")
+        end
       end
     end
   end
