@@ -8,6 +8,49 @@ describe Qa::Authorities::Local do
     end
   end
 
+  describe "#subauthorities_path" do
+    before do
+      @original_path = AUTHORITIES_CONFIG[:local_path]
+      AUTHORITIES_CONFIG[:local_path] = path
+    end
+    after { AUTHORITIES_CONFIG[:local_path] = @original_path }
+
+    context "configured with a full path" do
+      let(:path) { "/full/path" }
+
+      it "returns a full path" do
+        expect(described_class.subauthorities_path).to eq(path)
+      end
+    end
+
+    context "configured with a relative path" do
+      let(:path) { "relative/path" }
+
+      it "returns a path relative to the Rails applicaition" do
+        expect(described_class.subauthorities_path).to eq(File.join(Rails.root, path))
+      end
+    end
+  end
+
+  describe "#names" do
+    it "returns a list of yaml files" do
+      expect(described_class.names).to include("authority_A", "authority_B", "authority_C", "authority_D", "states")
+    end
+
+    context "when the path doesn't exist" do
+      before do
+        @original_path = AUTHORITIES_CONFIG[:local_path]
+        AUTHORITIES_CONFIG[:local_path] = '/foo/bar' 
+      end
+      after { AUTHORITIES_CONFIG[:local_path] = @original_path }
+
+      it "raises an error" do
+        expect { described_class.names }.to raise_error Qa::ConfigDirectoryNotFound
+      end
+    end
+  end
+
+
   describe ".subauthority_for" do
     context "without a sub-authority" do
       it "should raise an error is the sub-authority is not provided" do
