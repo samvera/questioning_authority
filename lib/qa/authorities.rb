@@ -16,12 +16,4 @@ module Qa::Authorities
   autoload :WebServiceBase
   autoload :AssignFast
   autoload :AssignFastSubauthority
-
-  def self.config
-    @config
-  end
-
-  def self.load_config(file)
-    @config = YAML.load_file(file)
-  end
 end
