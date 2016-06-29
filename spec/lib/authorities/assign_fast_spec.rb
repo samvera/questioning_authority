@@ -6,7 +6,7 @@ describe Qa::Authorities::AssignFast do
   describe "#new" do
     context "without a sub-authority" do
       it "should raise an exception" do
-        expect { Qa::Authorities::AssignFast.new }.to raise_error
+        expect { described_class.new }.to raise_error RuntimeError, "Initializing with as sub authority is removed. use Module.subauthority_for(nil) instead"
       end
     end
   end
@@ -14,7 +14,7 @@ describe Qa::Authorities::AssignFast do
   describe "#subauthority_for" do
     context "with an invalid sub-authority" do
       it "should raise an exception" do
-        expect { Qa::Authorities::AssignFast.subauthority_for("foo") }.to raise_error
+        expect { Qa::Authorities::AssignFast.subauthority_for("foo") }.to raise_error Qa::InvalidSubAuthority
       end
     end
     context "with a valid sub-authority" do

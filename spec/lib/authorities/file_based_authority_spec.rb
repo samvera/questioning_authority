@@ -31,7 +31,7 @@ describe Qa::Authorities::Local::FileBasedAuthority do
     end
     context "YAML file is malformed" do
       it "should raise an error" do
-        expect { authority_d.all }.to raise_error
+        expect { authority_d.all }.to raise_error Psych::SyntaxError
       end
     end
   end
