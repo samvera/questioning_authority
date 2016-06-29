@@ -49,6 +49,14 @@ describe Qa::Authorities::Geonames do
           expect(subject.first['label']).to eq("Port Moresby")
         end
       end
+
+      context "when username isn't set" do
+        before { described_class.username = nil }
+        it "logs an error" do
+          expect(Rails.logger).to receive(:error).with('Questioning Authority tried to call geonames, but no username was set')
+          expect(subject).to be_empty
+        end
+      end
     end
   end
 

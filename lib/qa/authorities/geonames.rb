@@ -9,6 +9,10 @@ module Qa::Authorities
     end
 
     def search q
+      unless username
+        Rails.logger.error "Questioning Authority tried to call geonames, but no username was set"
+        return []
+      end
       parse_authority_response(json(build_query_url(q)))
     end
 
