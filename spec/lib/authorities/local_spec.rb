@@ -4,17 +4,17 @@ describe Qa::Authorities::Local do
 
   describe "new" do
     it "should raise an error" do
-      expect { described_class.new }.to raise_error
+      expect { described_class.new }.to raise_error RuntimeError, "Initializing with as sub authority is removed. use Module.subauthority_for(nil) instead"
     end
   end
 
   describe ".subauthority_for" do
     context "without a sub-authority" do
       it "should raise an error is the sub-authority is not provided" do
-        expect { described_class.subauthority_for }.to raise_error
+        expect { described_class.subauthority_for }.to raise_error ArgumentError
       end
       it "should raise an error is the sub-authority does not exist" do
-        expect { described_class.subauthority_for("foo") }.to raise_error
+        expect { described_class.subauthority_for("foo") }.to raise_error Qa::InvalidSubAuthority
       end
     end
 
