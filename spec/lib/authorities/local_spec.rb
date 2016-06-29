@@ -10,10 +10,10 @@ describe Qa::Authorities::Local do
 
   describe "#subauthorities_path" do
     before do
-      @original_path = Qa::Authorities.config[:local_path]
-      Qa::Authorities.config[:local_path] = path
+      @original_path = described_class.config[:local_path]
+      described_class.config[:local_path] = path
     end
-    after { Qa::Authorities.config[:local_path] = @original_path }
+    after { described_class.config[:local_path] = @original_path }
 
     context "configured with a full path" do
       let(:path) { "/full/path" }
@@ -39,10 +39,10 @@ describe Qa::Authorities::Local do
 
     context "when the path doesn't exist" do
       before do
-        @original_path = Qa::Authorities.config[:local_path]
-        Qa::Authorities.config[:local_path] = '/foo/bar' 
+        @original_path = described_class.config[:local_path]
+        described_class.config[:local_path] = '/foo/bar' 
       end
-      after { Qa::Authorities.config[:local_path] = @original_path }
+      after { described_class.config[:local_path] = @original_path }
 
       it "raises an error" do
         expect { described_class.names }.to raise_error Qa::ConfigDirectoryNotFound

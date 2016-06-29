@@ -5,13 +5,21 @@ module Qa::Authorities
     autoload :FileBasedAuthority
     autoload :Registry
 
+    def self.config
+      @config
+    end
+
+    def self.load_config(file)
+      @config = YAML.load_file(file)
+    end
+
     # Path to sub-authority files is either the full path to a directory or
     # the path to a directory relative to the Rails application
     def self.subauthorities_path
-      if Qa::Authorities.config[:local_path].starts_with?(File::Separator)
-        Qa::Authorities.config[:local_path]
+      if config[:local_path].starts_with?(File::Separator)
+        config[:local_path]
       else
-        File.join(Rails.root, Qa::Authorities.config[:local_path])
+        File.join(Rails.root, config[:local_path])
       end
     end
 
