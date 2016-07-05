@@ -4,6 +4,7 @@ module Qa::Authorities
     extend AuthorityWithSubAuthority
     autoload :FileBasedAuthority
     autoload :Registry
+    autoload :TableBasedAuthority
 
     def self.config
       @config

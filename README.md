@@ -166,11 +166,12 @@ Qa::Authorities::Geonames.username = 'myAccountName'
 
 ### Local Authorities
 
+#### In YAML files
 For simple use cases when you have a few terms that don't change very often.
 
 Run the generator to install configuration files and an example authority.
 
-    rails generate qa:local
+    rails generate qa:local:files
 
 This will install a sample states authority file that lists all the states in the U.S.  To query it,
 
@@ -229,6 +230,44 @@ The second argument is a name of a class that represents your local authority. T
     /qa/search/local/names?q=Zoia
 
 You'll be searching with an instance of `LocalNames`
+
+### In database tables
+
+Run the generator to install configuration files and an example authority.
+
+    rails generate qa:local:tables
+    rake db:migrate
+
+This will create two tables/models Qa::LocalAuthority and Qa::LocalAuthorityEntry. You can then add terms to each:
+
+    language_auth = Qa::LocalAuthority.find_or_create_by(name: 'language')
+    Qa::LocalAuthorityEntry.create(local_authority: language_auth,
+                                   label: 'French',
+                                   uri: 'http://id.loc.gov/vocabulary/languages/fre')
+    Qa::LocalAuthorityEntry.create(local_authority: language_auth,
+                                   label: 'Uighur',
+                                   uri: 'http://id.loc.gov/vocabulary/languages/uig')
+
+Unfortunately, Rails doesn't have a mechnism for adding functional indexes to tables, so if you have a lot of rows, you'll want to add an index:
+
+    CREATE INDEX "index_qa_local_authority_entries_on_lower_label" ON 
+      "qa_local_authority_entries" (local_authority_id, lower(label))
+
+Finall you want register your authority in an initializer:
+
+    Qa::Authorities::Local.register_subauthority('languages', 'Qa::Authorities::Local::TableBasedAuthority')
+
+Then you can search for 
+
+    /qa/search/local/languages?q=Fre
+
+Results are in JSON.
+
+    [{"id":"http://id.loc.gov/vocabulary/languages/fre","label":"French"}]
+
+The entire list (up to the first 1000 terms) can also be returned using:
+
+    /qa/terms/local/languages/
 
 
 ### Medical Subject Headings (MeSH)

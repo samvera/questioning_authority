@@ -14,7 +14,8 @@ class TestAppGenerator < Rails::Generators::Base
   end
 
   def run_local_authority_installer
-    generate "qa:local"
+    generate "qa:local:files"
+    generate "qa:local:tables"
   end
 
   def copy_local_authority_fixtures
