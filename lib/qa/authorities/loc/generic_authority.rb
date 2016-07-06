@@ -7,7 +7,7 @@ module Qa::Authorities
 
     include WebServiceBase
 
-   def response(url)
+    def response(url)
       uri = URI(url)
       conn = Faraday.new uri.scheme+"://"+uri.host
       conn.options.params_encoder = Faraday::FlatParamsEncoder
