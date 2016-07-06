@@ -9,17 +9,11 @@ module Qa::Authorities
       r = response(url).body
       JSON.parse(r)
     end
-
+    
     def response(url)
-      uri = URI(url)
-      conn = Faraday.new uri.scheme+"://"+uri.host
-      conn.options.params_encoder = Faraday::FlatParamsEncoder
-      conn.get do |req|
-        req.headers['Accept'] = 'application/json'        
-        req.url 'search/', :format => "json"
-        req.params = Rack::Utils.parse_query(uri.query)
+      Faraday.get(url) do |req|
+        req.headers['Accept'] = 'application/json'
       end
-
     end
   end
 end
