@@ -5,6 +5,7 @@ module Qa::Authorities
     autoload :FileBasedAuthority
     autoload :Registry
     autoload :TableBasedAuthority
+    autoload :MysqlTableBasedAuthority
 
     def self.config
       @config

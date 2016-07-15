@@ -238,6 +238,12 @@ Run the generator to install configuration files and an example authority.
     rails generate qa:local:tables
     rake db:migrate
 
+
+  **Note: If you are using MYSQL as your database use the MSQL database generator instead**  
+
+    rails generate qa:local:tables:mysql
+    rake db:migrate
+
 This will create two tables/models Qa::LocalAuthority and Qa::LocalAuthorityEntry. You can then add terms to each:
 
     language_auth = Qa::LocalAuthority.find_or_create_by(name: 'language')
@@ -253,9 +259,13 @@ Unfortunately, Rails doesn't have a mechnism for adding functional indexes to ta
     CREATE INDEX "index_qa_local_authority_entries_on_lower_label" ON 
       "qa_local_authority_entries" (local_authority_id, lower(label))
 
+  **Note: If you are using MYSQL as your database and used the MSQL database gerator we tried to execute the correct SQL to create the virtual fields and indexes for you**  
+
 Finall you want register your authority in an initializer:
 
     Qa::Authorities::Local.register_subauthority('languages', 'Qa::Authorities::Local::TableBasedAuthority')
+
+  **Note: If you are using MYSQL as your database and used the MSQL database gerator register the MysqlTableBasedAuthority instead of the TableBasedAuthority**  
 
 Then you can search for 
 
@@ -268,7 +278,6 @@ Results are in JSON.
 The entire list (up to the first 1000 terms) can also be returned using:
 
     /qa/terms/local/languages/
-
 
 ### Medical Subject Headings (MeSH)
 

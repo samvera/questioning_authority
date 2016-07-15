@@ -5,6 +5,11 @@ module Qa::Local
     include ActiveRecord::Generators::Migration
 
     def migrations
+      if defined?(ActiveRecord::ConnectionAdapters::Mysql2Adapter) &&  ActiveRecord::Base.connection.instance_of?(ActiveRecord::ConnectionAdapters::Mysql2Adapter)
+        message = "Use the mysql table based generator if you are using mysql 'rails generate qa:local:tables:mysql'"
+        say_status("error", message, :red)
+        return 0
+      end
       generate "model qa/local_authority name:string:uniq"
       generate "model qa/local_authority_entry local_authority:references label:string uri:string:uniq"
       migration_file = Dir.entries(File.join(destination_root,'db/migrate/'))
