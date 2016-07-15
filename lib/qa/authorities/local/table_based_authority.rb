@@ -7,6 +7,7 @@ module Qa::Authorities
           "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, lower(label))\n" \
           "   OR on Sqlite: \n" \
           "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, label collate nocase)\n" \
+          "   OR for MySQL use the MSQLTableBasedAuthority instead, since mysql does not support functional indexes."
       end
     end
 
