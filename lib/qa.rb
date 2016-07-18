@@ -6,6 +6,7 @@ module Qa
   extend ActiveSupport::Autoload
 
   autoload :Authorities
+  autoload :Services
 
   # Raised when the configuration directory for local authorities doesn't exist
   class ConfigDirectoryNotFound < StandardError; end
