@@ -154,7 +154,7 @@ Make sure you register an account and enable it to see search results.
 Ensure you can run a query like this:
 
 ```
-http://api.geonames.org/searchJSON?q=port&&maxRows=10username=MY_ACCOUNT_NAME
+http://api.geonames.org/searchJSON?q=port&&maxRows=10&username=MY_ACCOUNT_NAME
 ```
 
 Then you can set your username like this:
