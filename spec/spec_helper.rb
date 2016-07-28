@@ -49,3 +49,10 @@ def load_fixture_file(fname)
     return f.read
   end
 end
+
+# load linked data authorities for testing
+Dir[File.join(Qa::Engine.root,'spec','fixtures','authorities','linked_data','*.yml')].each do |fn|
+  auth = File.basename(fn,'.yml').upcase.to_sym
+  cfg = YAML.load_file(File.expand_path( fn, __FILE__))
+  LINKED_DATA_AUTHORITIES_CONFIG[auth] = cfg
+end

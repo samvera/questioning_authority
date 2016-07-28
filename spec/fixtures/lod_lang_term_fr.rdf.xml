@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skosxl="http://www.w3.org/2008/05/skos-xl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xmlns:void="http://rdfs.org/ns/void#"
+         xmlns:ns0="http://art.uniroma2.it/ontologies/vocbench#">
+
+  <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_ar_1299487481966">
+    <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+  </skosxl:Label>
+
+  <skos:Concept rdf:about="http://aims.fao.org/aos/agrovoc/c_9513">
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_fr_1299487482080">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2014-07-03T18:51:03Z</dc:modified>
+    <skos:inScheme>
+      <skos:ConceptScheme rdf:about="http://aims.fao.org/aos/agrovoc">
+      </skos:ConceptScheme>
+    </skos:inScheme>
+
+    <skos:prefLabel xml:lang="fr">Babeurre</skos:prefLabel>
+    <skos:broader>
+      <skos:Concept rdf:about="http://aims.fao.org/aos/agrovoc/c_4830">
+        <skos:prefLabel xml:lang="fr">Produit laitier</skos:prefLabel>
+        <skos:narrower rdf:resource="http://aims.fao.org/aos/agrovoc/c_9513"/>
+      </skos:Concept>
+    </skos:broader>
+
+    <skos:altLabel xml:lang="fr">délicieux</skos:altLabel>
+    <void:inDataset rdf:resource="http://aims.fao.org/aos/agrovoc/void.ttl#Agrovoc"/>
+    <ns0:hasStatus rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Published</ns0:hasStatus>
+    <skos:closeMatch>
+      <rdf:Description rdf:about="http://dbpedia.org/resource/Buttermilk">
+        <skos:closeMatch rdf:resource="http://aims.fao.org/aos/agrovoc/c_9513"/>
+      </rdf:Description>
+    </skos:closeMatch>
+
+    <skos:exactMatch>
+      <rdf:Description rdf:about="http://cat.aii.caas.cn/concept/c_26308">
+        <skos:exactMatch rdf:resource="http://aims.fao.org/aos/agrovoc/c_9513"/>
+      </rdf:Description>
+    </skos:exactMatch>
+
+    <skos:exactMatch>
+      <rdf:Description rdf:about="http://lod.nal.usda.gov/nalt/20627">
+        <skos:exactMatch rdf:resource="http://aims.fao.org/aos/agrovoc/c_9513"/>
+      </rdf:Description>
+    </skos:exactMatch>
+
+    <skos:exactMatch>
+      <rdf:Description rdf:about="http://d-nb.info/gnd/4147072-2">
+        <skos:exactMatch rdf:resource="http://aims.fao.org/aos/agrovoc/c_9513"/>
+      </rdf:Description>
+    </skos:exactMatch>
+
+    <dc:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2011-11-20T20:29:54Z</dc:created>
+
+  </skos:Concept>
+
+</rdf:RDF>

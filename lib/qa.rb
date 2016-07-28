@@ -15,4 +15,19 @@ module Qa
 
   # Raised when a subauthority is not valid
   class InvalidSubAuthority < ArgumentError; end
+
+  # Raised when a request is made to a non-configured linked data authority
+  class InvalidLinkedDataAuthority < ArgumentError; end
+
+  # Raised when a response is in an unsupported format
+  class UnsupportedFormat < ArgumentError; end
+
+  # Raised when a configuration parameter is incorrect or is required and missing
+  class InvalidConfiguration < ArgumentError; end
+
+  # Raised when a linked data request to a server returns a 500 error
+  class ServiceUnavailable < ArgumentError; end
+
+  # Raised when the server returns 404 for a find term request
+  class TermNotFound < ArgumentError; end
 end

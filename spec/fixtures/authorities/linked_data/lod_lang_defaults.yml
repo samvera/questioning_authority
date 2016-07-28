@@ -1,0 +1,19 @@
+term:
+  url:                  http://localhost/test_default/term/__TERM_ID__
+  term_id:              ID                    # valid values:  ID | URI
+  http_accept:          application/rdf+xml
+  language:             en
+  replacement_count:    0
+  results:
+    id_predicate:       http://purl.org/dc/terms/identifier
+    label_predicate:    http://www.w3.org/2004/02/skos/core#prefLabel
+    altlabel_predicate: http://www.w3.org/2004/02/skos/core#altLabel
+search:
+  url:                  http://localhost/test_default/search?query=__QUERY__
+  http_accept:          application/rdf+xml
+  language:             en
+  replacement_count:    0
+  results:
+    id_predicate:       http://purl.org/dc/terms/identifier
+    label_predicate:    http://www.w3.org/2004/02/skos/core#prefLabel
+    altlabel_predicate: http://www.w3.org/2004/02/skos/core#altLabel
