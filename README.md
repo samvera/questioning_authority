@@ -278,7 +278,12 @@ Results are in JSON.
 The entire list (up to the first 1000 terms) can also be returned using:
 
     /qa/terms/local/languages/
-
+    
+#### Loading RDF data into database tables
+    
+ You can use the Qa::Services::RDFAuthorityParser to import rdf files into yopur database tables.  See the class file, lib/qa/services/rdf_authority_parser.rb, for examples and more information.
+ To run the class in your local project you must include `gem 'linkeddata'` into your Gemfile and `require 'linkeddata'` into an initializer or your application.rb
+   
 ### Medical Subject Headings (MeSH)
 
 Provides autocompletion of [MeSH terms](http://www.nlm.nih.gov/mesh/introduction.html). This

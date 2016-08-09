@@ -29,4 +29,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "simplecov"
   s.add_development_dependency "engine_cart", '~> 0.8'
   s.add_development_dependency "byebug"
+  s.add_development_dependency "linkeddata"
 end

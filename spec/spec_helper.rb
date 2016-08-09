@@ -1,4 +1,6 @@
 
+require 'linkeddata'
+
 require 'engine_cart'
 require 'simplecov'
 require 'byebug' unless ENV['TRAVIS']
@@ -18,7 +20,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
 
-  config.fixture_path = "../spec/fixtures"
+  config.fixture_path =  File.expand_path("../fixtures", __FILE__)
 
   config.use_transactional_fixtures = true
 
