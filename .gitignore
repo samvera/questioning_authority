@@ -18,3 +18,4 @@ Gemfile.lock
 coverage
 pkg
 .internal_test_app
+.byebug_history

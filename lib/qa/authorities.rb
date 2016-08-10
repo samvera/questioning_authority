@@ -16,4 +16,5 @@ module Qa::Authorities
   autoload :WebServiceBase
   autoload :AssignFast
   autoload :AssignFastSubauthority
+  autoload :LinkedData
 end

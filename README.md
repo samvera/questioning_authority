@@ -312,6 +312,303 @@ This may take a few minutes to finish.
 
 **Note:** Updating the tables with new terms is currently not supported.
 
+### Linked Open Data (LOD) Authorities
+
+#### Configuring a LOD Authority
+
+Access to LOD authorities can be configured.  Currently, a configuration exists in QA for OCLC Fast Linked Data, Library of Congress (terms only), and Agrovoc.  Look for configuration files in [/config/authorities/linked_data](https://github.com/ld4l-labs/questioning_authority/tree/linked_data/config/authorities/linked_data).
+
+Example configuration...
+
+```yaml
+# API documentation:
+# http://www.oclc.org/developer/develop/web-services/fast-api/linked-data.en.html
+term:
+  url:                  http://id.worldcat.org/fast/__TERM_ID__/rdf.xml
+  term_id:              ID                    # valid values:  ID | URI
+  http_accept:          application/rdf+xml
+  results:              
+    id_predicate:       http://purl.org/dc/terms/identifier
+    label_predicate:    http://www.w3.org/2004/02/skos/core#prefLabel
+    altlabel_predicate: http://www.w3.org/2004/02/skos/core#altLabel
+    sameas_predicate:   http://schema.org/sameAs
+search:
+  url:                  http://experimental.worldcat.org/fast/search?query=__SUB_AUTH__+all+%22__QUERY__%22&sortKeys=usage&maximumRecords=__MAX_RECORDS__
+  http_accept:          application/rdf+xml
+  replacement_count:    1
+  replacement_1:
+    param:        maximumRecords
+    pattern:      __MAX_RECORDS__
+    default:      "20"
+  results:
+    id_predicate:       http://purl.org/dc/terms/identifier
+    label_predicate:    http://www.w3.org/2004/02/skos/core#prefLabel
+#    altlabel_predicate: http://www.w3.org/2004/02/skos/core#altLabel   # too long to be practical
+  subauthorities:
+    replacement:
+      pattern:    __SUB_AUTH__
+      default:    "cql.any"                   # Keywords in all headings
+    topic:              oclc.topic             # Keywords in topical headings  (e.g. universities)
+    geographic:         oclc.geographic        # Keywords in geographical headings  (e.g. ithaca)
+    event_name:         oclc.eventName         # Keywords in event headings  (e.g. woodstock)
+    personal_name:      oclc.personalName      # Keywords in personal headings  (e.g. george washington)
+    corporate_name:     oclc.corporateName     # Keywords in corporate name headings  (e.g. cornell)
+    uniform_title:      oclc.uniformTitle      # Keywords in uniform title headings (e.g. snow white)
+    period:             oclc.period            # Keywords in period headings  (e.g. 1562)
+    form:               oclc.form              # Keywords in form headings  (e.g. jazz)
+    alt_lc:             oclc.altlc             # Keywords in LC Source headings  (e.g. gorilla)
+```
+
+NOTES:
+* term: (optional) is used to define how to request term information from the authority and how to interpret results.
+  * url: (required) authority API URL for requesting term information from the authority
+  * language:  (optional)  values:  en | fr | etc.  -- identify a language to use to filter out results of other languages
+    * NOTE: Some authoritys' API URL allows language to be specified as a parameter.  In that case, use pattern replacement to add the language to the API URL to prevent alternate languages from being returned in the results.
+    * NOTE: At this writing, only label is filtered.
+  * term_id:  (optional)  values:  ID (default) | URI  - This tells apps whether `__TERM_ID__` replacement is expecting an ID or URI.
+  * http_accept:  (optional)  values:  application/rdf+xml (default) | application/json  (More can be easily added.)
+  * results: (required)  lists predicates to select out for normalization in the hash results
+    * id_predicate:  (optional)
+    * label_predicate:  (required)
+    * altlabel_predicate:  (optional)
+    * sameas_predicate:  (optional)
+    * narrower_predicate:  (optional)
+    * broader_predicate:  (optional)
+  * subauthorities:  (optional)
+    * replacement:  (required)  specify default value to use for subauthority replacement pattern
+      * pattern:  (required)  pattern in authority URL that will be replaced to identify the subauthority (e.g. `__SUB_AUTH__`)
+      * default:  (required)  default value for subauthority (e.g. "cql.any"  or  "")
+    * subauthority name (e.g. topic:, personal_name:, corporate_name, etc.): (at least one required)  substitution value for the subathority pattern in the URL
+  * replacement_count:  (required)  >= 0
+    * replacement_#:  (required if replacement_count > 0)  # becomes an increment for replacements 1 to replacement_count
+      * param:  (required)  name of parameter as passed in on the QA URL
+      * pattern:  (required)  pattern in the authority URL identifying the location of the replacement (e.g. `__MAX_RECORDS__`)
+      * default:  (required)  default value if one isn't provided on the QA URL
+      
+* search: (optional) is used to define how to send a query to the authority and how to interpret results.
+  * url: (required) authority API URL for sending a query to the authority
+  * language:  (optional)  values:  en | fr | etc.  -- identify a language to use to filter out results of other languages
+    * NOTE: Some authoritys' API URL allows language to be specified as a parameter.  In that case, use pattern replacement to add the language to the API URL to prevent alternate languages from being returned in the results.
+    * NOTE: At this writing, only label is filtered.
+  * http_accept:  (optional)  values:  application/rdf+xml (default) | application/json  (More can be easily added.)
+  * results: (required)  lists predicates to normalize and include in json results
+    * id_predicate:  (optional)
+    * label_predicate:  (required)
+    * altlabel_predicate:  (optional)
+  * subauthorities:  (optional)
+    * replacement:  (required)  specify default value to use for subauthority replacement pattern
+      * pattern:  (required)  pattern in authority URL that will be replaced to identify the subauthority (e.g. `__SUB_AUTH__`)
+      * default:  (required)  default value for subauthority (e.g. "cql.any"  or  "")
+    * subauthority name (e.g. topic:, personal_name:, corporate_name, etc.): (at least one required)  substitution value for the subathority pattern in the URL
+  * replacement_count:  (required)  >= 0
+    * replacement_#:  (required if replacement_count > 0)  # becomes an increment for replacements 1 to replacement_count
+      * param:  (required)  name of parameter as passed in on the QA URL
+      * pattern:  (required)  pattern in the authority URL identifying the location of the replacement (e.g. `__MAX_RECORDS__`)
+      * default:  (required)  default value if one isn't provided on the QA URL
+
+
+##### Add new configuration      
+You can add linked data authorities by adding configuration files to your rails app in `Rails.root/config/authorities/linked_data/YOUR_AUTH.yml`
+
+##### Modify existing configuration
+You can modify existing configs by creating a file with the same name as the one you want to override in your rails app in `Rails.root/config/authorities/linked_data/SAME_AUTH_NAME.yml` and change only the attributes you want to override.  Be sure to include previous levels.  
+
+For example, to change the default maximumRecords for search, the override config file should be.
+
+```
+search:
+  replacement_1:
+    default:      "10"
+```
+
+#### Query
+To query OCLC Fast Linked Data service by code...
+
+```ruby
+# Search OCLC Fast all sub-authorities with default value for number of results to return
+lda = Qa::Authorities::LinkedData::GenericAuthority.new(:OCLC_FAST)
+ld_results = lda.search "Cornell University"
+ 
+# Search OCLC Fast all sub-authorities passing in value for number of results to return
+lda = Qa::Authorities::LinkedData::GenericAuthority.new(:OCLC_FAST)
+ld_results = lda.search "Cornell University",{"maximumRecords" => "5"}
+ 
+# Search OCLC Fast Corporate Name sub-authority passing in value for number of results to return
+lda = Qa::Authorities::LinkedData::GenericAuthority.new(:OCLC_FAST,'corporate_name')
+ld_results = lda.search "Cornell University",{"maximumRecords" => "3"}
+```
+
+or by URL when QA is an installed gem in an app...
+
+```
+http://localhost:3000/qa/search/linked_data/oclc_fast?q=Cornell&maximumRecords=3
+```
+
+Returns results in the format...
+
+```json
+[{"uri":"http://id.worldcat.org/fast/530369","id":"530369","label":"Cornell University"},
+ {"uri":"http://id.worldcat.org/fast/5140","id":"5140","label":"Cornell, Joseph"},
+ {"uri":"http://id.worldcat.org/fast/557490","id":"557490","label":"New York State School of Industrial and Labor Relations"}]
+```
+
+NOTE: For some authorities, the uri and id will both be the uri.
+
+and with subauthority...
+
+```
+http://localhost:3000/qa/search/linked_data/oclc_fast/personal_name?q=Cornell&maximumRecords=3
+```
+
+returning results...
+
+```json
+[{"uri":"http://id.worldcat.org/fast/5140","id":"5140","label":"Cornell, Joseph"},
+ {"uri":"http://id.worldcat.org/fast/72456","id":"72456","label":"Cornell, Sarah Maria, 1802-1832"},
+ {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"}]
+```
+
+#### Find term
+To find a single term in OCLC Fast Linked Data service by code...
+
+```ruby
+# Search OCLC Fast all sub-authorities with default value for number of results to return
+lda = Qa::Authorities::LinkedData::GenericAuthority.new(:OCLC_FAST_ALL)
+ld_results = lda.find 530369
+```
+
+or by URL when QA is an installed gem in an app...
+
+```
+http://localhost:3000/qa/show/linked_data/oclc_fast/530369
+```
+
+Returns results in the format...
+
+```json
+{"uri":"http://id.worldcat.org/fast/530369",
+ "id":"530369","label":"Cornell University",
+ "altlabel":["Ithaca (N.Y.). Cornell University","Kornelʹskii universitet","Kʻang-nai-erh ta hsüeh"],
+ "sameas":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"],
+ "predicates":{
+   "http://purl.org/dc/terms/identifier":"530369",
+   "http://www.w3.org/2004/02/skos/core#inScheme":["http://id.worldcat.org/fast/ontology/1.0/#fast","http://id.worldcat.org/fast/ontology/1.0/#facet-Corporate"],
+   "http://www.w3.org/1999/02/22-rdf-syntax-ns#type":"http://schema.org/Organization",
+   "http://www.w3.org/2004/02/skos/core#prefLabel":"Cornell University",
+   "http://schema.org/name":["Cornell University","Ithaca (N.Y.). Cornell University","Kornelʹskii universitet","Kʻang-nai-erh ta hsüeh"],
+   "http://www.w3.org/2004/02/skos/core#altLabel":["Ithaca (N.Y.). Cornell University","Kornelʹskii universitet","Kʻang-nai-erh ta hsüeh"],
+   "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"]}}
+```
+
+NOTE: All predicates with the URI as the subject will be included under "predicates" key.  The selected keys are determined by the configuration file and can be one or more of id_predicate, label_predicate (required), altlabel_predicate, sameas_predicate, narrower_predicate, or broader_predicate.
+
+#### Add javascript to support autocomplete
+
+**NOTE:** Examples assume the field name is generic_file_corporate_name.  Method names include CorporateName.  This 
+convention allows multiple fields to use autocomplete.
+
+##### For a single value field...
+
+```javascript
+onLoad: function() {
+    this.setInitialCorporateNameAutocomplete();
+},
+
+# called when page loads to add autocomplete to field with generic_file_corporate_name id
+setInitialCorporateNameAutocomplete: function() {
+  $('#generic_file_corporate_name').autocomplete({
+    minLength: 3,
+    source: function (request, response) {
+      $.ajax({
+        url: '/qa/search/linked_data/oclc_fast_all?q=' + request.term + '&maximumRecords=5',
+        type: 'GET',
+        dataType: 'json',
+        complete: function (xhr, status) {
+          var results = $.parseJSON(xhr.responseText);
+          response(results);
+        }
+      });
+    }
+  })
+},
+```
+
+##### For a multiple value field...
+
+```javascript
+onLoad: function() {
+    this.setEventOnAddButton("all");
+    this.setInitialCorporateNameAutocomplete();
+},
+
+# called when page loads to add autocomplete to all fields with generic_file_corporate_name id
+setInitialCorporateNameAutocomplete: function() {
+$('input.generic_file_corporate_name').each(function () {
+   $(this).autocomplete({
+      minLength: 3,
+      source: function (request, response) {
+         $.ajax({
+            url: '/qa/search/linked_data/oclc_fast_all?q=' + request.term + '&maximumRecords=5',
+            type: 'GET',
+            dataType: 'json',
+            complete: function (xhr, status) {
+               var results = $.parseJSON(xhr.responseText);
+               response(results);
+            }
+         });
+      }
+   })
+},
+
+# called when Add button is clicked to add autocomplete to all fields with generic_file_corporate_name id AND
+# call setEventOnAddButton to add javascript to call this method to all Add buttons associated with generic_file_corporate_name 
+initCorporateNameAutocomplete: function() {
+   $('input.generic_file_corporate_name').each(function() {
+      $(this).autocomplete({
+         minLength: 3,
+         source: function(request, response) {
+            $.ajax({
+               url: '/qa/search/linked_data/oclc_fast_all?q=' + request.term + '&maximumRecords=3',
+               type: 'GET',
+               dataType: 'json',
+               complete: function(xhr, status) {
+                  var results = $.parseJSON(xhr.responseText);
+                  response(results);
+               }
+            });
+         }
+      })
+   })
+   setFileVocabularies.setEventOnAddButton("corporate_name");
+},
+
+
+# called when page loads and from initCorporateNameAutocomplete when Add button is clicked to make all Add buttons including 
+# the new one for all generic_file_corporate_name fields call function initCorporateNameAutocomplete when an Add button for 
+# this field is clicked
+setEventOnAddButton: function(target) {
+  $('button.add').each(function() {
+    if ( target == "corporate_name" || target == "all" ) {
+      if ( $(this).closest('div').attr('class').indexOf('generic_file_corporate_name') >= 0 ) {
+        $(this).click(function() {
+          setTimeout(setFileVocabularies.initCorporateNameAutocomplete,500);
+        })
+      }
+    }
+  })
+},
+```
+
+To add autocomplete to a second multi-valued field, duplicate setInitialCorporateNameAutocomplete and initCorporateNameAutocomplete. 
+Modify CorporateName, generic_file_corporate_name, and corporate_name to be consistent with the new autocomplete field.  Also, extend
+setEventOnAddButton function to duplicate the `if ( target...  )` block and change the target `"corporate_name"` to be consistent with 
+the new autocomplete field.
+
+**NOTE:** This javascript was tested in a Sufia 6 app.  Additional configuration is required to add a field to a Sufia app.  See Sufia's 
+[documentation](https://github.com/projecthydra/sufia/wiki/Customizing-Metadata) for more information on that process.
+
+
+
 # Developer Notes
 
 [How to Contribute](./CONTRIBUTING.md)
