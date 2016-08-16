@@ -2,7 +2,7 @@ module Qa::Authorities
   class Local::TableBasedAuthority < Base
     def self.check_for_index
       conn = ActiveRecord::Base.connection
-      if conn.table_exists?('local_authority_entries') && !conn.indexes('local_authority_entries').find { |i| i.name == 'index_local_authority_entries_on_lower_label' }
+      if table_or_view_exists? && !conn.indexes('local_authority_entries').find { |i| i.name == 'index_local_authority_entries_on_lower_label' }
         Rails.logger.error "You've installed local authority tables, but you haven't indexed the label.  Rails doesn't support functional indexes in migrations, so you'll have to add this manually:\n" \
           "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, lower(label))\n" \
           "   OR on Sqlite: \n" \
@@ -33,6 +33,15 @@ module Qa::Authorities
     end
 
     private
+
+      def self.table_or_view_exists?
+        conn = ActiveRecord::Base.connection
+        if conn.respond_to?(:data_source_exists?)
+          conn.data_source_exists?('qa_local_authority_entries')
+        else
+          conn.table_exists?('qa_local_authority_entries')
+        end
+      end
 
       def base_relation
         Qa::LocalAuthorityEntry.where(local_authority: local_authority)
