@@ -1,19 +1,22 @@
 module Qa::Authorities
   class Local::TableBasedAuthority < Base
     def self.check_for_index
-      conn = ActiveRecord::Base.connection
-      if table_or_view_exists? && !conn.indexes('local_authority_entries').find { |i| i.name == 'index_local_authority_entries_on_lower_label' }
-        Rails.logger.error "You've installed local authority tables, but you haven't indexed the label.  Rails doesn't support functional indexes in migrations, so you'll have to add this manually:\n" \
-          "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, lower(label))\n" \
-          "   OR on Sqlite: \n" \
-          "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, label collate nocase)\n" \
-          "   OR for MySQL use the MSQLTableBasedAuthority instead, since mysql does not support functional indexes."
+      @checked_for_index ||= begin
+        conn = ActiveRecord::Base.connection
+        if table_or_view_exists? && !conn.indexes('local_authority_entries').find { |i| i.name == 'index_local_authority_entries_on_lower_label' }
+          Rails.logger.error "You've installed local authority tables, but you haven't indexed the label.  Rails doesn't support functional indexes in migrations, so you'll have to add this manually:\n" \
+            "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, lower(label))\n" \
+            "   OR on Sqlite: \n" \
+            "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, label collate nocase)\n" \
+            "   OR for MySQL use the MSQLTableBasedAuthority instead, since mysql does not support functional indexes."
+        end
       end
     end
 
     attr_reader :subauthority
 
     def initialize(subauthority)
+      self.class.check_for_index
       @subauthority = subauthority
     end
 
