@@ -15,6 +15,16 @@ describe Qa::Authorities::Local::TableBasedAuthority do
     Qa::LocalAuthorityEntry.create(local_authority: alternate_auth, label: 'French', uri: 'http://example.com/french')
   end
 
+  describe "::table_name" do
+    subject { described_class.table_name }
+    it { is_expected.to eq("qa_local_authority_entries")}
+  end
+
+  describe "::table_index" do
+    subject { described_class.table_index }
+    it { is_expected.to eq("index_qa_local_authority_entries_on_lower_label")}
+  end
+
   describe "#all" do
     let(:expected) { [ { 'id'=> "A1", 'label' => "Abc Term A1" },
                        { 'id' => "A2", 'label'=> "Term A2" },

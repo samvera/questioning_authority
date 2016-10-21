@@ -1,13 +1,18 @@
 module Qa::Authorities
   class Local::TableBasedAuthority < Base
+
+    class_attribute :table_name, :table_index
+    self.table_name = "qa_local_authority_entries"
+    self.table_index = "index_qa_local_authority_entries_on_lower_label"
+
     def self.check_for_index
       @checked_for_index ||= begin
         conn = ActiveRecord::Base.connection
-        if table_or_view_exists? && !conn.indexes('local_authority_entries').find { |i| i.name == 'index_local_authority_entries_on_lower_label' }
+        if table_or_view_exists? && !conn.indexes(table_name).find { |i| i.name == table_index }
           Rails.logger.error "You've installed local authority tables, but you haven't indexed the label.  Rails doesn't support functional indexes in migrations, so you'll have to add this manually:\n" \
-            "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, lower(label))\n" \
+            "CREATE INDEX \"#{table_index}\" ON \"#{table_name}\" (local_authority_id, lower(label))\n" \
             "   OR on Sqlite: \n" \
-            "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, label collate nocase)\n" \
+            "CREATE INDEX \"#{table_index}\" ON \"#{table_name}\" (local_authority_id, label collate nocase)\n" \
             "   OR for MySQL use the MSQLTableBasedAuthority instead, since mysql does not support functional indexes."
         end
       end
@@ -40,9 +45,9 @@ module Qa::Authorities
       def self.table_or_view_exists?
         conn = ActiveRecord::Base.connection
         if conn.respond_to?(:data_source_exists?)
-          conn.data_source_exists?('qa_local_authority_entries')
+          conn.data_source_exists?(table_name)
         else
-          conn.table_exists?('qa_local_authority_entries')
+          conn.table_exists?(table_name)
         end
       end
 
