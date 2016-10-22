@@ -20,12 +20,12 @@ module Qa::Authorities
 
       def self.logger
         @logger ||= begin
-          ::Rails.logger if defined? Rails and Rails.respond_to? :logger
+          ::Rails.logger if defined? Rails && Rails.respond_to?(:logger)
         end
       end
 
-      def self.logger= logger
-        @logger = logger
+      class << self
+        attr_writer :logger
       end
 
       def add(subauthority, class_name)
@@ -33,10 +33,10 @@ module Qa::Authorities
         @hash[subauthority] = RegistryEntry.new(subauthority, class_name)
       end
 
-
       class RegistryEntry
         def initialize(subauthority, class_name)
-          @subauthority, @class_name = subauthority, class_name
+          @subauthority = subauthority
+          @class_name = class_name
         end
 
         def klass

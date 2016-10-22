@@ -1,11 +1,9 @@
 module Qa::Authorities::LocSubauthority
-
-  def get_url_for_authority authority
-    case
-      when authorities.include?(authority)  then authority_base_url
-      when vocabularies.include?(authority) then vocab_base_url
-      when datatypes.include?(authority)    then datatype_base_url
-      when preservation.include?(authority) then vocab_preservation_base_url
+  def get_url_for_authority(authority)
+    if authorities.include?(authority) then authority_base_url
+    elsif vocabularies.include?(authority) then vocab_base_url
+    elsif datatypes.include?(authority)    then datatype_base_url
+    elsif preservation.include?(authority) then vocab_preservation_base_url
     end
   end
 
@@ -71,20 +69,19 @@ module Qa::Authorities::LocSubauthority
 
   private
 
-  def vocab_base_url
-    "cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F"
-  end
+    def vocab_base_url
+      "cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2F"
+    end
 
-  def authority_base_url
-    "cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2F"
-  end
+    def authority_base_url
+      "cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2F"
+    end
 
-  def datatype_base_url
-    "cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fdatatypes%2F"
-  end
+    def datatype_base_url
+      "cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fdatatypes%2F"
+    end
 
-  def vocab_preservation_base_url
-    "cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fpreservation%2F"
-  end
-
+    def vocab_preservation_base_url
+      "cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fvocabulary%2Fpreservation%2F"
+    end
 end

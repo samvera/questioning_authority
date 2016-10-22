@@ -15,13 +15,12 @@ module Qa::Authorities
     # If the subclassed authority does have this feature
     # then you will overide the #find method in the subclassed authority.
     # TODO: need to set some kind of error here
-    def find id
+    def find(id)
     end
 
-    def full_record id, subauthority=nil
+    def full_record(id, _subauthority = nil)
       Deprecation.warn(".full_record is deprecated. Use .find instead")
       find(id)
     end
-
   end
 end

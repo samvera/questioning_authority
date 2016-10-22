@@ -23,11 +23,13 @@ Gem::Specification.new do |s|
   s.add_dependency "activerecord-import"
   s.add_dependency "deprecation"
 
-  s.add_development_dependency "sqlite3"
-  s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "webmock"
-  s.add_development_dependency "simplecov"
-  s.add_development_dependency "engine_cart", '~> 0.8'
   s.add_development_dependency "byebug"
+  s.add_development_dependency "engine_cart", '~> 0.8'
   s.add_development_dependency "linkeddata"
+  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "simplecov"
+  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "webmock"
+  s.add_development_dependency 'rubocop', '~> 0.42.0'
+  s.add_development_dependency 'rubocop-rspec', '~> 1.5'
 end

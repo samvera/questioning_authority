@@ -8,19 +8,18 @@ module Qa::Authorities
     extend AuthorityWithSubAuthority
 
     def self.subauthorities
-      [ "aat" , "tgn", "ulan" ]
+      ["aat", "tgn", "ulan"]
     end
 
     def self.subauthority_class(subauthority)
       case subauthority
-        when 'aat'
-          AAT
-        when 'tgn'
-          TGN
-        when 'ulan'
-          Ulan
+      when 'aat'
+        AAT
+      when 'tgn'
+        TGN
+      when 'ulan'
+        Ulan
       end
     end
   end
 end
-

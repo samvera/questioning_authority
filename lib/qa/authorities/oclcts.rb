@@ -20,6 +20,5 @@ module Qa::Authorities
     def self.url_pattern(query_type)
       SRU_SERVER_CONFIG["url-pattern"][query_type]
     end
-
   end
 end

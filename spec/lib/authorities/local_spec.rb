@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe Qa::Authorities::Local do
-
   describe "new" do
-    it "should raise an error" do
+    it "raises an error" do
       expect { described_class.new }.to raise_error RuntimeError, "Initializing with as sub authority is removed. use Module.subauthority_for(nil) instead"
     end
   end
@@ -40,7 +39,7 @@ describe Qa::Authorities::Local do
     context "when the path doesn't exist" do
       before do
         @original_path = described_class.config[:local_path]
-        described_class.config[:local_path] = '/foo/bar' 
+        described_class.config[:local_path] = '/foo/bar'
       end
       after { described_class.config[:local_path] = @original_path }
 
@@ -50,20 +49,19 @@ describe Qa::Authorities::Local do
     end
   end
 
-
   describe ".subauthority_for" do
     context "without a sub-authority" do
-      it "should raise an error is the sub-authority is not provided" do
+      it "raises an error is the sub-authority is not provided" do
         expect { described_class.subauthority_for }.to raise_error ArgumentError
       end
-      it "should raise an error is the sub-authority does not exist" do
+      it "raises an error is the sub-authority does not exist" do
         expect { described_class.subauthority_for("foo") }.to raise_error Qa::InvalidSubAuthority
       end
     end
 
     context "with a sub authority" do
       subject { described_class.subauthority_for("authority_A") }
-      it "should return a file authority" do
+      it "returns a file authority" do
         expect(subject).to be_kind_of Qa::Authorities::Local::FileBasedAuthority
       end
     end

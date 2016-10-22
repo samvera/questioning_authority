@@ -4,7 +4,6 @@
 # same methods.
 
 class Qa::TermsController < ApplicationController
-
   before_action :check_vocab_param, :init_authority
   before_action :check_query_param, only: :search
 
@@ -32,18 +31,18 @@ class Qa::TermsController < ApplicationController
   def init_authority
     begin
       mod = authority_class.camelize.constantize
-    rescue NameError => e
+    rescue NameError
       logger.warn "Unable to initialize authority #{authority_class}"
       head :not_found
       return
     end
     begin
-      @authority = if mod.kind_of? Class
-        mod.new
-      else
-        raise Qa::MissingSubAuthority, "No sub-authority provided" if params[:subauthority].blank?
-        mod.subauthority_for(params[:subauthority])
-      end
+      @authority = if mod.is_a? Class
+                     mod.new
+                   else
+                     raise Qa::MissingSubAuthority, "No sub-authority provided" if params[:subauthority].blank?
+                     mod.subauthority_for(params[:subauthority])
+                   end
     rescue Qa::InvalidSubAuthority, Qa::MissingSubAuthority => e
       logger.warn e.message
       head :not_found
@@ -56,13 +55,12 @@ class Qa::TermsController < ApplicationController
 
   private
 
-  def authority_class
-    "Qa::Authorities::"+params[:vocab].capitalize
-  end
+    def authority_class
+      "Qa::Authorities::" + params[:vocab].capitalize
+    end
 
-  # converts wildcards into URL-encoded characters
-  def url_search
-    params[:q].gsub("*", "%2A")
-  end
-
+    # converts wildcards into URL-encoded characters
+    def url_search
+      params[:q].gsub("*", "%2A")
+    end
 end

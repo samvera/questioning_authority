@@ -2,17 +2,14 @@ require 'nokogiri'
 
 module Qa::Authorities
   class Tgnlang < Base
-
     def search(q)
-      getTgnLang(q)
+      get_tgnlang(q)
     end
 
-    def getTgnLang(q)
-      obj = Array.new
+    def get_tgnlang(q)
+      obj = []
       Tgnlang.languages.each do |h|
-        if h["label"].downcase.start_with?(q.downcase)
-          obj.push(h)
-        end
+        obj.push(h) if h["label"].downcase.start_with?(q.downcase)
       end
       obj
     end
@@ -27,7 +24,7 @@ module Qa::Authorities
             lang_array = doc.css("Language").map do |lang|
               id = lang.css("Language_Code").first.text
               label = lang.css("Language_Name").first.text
-              {"id" => id, "label" => label}
+              { "id" => id, "label" => label }
             end
           end
           lang_array
@@ -37,11 +34,9 @@ module Qa::Authorities
     def find(id)
       id = id.downcase
       Tgnlang.languages.each do |h|
-        if h["label"].downcase == id
-          return h
-        end
+        return h if h["label"].downcase == id
       end
-      return {}
+      {}
     end
   end
 end

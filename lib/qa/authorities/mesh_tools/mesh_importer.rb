@@ -12,11 +12,10 @@ module Qa::Authorities
           entry << record['MH'].first.downcase
           entry << get_synonyms(record).join('|')
           entries << entry
-          unless record['MN'].nil?
-            trees += record['MN'].map do |tree_number|
-              [record['UI'].first,
-               tree_number]
-            end
+          next if record['MN'].nil?
+          trees += record['MN'].map do |tree_number|
+            [record['UI'].first,
+             tree_number]
           end
         end
         Qa::SubjectMeshTerm.import([:term_id, :term, :term_lower, :synonyms], entries)
@@ -25,15 +24,14 @@ module Qa::Authorities
 
       private
 
-      def get_synonyms(record)
-        first_terms(record, 'PRINT ENTRY') + first_terms(record, 'ENTRY')
-      end
+        def get_synonyms(record)
+          first_terms(record, 'PRINT ENTRY') + first_terms(record, 'ENTRY')
+        end
 
-      def first_terms(record, field)
-        return [] if record[field].nil?
-        record[field].map { |s| s.split('|').first }
-      end
-
+        def first_terms(record, field)
+          return [] if record[field].nil?
+          record[field].map { |s| s.split('|').first }
+        end
     end
   end
 end

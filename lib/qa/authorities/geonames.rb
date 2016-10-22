@@ -4,11 +4,11 @@ module Qa::Authorities
 
     class_attribute :username, :label
 
-    self.label = -> (item) do
+    self.label = lambda do |item|
       [item['name'], item['adminName1'], item['countryName']].compact.join(', ')
     end
 
-    def search q
+    def search(q)
       unless username
         Rails.logger.error "Questioning Authority tried to call geonames, but no username was set"
         return []
@@ -21,7 +21,7 @@ module Qa::Authorities
       get_json(*args)
     end
 
-    def build_query_url q
+    def build_query_url(q)
       query = URI.escape(untaint(q))
       "http://api.geonames.org/searchJSON?q=#{query}&username=#{username}&maxRows=10"
     end
@@ -30,23 +30,22 @@ module Qa::Authorities
       q.gsub(/[^\w\s-]/, '')
     end
 
-    def find id
+    def find(id)
       json(find_url(id))
     end
 
-    def find_url id
+    def find_url(id)
       "http://www.geonames.org/getJSON?geonameId=#{id}&username=#{username}"
     end
 
     private
 
-    # Reformats the data received from the service
-    def parse_authority_response(response)
-      response['geonames'].map do |result|
-        { 'id' => "http://sws.geonames.org/#{result['geonameId']}",
-          'label' => label.call(result) }
+      # Reformats the data received from the service
+      def parse_authority_response(response)
+        response['geonames'].map do |result|
+          { 'id' => "http://sws.geonames.org/#{result['geonameId']}",
+            'label' => label.call(result) }
+        end
       end
-    end
-
   end
 end
