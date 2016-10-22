@@ -9,7 +9,7 @@ module Qa::Authorities
       r = response(url).body
       JSON.parse(r)
     end
-
+    
     def response(url)
       Faraday.get(url) do |req|
         req.headers['Accept'] = 'application/json'
