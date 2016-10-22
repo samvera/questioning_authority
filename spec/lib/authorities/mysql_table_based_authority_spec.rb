@@ -8,6 +8,16 @@ describe Qa::Authorities::Local::MysqlTableBasedAuthority do
     Qa::Authorities::Local.register_subauthority('language', described_class.to_s)
   end
 
+  describe "::table_name" do
+    subject { described_class.table_name }
+    it { is_expected.to eq("qa_local_authority_entries")}
+  end
+
+  describe "::table_index" do
+    subject { described_class.table_index }
+    it { is_expected.to eq("index_qa_local_authority_entries_on_lower_label_and_authority")}
+  end
+
   describe "#check_for_index" do
     let(:connection) { ActiveRecord::Base.connection }
     before do
