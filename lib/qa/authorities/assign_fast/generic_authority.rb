@@ -10,6 +10,16 @@ module Qa::Authorities
 
     include WebServiceBase
 
+    require 'qa/authorities/assign_fast/space_fix_encoder'
+    # FAST requires spaces to be encoded as %20 and will not accept + which is Faraday's default encoding
+    def response(url)
+      space_fix_encoder = AssignFast::SpaceFixEncoder.new
+      Faraday.get(url) do |req|
+        req.options.params_encoder = space_fix_encoder
+        req.headers['Accept'] = 'application/json'
+      end
+    end
+
     # Search the FAST api
     #
     # @param [String] the query
