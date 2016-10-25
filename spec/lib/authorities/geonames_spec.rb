@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Qa::Authorities::Geonames do
-
   before do
     described_class.username = 'dummy'
   end
@@ -21,8 +20,8 @@ describe Qa::Authorities::Geonames do
   describe "#search" do
     context "authorities" do
       before do
-        stub_request(:get, /api\.geonames\.org.*/).
-            to_return(:body => webmock_fixture("geonames-response.json"), status: 200)
+        stub_request(:get, /api\.geonames\.org.*/)
+          .to_return(body: webmock_fixture("geonames-response.json"), status: 200)
       end
 
       subject { authority.search('whatever') }
@@ -77,13 +76,13 @@ describe Qa::Authorities::Geonames do
   describe "#find" do
     context "using a subject id" do
       before do
-        stub_request(:get, "http://www.geonames.org/getJSON?geonameId=2088122&username=dummy").
-            to_return(status: 200, body: webmock_fixture("geonames-find-response.json"))
+        stub_request(:get, "http://www.geonames.org/getJSON?geonameId=2088122&username=dummy")
+          .to_return(status: 200, body: webmock_fixture("geonames-find-response.json"))
       end
       subject { authority.find("2088122") }
 
       it "returns the complete record for a given subject" do
-        expect(subject['geonameId']).to eq 2088122
+        expect(subject['geonameId']).to eq 2_088_122
         expect(subject['name']).to eq "Port Moresby"
       end
     end

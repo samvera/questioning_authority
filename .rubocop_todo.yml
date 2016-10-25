@@ -1,0 +1,23 @@
+require: rubocop-rspec
+
+Metrics/PerceivedComplexity:
+  Exclude:
+
+Metrics/ClassLength:
+  Exclude:
+
+Metrics/ModuleLength:
+  Exclude:
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'lib/qa/authorities/mesh_tools/mesh_data_parser.rb'
+
+RSpec/ExampleLength:
+  Max: 7 
+  Exclude:
+    - 'spec/lib/mesh_data_parser_spec.rb'
+    - 'spec/lib/authorities/mesh_spec.rb'
+
+RSpec/NamedSubject:
+  Enabled: false

@@ -19,8 +19,7 @@ require 'webmock/rspec'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
-
-  config.fixture_path =  File.expand_path("../fixtures", __FILE__)
+  config.fixture_path = File.expand_path("../fixtures", __FILE__)
 
   config.use_transactional_fixtures = true
 
@@ -41,8 +40,8 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 end
 
-def webmock_fixture fixture
-  File.new File.expand_path(File.join("../fixtures", fixture),  __FILE__)
+def webmock_fixture(fixture)
+  File.new File.expand_path(File.join("../fixtures", fixture), __FILE__)
 end
 
 # returns the file contents

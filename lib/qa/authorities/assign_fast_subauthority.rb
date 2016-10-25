@@ -1,6 +1,5 @@
 # Encapsulate information about assignFAST subauthorities
 module Qa::Authorities::AssignFastSubauthority
-
   # Hash of subauthority names used in qa routes => 'index' used by API
   Subauthorities = {
     'all'        => 'suggestall',
@@ -10,8 +9,8 @@ module Qa::Authorities::AssignFastSubauthority
     'uniform'    => 'suggest30',
     'topical'    => 'suggest50',
     'geographic' => 'suggest51',
-    'form_genre' => 'suggest55',
-  }
+    'form_genre' => 'suggest55'
+  }.freeze
 
   # Get a list of subauthorities by name
   #
@@ -24,8 +23,7 @@ module Qa::Authorities::AssignFastSubauthority
   #
   # @param [String] English name
   # @return [String] index name
-  def index_for_authority authority
+  def index_for_authority(authority)
     Subauthorities[authority]
   end
-
 end

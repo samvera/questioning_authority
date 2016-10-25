@@ -10,12 +10,12 @@ describe Qa::Authorities::Local::MysqlTableBasedAuthority do
 
   describe "::table_name" do
     subject { described_class.table_name }
-    it { is_expected.to eq("qa_local_authority_entries")}
+    it { is_expected.to eq("qa_local_authority_entries") }
   end
 
   describe "::table_index" do
     subject { described_class.table_index }
-    it { is_expected.to eq("index_qa_local_authority_entries_on_lower_label_and_authority")}
+    it { is_expected.to eq("index_qa_local_authority_entries_on_lower_label_and_authority") }
   end
 
   describe "#check_for_index" do
@@ -25,7 +25,7 @@ describe Qa::Authorities::Local::MysqlTableBasedAuthority do
     end
     context "with no index" do
       before do
-        #allow(connection).to receive(:index_name_exists?).and_return(nil)
+        # allow(connection).to receive(:index_name_exists?).and_return(nil)
       end
       it "outputs an error message" do
         expect(Rails.logger).to receive(:error)
@@ -46,7 +46,7 @@ describe Qa::Authorities::Local::MysqlTableBasedAuthority do
   describe "#search" do
     context "with an empty query string" do
       let(:expected) { [] }
-      it "should return no results" do
+      it "returns no results" do
         expect(Qa::LocalAuthorityEntry).not_to receive(:where)
         expect(language.search("")).to eq(expected)
       end
@@ -54,12 +54,10 @@ describe Qa::Authorities::Local::MysqlTableBasedAuthority do
     context "with at least one matching entry" do
       it "is case insensitive by using lower_lable column" do
         expect(Qa::LocalAuthorityEntry).to receive(:where).with(local_authority: language_auth).and_return(base_relation)
-        expect(base_relation).to receive(:where).with("lower_label like ?","fre%").and_return(base_relation)
+        expect(base_relation).to receive(:where).with("lower_label like ?", "fre%").and_return(base_relation)
         expect(base_relation).to receive(:limit).and_return([])
         language.search("fRe")
       end
     end
-
   end
-
 end

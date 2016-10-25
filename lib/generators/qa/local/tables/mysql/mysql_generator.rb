@@ -6,7 +6,6 @@ module Qa::Local
       include ActiveRecord::Generators::Migration
 
       def migrations
-
         unless defined?(ActiveRecord::ConnectionAdapters::Mysql2Adapter) && ActiveRecord::Base.connection.instance_of?(ActiveRecord::ConnectionAdapters::Mysql2Adapter)
           message = "Use the table based generator if you are not using mysql 'rails generate qa:local:tables'"
           say_status("error", message, :red)
@@ -15,9 +14,9 @@ module Qa::Local
 
         generate "model qa/local_authority name:string:uniq"
         generate "model qa/local_authority_entry local_authority:references label:string uri:string:uniq lower_label:string"
-        migration_file = Dir.entries(File.join(destination_root,'db/migrate/'))
-                             .reject{|name| !name.include?('create_qa_local_authority_entries')}.first
-        migration_file = File.join('db/migrate',migration_file)
+        migration_file = Dir.entries(File.join(destination_root, 'db/migrate/'))
+                            .reject { |name| !name.include?('create_qa_local_authority_entries') }.first
+        migration_file = File.join('db/migrate', migration_file)
         gsub_file migration_file,
                   't.references :local_authority, index: true, foreign_key: true',
                   't.integer :local_authority_id, index: true'
@@ -40,4 +39,3 @@ module Qa::Local
     end
   end
 end
-

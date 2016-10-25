@@ -1,7 +1,6 @@
 module Qa::Authorities
   module AuthorityWithSubAuthority
-
-    def new(subauthority=nil)
+    def new(subauthority = nil)
       raise "Initializing with as sub authority is removed. use #{self.class}.subauthority_for(#{subauthority.inspect}) instead"
     end
 

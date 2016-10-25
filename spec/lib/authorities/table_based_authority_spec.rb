@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Qa::Authorities::Local::TableBasedAuthority do
-
   let(:language) { Qa::Authorities::Local.subauthority_for("language") }
   let(:subj) { Qa::Authorities::Local.subauthority_for("subject") }
 
@@ -17,36 +16,36 @@ describe Qa::Authorities::Local::TableBasedAuthority do
 
   describe "::table_name" do
     subject { described_class.table_name }
-    it { is_expected.to eq("qa_local_authority_entries")}
+    it { is_expected.to eq("qa_local_authority_entries") }
   end
 
   describe "::table_index" do
     subject { described_class.table_index }
-    it { is_expected.to eq("index_qa_local_authority_entries_on_lower_label")}
+    it { is_expected.to eq("index_qa_local_authority_entries_on_lower_label") }
   end
 
   describe "#all" do
-    let(:expected) { [ { 'id'=> "A1", 'label' => "Abc Term A1" },
-                       { 'id' => "A2", 'label'=> "Term A2" },
-                       { 'id' => "A3", 'label' => "Abc Term A3" } ] }
-    it "should return all the entries" do
+    let(:expected) { [{ 'id' => "A1", 'label' => "Abc Term A1" },
+                      { 'id' => "A2", 'label' => "Term A2" },
+                      { 'id' => "A3", 'label' => "Abc Term A3" }] }
+    it "returns all the entries" do
       expect(language.all).to eq [
-        {"id"=>"http://id.loc.gov/vocabulary/languages/fre", "label"=>"French"},
-        {"id"=>"http://id.loc.gov/vocabulary/languages/uig", "label"=>"Uighur"}]
-
+        { "id" => "http://id.loc.gov/vocabulary/languages/fre", "label" => "French" },
+        { "id" => "http://id.loc.gov/vocabulary/languages/uig", "label" => "Uighur" }
+      ]
     end
   end
 
   describe "#search" do
     context "with an empty query string" do
       let(:expected) { [] }
-      it "should return no results" do
+      it "returns no results" do
         expect(language.search("")).to eq(expected)
       end
     end
     context "with at least one matching entry" do
       it "is case insensitive" do
-        expect(language.search("fRe")).to eq [{"id"=>"http://id.loc.gov/vocabulary/languages/fre", "label"=>"French"}]
+        expect(language.search("fRe")).to eq [{ "id" => "http://id.loc.gov/vocabulary/languages/fre", "label" => "French" }]
       end
     end
 
@@ -59,7 +58,7 @@ describe Qa::Authorities::Local::TableBasedAuthority do
 
   describe "#find" do
     context "term exists" do
-      it "should return the full term record" do
+      it "returns the full term record" do
         record = language.find('http://id.loc.gov/vocabulary/languages/fre')
         expect(record).to be_a HashWithIndifferentAccess
         expect(record).to eq('id' => "http://id.loc.gov/vocabulary/languages/fre",
@@ -69,7 +68,7 @@ describe Qa::Authorities::Local::TableBasedAuthority do
     context "term does not exist" do
       let(:id) { "NonID" }
       let(:expected) { {} }
-      it "should return an empty hash" do
+      it "returns an empty hash" do
         expect(language.find('http://id.loc.gov/vocabulary/languages/eng')).to be_nil
       end
     end

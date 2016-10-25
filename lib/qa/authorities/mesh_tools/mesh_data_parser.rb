@@ -1,17 +1,16 @@
 module Qa::Authorities
   module MeshTools
     class MeshDataParser
-
       attr_accessor :file
 
       def initialize(file)
         @file = file
       end
 
-      def each_mesh_record(&block)
+      def each_mesh_record
         current_data = {}
         in_record = false
-        self.file.each_line do |line|
+        file.each_line do |line|
           case line
           when /\A\*NEWRECORD/
             yield(current_data) if in_record
@@ -31,10 +30,9 @@ module Qa::Authorities
 
       def all_records
         result = []
-        self.each_mesh_record {|rec| result << rec }
-        return result
+        each_mesh_record { |rec| result << rec }
+        result
       end
-
     end
   end
 end

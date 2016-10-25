@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Qa::SubjectMeshTerm, :type => :model do
+describe Qa::SubjectMeshTerm, type: :model do
   before(:all) do
     @term = Qa::SubjectMeshTerm.new
     @term.term_id = "ABCDEFG"
@@ -19,7 +19,7 @@ describe Qa::SubjectMeshTerm, :type => :model do
   it "saves a synonym list" do
     a = Qa::SubjectMeshTerm.new
     a.term_id = 'a'
-    a.synonyms = ['b','c']
+    a.synonyms = ['b', 'c']
     a.save
     expect(a.synonyms).to eq(['b', 'c'])
   end
@@ -33,7 +33,7 @@ describe Qa::SubjectMeshTerm, :type => :model do
   end
 
   it "returns parents"
-  #do
+  # do
   #  SubjectMeshTerm.create(term_id: "1")
   #  SubjectMeshTerm.create(term_id: "2")
   #  SubjectMeshTerm.create(term_id: "3")
@@ -45,5 +45,5 @@ describe Qa::SubjectMeshTerm, :type => :model do
 
   #  @term.trees.should == ["D1.2.3", "D1.A.3"]
   #  @term.parents.map { |p| p.term_id }.should == ["1", "2", "3"]
-  #end
+  # end
 end

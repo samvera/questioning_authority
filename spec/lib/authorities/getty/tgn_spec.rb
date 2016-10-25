@@ -1,12 +1,11 @@
 require 'spec_helper'
 
 describe Qa::Authorities::Getty::TGN do
-
   let(:authority) { described_class.new }
 
   describe "#build_query_url" do
     subject { authority.build_query_url("foo") }
-    it { is_expected.to  match /^http:\/\/vocab\.getty\.edu\// }
+    it { is_expected.to match(/^http:\/\/vocab\.getty\.edu\//) }
   end
 
   describe "#find_url" do
@@ -17,13 +16,13 @@ describe Qa::Authorities::Getty::TGN do
   describe "#search" do
     context "authorities" do
       before do
-        stub_request(:get, /vocab\.getty\.edu.*/).
-            to_return(:body => webmock_fixture("tgn-response.txt"), :status => 200)
+        stub_request(:get, /vocab\.getty\.edu.*/)
+          .to_return(body: webmock_fixture("tgn-response.txt"), status: 200)
       end
 
       subject { authority.search('whatever') }
 
-      it "should have id and label keys" do
+      it "has id and label keys" do
         expect(subject.first).to eq("id" => 'http://vocab.getty.edu/tgn/2058300', "label" => "Cawood (Andrew, Missouri, United States)")
         expect(subject.last).to eq("id" => 'http://vocab.getty.edu/tgn/7022503', "label" => "Cawood Branch (Kentucky, United States)")
         expect(subject.size).to eq(6)
@@ -48,8 +47,8 @@ describe Qa::Authorities::Getty::TGN do
   describe "#find" do
     context "using a subject id" do
       before do
-        stub_request(:get, "http://vocab.getty.edu/tgn/1028772.json").
-            to_return(status: 200, body: webmock_fixture("getty-tgn-find-response.json"))
+        stub_request(:get, "http://vocab.getty.edu/tgn/1028772.json")
+          .to_return(status: 200, body: webmock_fixture("getty-tgn-find-response.json"))
       end
       subject { authority.find("1028772") }
 
@@ -89,7 +88,4 @@ describe Qa::Authorities::Getty::TGN do
             } ORDER BY ?name ASC(?par)" }
     end
   end
-
 end
-
-

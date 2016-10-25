@@ -1,6 +1,6 @@
-  module Qa::Authorities::MeshTools
-    extend ActiveSupport::Autoload
+module Qa::Authorities::MeshTools
+  extend ActiveSupport::Autoload
 
-    autoload :MeshDataParser
-    autoload :MeshImporter
-  end
+  autoload :MeshDataParser
+  autoload :MeshImporter
+end

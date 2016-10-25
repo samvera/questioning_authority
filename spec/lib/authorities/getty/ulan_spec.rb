@@ -1,12 +1,11 @@
 require 'spec_helper'
 
 describe Qa::Authorities::Getty::Ulan do
-
   let(:authority) { described_class.new }
 
   describe "#build_query_url" do
     subject { authority.build_query_url("foo") }
-    it { is_expected.to  match /^http:\/\/vocab\.getty\.edu\// }
+    it { is_expected.to match(/^http:\/\/vocab\.getty\.edu\//) }
   end
 
   describe "#find_url" do
@@ -17,13 +16,13 @@ describe Qa::Authorities::Getty::Ulan do
   describe "#search" do
     context "authorities" do
       before do
-        stub_request(:get, /vocab\.getty\.edu.*/).
-            to_return(:body => webmock_fixture("ulan-response.txt"), :status => 200)
+        stub_request(:get, /vocab\.getty\.edu.*/)
+          .to_return(body: webmock_fixture("ulan-response.txt"), status: 200)
       end
 
       subject { authority.search('whatever') }
 
-      it "should have id and label keys" do
+      it "has id and label keys" do
         expect(subject.first).to eq("id" => 'http://vocab.getty.edu/ulan/500233743', "label" => "Alan Turner and Associates (British architectural firm, contemporary)")
         expect(subject.last).to eq("id" => 'http://vocab.getty.edu/ulan/500023812', "label" => "Warren, Charles Turner (English engraver, 1762-1823)")
         expect(subject.size).to eq(142)
@@ -48,8 +47,8 @@ describe Qa::Authorities::Getty::Ulan do
   describe "#find" do
     context "using a subject id" do
       before do
-        stub_request(:get, "http://vocab.getty.edu/ulan/500026846.json").
-            to_return(status: 200, body: webmock_fixture("getty-ulan-find-response.json"))
+        stub_request(:get, "http://vocab.getty.edu/ulan/500026846.json")
+          .to_return(status: 200, body: webmock_fixture("getty-ulan-find-response.json"))
       end
       subject { authority.find("500026846") }
 
@@ -91,7 +90,4 @@ describe Qa::Authorities::Getty::Ulan do
             } ORDER BY ?name" }
     end
   end
-
 end
-
-

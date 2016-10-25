@@ -1,21 +1,33 @@
 module Qa::Authorities
   class Local::TableBasedAuthority < Base
-
     class_attribute :table_name, :table_index
     self.table_name = "qa_local_authority_entries"
     self.table_index = "index_qa_local_authority_entries_on_lower_label"
 
-    def self.check_for_index
-      @checked_for_index ||= begin
-        conn = ActiveRecord::Base.connection
-        if table_or_view_exists? && !conn.indexes(table_name).find { |i| i.name == table_index }
-          Rails.logger.error "You've installed local authority tables, but you haven't indexed the label.  Rails doesn't support functional indexes in migrations, so you'll have to add this manually:\n" \
-            "CREATE INDEX \"#{table_index}\" ON \"#{table_name}\" (local_authority_id, lower(label))\n" \
-            "   OR on Sqlite: \n" \
-            "CREATE INDEX \"#{table_index}\" ON \"#{table_name}\" (local_authority_id, label collate nocase)\n" \
-            "   OR for MySQL use the MSQLTableBasedAuthority instead, since mysql does not support functional indexes."
+    class << self
+      def check_for_index
+        @checked_for_index ||= begin
+          conn = ActiveRecord::Base.connection
+          if table_or_view_exists? && !conn.indexes(table_name).find { |i| i.name == table_index }
+            Rails.logger.error "You've installed local authority tables, but you haven't indexed the label.  Rails doesn't support functional indexes in migrations, so you'll have to add this manually:\n" \
+              "CREATE INDEX \"#{table_index}\" ON \"#{table_name}\" (local_authority_id, lower(label))\n" \
+              "   OR on Sqlite: \n" \
+              "CREATE INDEX \"#{table_index}\" ON \"#{table_name}\" (local_authority_id, label collate nocase)\n" \
+              "   OR for MySQL use the MSQLTableBasedAuthority instead, since mysql does not support functional indexes."
+          end
         end
       end
+
+      private
+
+        def table_or_view_exists?
+          conn = ActiveRecord::Base.connection
+          if conn.respond_to?(:data_source_exists?)
+            conn.data_source_exists?(table_name)
+          else
+            conn.table_exists?(table_name)
+          end
+        end
     end
 
     attr_reader :subauthority
@@ -42,15 +54,6 @@ module Qa::Authorities
 
     private
 
-      def self.table_or_view_exists?
-        conn = ActiveRecord::Base.connection
-        if conn.respond_to?(:data_source_exists?)
-          conn.data_source_exists?(table_name)
-        else
-          conn.table_exists?(table_name)
-        end
-      end
-
       def base_relation
         Qa::LocalAuthorityEntry.where(local_authority: local_authority)
       end
@@ -66,6 +69,5 @@ module Qa::Authorities
       def local_authority
         Qa::LocalAuthority.find_by_name(subauthority)
       end
-
   end
 end

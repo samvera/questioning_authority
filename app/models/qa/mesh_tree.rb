@@ -1,10 +1,8 @@
 class Qa::MeshTree < ActiveRecord::Base
-  belongs_to :subject_mesh_term , :foreign_key => "term_id"
+  belongs_to :subject_mesh_term, foreign_key: "term_id"
 
   def self.classify_all_trees
-    MeshTreeStructure.find_each do |mts|
-      mts.classify_tree!
-    end
+    MeshTreeStructure.find_each(&:classify_tree!)
   end
 
   def eval_tree_path
@@ -18,7 +16,7 @@ class Qa::MeshTree < ActiveRecord::Base
 
   def classify_tree
     tree_levels = initial_segements_of(tree_structure)
-    tree_levels.map &method(:lookup_tree_term)
+    tree_levels.map(&:lookup_tree_term)
   end
 
   def classify_tree!

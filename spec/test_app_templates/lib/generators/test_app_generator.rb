@@ -26,5 +26,4 @@ class TestAppGenerator < Rails::Generators::Base
     rake "qa:install:migrations"
     rake "db:migrate"
   end
-
 end
