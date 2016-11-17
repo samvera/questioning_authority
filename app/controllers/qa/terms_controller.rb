@@ -14,7 +14,7 @@ class Qa::TermsController < ApplicationController
 
   # Return a list of terms based on a query
   def search
-    terms = @authority.search(url_search)
+    terms = @authority.method(:search).arity == 2 ? @authority.search(url_search, self) : @authority.search(url_search)
     render json: terms
   end
 

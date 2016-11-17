@@ -47,6 +47,26 @@ describe Qa::TermsController, type: :controller do
   end
 
   describe "#search" do
+    context "when a local authority expects two arguments" do
+      before do
+        class Qa::Authorities::Local::TwoArgs < Qa::Authorities::Base
+          attr_reader :subauthority
+          def initialize(subauthority)
+            @subauthority = subauthority
+          end
+
+          def search(_arg1, _arg2)
+            true
+          end
+        end
+        Qa::Authorities::Local.register_subauthority('two_args', 'Qa::Authorities::Local::TwoArgs')
+      end
+      it "succeeds" do
+        get :search, q: "a query", vocab: "local", subauthority: "two_args"
+        expect(response).to be_success
+      end
+    end
+
     context "loc" do
       before do
         stub_request(:get, "http://id.loc.gov/search/?format=json&q=Berry&q=cs:http://id.loc.gov/authorities/names")
