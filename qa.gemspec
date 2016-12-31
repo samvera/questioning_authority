@@ -31,5 +31,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "webmock"
   s.add_development_dependency 'rubocop', '~> 0.42.0'
-  s.add_development_dependency 'rubocop-rspec', '~> 1.5'
+  s.add_development_dependency 'rubocop-rspec', '~> 1.8.0'
 end
