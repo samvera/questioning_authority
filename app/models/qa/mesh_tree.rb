@@ -1,5 +1,5 @@
 class Qa::MeshTree < ActiveRecord::Base
-  belongs_to :subject_mesh_term, foreign_key: "term_id"
+  belongs_to :subject_mesh_term, foreign_key: "term_id", primary_key: 'term_id'
 
   def self.classify_all_trees
     MeshTreeStructure.find_each(&:classify_tree!)
