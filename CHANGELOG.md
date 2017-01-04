@@ -1,3 +1,10 @@
+### 0.11.0 (2016-01-04)
+* 2016-12-30: Pin rubocop-rspec to 1.8.0 [Justin Coyne]
+* 2016-12-30: Loosen nokogiri dependency [Justin Coyne]
+* 2016-11-11: Add search method to see if wants the controller with the request.  [Andy Smith]
+* 2016-10-27: Stop spamming IRC with Travis builds [Michael J. Giarlo]
+* 2016-10-25: Add Faraday encoder for finicky FAST api; fixes multi-word queries [Anna Headley]
+
 ### 0.5.0 (2014-04-17)
 * 2015-04-14: Use a valid SPARQL query in the AAT authority [Justin Coyne]
 * 2015-04-14: Decouple the path from the subauthority class name. This ensures the
