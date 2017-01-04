@@ -7,14 +7,14 @@ describe Qa::TermsController, type: :controller do
 
   describe "#check_vocab_param" do
     it "returns 404 if the vocabulary is missing" do
-      get :search, q: "a query", vocab: ""
+      get :search, params: { q: "a query", vocab: "" }
       expect(response.code).to eq("404")
     end
   end
 
   describe "#check_query_param" do
     it "returns 404 if the query is missing" do
-      get :search, q: "", vocab: "tgnlang"
+      get :search, params: { q: "", vocab: "tgnlang" }
       expect(response.code).to eq("404")
     end
   end
@@ -23,24 +23,24 @@ describe Qa::TermsController, type: :controller do
     context "when the authority does not exist" do
       it "returns 404" do
         expect(Rails.logger).to receive(:warn).with("Unable to initialize authority Qa::Authorities::Non-existent-authority")
-        get :search, q: "a query", vocab: "non-existent-authority"
+        get :search, params: { q: "a query", vocab: "non-existent-authority" }
         expect(response.code).to eq("404")
       end
     end
     context "when a sub-authority does not exist" do
       it "returns 404 if a sub-authority does not exist" do
         expect(Rails.logger).to receive(:warn).with("Unable to initialize sub-authority non-existent-subauthority for Qa::Authorities::Loc. Valid sub-authorities are [\"subjects\", \"names\", \"classification\", \"childrensSubjects\", \"genreForms\", \"performanceMediums\", \"graphicMaterials\", \"organizations\", \"relators\", \"countries\", \"ethnographicTerms\", \"geographicAreas\", \"languages\", \"iso639-1\", \"iso639-2\", \"iso639-5\", \"preservation\", \"actionsGranted\", \"agentType\", \"edtf\", \"contentLocationType\", \"copyrightStatus\", \"cryptographicHashFunctions\", \"environmentCharacteristic\", \"environmentPurpose\", \"eventRelatedAgentRole\", \"eventRelatedObjectRole\", \"eventType\", \"formatRegistryRole\", \"hardwareType\", \"inhibitorTarget\", \"inhibitorType\", \"objectCategory\", \"preservationLevelRole\", \"relationshipSubType\", \"relationshipType\", \"rightsBasis\", \"rightsRelatedAgentRole\", \"signatureEncoding\", \"signatureMethod\", \"softwareType\", \"storageMedium\"]")
-        get :search, q: "a query", vocab: "loc", subauthority: "non-existent-subauthority"
+        get :search, params: { q: "a query", vocab: "loc", subauthority: "non-existent-subauthority" }
         expect(response.code).to eq("404")
       end
     end
     context "when a sub-authority is absent" do
       it "returns 404 for LOC" do
-        get :search, q: "a query", vocab: "loc"
+        get :search, params: { q: "a query", vocab: "loc" }
         expect(response.code).to eq("404")
       end
       it "returns 404 for oclcts" do
-        get :search, q: "a query", vocab: "oclcts"
+        get :search, params: { q: "a query", vocab: "oclcts" }
         expect(response.code).to eq("404")
       end
     end
@@ -62,7 +62,7 @@ describe Qa::TermsController, type: :controller do
         Qa::Authorities::Local.register_subauthority('two_args', 'Qa::Authorities::Local::TwoArgs')
       end
       it "succeeds" do
-        get :search, q: "a query", vocab: "local", subauthority: "two_args"
+        get :search, params: { q: "a query", vocab: "local", subauthority: "two_args" }
         expect(response).to be_success
       end
     end
@@ -75,12 +75,12 @@ describe Qa::TermsController, type: :controller do
       end
 
       it "returns a set of terms for a tgnlang query" do
-        get :search, q: "Tibetan", vocab: "tgnlang"
+        get :search, params: { q: "Tibetan", vocab: "tgnlang" }
         expect(response).to be_success
       end
 
       it "does not return 404 if subauthority is valid" do
-        get :search, q: "Berry", vocab: "loc", subauthority: "names"
+        get :search, params: { q: "Berry", vocab: "loc", subauthority: "names" }
         expect(response).to be_success
       end
     end
@@ -92,7 +92,7 @@ describe Qa::TermsController, type: :controller do
           .to_return(body: webmock_fixture("assign-fast-topical-result.json"), status: 200, headers: {})
       end
       it "succeeds if authority class is camelcase" do
-        get :search, q: "word", vocab: "assign_fast", subauthority: "topical"
+        get :search, params: { q: "word", vocab: "assign_fast", subauthority: "topical" }
         expect(response).to be_success
       end
     end
@@ -101,26 +101,26 @@ describe Qa::TermsController, type: :controller do
   describe "#index" do
     context "with supported authorities" do
       it "returns all local authority state terms" do
-        get :index, vocab: "local", subauthority: "states"
+        get :index, params: { vocab: "local", subauthority: "states" }
         expect(response).to be_success
       end
       it "returns all MeSH terms" do
-        get :index, vocab: "mesh"
+        get :index, params: { vocab: "mesh" }
         expect(response).to be_success
       end
     end
 
     context "when the authority does not support #all" do
       it "returns null for tgnlang" do
-        get :index, vocab: "tgnlang"
+        get :index, params: { vocab: "tgnlang" }
         expect(response.body).to eq("null")
       end
       it "returns null for oclcts" do
-        get :index, vocab: "oclcts", subauthority: "mesh"
+        get :index, params: { vocab: "oclcts", subauthority: "mesh" }
         expect(response.body).to eq("null")
       end
       it "returns null for LOC authorities" do
-        get :index, vocab: "loc", subauthority: "relators"
+        get :index, params: { vocab: "loc", subauthority: "relators" }
         expect(response.body).to eq("null")
       end
     end
@@ -135,17 +135,17 @@ describe Qa::TermsController, type: :controller do
       end
 
       it "returns an individual state term" do
-        get :show, vocab: "local", subauthority: "states", id: "OH"
+        get :show, params: { vocab: "local", subauthority: "states", id: "OH" }
         expect(response).to be_success
       end
 
       it "returns an individual MeSH term" do
-        get :show, vocab: "mesh", id: "D000001"
+        get :show, params: { vocab: "mesh", id: "D000001" }
         expect(response).to be_success
       end
 
       it "returns an individual subject term" do
-        get :show, vocab: "loc", subauthority: "subjects", id: "sh85077565"
+        get :show, params: { vocab: "loc", subauthority: "subjects", id: "sh85077565" }
         expect(response).to be_success
       end
     end
