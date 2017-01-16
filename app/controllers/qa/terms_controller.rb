@@ -9,7 +9,11 @@ class Qa::TermsController < ApplicationController
 
   # If the subauthority supports it, return a list of all terms in the authority
   def index
-    render json: @authority.all
+    render json: begin
+      @authority.all
+    rescue NotImplementedError
+      nil
+    end
   end
 
   # Return a list of terms based on a query

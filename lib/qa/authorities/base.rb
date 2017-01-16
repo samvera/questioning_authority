@@ -1,25 +1,43 @@
 require 'deprecation'
 
 module Qa::Authorities
+  ##
+  # @abstract The base class for all authorites. Implementing subclasses must
+  #   provide {#all} and #{find} methods.
+  # @todo What about {#search}?
   class Base
     extend Deprecation
 
-    # By default, #all is not implemented.
-    # If the subclassed authority does have this feature
-    # then you will overide the #all method in the subclassed authority.
-    # TODO: need to set some kind of error here
+    ##
+    # @abstract By default, #all is not implemented. A subclass authority must
+    #   implement this method to conform to the generic interface.
+    #
+    # @return [Enumerable]
+    # @raise [NotImplementedError] when this method is abstract.
+    #
+    # @todo better specify return type
     def all
+      raise NotImplementedError, "#{self.class}#all is unimplemented."
     end
 
-    # By default, #find is not implemented.
-    # If the subclassed authority does have this feature
-    # then you will overide the #find method in the subclassed authority.
-    # TODO: need to set some kind of error here
-    def find(id)
+    ##
+    # @abstract By default, #find is not implemented. A subclass authority must
+    #   implement this method to conform to the generic interface.
+    #
+    # @param id [String] the id string for the authority to lookup
+    #
+    # @return [Hash]
+    # @raise [NotImplementedError] when this method is abstract.
+    #
+    # @todo better specify return type
+    def find(_id)
+      raise NotImplementedError, "#{self.class}#all is unimplemented."
     end
 
+    ##
+    # @deprecated use {#find} instead
     def full_record(id, _subauthority = nil)
-      Deprecation.warn(".full_record is deprecated. Use .find instead")
+      Deprecation.warn('#full_record is deprecated. Use #find instead')
       find(id)
     end
   end
