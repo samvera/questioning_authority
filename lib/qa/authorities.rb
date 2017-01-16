@@ -1,3 +1,6 @@
+require 'active_support'
+require 'active_support/core_ext'
+
 module Qa::Authorities
   extend ActiveSupport::Autoload
 
