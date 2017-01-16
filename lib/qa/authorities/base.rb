@@ -13,8 +13,11 @@ module Qa::Authorities
     #   implement this method to conform to the generic interface.
     #
     # @return [Enumerable]
+    # @raise [NotImplementedError] when this method is abstract.
+    #
     # @todo better specify return type
     def all
+      raise NotImplementedError, "#{self.class}#all is unimplemented."
     end
 
     ##
@@ -24,8 +27,11 @@ module Qa::Authorities
     # @param id [String] the id string for the authority to lookup
     #
     # @return [Hash]
+    # @raise [NotImplementedError] when this method is abstract.
+    #
     # @todo better specify return type
     def find(_id)
+      raise NotImplementedError, "#{self.class}#all is unimplemented."
     end
 
     ##
