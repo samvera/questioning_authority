@@ -27,7 +27,7 @@ module Qa::Authorities
     def search(q)
       url = build_query_url q
       begin
-        raw_response = get_json(url)
+        raw_response = json(url)
       rescue JSON::ParserError
         Rails.logger.info "Could not parse response as JSON. Request url: #{url}"
         return []

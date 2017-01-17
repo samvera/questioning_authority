@@ -6,11 +6,6 @@ module Qa::Authorities
       parse_authority_response(json(build_query_url(q)))
     end
 
-    # get_json is not ideomatic, so we'll make an alias
-    def json(*args)
-      get_json(*args)
-    end
-
     # Replace ampersands, otherwise the query will fail
     def build_query_url(q)
       "http://vocab.getty.edu/sparql.json?query=#{URI.escape(sparql(q)).gsub('&', '%26')}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"

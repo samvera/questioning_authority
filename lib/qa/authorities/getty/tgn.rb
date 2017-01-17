@@ -6,11 +6,6 @@ module Qa::Authorities
       parse_authority_response(json(build_query_url(q)))
     end
 
-    # get_json is not ideomatic, so we'll make an alias
-    def json(*args)
-      get_json(*args)
-    end
-
     def build_query_url(q)
       query = URI.escape(sparql(untaint(q)))
       # Replace ampersands, otherwise the query will fail
