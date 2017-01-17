@@ -16,11 +16,6 @@ module Qa::Authorities
       parse_authority_response(json(build_query_url(q)))
     end
 
-    # get_json is not ideomatic, so we'll make an alias
-    def json(*args)
-      get_json(*args)
-    end
-
     def build_query_url(q)
       query = URI.escape(untaint(q))
       "http://api.geonames.org/searchJSON?q=#{query}&username=#{username}&maxRows=10"

@@ -8,7 +8,7 @@ module Qa::Authorities
     include WebServiceBase
 
     def search(q)
-      @raw_response = get_json(build_query_url(q))
+      @raw_response = json(build_query_url(q))
       parse_authority_response
     end
 
@@ -19,7 +19,7 @@ module Qa::Authorities
     end
 
     def find(id)
-      get_json(find_url(id))
+      json(find_url(id))
     end
 
     def find_url(id)
