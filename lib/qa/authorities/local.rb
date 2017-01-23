@@ -45,6 +45,10 @@ module Qa::Authorities
         end
       end
 
+      ##
+      # Lookup and add the subauthority to the registry. This should only be used for sub-authorities, not stand-alone authorities such as Tgnlang, MESH, etc.
+      # @param subauthority [String] a string representation of the subauthority (e.g. "language")
+      # @param class_name [String] a string representation of an authority class (e.g. "Qa::Authorities::Local::MysqlTableBasedAuthority")
       def register_subauthority(subauthority, class_name)
         registry.add(subauthority, class_name)
       end
