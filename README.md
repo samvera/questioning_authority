@@ -8,7 +8,7 @@ You should question your authorities.
 
 Provides a set of uniform RESTful routes to query any controlled vocabulary or set of authority terms.
 Results are returned in JSON and can be used within the context of a Rails application or any other
-Ruby environment. Primary examples would include providing auto-complete functionality via Javascript 
+Ruby environment. Primary examples would include providing auto-complete functionality via Javascript
 or populating a dropdown menu with a set of terms.
 
 ## How does it work?
@@ -163,8 +163,31 @@ Then you can set your username like this:
 Qa::Authorities::Geonames.username = 'myAccountName'
 
 ```
+### Adding your own authorities
 
-### Local Authorities
+Create an authority file inside your app.
+
+```
+app/authorities/qa/authorities/your_authority.rb
+
+```
+
+Write module code with at least a search method.
+
+```ruby
+module Qa::Authorities
+  class YourAuthority < Qa::Authorities::Base
+    # Arguments can be (query) or (query, terms_controller)
+    def search(_q)
+      # Should return array of hashes with ids, labels, and values(optional)
+      { id: '123', label: 'Title', value: 'The Title' }
+    end
+  end
+end
+```
+
+
+### Local Sub-Authorities
 
 #### In YAML files
 For simple use cases when you have a few terms that don't change very often.
@@ -217,7 +240,7 @@ using the file's name as the sub-authority.  For example, if I create `foo.yml`,
 		  active: false
 
 
-#### Adding your own local authorities
+#### Adding your own local sub-authorities
 
 If you'd like to add your own local authority that isn't necessarily backed by yaml, create an initializer and tell the local authority about your custom sub-authority:
 
@@ -256,7 +279,7 @@ This will create two tables/models Qa::LocalAuthority and Qa::LocalAuthorityEntr
 
 Unfortunately, Rails doesn't have a mechnism for adding functional indexes to tables, so if you have a lot of rows, you'll want to add an index:
 
-    CREATE INDEX "index_qa_local_authority_entries_on_lower_label" ON 
+    CREATE INDEX "index_qa_local_authority_entries_on_lower_label" ON
       "qa_local_authority_entries" (local_authority_id, lower(label))
 
   **Note: If you are using MYSQL as your database and used the MSQL database gerator we tried to execute the correct SQL to create the virtual fields and indexes for you**  
@@ -267,7 +290,7 @@ Finall you want register your authority in an initializer:
 
   **Note: If you are using MYSQL as your database and used the MSQL database gerator register the MysqlTableBasedAuthority instead of the TableBasedAuthority**  
 
-Then you can search for 
+Then you can search for
 
     /qa/search/local/languages?q=Fre
 
@@ -278,12 +301,12 @@ Results are in JSON.
 The entire list (up to the first 1000 terms) can also be returned using:
 
     /qa/terms/local/languages/
-    
+
 #### Loading RDF data into database tables
-    
+
  You can use the Qa::Services::RDFAuthorityParser to import rdf files into yopur database tables.  See the class file, lib/qa/services/rdf_authority_parser.rb, for examples and more information.
  To run the class in your local project you must include `gem 'linkeddata'` into your Gemfile and `require 'linkeddata'` into an initializer or your application.rb
-   
+
 ### Medical Subject Headings (MeSH)
 
 Provides autocompletion of [MeSH terms](http://www.nlm.nih.gov/mesh/introduction.html). This
@@ -321,7 +344,7 @@ To develop this gem, clone the repository, then run:
     bundle install
     rake ci
 
-This will install the gems, create a dummy application under spec/internal and run the tests.  After you've made changes, 
+This will install the gems, create a dummy application under spec/internal and run the tests.  After you've made changes,
 make sure you've included tests and run the test suite with a new sample application:
 
     rake engine_cart:clean
@@ -333,7 +356,7 @@ Commit your features into a new branch and submit a pull request.
 
 Currently, it is compatible with Rails 4.0 and 4.1 under both Ruby 2.0 and 2.1.
 
-# Help 
+# Help
 
 For help with Questioning Authority, contact <hydra-tech@googlegroups.com>.
 
