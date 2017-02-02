@@ -28,16 +28,37 @@ describe Qa::Authorities::Loc do
     end
 
     context "for searching" do
+      let(:url) { 'http://id.loc.gov/search/?q=foo&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects&format=json' }
       it "returns a url" do
-        url = 'http://id.loc.gov/search/?q=foo&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects&format=json'
         expect(authority.build_query_url("foo")).to eq(url)
       end
     end
 
     context "for returning single terms" do
+      let(:url) { "http://id.loc.gov/authorities/subjects/sh2002003586.json" }
       it "returns a url with an authority and id" do
-        url = "http://id.loc.gov/authorities/subjects/sh2002003586.json"
         expect(authority.find_url("sh2002003586")).to eq(url)
+      end
+    end
+  end
+
+  describe "#response" do
+    subject { authority.response(url) }
+    let :authority do
+      described_class.subauthority_for("subjects")
+    end
+
+    before do
+      stub_request(:get, "http://id.loc.gov/search/?format=json&q=cs:http://id.loc.gov/authorities/subjects")
+        .with(headers: { 'Accept' => 'application/json' })
+        .to_return(status: 200, body: "")
+    end
+
+    context "with flat params encoded" do
+      let(:url) { 'http://id.loc.gov/search/?q=foo&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects&format=json' }
+      it "returns a response" do
+        flat_params_url = "http://id.loc.gov/search/?format=json&q=foo&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects"
+        expect(subject.env.url.to_s).to eq(flat_params_url)
       end
     end
   end
@@ -51,7 +72,7 @@ describe Qa::Authorities::Loc do
         described_class.subauthority_for("geographicAreas")
       end
 
-      it "retains the raw respsonse from the LC service in JSON" do
+      it "retains the raw response from the LC service in JSON" do
         expect { authority.search("s") }.to change { authority.raw_response }
           .from(nil)
           .to(JSON.parse(webmock_fixture("loc-response.txt").read))
