@@ -81,6 +81,9 @@ Style/VariableName:
   Exclude:
     - 'lib/share_notify/push_document.rb'
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 RSpec/ExampleWording:
   CustomTransform:
     be: is

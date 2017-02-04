@@ -5,12 +5,14 @@ Metrics/PerceivedComplexity:
 
 Metrics/ClassLength:
   Exclude:
+    - 'lib/qa/authorities/linked_data/generic_authority.rb'
 
 Metrics/ModuleLength:
   Exclude:
 
 Metrics/CyclomaticComplexity:
   Exclude:
+    - 'lib/qa/authorities/linked_data/generic_authority.rb'
     - 'lib/qa/authorities/mesh_tools/mesh_data_parser.rb'
 
 RSpec/ExampleLength:
@@ -21,3 +23,7 @@ RSpec/ExampleLength:
 
 RSpec/NamedSubject:
   Enabled: false
+
+Style/MutableConstant:
+  Exclude:
+    - 'config/initializers/linked_data_authorities.rb'

@@ -1,0 +1,9 @@
+term:
+search:
+  url:                  http://localhost/test_replacement/search?query=__QUERY__
+  http_accept:          application/rdf+xml
+  replacement_count:    0
+  results:
+    id_predicate:       http://purl.org/dc/terms/identifier
+    label_predicate:    http://www.w3.org/2004/02/skos/core#prefLabel
+    sort_predicate:     http://www.w3.org/2004/02/skos/core#prefLabel
