@@ -1,0 +1,24 @@
+# API documentation:
+# http://id.loc.gov/
+term:
+  url:                  http://id.loc.gov/authorities/__SUB_AUTH__/__TERM_ID__
+  term_id:              ID                    # valid values:  ID | URI
+  http_accept:          application/rdf+xml
+  language:             en
+  results:
+    id_predicate:       http://id.loc.gov/vocabulary/identifiers/lccn
+    label_predicate:    http://www.w3.org/2004/02/skos/core#prefLabel
+    altlabel_predicate: http://www.w3.org/2004/02/skos/core#altLabel
+    sameas_predicate:   http://www.w3.org/2004/02/skos/core#exactMatch
+  subauthorities:
+    replacement:
+      pattern:    __SUB_AUTH__
+      default:    names
+    subjects:           subjects             # LC Subject Headings  (e.g. science)
+    names:              names                # LC Name Authority File  (e.g. george washington)
+    classification:     classification       # LC Classification  (e.g. Z668)
+    child_subject:      childrensSubjects    # LC Children's Subject Headings  (e.g. magic)
+    genre:              genreForms           # LC Genre/Form Terms  (e.g. jazz)
+    demographic:        demographicTerms     # LC Demographic Group Terms  (e.g. lawyers)
+search:
+  ### NOT SUPPORTED BY LOC

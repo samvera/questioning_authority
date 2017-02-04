@@ -1,0 +1,128 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:coord="http://whatever/java/ORG.oclc.util.CoordToDecimal" xmlns:naco="http://whatever/java/ORG.oclc.util.NacoNormalize" xmlns:norm="http://whatever/java/ORG.oclc.util.NormalFormC" xmlns:schema="http://schema.org/" xmlns:madsrdf="http://www.loc.gov/mads/rdf/v1#" xmlns:skosxl="http://www.w3.org/2008/05/skos-xl#" xmlns:dct="http://purl.org/dc/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:void="http://rdfs.org/ns/void#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://id.worldcat.org/fast/">
+<rdf:Description rdf:about="5140">
+<dct:identifier>5140</dct:identifier>
+<skos:inScheme rdf:resource="ontology/1.0/#fast"/>
+<rdf:type rdf:resource="http://schema.org/Person"/>
+<skos:inScheme rdf:resource="ontology/1.0/#facet-Personal"/>
+<skos:prefLabel>Cornell, Joseph</skos:prefLabel>
+<schema:name>Cornell, Joseph</schema:name>
+<skos:altLabel>K\xC5\x8Dneru, Jozefu</skos:altLabel>
+<schema:name>K\xC5\x8Dneru, Jozefu</schema:name>
+<schema:sameAs>
+<rdf:Description rdf:about="http://id.loc.gov/authorities/names/n50016406">
+<rdfs:label>Cornell, Joseph</rdfs:label>
+</rdf:Description>
+</schema:sameAs>
+<foaf:focus>
+<rdf:Description rdf:about="http://en.wikipedia.org/wiki/Joseph_Cornell">
+<rdfs:label>Joseph Cornell</rdfs:label>
+</rdf:Description>
+</foaf:focus>
+<schema:sameAs>
+<rdf:Description rdf:about="https://viaf.org/viaf/100297313">
+<rdfs:label>Cornell, Joseph</rdfs:label>
+</rdf:Description>
+</schema:sameAs>
+</rdf:Description>
+<rdf:Description rdf:about="fst00005140">
+<rdfs:comment>This identifier is deprecated. See the rdfs:seeAlso link for the new identifier.</rdfs:comment>
+<rdfs:seeAlso rdf:resource="5140"/>
+</rdf:Description>
+<foaf:Document rdf:about="5140/rdf.xml">
+<void:inDataset rdf:resource="http://id.worldcat.org/fast/void/0.1"/>
+<foaf:primaryTopic rdf:resource="5140"/>
+<dc:format>application/rdf+xml</dc:format>
+<dct:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2004-09-24T00:00:00.0</dct:created>
+<dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-07-06T14:07:21.0</dct:modified>
+<dct:language rdf:resource="http://lexvo.org/id/iso639-3/eng"/>
+<skos:changeNote xml:lang="en">Cataloged by agency: OCoLC</skos:changeNote>
+<skos:changeNote xml:lang="en">Transcribed by agency: OCoLC</skos:changeNote>
+</foaf:Document>
+<rdf:Description rdf:about="72456">
+<dct:identifier>72456</dct:identifier>
+<skos:inScheme rdf:resource="ontology/1.0/#fast"/>
+<rdf:type rdf:resource="http://schema.org/Person"/>
+<skos:inScheme rdf:resource="ontology/1.0/#facet-Personal"/>
+<skos:prefLabel>Cornell, Sarah Maria, 1802-1832</skos:prefLabel>
+<schema:name>Cornell, Sarah Maria, 1802-1832</schema:name>
+<skos:altLabel>Cornell, Sarah M. (Sarah Maria), 1802-1832</skos:altLabel>
+<schema:name>Cornell, Sarah M. (Sarah Maria), 1802-1832</schema:name>
+<schema:sameAs>
+<rdf:Description rdf:about="http://id.loc.gov/authorities/names/n81052350">
+<rdfs:label>Cornell, Sarah Maria, 1802-1832</rdfs:label>
+</rdf:Description>
+</schema:sameAs>
+<foaf:focus>
+<rdf:Description rdf:about="http://en.wikipedia.org/wiki/Sarah_Maria_Cornell">
+<rdfs:label>Sarah Maria Cornell</rdfs:label>
+</rdf:Description>
+</foaf:focus>
+<schema:sameAs>
+<rdf:Description rdf:about="https://viaf.org/viaf/23460880">
+<rdfs:label>Cornell, Sarah Maria, 1802-1832</rdfs:label>
+</rdf:Description>
+</schema:sameAs>
+</rdf:Description>
+<rdf:Description rdf:about="fst00072456">
+<rdfs:comment>This identifier is deprecated. See the rdfs:seeAlso link for the new identifier.</rdfs:comment>
+<rdfs:seeAlso rdf:resource="72456"/>
+</rdf:Description>
+<foaf:Document rdf:about="72456/rdf.xml">
+<void:inDataset rdf:resource="http://id.worldcat.org/fast/void/0.1"/>
+<foaf:primaryTopic rdf:resource="72456"/>
+<dc:format>application/rdf+xml</dc:format>
+<dct:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2004-09-24T00:00:00.0</dct:created>
+<dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2016-07-13T11:21:28.0</dct:modified>
+<dct:language rdf:resource="http://lexvo.org/id/iso639-3/eng"/>
+<skos:changeNote xml:lang="en">Cataloged by agency: OCoLC</skos:changeNote>
+<skos:changeNote xml:lang="en">Transcribed by agency: OCoLC</skos:changeNote>
+</foaf:Document>
+<rdf:Description rdf:about="409667">
+<dct:identifier>409667</dct:identifier>
+<skos:inScheme rdf:resource="ontology/1.0/#fast"/>
+<rdf:type rdf:resource="http://schema.org/Person"/>
+<skos:inScheme rdf:resource="ontology/1.0/#facet-Personal"/>
+<skos:prefLabel>Cornell, Ezra, 1807-1874</skos:prefLabel>
+<schema:name>Cornell, Ezra, 1807-1874</schema:name>
+<schema:sameAs>
+<rdf:Description rdf:about="http://id.loc.gov/authorities/names/n97066641">
+<rdfs:label>Cornell, Ezra, 1807-1874</rdfs:label>
+</rdf:Description>
+</schema:sameAs>
+<foaf:focus>
+<rdf:Description rdf:about="http://en.wikipedia.org/wiki/Ezra_Cornell">
+<rdfs:label>Ezra Cornell</rdfs:label>
+</rdf:Description>
+</foaf:focus>
+<schema:sameAs>
+<rdf:Description rdf:about="https://viaf.org/viaf/1755530">
+<rdfs:label>Cornell, Ezra, 1807-1874</rdfs:label>
+</rdf:Description>
+</schema:sameAs>
+</rdf:Description>
+<rdf:Description rdf:about="fst00409667">
+<rdfs:comment>This identifier is deprecated. See the rdfs:seeAlso link for the new identifier.</rdfs:comment>
+<rdfs:seeAlso rdf:resource="409667"/>
+</rdf:Description>
+<foaf:Document rdf:about="409667/rdf.xml">
+<void:inDataset rdf:resource="http://id.worldcat.org/fast/void/0.1"/>
+<foaf:primaryTopic rdf:resource="409667"/>
+<dc:format>application/rdf+xml</dc:format>
+<dct:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2004-09-24T00:00:00.0</dct:created>
+<dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-07-06T14:07:21.0</dct:modified>
+<dct:language rdf:resource="http://lexvo.org/id/iso639-3/eng"/>
+<skos:changeNote xml:lang="en">Cataloged by agency: OCoLC</skos:changeNote>
+<skos:changeNote xml:lang="en">Transcribed by agency: OCoLC</skos:changeNote>
+</foaf:Document>
+<void:Dataset rdf:about="http://id.worldcat.org/fast/void/0.1">
+<dct:title>FAST (Faceted Application of Subject Terminology) Data</dct:title>
+<dct:license>
+<rdf:Description rdf:about="http://www.oclc.org/research/activities/fast/odcby.htm">
+<dct:title>Open Data Commons Attribution License (ODC-By) v1.0</dct:title>
+<rdfs:comment>This is OCLC's "local copy" of the ODC-By license</rdfs:comment>
+<rdfs:seeAlso rdf:resource="http://opendatacommons.org/licenses/by/#toc-anchor-337-3"/>
+<owl:sameAs rdf:resource="http://opendatacommons.org/licenses/by/1-0/"/>
+</rdf:Description>
+</dct:license>
+</void:Dataset>
+</rdf:RDF>

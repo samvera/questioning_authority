@@ -18,6 +18,14 @@ Gemfile.lock
 coverage
 pkg
 .internal_test_app
+.byebug_history
+
+# IDE files
+.idea
+
+# rvm settings
+.ruby-gemset
+.ruby-version
 
 /doc
 .yardoc

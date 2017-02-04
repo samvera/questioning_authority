@@ -1,0 +1,1 @@
+{"@context":{"skos":"http://www.w3.org/2004/02/skos/core#","onki":"http://schema.onki.fi/onki#","uri":"@id","type":"@type","results":{"@id":"onki:results","@container":"@list"},"prefLabel":"skos:prefLabel","altLabel":"skos:altLabel","hiddenLabel":"skos:hiddenLabel","broader":"skos:broader","@language":"en"},"uri":"","results":[]}
