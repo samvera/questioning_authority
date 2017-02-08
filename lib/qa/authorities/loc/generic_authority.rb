@@ -7,6 +7,17 @@ module Qa::Authorities
 
     include WebServiceBase
 
+    def response(url)
+      uri = URI(url)
+      conn = Faraday.new "#{uri.scheme}://#{uri.host}"
+      conn.options.params_encoder = Faraday::FlatParamsEncoder
+      conn.get do |req|
+        req.headers['Accept'] = 'application/json'
+        req.url uri.path
+        req.params = Rack::Utils.parse_query(uri.query)
+      end
+    end
+
     def search(q)
       @raw_response = json(build_query_url(q))
       parse_authority_response
