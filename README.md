@@ -5,6 +5,34 @@
 
 You should question your authorities.
 
+----
+## Table of Contents
+
+  * [What does this do?](#what-does-this-do)
+  * [How does it work?](#how-does-it-work)
+    * [Sub-Authorities](#sub-authorities)
+  * [How do I use this?](#how-do-i-use-this)
+    * [Examples](#examples)
+    * [JSON Results](#json-results)
+  * [Authority Sources information](#authority-sources-information)
+    * [FAST](#fast)
+    * [Geonames](#geonames)
+    * [Adding your own authorities](#adding-your-own-authorities)
+    * [Local Sub-Authorities](#local-sub-authorities)
+      * [In YAML files](#in-yaml-files)
+      * [In database tables](#in-database-tables)
+    * [Medical Subject Headings (Mesh)](#medical-subject-headings-mesh)
+    * [Linked Open Data (LOD) Authorities](#linked-open-data-lod-authorities)
+      * [Configuring a LOD Authority](#configuring-a-lod-authority)
+      * [Query](#query)
+      * [Find term](#find-term)
+      * [Add javascript to support autocomplete](#add-javascript-to-support-autocomplete)
+  * [Developer Notes](#developer-notes)
+    * [Compatibility](#compatibility)
+  * [Help](#help)
+  
+----   
+  
 ## What does this do?
 
 Provides a set of uniform RESTful routes to query any controlled vocabulary or set of authority terms.
@@ -335,9 +363,17 @@ This may take a few minutes to finish.
 
 ### Linked Open Data (LOD) Authorities
 
+You will need to add gems that process the type of linked data returned for the authorities you use.  A gem that covers 
+all formats is [ruby-rdf/linkeddata](https://github.com/ruby-rdf/linkeddata).  This gem is included in QA for development 
+and testing of QA, but is not automatically included in the released gem.  Additionally, it is unlikely that you will need 
+all the formats included by that gem.  You may want to select only those gems that are for the formats you need supported.  
+See all gems in [linkeddata.gemspec](https://github.com/ruby-rdf/linkeddata/blob/develop/linkeddata.gemspec).
+
 #### Configuring a LOD Authority
 
-Access to LOD authorities can be configured.  Currently, a configuration exists in QA for OCLC Fast Linked Data, Library of Congress (terms only), and Agrovoc.  Look for configuration files in [/config/authorities/linked_data](https://github.com/ld4l-labs/questioning_authority/tree/linked_data/config/authorities/linked_data).
+Access to LOD authorities can be configured.  Currently, a configuration exists in QA for OCLC Fast Linked Data, Library of 
+Congress (terms only), and Agrovoc.  Look for configuration files in 
+[/config/authorities/linked_data](https://github.com/ld4l-labs/questioning_authority/tree/linked_data/config/authorities/linked_data).
 
 Example configuration...
 
@@ -347,7 +383,6 @@ Example configuration...
 term:
   url:                  http://id.worldcat.org/fast/__TERM_ID__/rdf.xml
   term_id:              ID                    # valid values:  ID | URI
-  http_accept:          application/rdf+xml
   results:              
     id_predicate:       http://purl.org/dc/terms/identifier
     label_predicate:    http://www.w3.org/2004/02/skos/core#prefLabel
@@ -355,7 +390,6 @@ term:
     sameas_predicate:   http://schema.org/sameAs
 search:
   url:                  http://experimental.worldcat.org/fast/search?query=__SUB_AUTH__+all+%22__QUERY__%22&sortKeys=usage&maximumRecords=__MAX_RECORDS__
-  http_accept:          application/rdf+xml
   replacement_count:    1
   replacement_1:
     param:        maximumRecords
@@ -387,7 +421,6 @@ NOTES:
     * NOTE: Some authoritys' API URL allows language to be specified as a parameter.  In that case, use pattern replacement to add the language to the API URL to prevent alternate languages from being returned in the results.
     * NOTE: At this writing, only label is filtered.
   * term_id:  (optional)  values:  ID (default) | URI  - This tells apps whether `__TERM_ID__` replacement is expecting an ID or URI.
-  * http_accept:  (optional)  values:  application/rdf+xml (default) | application/json  (More can be easily added.)
   * results: (required)  lists predicates to select out for normalization in the hash results
     * id_predicate:  (optional)
     * label_predicate:  (required)
@@ -411,7 +444,6 @@ NOTES:
   * language:  (optional)  values:  en | fr | etc.  -- identify a language to use to filter out results of other languages
     * NOTE: Some authoritys' API URL allows language to be specified as a parameter.  In that case, use pattern replacement to add the language to the API URL to prevent alternate languages from being returned in the results.
     * NOTE: At this writing, only label is filtered.
-  * http_accept:  (optional)  values:  application/rdf+xml (default) | application/json  (More can be easily added.)
   * results: (required)  lists predicates to normalize and include in json results
     * id_predicate:  (optional)
     * label_predicate:  (required)
@@ -525,108 +557,7 @@ NOTE: All predicates with the URI as the subject will be included under "predica
 
 #### Add javascript to support autocomplete
 
-**NOTE:** Examples assume the field name is generic_file_corporate_name.  Method names include CorporateName.  This 
-convention allows multiple fields to use autocomplete.
-
-##### For a single value field...
-
-```javascript
-onLoad: function() {
-    this.setInitialCorporateNameAutocomplete();
-},
-
-# called when page loads to add autocomplete to field with generic_file_corporate_name id
-setInitialCorporateNameAutocomplete: function() {
-  $('#generic_file_corporate_name').autocomplete({
-    minLength: 3,
-    source: function (request, response) {
-      $.ajax({
-        url: '/qa/search/linked_data/oclc_fast_all?q=' + request.term + '&maximumRecords=5',
-        type: 'GET',
-        dataType: 'json',
-        complete: function (xhr, status) {
-          var results = $.parseJSON(xhr.responseText);
-          response(results);
-        }
-      });
-    }
-  })
-},
-```
-
-##### For a multiple value field...
-
-```javascript
-onLoad: function() {
-    this.setEventOnAddButton("all");
-    this.setInitialCorporateNameAutocomplete();
-},
-
-# called when page loads to add autocomplete to all fields with generic_file_corporate_name id
-setInitialCorporateNameAutocomplete: function() {
-$('input.generic_file_corporate_name').each(function () {
-   $(this).autocomplete({
-      minLength: 3,
-      source: function (request, response) {
-         $.ajax({
-            url: '/qa/search/linked_data/oclc_fast_all?q=' + request.term + '&maximumRecords=5',
-            type: 'GET',
-            dataType: 'json',
-            complete: function (xhr, status) {
-               var results = $.parseJSON(xhr.responseText);
-               response(results);
-            }
-         });
-      }
-   })
-},
-
-# called when Add button is clicked to add autocomplete to all fields with generic_file_corporate_name id AND
-# call setEventOnAddButton to add javascript to call this method to all Add buttons associated with generic_file_corporate_name 
-initCorporateNameAutocomplete: function() {
-   $('input.generic_file_corporate_name').each(function() {
-      $(this).autocomplete({
-         minLength: 3,
-         source: function(request, response) {
-            $.ajax({
-               url: '/qa/search/linked_data/oclc_fast_all?q=' + request.term + '&maximumRecords=3',
-               type: 'GET',
-               dataType: 'json',
-               complete: function(xhr, status) {
-                  var results = $.parseJSON(xhr.responseText);
-                  response(results);
-               }
-            });
-         }
-      })
-   })
-   setFileVocabularies.setEventOnAddButton("corporate_name");
-},
-
-
-# called when page loads and from initCorporateNameAutocomplete when Add button is clicked to make all Add buttons including 
-# the new one for all generic_file_corporate_name fields call function initCorporateNameAutocomplete when an Add button for 
-# this field is clicked
-setEventOnAddButton: function(target) {
-  $('button.add').each(function() {
-    if ( target == "corporate_name" || target == "all" ) {
-      if ( $(this).closest('div').attr('class').indexOf('generic_file_corporate_name') >= 0 ) {
-        $(this).click(function() {
-          setTimeout(setFileVocabularies.initCorporateNameAutocomplete,500);
-        })
-      }
-    }
-  })
-},
-```
-
-To add autocomplete to a second multi-valued field, duplicate setInitialCorporateNameAutocomplete and initCorporateNameAutocomplete. 
-Modify CorporateName, generic_file_corporate_name, and corporate_name to be consistent with the new autocomplete field.  Also, extend
-setEventOnAddButton function to duplicate the `if ( target...  )` block and change the target `"corporate_name"` to be consistent with 
-the new autocomplete field.
-
-**NOTE:** This javascript was tested in a Sufia 6 app.  Additional configuration is required to add a field to a Sufia app.  See Sufia's 
-[documentation](https://github.com/projecthydra/sufia/wiki/Customizing-Metadata) for more information on that process.
+See [Using with autocomplete in Sufia](https://github.com/projecthydra-labs/questioning_authority/wiki/Using-with-autocomplete-in-Sufia) in the wiki documentation for QA.
 
 
 

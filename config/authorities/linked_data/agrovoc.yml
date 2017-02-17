@@ -5,7 +5,6 @@ term:
 #  url:                http://aims.fao.org/skosmos/rest/v1/data?uri=__TERM_ID__
 #  example:            http://aims.fao.org/skosmos/rest/v1/data?uri=http://aims.fao.org/aos/agrovoc/c_3954
   url:                http://aims.fao.org/skosmos/rest/v1/data?uri=http://aims.fao.org/aos/agrovoc/__TERM_ID__
-  http_accept:        application/rdf+xml
   term_id:            ID                    # valid values:  ID | URI
   language:           en
   results:
@@ -16,7 +15,6 @@ term:
     sameas_predicate:   http://www.w3.org/2004/02/skos/core#exactMatch
 search:
   url:                http://aims.fao.org/skosmos/rest/v1/search/?query=*__QUERY__*&lang=__LANG__
-  http_accept:        application/json
   replacement_count:  1
   replacement_1:
     param:    lang
