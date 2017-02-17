@@ -1,5 +1,10 @@
 module Qa::Authorities
   module LinkedData
-    require 'qa/authorities/linked_data/generic_authority'.freeze
+    extend ActiveSupport::Autoload
+    autoload :GenericAuthority
+    autoload :RdfHelper
+    autoload :SearchQuery
+    autoload :FindTerm
+    autoload :Config
   end
 end

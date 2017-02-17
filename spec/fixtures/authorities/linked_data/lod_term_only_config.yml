@@ -1,0 +1,31 @@
+# API documentation:
+# http://www.oclc.org/developer/develop/web-services/fast-api/linked-data.en.html
+term:
+  url:                  http://localhost/test_default/term/__TERM_SUB_AUTH__/__TERM_ID__&param1=__TERM_REP_PARAM1__&param2=__TERM_REP_PARAM2
+  term_id:              ID                    # valid values:  ID | URI
+  replacement_count:    2
+  replacement_1:
+    param:            term_param1
+    pattern:          __TERM_REP_PARAM1__
+    default:          "alpha"
+  replacement_2:
+    param:            term_param2
+    pattern:          __TERM_REP_PARAM2__
+    default:          "beta"
+  results:
+    id_predicate:       http://purl.org/dc/terms/identifier
+    label_predicate:    http://www.w3.org/2004/02/skos/core#prefLabel
+    altlabel_predicate: http://www.w3.org/2004/02/skos/core#altLabel
+    broader_predicate:  http://www.w3.org/2004/02/skos/core#broader
+    narrower_predicate: http://www.w3.org/2004/02/skos/core#narrower
+    sameas_predicate:   http://schema.org/sameAs
+  subauthorities:
+    replacement:
+      pattern:        __TERM_SUB_AUTH__
+      default:        term_sub1_key
+    term_sub1_key:      term_sub1_name
+    term_sub2_key:      term_sub2_name
+    term_sub3_key:      term_sub3_name
+
+search:
+  ### SEARCH NOT SUPPORTED

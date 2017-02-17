@@ -12,7 +12,7 @@ Metrics/ModuleLength:
 
 Metrics/CyclomaticComplexity:
   Exclude:
-    - 'lib/qa/authorities/linked_data/generic_authority.rb'
+    - 'lib/qa/authorities/linked_data/find_term.rb'
     - 'lib/qa/authorities/mesh_tools/mesh_data_parser.rb'
 
 RSpec/ExampleLength:
