@@ -1,0 +1,66 @@
+{
+  "term": {
+    "url": {
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type":    "IriTemplate",
+      "template": "http://localhost/test_replacement/term/{?term_id}?lang={?lang}",
+      "variableRepresentation": "BasicRepresentation",
+      "mapping": [
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "term_id",
+          "property": "hydra:freetextQuery",
+          "required": true
+        },
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "lang",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default":  "en"
+        }
+      ]
+    },
+    "qa_replacement_patterns": {
+      "term_id": "term_id"
+    },
+    "term_id": "ID",
+    "results": {
+      "id_predicate":       "http://id.loc.gov/vocabulary/identifiers/lccn",
+      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",
+      "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel"
+    }
+  },
+  "search": {
+    "url": {
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type":    "IriTemplate",
+      "template": "http://localhost/test_replacement/search?query={?query}&lang={?lang}",
+      "variableRepresentation": "BasicRepresentation",
+      "mapping": [
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "query",
+          "property": "hydra:freetextQuery",
+          "required": true
+        },
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "lang",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default":  "en"
+        }
+      ]
+    },
+    "qa_replacement_patterns": {
+      "query": "query"
+    },
+    "results": {
+      "id_predicate":       "http://purl.org/dc/terms/identifier",
+      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",
+      "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
+      "sort_predicate":     "http://www.w3.org/2004/02/skos/core#prefLabel"
+    }
+  }
+}

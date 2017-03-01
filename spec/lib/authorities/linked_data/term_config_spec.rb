@@ -1,40 +1,75 @@
 require 'spec_helper'
 
-describe Qa::Authorities::LinkedData::Config do
-  let(:full_config) { described_class.new(:LOD_FULL_CONFIG) }
-  let(:min_config) { described_class.new(:LOD_MIN_CONFIG) }
-  let(:search_only_config) { described_class.new(:LOD_SEARCH_ONLY_CONFIG) }
+describe Qa::Authorities::LinkedData::TermConfig do
+  let(:full_config) { Qa::Authorities::LinkedData::Config.new(:LOD_FULL_CONFIG).term }
+  let(:min_config) { Qa::Authorities::LinkedData::Config.new(:LOD_MIN_CONFIG).term }
+  let(:search_only_config) { Qa::Authorities::LinkedData::Config.new(:LOD_SEARCH_ONLY_CONFIG).term }
 
   describe '#term_config' do
     let(:full_term_config) do
       {
-        'url' => 'http://localhost/test_default/term/__TERM_SUB_AUTH__/__TERM_ID__&param1=__TERM_REP_PARAM1__&param2=__TERM_REP_PARAM2__',
-        'term_id' => 'ID',
-        'language' => 'en',
-        'replacement_count' => 2,
-        'replacement_1' => { 'param' => 'term_param1', 'pattern' => '__TERM_REP_PARAM1__', 'default' => 'alpha' },
-        'replacement_2' => { 'param' => 'term_param2', 'pattern' => '__TERM_REP_PARAM2__', 'default' => 'beta' },
-        'results' => {
-          'id_predicate' => 'http://purl.org/dc/terms/identifier',
-          'label_predicate' => 'http://www.w3.org/2004/02/skos/core#prefLabel',
-          'altlabel_predicate' => 'http://www.w3.org/2004/02/skos/core#altLabel',
-          'broader_predicate' => 'http://www.w3.org/2004/02/skos/core#broader',
-          'narrower_predicate' => 'http://www.w3.org/2004/02/skos/core#narrower',
-          'sameas_predicate' => 'http://schema.org/sameAs'
+        url: {
+          :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
+          :@type => 'IriTemplate',
+          template: 'http://localhost/test_default/term/{?subauth}/{?term_id}?param1={?param1}&param2={?param2}',
+          variableRepresentation: 'BasicRepresentation',
+          mapping: [
+            {
+              :@type => 'IriTemplateMapping',
+              variable: 'term_id',
+              property: 'hydra:freetextQuery',
+              required: true
+            },
+            {
+              :@type => 'IriTemplateMapping',
+              variable: 'subauth',
+              property: 'hydra:freetextQuery',
+              required: false,
+              default: 'term_sub2_name'
+            },
+            {
+              :@type => 'IriTemplateMapping',
+              variable: 'param1',
+              property: 'hydra:freetextQuery',
+              required: false,
+              default: 'alpha'
+            },
+            {
+              :@type => 'IriTemplateMapping',
+              variable: 'param2',
+              property: 'hydra:freetextQuery',
+              required: false,
+              default: 'beta'
+            }
+          ]
         },
-        'subauthorities' => {
-          'replacement' => { 'pattern' => '__TERM_SUB_AUTH__', 'default' => 'term_sub1_name' },
-          'term_sub1_key' => 'term_sub1_name',
-          'term_sub2_key' => 'term_sub2_name', 'term_sub3_key' => 'term_sub3_name'
+        qa_replacement_patterns: {
+          term_id: 'term_id',
+          subauth: 'subauth'
+        },
+        term_id: 'ID',
+        language: ['en'],
+        results: {
+          id_predicate: 'http://purl.org/dc/terms/identifier',
+          label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
+          altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
+          broader_predicate: 'http://www.w3.org/2004/02/skos/core#broader',
+          narrower_predicate: 'http://www.w3.org/2004/02/skos/core#narrower',
+          sameas_predicate: 'http://www.w3.org/2004/02/skos/core#exactMatch'
+        },
+        subauthorities: {
+          term_sub1_key: 'term_sub1_name',
+          term_sub2_key: 'term_sub2_name',
+          term_sub3_key: 'term_sub3_name'
         }
       }
     end
 
     it 'returns nil if only search configuration is defined' do
-      expect(search_only_config.term_config).to eq nil
+      expect(search_only_config.send(:term_config)).to be_empty
     end
     it 'returns hash of term configuration' do
-      expect(full_config.term_config).to eq full_term_config
+      expect(full_config.send(:term_config)).to eq full_term_config
     end
   end
 
@@ -48,12 +83,59 @@ describe Qa::Authorities::LinkedData::Config do
   end
 
   describe '#term_url' do
+    let(:url_config) do
+      {
+        :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
+        :@type => 'IriTemplate',
+        template: 'http://localhost/test_default/term/{?subauth}/{?term_id}?param1={?param1}&param2={?param2}',
+        variableRepresentation: 'BasicRepresentation',
+        mapping: [
+          {
+            :@type => 'IriTemplateMapping',
+            variable: 'term_id',
+            property: 'hydra:freetextQuery',
+            required: true
+          },
+          {
+            :@type => 'IriTemplateMapping',
+            variable: 'subauth',
+            property: 'hydra:freetextQuery',
+            required: false,
+            default: 'term_sub2_name'
+          },
+          {
+            :@type => 'IriTemplateMapping',
+            variable: 'param1',
+            property: 'hydra:freetextQuery',
+            required: false,
+            default: 'alpha'
+          },
+          {
+            :@type => 'IriTemplateMapping',
+            variable: 'param2',
+            property: 'hydra:freetextQuery',
+            required: false,
+            default: 'beta'
+          }
+        ]
+      }
+    end
+
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_url).to eq nil
     end
     it 'returns the term url from the configuration' do
-      expected_url = 'http://localhost/test_default/term/__TERM_SUB_AUTH__/__TERM_ID__&param1=__TERM_REP_PARAM1__&param2=__TERM_REP_PARAM2__'
-      expect(full_config.term_url).to eq expected_url
+      expect(full_config.term_url).to eq url_config
+    end
+  end
+
+  describe '#term_url' do
+    it 'returns nil if only search configuration is defined' do
+      expect(search_only_config.term_url_template).to eq nil
+    end
+    it 'returns the term url from the configuration' do
+      expected_url = 'http://localhost/test_default/term/{?subauth}/{?term_id}?param1={?param1}&param2={?param2}'
+      expect(full_config.term_url_template).to eq expected_url
     end
   end
 
@@ -84,6 +166,25 @@ describe Qa::Authorities::LinkedData::Config do
     end
     it 'returns the preferred language for selecting literal values if configured for term' do
       expect(full_config.term_language).to eq [:en]
+    end
+  end
+
+  describe '#term_results' do
+    let(:results_config) do
+      {
+        id_predicate: 'http://purl.org/dc/terms/identifier',
+        label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
+        altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
+        broader_predicate: 'http://www.w3.org/2004/02/skos/core#broader',
+        narrower_predicate: 'http://www.w3.org/2004/02/skos/core#narrower',
+        sameas_predicate: 'http://www.w3.org/2004/02/skos/core#exactMatch'
+      }
+    end
+    it 'returns nil if only search configuration is defined' do
+      expect(search_only_config.term_results).to eq nil
+    end
+    it 'returns hash of predicates' do
+      expect(full_config.term_results).to eq results_config
     end
   end
 
@@ -149,7 +250,7 @@ describe Qa::Authorities::LinkedData::Config do
       expect(min_config.term_results_sameas_predicate).to eq nil
     end
     it 'returns the predicate that holds any sameas terms in term results' do
-      expect(full_config.term_results_sameas_predicate).to eq RDF::URI('http://schema.org/sameAs')
+      expect(full_config.term_results_sameas_predicate).to eq RDF::URI('http://www.w3.org/2004/02/skos/core#exactMatch')
     end
   end
 
@@ -188,8 +289,8 @@ describe Qa::Authorities::LinkedData::Config do
     end
     it 'returns hash of all replacement patterns' do
       expected_hash = {
-        'term_param1' => { pattern: '__TERM_REP_PARAM1__', default: 'alpha' },
-        'term_param2' => { pattern: '__TERM_REP_PARAM2__', default: 'beta' }
+        param1: { :@type => 'IriTemplateMapping', variable: 'param1', property: 'hydra:freetextQuery', required: false, default: 'alpha' },
+        param2: { :@type => 'IriTemplateMapping', variable: 'param2', property: 'hydra:freetextQuery', required: false, default: 'beta' }
       }
       expect(full_config.term_replacements).to eq expected_hash
     end
@@ -245,9 +346,9 @@ describe Qa::Authorities::LinkedData::Config do
     end
     it 'returns hash of all subauthority key-value patterns defined' do
       expected_hash = {
-        'term_sub1_key' => 'term_sub1_name',
-        'term_sub2_key' => 'term_sub2_name',
-        'term_sub3_key' => 'term_sub3_name'
+        term_sub1_key: 'term_sub1_name',
+        term_sub2_key: 'term_sub2_name',
+        term_sub3_key: 'term_sub3_name'
       }
       expect(full_config.term_subauthorities).to eq expected_hash
     end
@@ -263,7 +364,7 @@ describe Qa::Authorities::LinkedData::Config do
       expect(min_config.term_subauthority_replacement_pattern).to eq empty_hash
     end
     it 'returns hash replacement pattern for subauthority and the default value' do
-      expected_hash = { pattern: '__TERM_SUB_AUTH__', default: 'term_sub1_name' }
+      expected_hash = { pattern: 'subauth', default: 'term_sub2_name' }
       expect(full_config.term_subauthority_replacement_pattern).to eq expected_hash
     end
   end
@@ -273,24 +374,24 @@ describe Qa::Authorities::LinkedData::Config do
       expect(search_only_config.term_url_with_replacements('C123')).to eq nil
     end
     it 'returns the url with query substitution applied' do
-      expected_url = 'http://localhost/test_default/term/term_sub1_name/C123&param1=alpha&param2=beta'
+      expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=alpha&param2=beta'
       expect(full_config.term_url_with_replacements('C123')).to eq expected_url
     end
     it 'returns the url with default subauthority when NOT specified' do
-      expected_url = 'http://localhost/test_default/term/term_sub1_name/C123&param1=alpha&param2=beta'
+      expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=alpha&param2=beta'
       expect(full_config.term_url_with_replacements('C123')).to eq expected_url
     end
     it 'returns the url with subauthority substitution when specified' do
-      expected_url = 'http://localhost/test_default/term/term_sub3_name/C123&param1=alpha&param2=beta'
+      expected_url = 'http://localhost/test_default/term/term_sub3_name/C123?param1=alpha&param2=beta'
       expect(full_config.term_url_with_replacements('C123', 'term_sub3_key')).to eq expected_url
     end
     it 'returns the url with default values when replacements are NOT specified' do
-      expected_url = 'http://localhost/test_default/term/term_sub1_name/C123&param1=alpha&param2=beta'
+      expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=alpha&param2=beta'
       expect(full_config.term_url_with_replacements('C123')).to eq expected_url
     end
     it 'returns the url with replacement substitution values when replacements are specified' do
-      expected_url = 'http://localhost/test_default/term/term_sub1_name/C123&param1=golf&param2=hotel'
-      expect(full_config.term_url_with_replacements('C123', nil, 'term_param1' => 'golf', 'term_param2' => 'hotel')).to eq expected_url
+      expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=golf&param2=hotel'
+      expect(full_config.term_url_with_replacements('C123', nil, param1: 'golf', param2: 'hotel')).to eq expected_url
     end
 
     context 'when subauthorities are not defined' do
@@ -311,7 +412,7 @@ describe Qa::Authorities::LinkedData::Config do
       end
       it 'and replacements param is included returns the url with query substitution applied ignoring the replacements' do
         expected_url = 'http://localhost/test_default/term/C123'
-        expect(min_config.term_url_with_replacements('C123', nil, 'fake_replacement_key' => 'fake_value')).to eq expected_url
+        expect(min_config.term_url_with_replacements('C123', nil, fake_replacement_key: 'fake_value')).to eq expected_url
       end
     end
   end

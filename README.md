@@ -363,63 +363,132 @@ This may take a few minutes to finish.
 
 ### Linked Open Data (LOD) Authorities
 
-You will need to add gems that process the type of linked data returned for the authorities you use.  A gem that covers 
-all formats is [ruby-rdf/linkeddata](https://github.com/ruby-rdf/linkeddata).  This gem is included in QA for development 
-and testing of QA, but is not automatically included in the released gem.  Additionally, it is unlikely that you will need 
-all the formats included by that gem.  You may want to select only those gems that are for the formats you need supported.  
+You will need to add gems that process the type of linked data returned for the authorities you use.  
+
+To cover all possible formats, include the [ruby-rdf/linkeddata](https://github.com/ruby-rdf/linkeddata) gem.
+
+```
+gem 'linkeddata'
+```
+
+This gem is included in QA for development and testing of QA, but is not automatically included in the released gem.  
+Additionally, it is unlikely that you will need all the formats included by that gem.  You may want to select only those 
+gems that are for the formats you need supported.  
+
 See all gems in [linkeddata.gemspec](https://github.com/ruby-rdf/linkeddata/blob/develop/linkeddata.gemspec).
+
+For example, if you know the authorites you are working with support rdf-xml, you can include the following gem instead of linkeddata.
+ 
+```
+gem 'rdf-rdfxml'
+```
 
 #### Configuring a LOD Authority
 
 Access to LOD authorities can be configured.  Currently, a configuration exists in QA for OCLC Fast Linked Data, Library of 
 Congress (terms only), and Agrovoc.  Look for configuration files in 
-[/config/authorities/linked_data](https://github.com/ld4l-labs/questioning_authority/tree/linked_data/config/authorities/linked_data).
+[/config/authorities/linked_data](https://github.com/projecthydra-labs/questioning_authority/tree/master/config/authorities/linked_data).
 
 Example configuration...
 
-```yaml
-# API documentation:
-# http://www.oclc.org/developer/develop/web-services/fast-api/linked-data.en.html
-term:
-  url:                  http://id.worldcat.org/fast/__TERM_ID__/rdf.xml
-  term_id:              ID                    # valid values:  ID | URI
-  results:              
-    id_predicate:       http://purl.org/dc/terms/identifier
-    label_predicate:    http://www.w3.org/2004/02/skos/core#prefLabel
-    altlabel_predicate: http://www.w3.org/2004/02/skos/core#altLabel
-    sameas_predicate:   http://schema.org/sameAs
-search:
-  url:                  http://experimental.worldcat.org/fast/search?query=__SUB_AUTH__+all+%22__QUERY__%22&sortKeys=usage&maximumRecords=__MAX_RECORDS__
-  replacement_count:    1
-  replacement_1:
-    param:        maximumRecords
-    pattern:      __MAX_RECORDS__
-    default:      "20"
-  results:
-    id_predicate:       http://purl.org/dc/terms/identifier
-    label_predicate:    http://www.w3.org/2004/02/skos/core#prefLabel
-#    altlabel_predicate: http://www.w3.org/2004/02/skos/core#altLabel   # too long to be practical
-  subauthorities:
-    replacement:
-      pattern:    __SUB_AUTH__
-      default:    "cql.any"                   # Keywords in all headings
-    topic:              oclc.topic             # Keywords in topical headings  (e.g. universities)
-    geographic:         oclc.geographic        # Keywords in geographical headings  (e.g. ithaca)
-    event_name:         oclc.eventName         # Keywords in event headings  (e.g. woodstock)
-    personal_name:      oclc.personalName      # Keywords in personal headings  (e.g. george washington)
-    corporate_name:     oclc.corporateName     # Keywords in corporate name headings  (e.g. cornell)
-    uniform_title:      oclc.uniformTitle      # Keywords in uniform title headings (e.g. snow white)
-    period:             oclc.period            # Keywords in period headings  (e.g. 1562)
-    form:               oclc.form              # Keywords in form headings  (e.g. jazz)
-    alt_lc:             oclc.altlc             # Keywords in LC Source headings  (e.g. gorilla)
+```json
+{
+  "term": {
+    "url": {
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type":    "IriTemplate",
+      "template": "http://id.worldcat.org/fast/{?term_id}/rdf.xml",
+      "variableRepresentation": "BasicRepresentation",
+      "mapping": [
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "term_id",
+          "property": "hydra:freetextQuery",
+          "required": true
+        }
+      ]
+    },
+    "qa_replacement_patterns": {
+      "term_id": "term_id"
+    },
+    "language": ["en","fr"]
+    "term_id": "ID",
+    "results": {
+      "id_predicate":       "http://purl.org/dc/terms/identifier",
+      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",
+      "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
+      "sameas_predicate":   "http://schema.org/sameAs"
+    }
+  },
+  "search": {
+    "url": {
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type": "IriTemplate",
+      "template": "http://experimental.worldcat.org/fast/search?query={?subauth}+all+%22{?query}%22&sortKeys=usage&maximumRecords={?maximumRecords}",
+      "variableRepresentation": "BasicRepresentation",
+      "mapping": [
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "query",
+          "property": "hydra:freetextQuery",
+          "required": true
+        },
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "subauth",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default": "cql.any"
+        },
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "maximumRecords",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default": "20"
+        }
+      ]
+    },
+    "qa_replacement_patterns": {
+      "query":   "query",
+      "subauth": "subauth"
+    },
+    "language": ["en"]
+    "results": {
+      "id_predicate":       "http://purl.org/dc/terms/identifier",
+      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",
+      "sort_predicate":     "http://www.w3.org/2004/02/skos/core#prefLabel"
+    },
+    "subauthorities": {
+      "topic":          "oclc.topic",
+      "geographic":     "oclc.geographic",
+      "event_name":     "oclc.eventName",
+      "personal_name":  "oclc.personalName",
+      "corporate_name": "oclc.corporateName",
+      "uniform_title":  "oclc.uniformTitle",
+      "period":         "oclc.period",
+      "form":           "oclc.form",
+      "alt_lc":         "oclc.altlc"
+    }
+  }
+}
 ```
 
 NOTES:
 * term: (optional) is used to define how to request term information from the authority and how to interpret results.
-  * url: (required) authority API URL for requesting term information from the authority
-  * language:  (optional)  values:  en | fr | etc.  -- identify a language to use to filter out results of other languages
+  * url: (required) templated link representation of the authority API URL and mapping of parameters for requesting term information from the authority
+    * template: is the authority API URL with placeholders for substitution parameters in the form {?var_name}
+      * NOTE: {?term_id} (required) and {?subauth} (optional) are expected to match to QA params (see qa_replacement_patterns to match QA params with mapping variables)
+      * Additional substitutions can be made in the authority API if supported by the authority by adding additional mappings.  Search has an example with maximumRecords.
+        * variable: should match a replacement pattern in the template  (e.g. variable: maximumRecords  ==>  {?maximumRecords}
+        * required: true | false  (NOTE: Not enforced at this time.)
+        * default: provide a default value that will be used if not specified
+      * See (documentation of templated-links)[http://www.hydra-cg.com/spec/latest/core/#templated-links] for more information.
+  * qa_replacement_patterns: identifies which mapping variables are being used for term_id and subauth.
+    * NOTE: The URL to make a term request via QA always uses term_id and subauth as the param names.  qa_replacement_patters allows the url template to use a different variable name for pattern replacement. 
+  * language:  (optional)  values:  array of en | fr | etc.  -- identify language to use to include in results, filtering out triples of other languages
     * NOTE: Some authoritys' API URL allows language to be specified as a parameter.  In that case, use pattern replacement to add the language to the API URL to prevent alternate languages from being returned in the results.
-    * NOTE: At this writing, only label is filtered.
+    * NOTE: At this writing, only label and altlabel are filtered.
   * term_id:  (optional)  values:  ID (default) | URI  - This tells apps whether `__TERM_ID__` replacement is expecting an ID or URI.
   * results: (required)  lists predicates to select out for normalization in the hash results
     * id_predicate:  (optional)
@@ -429,50 +498,35 @@ NOTES:
     * narrower_predicate:  (optional)
     * broader_predicate:  (optional)
   * subauthorities:  (optional)
-    * replacement:  (required)  specify default value to use for subauthority replacement pattern
-      * pattern:  (required)  pattern in authority URL that will be replaced to identify the subauthority (e.g. `__SUB_AUTH__`)
-      * default:  (required)  default value for subauthority (e.g. "cql.any"  or  "")
-    * subauthority name (e.g. topic:, personal_name:, corporate_name, etc.): (at least one required)  substitution value for the subathority pattern in the URL
-  * replacement_count:  (required)  >= 0
-    * replacement_#:  (required if replacement_count > 0)  # becomes an increment for replacements 1 to replacement_count
-      * param:  (required)  name of parameter as passed in on the QA URL
-      * pattern:  (required)  pattern in the authority URL identifying the location of the replacement (e.g. `__MAX_RECORDS__`)
-      * default:  (required)  default value if one isn't provided on the QA URL
+    * subauthority name (e.g. topic:, personal_name:, corporate_name, etc.)  Value for {?subauth} are limited to the values in the list of subauthorities.
       
 * search: (optional) is used to define how to send a query to the authority and how to interpret results.
-  * url: (required) authority API URL for sending a query to the authority
-  * language:  (optional)  values:  en | fr | etc.  -- identify a language to use to filter out results of other languages
+  * url: (required) templated link representation of the authority API URL and mapping of parameters for sending a query to the authority
+    * template: is the authority API URL with placeholders for substitution parameters in the form {?var_name}
+      * NOTE: {?query} (required) and {?subauth} (optional) are expected to match to QA params (see qa_replacement_patterns to match QA params with mapping variables)
+      * Additional substitutions can be made in the authority API if supported by the authority by adding additional mappings.  Search has an example with maximumRecords.
+        * variable: should match a replacement pattern in the template  (e.g. variable: maximumRecords  ==>  {?maximumRecords}
+        * required: true | false  (NOTE: Not enforced at this time.)
+        * default: provide a default value that will be used if not specified
+      * See (documentation of templated-links)[http://www.hydra-cg.com/spec/latest/core/#templated-links] for more information.
+  * qa_replacement_patterns: identifies which mapping variables are being used for term_id and subauth.
+    * NOTE: The URL to make a term request via QA always uses term_id and subauth as the param names.  qa_replacement_patters allows the url template to use a different variable name for pattern replacement. 
+  * language:  (optional)  values:  array of en | fr | etc.  -- identify language to use to include in results, filtering out triples of other languages
     * NOTE: Some authoritys' API URL allows language to be specified as a parameter.  In that case, use pattern replacement to add the language to the API URL to prevent alternate languages from being returned in the results.
-    * NOTE: At this writing, only label is filtered.
+    * NOTE: At this writing, only label and altlabel are filtered.
   * results: (required)  lists predicates to normalize and include in json results
     * id_predicate:  (optional)
     * label_predicate:  (required)
     * altlabel_predicate:  (optional)
   * subauthorities:  (optional)
-    * replacement:  (required)  specify default value to use for subauthority replacement pattern
-      * pattern:  (required)  pattern in authority URL that will be replaced to identify the subauthority (e.g. `__SUB_AUTH__`)
-      * default:  (required)  default value for subauthority (e.g. "cql.any"  or  "")
-    * subauthority name (e.g. topic:, personal_name:, corporate_name, etc.): (at least one required)  substitution value for the subathority pattern in the URL
-  * replacement_count:  (required)  >= 0
-    * replacement_#:  (required if replacement_count > 0)  # becomes an increment for replacements 1 to replacement_count
-      * param:  (required)  name of parameter as passed in on the QA URL
-      * pattern:  (required)  pattern in the authority URL identifying the location of the replacement (e.g. `__MAX_RECORDS__`)
-      * default:  (required)  default value if one isn't provided on the QA URL
+    * subauthority name (e.g. topic:, personal_name:, corporate_name, etc.)  Value for {?subauth} are limited to the values in the list of subauthorities.
 
 
 ##### Add new configuration      
-You can add linked data authorities by adding configuration files to your rails app in `Rails.root/config/authorities/linked_data/YOUR_AUTH.yml`
+You can add linked data authorities by adding configuration files to your rails app in `Rails.root/config/authorities/linked_data/YOUR_AUTH.json`
 
 ##### Modify existing configuration
-You can modify existing configs by creating a file with the same name as the one you want to override in your rails app in `Rails.root/config/authorities/linked_data/SAME_AUTH_NAME.yml` and change only the attributes you want to override.  Be sure to include previous levels.  
-
-For example, to change the default maximumRecords for search, the override config file should be.
-
-```
-search:
-  replacement_1:
-    default:      "10"
-```
+To modify one of the QA supplied configurations, copy it to your app in `Rails.root/config/authorities/linked_data/YOUR_AUTH.json`.  Make your modifications to the json configuration file in your app.
 
 #### Query
 To query OCLC Fast Linked Data service by code...
