@@ -1,5 +1,7 @@
+require 'qa/authorities/linked_data/config/config_merge'.freeze
 require 'qa/authorities/linked_data/config/term_config'.freeze
 require 'qa/authorities/linked_data/config/search_config'.freeze
+require 'json'
 
 module Qa::Authorities
   module LinkedData
@@ -13,6 +15,10 @@ module Qa::Authorities
       def initialize(auth_name)
         @authority_name = auth_name
         auth_config
+      end
+
+      class << self
+        include Qa::Authorities::LinkedData::ConfigMerge
       end
 
       include Qa::Authorities::LinkedData::TermConfig
@@ -40,22 +46,12 @@ module Qa::Authorities
           pred_uri
         end
 
-        def replacements_config(rep_count, rep_config)
-          replacements = {}
-          return replacements unless rep_count.positive?
-          1.upto(rep_count) do |i|
-            rep = rep_config["replacement_#{i}"]
-            replacements[rep['param']] = { pattern: rep['pattern'], default: rep['default'] }
-          end
-          replacements
-        end
-
         def apply_replacements(url, config, replacements = {})
           return url unless config.size.positive?
           config.each do |param_key, rep_pattern|
-            pattern = rep_pattern[:pattern]
-            value = replacements[param_key] || rep_pattern[:default]
-            url = url.gsub(pattern, value)
+            s_param_key = param_key.to_s
+            value = replacements[param_key] || replacements[s_param_key] || rep_pattern[:default]
+            url = replace_pattern(url, param_key, value)
           end
           url
         end
@@ -63,7 +59,11 @@ module Qa::Authorities
         def process_subauthority(url, subauth_pattern, subauthorities, subauth_key)
           pattern = subauth_pattern[:pattern]
           value = subauthorities[subauth_key] || subauth_pattern[:default]
-          url.gsub(pattern, value)
+          replace_pattern(url, pattern, value)
+        end
+
+        def replace_pattern(url, pattern, value)
+          url.gsub("{?#{pattern}}", value)
         end
     end
   end

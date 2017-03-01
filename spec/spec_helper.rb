@@ -1,4 +1,5 @@
 require 'linkeddata'
+require 'json'
 require 'engine_cart'
 require 'simplecov'
 require 'coveralls'
@@ -53,9 +54,9 @@ def load_fixture_file(fname)
   end
 end
 
-# load linked data authorities for testing
-Dir[File.join(Qa::Engine.root, 'spec', 'fixtures', 'authorities', 'linked_data', '*.yml')].each do |fn|
-  auth = File.basename(fn, '.yml').upcase.to_sym
-  cfg = YAML.load_file(File.expand_path(fn, __FILE__))
+Dir[File.join(Qa::Engine.root, 'spec', 'fixtures', 'authorities', 'linked_data', '*.json')].each do |fn|
+  auth = File.basename(fn, '.json').upcase.to_sym
+  json = File.read(File.expand_path(fn, __FILE__))
+  cfg = JSON.parse(json).deep_symbolize_keys
   LINKED_DATA_AUTHORITIES_CONFIG[auth] = cfg
 end

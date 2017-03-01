@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe Qa::Authorities::LinkedData::Config do
   let(:full_config) { described_class.new(:LOD_FULL_CONFIG) }
-  let(:min_config) { described_class.new(:LOD_MIN_CONFIG) }
-  let(:term_only_config) { described_class.new(:LOD_TERM_ONLY_CONFIG) }
 
   describe '#new' do
     context 'without an authority' do
@@ -26,43 +24,113 @@ describe Qa::Authorities::LinkedData::Config do
   describe '#auth_config' do
     let(:full_auth_config) do
       {
-        'term' => {
-          'url' => 'http://localhost/test_default/term/__TERM_SUB_AUTH__/__TERM_ID__&param1=__TERM_REP_PARAM1__&param2=__TERM_REP_PARAM2__',
-          'term_id' => 'ID',
-          'language' => 'en',
-          'replacement_count' => 2,
-          'replacement_1' => { 'param' => 'term_param1', 'pattern' => '__TERM_REP_PARAM1__', 'default' => 'alpha' },
-          'replacement_2' => { 'param' => 'term_param2', 'pattern' => '__TERM_REP_PARAM2__', 'default' => 'beta' },
-          'results' => {
-            'id_predicate' => 'http://purl.org/dc/terms/identifier',
-            'label_predicate' => 'http://www.w3.org/2004/02/skos/core#prefLabel',
-            'altlabel_predicate' => 'http://www.w3.org/2004/02/skos/core#altLabel',
-            'broader_predicate' => 'http://www.w3.org/2004/02/skos/core#broader',
-            'narrower_predicate' => 'http://www.w3.org/2004/02/skos/core#narrower',
-            'sameas_predicate' => 'http://schema.org/sameAs'
+        term: {
+          url: {
+            :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
+            :@type => 'IriTemplate',
+            template: 'http://localhost/test_default/term/{?subauth}/{?term_id}?param1={?param1}&param2={?param2}',
+            variableRepresentation: 'BasicRepresentation',
+            mapping: [
+              {
+                :@type => 'IriTemplateMapping',
+                variable: 'term_id',
+                property: 'hydra:freetextQuery',
+                required: true
+              },
+              {
+                :@type => 'IriTemplateMapping',
+                variable: 'subauth',
+                property: 'hydra:freetextQuery',
+                required: false,
+                default: 'term_sub2_name'
+              },
+              {
+                :@type => 'IriTemplateMapping',
+                variable: 'param1',
+                property: 'hydra:freetextQuery',
+                required: false,
+                default: 'alpha'
+              },
+              {
+                :@type => 'IriTemplateMapping',
+                variable: 'param2',
+                property: 'hydra:freetextQuery',
+                required: false,
+                default: 'beta'
+              }
+            ]
           },
-          'subauthorities' => {
-            'replacement' => { 'pattern' => '__TERM_SUB_AUTH__', 'default' => 'term_sub1_name' },
-            'term_sub1_key' => 'term_sub1_name',
-            'term_sub2_key' => 'term_sub2_name', 'term_sub3_key' => 'term_sub3_name'
+          qa_replacement_patterns: {
+            term_id: 'term_id',
+            subauth: 'subauth'
+          },
+          term_id: 'ID',
+          language: ['en'],
+          results: {
+            id_predicate: 'http://purl.org/dc/terms/identifier',
+            label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
+            altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
+            broader_predicate: 'http://www.w3.org/2004/02/skos/core#broader',
+            narrower_predicate: 'http://www.w3.org/2004/02/skos/core#narrower',
+            sameas_predicate: 'http://www.w3.org/2004/02/skos/core#exactMatch'
+          },
+          subauthorities: {
+            term_sub1_key: 'term_sub1_name',
+            term_sub2_key: 'term_sub2_name',
+            term_sub3_key: 'term_sub3_name'
           }
         },
-        'search' => {
-          'url' => 'http://localhost/test_default/search?subauth=__SEARCH_SUB_AUTH__&query=__QUERY__&param1=__SEARCH_REP_PARAM1__&param2=__SEARCH_REP_PARAM2__',
-          'language' => ['en', 'fr', 'de'],
-          'replacement_count' => 2,
-          'replacement_1' => { 'param' => 'search_param1', 'pattern' => '__SEARCH_REP_PARAM1__', 'default' => 'delta' },
-          'replacement_2' => { 'param' => 'search_param2', 'pattern' => '__SEARCH_REP_PARAM2__', 'default' => 'echo' },
-          'results' => {
-            'id_predicate' => 'http://purl.org/dc/terms/identifier',
-            'label_predicate' => 'http://www.w3.org/2004/02/skos/core#prefLabel',
-            'altlabel_predicate' => 'http://www.w3.org/2004/02/skos/core#altLabel',
-            'sort_predicate' => 'http://www.w3.org/2004/02/skos/core#prefLabel'
+        search: {
+          url: {
+            :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
+            :@type => 'IriTemplate',
+            template: 'http://localhost/test_default/search?subauth={?subauth}&query={?query}&param1={?param1}&param2={?param2}',
+            variableRepresentation: 'BasicRepresentation',
+            mapping: [
+              {
+                :@type => 'IriTemplateMapping',
+                variable: 'query',
+                property: 'hydra:freetextQuery',
+                required: true
+              },
+              {
+                :@type => 'IriTemplateMapping',
+                variable: 'subauth',
+                property: 'hydra:freetextQuery',
+                required: false,
+                default: 'search_sub1_name'
+              },
+              {
+                :@type => 'IriTemplateMapping',
+                variable: 'param1',
+                property: 'hydra:freetextQuery',
+                required: false,
+                default: 'delta'
+              },
+              {
+                :@type => 'IriTemplateMapping',
+                variable: 'param2',
+                property: 'hydra:freetextQuery',
+                required: false,
+                default: 'echo'
+              }
+            ]
           },
-          'subauthorities' => {
-            'replacement' => { 'pattern' => '__SEARCH_SUB_AUTH__', 'default' => 'search_sub1_name' },
-            'search_sub1_key' => 'search_sub1_name',
-            'search_sub2_key' => 'search_sub2_name', 'search_sub3_key' => 'search_sub3_name'
+          qa_replacement_patterns: {
+            query: 'query',
+            subauth: 'subauth'
+          },
+          language: ['en', 'fr', 'de'],
+          results: {
+            id_predicate: 'http://purl.org/dc/terms/identifier',
+            label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
+            altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
+            sort_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+          },
+          subauthorities: {
+            search_sub1_key: 'search_sub1_name',
+            search_sub2_key: 'search_sub2_name',
+            search_sub3_key: 'search_sub3_name'
           }
         }
       }

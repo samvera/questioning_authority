@@ -1,0 +1,46 @@
+{
+  "term": {
+    "url": {
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type": "IriTemplate",
+      "template": "http://id.loc.gov/authorities/{?subauth}/{?term_id}",
+      "variableRepresentation": "BasicRepresentation",
+      "mapping": [
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "term_id",
+          "property": "hydra:freetextQuery",
+          "required": true
+        },
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "subauth",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default": "names"
+        }
+      ]
+    },
+    "qa_replacement_patterns": {
+      "term_id": "term_id",
+      "subauth": "subauth"
+    },
+    "term_id": "ID",
+    "language": ["en"],
+    "results": {
+      "id_predicate": "http://id.loc.gov/vocabulary/identifiers/lccn",
+      "label_predicate": "http://www.w3.org/2004/02/skos/core#prefLabel",
+      "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
+      "sameas_predicate": "http://www.w3.org/2004/02/skos/core#exactMatch"
+    },
+    "subauthorities": {
+      "subjects": "subjects",
+      "names": "names",
+      "classification": "classification",
+      "child_subject": "childrensSubjects",
+      "genre": "genreForms",
+      "demographic": "demographicTerms"
+    }
+  },
+  "search": {}
+}

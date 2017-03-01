@@ -1,7 +1,0 @@
-# API documentation:
-# http://www.oclc.org/developer/develop/web-services/fast-api/linked-data.en.html
-term:
-  url:                  http://localhost/test_default/term/__TERM_ID__
-
-search:
-  url:                  http://localhost/test_default/search?query=__QUERY__

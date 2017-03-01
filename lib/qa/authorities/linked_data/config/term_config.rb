@@ -4,7 +4,9 @@ module Qa::Authorities
       # Return the full configuration for term fetch.
       # @return [String] the term configuration
       def term_config
-        config_value(authority_config, 'term')
+        cfg = config_value(authority_config, :term)
+        cfg = nil if cfg.is_a?(Hash) && cfg.empty?
+        cfg
       end
 
       # Does this authority configuration have term defined?
@@ -13,70 +15,97 @@ module Qa::Authorities
         !term_config.nil?
       end
 
-      # Return term url defined in the configuration for this authority.
-      # @return [String] the configured term url
+      # Return term url encoding defined in the configuration for this authority.
+      # @return [Hash] the configured term url
       def term_url
-        config_value(term_config, 'url')
+        config_value(term_config, :url)
+      end
+
+      # Return term url template defined in the configuration for this authority.
+      # @return [String] the configured term url template
+      def term_url_template
+        config_value(term_url, :template)
+      end
+
+      # Return term url parameter mapping defined in the configuration for this authority.
+      # @return [Hash] the configured term url parameter mappings with variable name as key
+      def term_url_mappings
+        return @term_url_mappings unless @term_url_mappings.nil?
+        mappings = config_value(term_url, :mapping)
+        return {} if mappings.nil?
+        Hash[*mappings.collect { |m| [m[:variable].to_sym, m] }.flatten]
       end
 
       # Is the term_id substitution expected to be a URI?
       # @return [True|False] true if the id substitution is expected to be a URI in the term url; otherwise, false
       def term_id_expects_uri?
-        return false if term_config.nil? || !(term_config.key? 'term_id')
-        term_config['term_id'] == "URI"
+        return false if term_config.nil? || !(term_config.key? :term_id)
+        term_config[:term_id] == "URI"
       end
 
       # Is the term_id substitution expected to be an ID?
       # @return [True|False] true if the id substitution is expected to be an ID in the term url; otherwise, false
       def term_id_expects_id?
-        return false if term_config.nil? || !(term_config.key? 'term_id')
-        term_config['term_id'] == "ID"
+        return false if term_config.nil? || !(term_config.key? :term_id)
+        term_config[:term_id] == "ID"
       end
 
       # Return the preferred language for literal value selection for term fetch.  Only applies if the authority provides language encoded literals.
       # @return [Symbol] the configured language for term fetch (default - :en)
       def term_language
         return @term_language unless @term_language.nil?
-        lang = config_value(term_config, 'language')
+        lang = config_value(term_config, :language)
         return nil if lang.nil?
         lang = [lang] if lang.is_a? String
         @term_language = lang.collect(&:to_sym)
       end
 
+      # Return results predicates
+      # @return [Hash] all the configured predicates to pull out of the results
+      def term_results
+        config_value(term_config, :results)
+      end
+
       # Return results id_predicate
       # @return [String] the configured predicate to use to extract the id from the results
       def term_results_id_predicate
-        predicate_uri(config_value(term_config, 'results'), 'id_predicate')
+        predicate_uri(term_results, :id_predicate)
       end
 
       # Return results label_predicate
       # @return [String] the configured predicate to use to extract label values from the results
       def term_results_label_predicate
-        predicate_uri(config_value(term_config, 'results'), 'label_predicate')
+        predicate_uri(term_results, :label_predicate)
       end
 
       # Return results altlabel_predicate
       # @return [String] the configured predicate to use to extract altlabel values from the results
       def term_results_altlabel_predicate
-        predicate_uri(config_value(term_config, 'results'), 'altlabel_predicate')
+        predicate_uri(term_results, :altlabel_predicate)
       end
 
       # Return results broader_predicate
       # @return [String] the configured predicate to use to extract URIs for broader terms from the results
       def term_results_broader_predicate
-        predicate_uri(config_value(term_config, 'results'), 'broader_predicate')
+        predicate_uri(term_results, :broader_predicate)
       end
 
       # Return results narrower_predicate
       # @return [String] the configured predicate to use to extract URIs for narrower terms from the results
       def term_results_narrower_predicate
-        predicate_uri(config_value(term_config, 'results'), 'narrower_predicate')
+        predicate_uri(term_results, :narrower_predicate)
       end
 
       # Return results sameas_predicate
       # @return [String] the configured predicate to use to extract URIs for sameas terms from the results
       def term_results_sameas_predicate
-        predicate_uri(config_value(term_config, 'results'), 'sameas_predicate')
+        predicate_uri(term_results, :sameas_predicate)
+      end
+
+      # Return parameters that are required for QA api
+      # @return [Hash] the configured term url parameter mappings
+      def term_qa_replacement_patterns
+        config_value(term_config, :qa_replacement_patterns)
       end
 
       # Are there replacement parameters configured for term fetch?
@@ -88,15 +117,16 @@ module Qa::Authorities
       # Return the number of possible replacement values to make in the term URL
       # @return [Integer] the configured number of possible replacements in the term url
       def term_replacement_count
-        @term_replacement_count unless @term_replacement_count.nil?
-        cnt = config_value(term_config, 'replacement_count')
-        @term_replacement_count = cnt.nil? ? 0 : cnt.to_i
+        term_replacements.size
       end
 
       # Return the replacement configurations
       # @return [Hash] the configurations for term url replacements
       def term_replacements
-        @term_replacements ||= replacements_config(term_replacement_count, term_config)
+        return @term_replacements unless @term_replacements.nil?
+        @term_replacements = {}
+        @term_replacements = term_url_mappings.select { |k, _v| !term_qa_replacement_patterns.include?(k) } unless term_config.nil? || term_url_mappings.nil?
+        @term_replacements
       end
 
       # Are there subauthorities configured for term fetch?
@@ -108,6 +138,7 @@ module Qa::Authorities
       # Is a specific subauthority configured for term fetch?
       # @return [True|False] true if the specified subauthority is configured for term fetch; otherwise, false
       def term_subauthority?(subauth_name)
+        subauth_name = subauth_name.to_sym if subauth_name.is_a? String
         term_subauthorities.key? subauth_name
       end
 
@@ -120,15 +151,17 @@ module Qa::Authorities
       # Return the list of subauthorities for term fetch
       # @return [Hash] the configurations for term url replacements
       def term_subauthorities
-        @term_subauthorities ||= {} if term_config.nil? || !(term_config.key? 'subauthorities')
-        @term_subauthorities ||= term_config['subauthorities'].reject { |k, _v| k == 'replacement' }
+        @term_subauthorities ||= {} if term_config.nil? || !(term_config.key? :subauthorities)
+        @term_subauthorities ||= term_config[:subauthorities]
       end
 
       # Return the replacement configurations
       # @return [Hash] the configurations for term url replacements
       def term_subauthority_replacement_pattern
-        @term_subauthority_replacement_pattern ||= {} if term_config.nil? || !(term_config.key? 'subauthorities')
-        @term_subauthority_replacement_pattern ||= { pattern: term_config['subauthorities']['replacement']['pattern'], default: term_config['subauthorities']['replacement']['default'] }
+        return {} unless term_subauthorities?
+        @term_subauthority_replacement_pattern ||= {} if term_config.nil? || !term_subauthorities?
+        pattern = term_qa_replacement_patterns[:subauth]
+        @term_subauthority_replacement_pattern ||= { pattern: pattern, default: term_url_mappings[pattern.to_sym][:default] }
       end
 
       # Build a linked data authority term url
@@ -138,7 +171,8 @@ module Qa::Authorities
       # @return [String] the term encoded url
       def term_url_with_replacements(id, sub_auth = nil, replacements = {})
         return nil unless supports_term?
-        url = term_url.gsub(/__TERM_ID__/, id)
+        sub_auth = sub_auth.to_sym if sub_auth.is_a? String
+        url = replace_pattern(term_url_template, term_qa_replacement_patterns[:term_id], id)
         url = process_subauthority(url, term_subauthority_replacement_pattern, term_subauthorities, sub_auth) if term_subauthorities?
         url = apply_replacements(url, term_replacements, replacements) if term_replacements?
         url
