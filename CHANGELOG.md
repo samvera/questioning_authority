@@ -1,4 +1,13 @@
-### 0.11.0 (2016-01-04)
+### 0.11.1 (2017-03-01)
+* 2017-02-02: BUGFIX: Use flat parameters for LOC. [Josh Gum]
+* 2017-02-01: Update README with info on creating own authority versus sub-authority. [Andy Smith]
+* 2017-01-23: Documentation for register_subauthority [Justin Coyne]
+* 2017-01-23: Ensure up to date system gems [Jeremy Friesen]
+* 2017-01-16: Deprecate WebServiceBase#get_json; use #json [Tom Johnson]
+* 2017-01-15: Documentation and error handling for abstract Authority::Base [Tom Johnson]
+* 2017-01-04: Remove positional arguments for Rails 5 support [Justin Coyne]
+
+### 0.11.0 (2017-01-04)
 * 2016-12-30: Pin rubocop-rspec to 1.8.0 [Justin Coyne]
 * 2016-12-30: Loosen nokogiri dependency [Justin Coyne]
 * 2016-11-11: Add search method to see if wants the controller with the request.  [Andy Smith]
