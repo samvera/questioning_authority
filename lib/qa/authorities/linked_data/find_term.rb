@@ -1,3 +1,5 @@
+# This module has the primary QA find method.  It also includes methods to process the linked data result and convert
+# it into the expected QA json term result format.
 module Qa::Authorities
   module LinkedData
     module FindTerm
@@ -6,6 +8,20 @@ module Qa::Authorities
       # @param [Symbol] (optional) language: language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
       # @param [Hash] (optional) replacements: replacement values with { pattern_name (defined in YAML config) => value }
       # @param [String] subauth: the subauthority from which to fetch the term
+      # @return [String] json results
+      # @example Json Results for Linked Data Term
+      #   { "uri":"http://id.worldcat.org/fast/530369",
+      #     "id":"530369","label":"Cornell University",
+      #     "altlabel":["Ithaca (N.Y.). Cornell University"],
+      #     "sameas":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"],
+      #     "predicates":{
+      #     "http://purl.org/dc/terms/identifier":"530369",
+      #     "http://www.w3.org/2004/02/skos/core#inScheme":["http://id.worldcat.org/fast/ontology/1.0/#fast","http://id.worldcat.org/fast/ontology/1.0/#facet-Corporate"],
+      #     "http://www.w3.org/1999/02/22-rdf-syntax-ns#type":"http://schema.org/Organization",
+      #     "http://www.w3.org/2004/02/skos/core#prefLabel":"Cornell University",
+      #     "http://schema.org/name":["Cornell University","Ithaca (N.Y.). Cornell University"],
+      #     "http://www.w3.org/2004/02/skos/core#altLabel":["Ithaca (N.Y.). Cornell University"],
+      #     "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"] } }
       def find(id, language: nil, replacements: {}, subauth: nil)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
         language ||= auth_config.term_language

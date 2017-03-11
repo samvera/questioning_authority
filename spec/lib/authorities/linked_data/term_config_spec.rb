@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'qa/authorities/linked_data/config/term_config'.freeze
 
 describe Qa::Authorities::LinkedData::TermConfig do
   let(:full_config) { Qa::Authorities::LinkedData::Config.new(:LOD_FULL_CONFIG) }

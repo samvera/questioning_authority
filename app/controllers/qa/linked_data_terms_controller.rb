@@ -2,9 +2,9 @@
 # out which linked data authority to query based on the 'vocab' param.
 
 class Qa::LinkedDataTermsController < ApplicationController
-  before_action :check_vocab_param, :init_authority
-  before_action :check_query_param, only: :search
-  before_action :check_id_param, only: :show
+  before_action :check_authority, :init_authority
+  before_action :check_search_subauthority, :check_query_param, only: :search
+  before_action :check_show_subauthority, :check_id_param, only: :show
 
   # Provide a warning if there is a request for all terms.
   def index
@@ -13,64 +13,65 @@ class Qa::LinkedDataTermsController < ApplicationController
   end
 
   # Return a list of terms based on a query
+  # @see Qa::Authorities::LinkedData::SearchQuery#search
   def search
-    subauth = subauthority
-    unless subauth.nil? || @authority.search_subauthority?(subauth)
-      logger.warn "Unable to initialize linked data search sub-authority #{subauth} for authority #{vocab_param}"
+    begin
+      terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params)
+    rescue Qa::ServiceUnavailable
+      logger.warn "Service Unavailable - Search query #{query} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
       head :not_found
       return
     end
-    terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params)
     render json: terms
   end
 
   # Return all the information for a given term
+  # @see Qa::Authorities::LinkedData::FindTerm#find
   def show
-    subauth = subauthority
-    unless subauth.nil? || @authority.term_subauthority?(subauth)
-      logger.warn "Unable to initialize linked data term sub-authority #{subauth} for authority #{vocab_param}"
-      head :not_found
-      return
-    end
     begin
       term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params)
-    rescue Qa::ServiceUnavailable, Qa::TermNotFound => e
-      err_cause = 'Term Not Found'
-      err_cause = 'Service Unavailable' if e.is_a? Qa::ServiceUnavailable
-      subauth_msg = subauth.nil? ? "" : " sub-authority #{subauth} in"
-      logger.warn "#{err_cause} - Fetch term #{id} unsuccessful for#{subauth_msg} authority #{vocab_param}"
+    rescue Qa::TermNotFound
+      logger.warn "Term Not Found - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
       head :not_found
       return
-      # render text: "<h3>#{err_cause} - Fetch term #{id} unsuccessful for#{subauth_msg} authority #{vocab_param}</h3><p>Exception message: #{e.message}</p>" && return
+    rescue Qa::ServiceUnavailable
+      logger.warn "Service Unavailable - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+      head :not_found
+      return
     end
     render json: term
   end
 
   private
 
-    def check_vocab_param
-      head :not_found unless params[:vocab].present?
+    def check_authority
+      if params[:vocab].nil? || !params[:vocab].size.positive?
+        logger.warn "Required param 'vocab' is missing or empty"
+        head :not_found
+      end
+    end
+
+    def check_search_subauthority
+      return if subauthority.nil?
+      unless @authority.search_subauthority?(subauthority)
+        logger.warn "Unable to initialize linked data search sub-authority '#{subauthority}' for authority '#{vocab_param}'"
+        head :not_found
+      end
+    end
+
+    def check_show_subauthority
+      return if subauthority.nil?
+      unless @authority.term_subauthority?(subauthority)
+        logger.warn "Unable to initialize linked data term sub-authority '#{subauthority}' for authority '#{vocab_param}'"
+        head :not_found
+      end
     end
 
     def init_authority
-      begin
-        authority = vocab_param
-      rescue NameError
-        logger.warn "Unable to initialize authority #{vocab_param}"
-        head :not_found
-        return
-      end
-      if authority.nil?
-        logger.warn "Unable to initialize authority #{params[:q]}"
-        head :not_found
-        return
-      end
-      begin
-        @authority = Qa::Authorities::LinkedData::GenericAuthority.new(authority)
-      rescue Qa::InvalidLinkedDataAuthority => e
-        logger.warn e.message
-        head :not_found
-      end
+      @authority = Qa::Authorities::LinkedData::GenericAuthority.new(vocab_param)
+    rescue Qa::InvalidLinkedDataAuthority => e
+      logger.warn e.message
+      head :not_found
     end
 
     def vocab_param
@@ -78,7 +79,10 @@ class Qa::LinkedDataTermsController < ApplicationController
     end
 
     def check_query_param
-      head :not_found unless params[:q].present?
+      if params[:q].nil? || !params[:q].size.positive?
+        logger.warn "Required search param 'q' is missing or empty"
+        head :not_found
+      end
     end
 
     # converts wildcards into URL-encoded characters
@@ -87,7 +91,10 @@ class Qa::LinkedDataTermsController < ApplicationController
     end
 
     def check_id_param
-      head :not_found unless params[:id].present?
+      if params[:id].nil? || !params[:id].size.positive?
+        logger.warn "Required show param 'id' is missing or empty"
+        head :not_found
+      end
     end
 
     def id
@@ -104,5 +111,9 @@ class Qa::LinkedDataTermsController < ApplicationController
 
     def replacement_params
       params.reject { |k, _v| ['q', 'vocab', 'controller', 'action', 'subauthority', 'language'].include?(k) }
+    end
+
+    def subauth_warn_msg
+      subauthority.nil? ? "" : " sub-authority #{subauthority} in"
     end
 end

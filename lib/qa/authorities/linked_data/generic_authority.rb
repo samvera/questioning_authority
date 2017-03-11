@@ -1,11 +1,19 @@
 module Qa::Authorities
   module LinkedData
-    # A wrapper around configured linked data authorities for use with questioning_authority
+    # A wrapper around configured linked data authorities for use with questioning_authority.  The search and find methods
+    # can be called directly from an instance of this class.  The Qa::LinkedDataTermsController uses these methods to provide
+    # a URL based API for searching and term retrieval.
+    #
+    # @see Qa::Authorities::LinkedData::SearchQuery#search
+    # @see Qa::Authorities::LinkedData::FindTerm#find
+    # @see Qa::LinkedDataTermsController#search
+    # @see Qa::LinkedDataTermsController#show
+    # @see Qa::Authorities::LinkedData::Config
     class GenericAuthority < Base
       attr_reader :auth_config
 
       delegate :search_subauthorities?, :term_subauthorities?, :search_subauthority?, :term_subauthority?,
-               :supports_search?, :supports_term?, :term_id_expects_uri?, :term_id_expects_id?, to: :auth_config
+               :supports_search?, :supports_term?, :search_supports_sort?, :term_id_expects_uri?, :term_id_expects_id?, to: :auth_config
 
       def initialize(auth_name)
         @auth_config = Qa::Authorities::LinkedData::Config.new(auth_name)

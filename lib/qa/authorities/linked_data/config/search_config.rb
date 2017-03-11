@@ -1,3 +1,7 @@
+# Provide attr_reader methods specific to search configuration for linked data authority configurations.  This is separated
+# out for readability and file length.
+# @see Qa::Authorities::LinkedData::Config
+# @see Qa::Authorities::LinkedData::TermConfig
 module Qa::Authorities
   module LinkedData
     module SearchConfig
@@ -68,6 +72,13 @@ module Qa::Authorities
       # @return [String] the configured predicate to use to extract altlabel values from the results
       def search_results_altlabel_predicate
         predicate_uri(search_results, :altlabel_predicate)
+      end
+
+      # Does this authority configuration support sorting of search results?
+      # @return [True|False] true if sorting of search results is supported; otherwise, false
+      def search_supports_sort?
+        return true unless search_results_sort_predicate.nil? || !search_results_sort_predicate.size.positive?
+        false
       end
 
       # Return results sort_predicate

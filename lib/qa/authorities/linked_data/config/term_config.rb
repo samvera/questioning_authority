@@ -1,3 +1,7 @@
+# Provide attr_reader methods specific to term configuration for linked data authority configurations.  This is separated
+# out for readability and file length.
+# @see Qa::Authorities::LinkedData::Config
+# @see Qa::Authorities::LinkedData::SearchConfig
 module Qa::Authorities
   module LinkedData
     module TermConfig

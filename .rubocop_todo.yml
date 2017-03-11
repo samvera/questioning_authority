@@ -1,25 +1,8 @@
 require: rubocop-rspec
 
-Metrics/PerceivedComplexity:
-  Exclude:
-    - 'lib/qa/authorities/linked_data/config/config_merge.rb'
-
-Metrics/ClassLength:
-  Exclude:
-    - 'lib/qa/authorities/linked_data/generic_authority.rb'
-
-Metrics/ModuleLength:
-  Exclude:
-
 Metrics/CyclomaticComplexity:
   Exclude:
-    - 'lib/qa/authorities/linked_data/find_term.rb'
-    - 'lib/qa/authorities/linked_data/config/config_merge.rb'
     - 'lib/qa/authorities/mesh_tools/mesh_data_parser.rb'
-
-Style/Next:
-  Exclude:
-    - 'lib/qa/authorities/linked_data/config/config_merge.rb'
 
 RSpec/ExampleLength:
   Max: 7 
@@ -29,7 +12,3 @@ RSpec/ExampleLength:
 
 RSpec/NamedSubject:
   Enabled: false
-
-Style/MutableConstant:
-  Exclude:
-    - 'config/initializers/linked_data_authorities.rb'

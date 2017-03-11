@@ -9,7 +9,7 @@ describe Qa::Authorities::LinkedData::GenericAuthority do
     end
     context 'with an invalid authority' do
       it 'raises an exception' do
-        expect { described_class.new(:FOO) }.to raise_error Qa::InvalidLinkedDataAuthority, /Unable to initialize linked data authority FOO/
+        expect { described_class.new(:FOO) }.to raise_error Qa::InvalidLinkedDataAuthority, /Unable to initialize linked data authority 'FOO'/
       end
     end
     context 'with a valid authority' do

@@ -1,8 +1,19 @@
-require 'qa/authorities/linked_data/config/config_merge'.freeze
 require 'qa/authorities/linked_data/config/term_config'.freeze
 require 'qa/authorities/linked_data/config/search_config'.freeze
 require 'json'
 
+# Provide attr_reader methods for linked data authority configurations.  Some default configurations are provided for several
+# linked data authorities and can be found at /config/authorities/linked_data.  You can add configurations for new authorities by
+# adding the configuration at YOUR_APP/config/authorities/linked_data.  You can modify a QA provided configuration by copying
+# it to YOUR_APP/config/authorities/linked_data and making the modifications there. See README for more information on the
+# structure of the configuration.
+#
+# This configuration processed by this class is used by Qa::Authorities::LinkedData::GenericAuthority to drive url construction
+# and results processing for a specific linked data authority.
+#
+# @see Qa::Authorities::LinkedData::GenericAuthority#initialize
+# @see Qa::Authorities::LinkedData::TermConfig
+# @see Qa::Authorities::LinkedData::SearchConfig
 module Qa::Authorities
   module LinkedData
     class Config
@@ -17,10 +28,6 @@ module Qa::Authorities
         auth_config
       end
 
-      class << self
-        include Qa::Authorities::LinkedData::ConfigMerge
-      end
-
       include Qa::Authorities::LinkedData::TermConfig
       include Qa::Authorities::LinkedData::SearchConfig
 
@@ -28,7 +35,7 @@ module Qa::Authorities
       # @return [String] the authority configuration
       def auth_config
         @authority_config ||= LINKED_DATA_AUTHORITIES_CONFIG[@authority_name]
-        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data authority #{@authority_name}" if @authority_config.nil?
+        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data authority '#{@authority_name}'" if @authority_config.nil?
         @authority_config
       end
 

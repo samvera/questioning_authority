@@ -526,38 +526,7 @@ NOTES:
 You can add linked data authorities by adding configuration files to your rails app in `Rails.root/config/authorities/linked_data/YOUR_AUTH.json`
 
 ##### Modify existing configuration
-You can modify existing configs by creating a file with the same name as the one you want to override in your rails app in `Rails.root/config/authorities/linked_data/SAME_AUTH_NAME.json` and change only the attributes you want to override.  Be sure to include previous levels.  
-
-For example, to change the default maximumRecords for search, the override config file should be.
-
-```json
-{
-  "search": {
-    "url": {
-      "mapping": [
-        {
-          "@type": "IriTemplateMapping",
-          "variable": "query",
-          "property": "hydra:freetextQuery",
-          "required": true
-        },
-        {
-          "@type": "IriTemplateMapping",
-          "variable": "subauth",
-          "property": "hydra:freetextQuery",
-          "required": false,
-          "default": "cql.any"
-        },
-        {
-          "@type": "IriTemplateMapping",
-          "variable": "maximumRecords",
-          "property": "hydra:freetextQuery",
-          "required": false,
-          "default": "10"
-        }
-    }
-}
-```
+To modify one of the QA supplied configurations, copy it to your app in `Rails.root/config/authorities/linked_data/YOUR_AUTH.json`.  Make your modifications to the json configuration file in your app.
 
 #### Query
 To query OCLC Fast Linked Data service by code...

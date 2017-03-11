@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'qa/authorities/linked_data/config/search_config'.freeze
 
 describe Qa::Authorities::LinkedData::SearchConfig do
   let(:full_config) { Qa::Authorities::LinkedData::Config.new(:LOD_FULL_CONFIG) }
@@ -197,11 +196,23 @@ describe Qa::Authorities::LinkedData::SearchConfig do
     end
   end
 
+  describe '#search_supports_sort?' do
+    it 'returns false if only term configuration is defined' do
+      expect(term_only_config.search_supports_sort?).to eq false
+    end
+    it 'returns false if sort predicate is NOT defined' do
+      expect(min_config.search_supports_sort?).to eq false
+    end
+    it 'returns true if sort predicate IS defined' do
+      expect(full_config.search_supports_sort?).to eq true
+    end
+  end
+
   describe '#search_results_sort_predicate' do
     it 'returns nil if only term configuration is defined' do
       expect(term_only_config.search_results_sort_predicate).to eq nil
     end
-    it 'return nil if sort predicate is not defined' do
+    it 'returns nil if sort predicate is not defined' do
       expect(min_config.search_results_sort_predicate).to eq nil
     end
     it 'returns the predicate on which results should be sorted' do

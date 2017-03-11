@@ -1,3 +1,5 @@
+# This module has the primary QA search method.  It also includes methods to process the linked data results and convert
+# them into the expected QA json results format.
 module Qa::Authorities
   module LinkedData
     module SearchQuery
@@ -6,7 +8,11 @@ module Qa::Authorities
       # @param [Symbol] (optional) language: language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
       # @param [Hash] (optional) replacements: replacement values with { pattern_name (defined in YAML config) => value }
       # @param [String] subauth: the subauthority to query
-      # @return json results
+      # @return [String] json results
+      # @example Json Results for Linked Data Search
+      #   [ {"uri":"http://id.worldcat.org/fast/5140","id":"5140","label":"Cornell, Joseph"},
+      #     {"uri":"http://id.worldcat.org/fast/72456","id":"72456","label":"Cornell, Sarah Maria, 1802-1832"},
+      #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
       def search(query, language: nil, replacements: {}, subauth: nil)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || search_subauthority?(subauth)
         language ||= auth_config.search_language
@@ -89,33 +95,37 @@ module Qa::Authorities
         end
 
         def sort_search_results(json_results)
+          return json_results unless search_supports_sort?
           json_results.sort! do |a, b|
-            unless a.key? :sort
-              cmp = -1
-              break
-            end
-            unless b.key? :sort
-              cmp = 1
-              break
-            end
+            cmp = sort_when_missing_sort_predicate(a, b)
+            next unless cmp.nil?
+
             as = a[:sort].collect(&:downcase)
             bs = b[:sort].collect(&:downcase)
             cmp = 0
             0.upto([as.size, bs.size].max - 1) do |i|
-              if as.size <= i
-                cmp = -1
-                break
-              end
-              if bs.size <= i
-                cmp = 1
-                break
-              end
+              cmp = sort_when_same_but_one_has_more_values(as, bs, i)
+              break unless cmp.nil?
+
               cmp = (as[i] <=> bs[i])
-              break if cmp.nonzero?
+              break if cmp.nonzero? # stop checking as soon as a value in the two lists are different
             end
             cmp
           end
           json_results.each { |h| h.delete(:sort) }
+        end
+
+        def sort_when_missing_sort_predicate(a, b)
+          return 0 unless a.key?(:sort) || b.key?(:sort) # leave unchanged if both are missing
+          return -1 unless a.key? :sort # consider missing a value lower than existing b value
+          return 1 unless b.key? :sort # consider missing b value lower than existing a value
+          nil
+        end
+
+        def sort_when_same_but_one_has_more_values(as, bs, current_list_size)
+          return -1 if as.size <= current_list_size # consider shorter a list of values lower then longer b list
+          return 1 if bs.size <= current_list_size # consider shorter b list of values lower then longer a list
+          nil
         end
     end
   end

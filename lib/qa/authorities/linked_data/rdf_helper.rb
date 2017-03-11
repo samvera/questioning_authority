@@ -1,5 +1,7 @@
 require 'rdf'
-require	'linkeddata'
+
+# Encapsulates processing of RDF results returned by the linked data authority.  This is used exclussively by Qa::Authorities::LinkedData::GenericAuthority
+# @see Qa::Authorities::LinkedData::GenericAuthority
 module Qa::Authorities
   module LinkedData
     module RdfHelper

@@ -53,10 +53,3 @@ def load_fixture_file(fname)
     return f.read
   end
 end
-
-Dir[File.join(Qa::Engine.root, 'spec', 'fixtures', 'authorities', 'linked_data', '*.json')].each do |fn|
-  auth = File.basename(fn, '.json').upcase.to_sym
-  json = File.read(File.expand_path(fn, __FILE__))
-  cfg = JSON.parse(json).deep_symbolize_keys
-  LINKED_DATA_AUTHORITIES_CONFIG[auth] = cfg
-end
