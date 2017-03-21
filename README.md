@@ -1,6 +1,7 @@
 # Questioning Authority
 
 [![Build Status](https://travis-ci.org/projecthydra-labs/questioning_authority.png?branch=master)](https://travis-ci.org/projecthydra-labs/questioning_authority) [![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
+[![Coverage Status](https://coveralls.io/repos/github/projecthydra-labs/questioning_authority/badge.svg?branch=master)](https://coveralls.io/github/projecthydra-labs/questioning_authority?branch=master)
 
 You should question your authorities.
 
@@ -186,7 +187,6 @@ module Qa::Authorities
 end
 ```
 
-
 ### Local Sub-Authorities
 
 #### In YAML files
@@ -239,7 +239,6 @@ using the file's name as the sub-authority.  For example, if I create `foo.yml`,
 		  term: Term 2
 		  active: false
 
-
 #### Adding your own local sub-authorities
 
 If you'd like to add your own local authority that isn't necessarily backed by yaml, create an initializer and tell the local authority about your custom sub-authority:
@@ -261,8 +260,7 @@ Run the generator to install configuration files and an example authority.
     rails generate qa:local:tables
     rake db:migrate
 
-
-  **Note: If you are using MYSQL as your database use the MSQL database generator instead**  
+  **Note: If you are using MYSQL as your database use the MSQL database generator instead**
 
     rails generate qa:local:tables:mysql
     rake db:migrate
@@ -282,13 +280,13 @@ Unfortunately, Rails doesn't have a mechnism for adding functional indexes to ta
     CREATE INDEX "index_qa_local_authority_entries_on_lower_label" ON
       "qa_local_authority_entries" (local_authority_id, lower(label))
 
-  **Note: If you are using MYSQL as your database and used the MSQL database gerator we tried to execute the correct SQL to create the virtual fields and indexes for you**  
+  **Note: If you are using MYSQL as your database and used the MSQL database gerator we tried to execute the correct SQL to create the virtual fields and indexes for you**
 
 Finall you want register your authority in an initializer:
 
     Qa::Authorities::Local.register_subauthority('languages', 'Qa::Authorities::Local::TableBasedAuthority')
 
-  **Note: If you are using MYSQL as your database and used the MSQL database gerator register the MysqlTableBasedAuthority instead of the TableBasedAuthority**  
+  **Note: If you are using MYSQL as your database and used the MSQL database gerator register the MysqlTableBasedAuthority instead of the TableBasedAuthority**
 
 Then you can search for
 

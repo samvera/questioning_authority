@@ -1,15 +1,16 @@
-
 require 'linkeddata'
-
 require 'engine_cart'
 require 'simplecov'
+require 'coveralls'
 require 'byebug' unless ENV['TRAVIS']
 
 ENV["RAILS_ENV"] ||= "test"
 
+SimpleCov.formatter = Coveralls::SimpleCov::Formatter
 SimpleCov.start "rails"
 SimpleCov.command_name "spec"
 EngineCart.load_application!
+Coveralls.wear!
 
 require 'rspec/rails'
 require 'webmock/rspec'
