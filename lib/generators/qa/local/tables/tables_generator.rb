@@ -11,14 +11,7 @@ module Qa::Local
         return 0
       end
       generate "model qa/local_authority name:string:uniq"
-      generate "model qa/local_authority_entry local_authority:references label:string uri:string:uniq"
-      migration_file = Dir.entries(File.join(destination_root, 'db/migrate/'))
-                          .reject { |name| !name.include?('create_qa_local_authority_entries') }.first
-      migration_file = File.join('db/migrate', migration_file)
-      gsub_file migration_file,
-                't.references :local_authority, index: true, foreign_key: true',
-                't.references :local_authority, foreign_key: { to_table: :qa_local_authorities }, index: true'
-
+      generate "model qa/local_authority_entry qa_local_authority:references label:string uri:string:uniq"
       message = "Rails doesn't support functional indexes in migrations, so you'll have to add this manually:\n" \
     "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, lower(label))\n" \
     "   OR on Sqlite: \n" \
