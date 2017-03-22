@@ -18,8 +18,8 @@ module Qa::Local
                             .reject { |name| !name.include?('create_qa_local_authority_entries') }.first
         migration_file = File.join('db/migrate', migration_file)
         gsub_file migration_file,
-                  't.references :local_authority, index: true, foreign_key: true',
-                  't.integer :local_authority_id, index: true'
+                  /t\.references :local_authority.*/,
+                  't.references :local_authority, foreign_key: { to_table: :qa_local_authorities }, index: true'
         insert_into_file migration_file, after: "add_index :qa_local_authority_entries, :uri, unique: true" do
           "\n    add_foreign_key :qa_local_authority_entries, :qa_local_authorities, column: :local_authority_id\n" \
           "    if ActiveRecord::Base.connection.instance_of? ActiveRecord::ConnectionAdapters::Mysql2Adapter\n"  \

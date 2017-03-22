@@ -16,13 +16,12 @@ module Qa::Local
                           .reject { |name| !name.include?('create_qa_local_authority_entries') }.first
       migration_file = File.join('db/migrate', migration_file)
       gsub_file migration_file,
-                't.references :local_authority, index: true, foreign_key: true',
+                /t\.references :local_authority.*/,
                 't.references :local_authority, foreign_key: { to_table: :qa_local_authorities }, index: true'
-
       message = "Rails doesn't support functional indexes in migrations, so you'll have to add this manually:\n" \
-    "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, lower(label))\n" \
-    "   OR on Sqlite: \n" \
-    "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, label collate nocase)\n"
+                "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, lower(label))\n" \
+                "   OR on Sqlite: \n" \
+                "CREATE INDEX \"index_qa_local_authority_entries_on_lower_label\" ON \"qa_local_authority_entries\" (local_authority_id, label collate nocase)\n"
       say_status("info", message, :yellow)
     end
   end
