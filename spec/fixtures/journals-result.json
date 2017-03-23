@@ -1,0 +1,705 @@
+{
+  "status": "ok",
+  "message-type": "journal-list",
+  "message-version": "1.0.0",
+  "message": {
+    "items-per-page": 20,
+    "query": {
+      "start-index": 0,
+      "search-terms": "heart"
+    },
+    "total-results": 70,
+    "items": [
+      {
+        "title": "Bangladesh Heart Journal",
+        "publisher": "Bangladesh Journals Online",
+        "ISSN": [
+          "1024-8714"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "Heart",
+        "publisher": "BMJ",
+        "ISSN": [
+          "1355-6037"
+        ],
+        "flags": {
+          "deposits-orcids-current": true,
+          "deposits": true,
+          "deposits-update-policies-backfile": true,
+          "deposits-award-numbers-current": false,
+          "deposits-resource-links-current": false,
+          "deposits-articles": true,
+          "deposits-funders-current": false,
+          "deposits-references-backfile": true,
+          "deposits-licenses-backfile": false,
+          "deposits-award-numbers-backfile": false,
+          "deposits-references-current": true,
+          "deposits-resource-links-backfile": false,
+          "deposits-orcids-backfile": false,
+          "deposits-funders-backfile": false,
+          "deposits-update-policies-current": true,
+          "deposits-licenses-current": false
+        },
+        "coverage": {
+          "funders-backfile": 0.0,
+          "licenses-backfile": 0.0,
+          "funders-current": 0.0,
+          "resource-links-backfile": 0.0,
+          "orcids-backfile": 0.0,
+          "update-policies-current": 0.8449265956878662,
+          "orcids-current": 0.03126994147896767,
+          "references-backfile": 0.022236142307519913,
+          "award-numbers-backfile": 0.0,
+          "update-policies-backfile": 0.1716776341199875,
+          "licenses-current": 0.0,
+          "award-numbers-current": 0.0,
+          "resource-links-current": 0.0,
+          "references-current": 0.3439693748950958
+        },
+        "breakdowns": {
+          "dois-by-issued-year": [
+            [
+              2013,
+              1795
+            ],
+            [
+              2012,
+              1519
+            ],
+            [
+              2010,
+              1514
+            ],
+            [
+              2011,
+              1473
+            ],
+            [
+              2014,
+              850
+            ],
+            [
+              2005,
+              779
+            ],
+            [
+              2015,
+              638
+            ],
+            [
+              2006,
+              502
+            ],
+            [
+              2008,
+              485
+            ],
+            [
+              1999,
+              427
+            ],
+            [
+              2007,
+              422
+            ],
+            [
+              2009,
+              392
+            ],
+            [
+              1994,
+              377
+            ],
+            [
+              1997,
+              374
+            ],
+            [
+              1998,
+              371
+            ],
+            [
+              1996,
+              349
+            ],
+            [
+              1995,
+              335
+            ],
+            [
+              1993,
+              335
+            ],
+            [
+              1992,
+              280
+            ],
+            [
+              2004,
+              252
+            ],
+            [
+              1984,
+              249
+            ],
+            [
+              1985,
+              244
+            ],
+            [
+              1987,
+              240
+            ],
+            [
+              1979,
+              240
+            ],
+            [
+              1981,
+              237
+            ],
+            [
+              1977,
+              236
+            ],
+            [
+              1980,
+              235
+            ],
+            [
+              1978,
+              232
+            ],
+            [
+              1973,
+              229
+            ],
+            [
+              1986,
+              226
+            ],
+            [
+              1988,
+              224
+            ],
+            [
+              1991,
+              223
+            ],
+            [
+              1976,
+              223
+            ],
+            [
+              1990,
+              222
+            ],
+            [
+              1972,
+              221
+            ],
+            [
+              1983,
+              211
+            ],
+            [
+              1982,
+              207
+            ],
+            [
+              1975,
+              205
+            ],
+            [
+              1971,
+              200
+            ],
+            [
+              1989,
+              193
+            ],
+            [
+              1974,
+              193
+            ],
+            [
+              2016,
+              192
+            ],
+            [
+              1970,
+              156
+            ],
+            [
+              1969,
+              143
+            ],
+            [
+              1968,
+              129
+            ],
+            [
+              1967,
+              129
+            ],
+            [
+              1965,
+              125
+            ],
+            [
+              1966,
+              114
+            ],
+            [
+              1964,
+              111
+            ],
+            [
+              1963,
+              108
+            ],
+            [
+              1962,
+              105
+            ],
+            [
+              1961,
+              97
+            ],
+            [
+              1960,
+              89
+            ],
+            [
+              1957,
+              80
+            ],
+            [
+              1958,
+              79
+            ],
+            [
+              1956,
+              75
+            ],
+            [
+              1959,
+              74
+            ],
+            [
+              1952,
+              73
+            ],
+            [
+              1951,
+              73
+            ],
+            [
+              1955,
+              71
+            ],
+            [
+              1954,
+              63
+            ],
+            [
+              1953,
+              61
+            ],
+            [
+              1949,
+              43
+            ],
+            [
+              1950,
+              41
+            ],
+            [
+              1948,
+              41
+            ],
+            [
+              1944,
+              37
+            ],
+            [
+              1943,
+              36
+            ],
+            [
+              1947,
+              35
+            ],
+            [
+              1940,
+              34
+            ],
+            [
+              1946,
+              33
+            ],
+            [
+              1945,
+              33
+            ],
+            [
+              1939,
+              28
+            ],
+            [
+              1941,
+              25
+            ],
+            [
+              1942,
+              23
+            ],
+            [
+              2002,
+              8
+            ]
+          ]
+        },
+        "counts": {
+          "total-dois": 20725,
+          "current-dois": 1567,
+          "backfile-dois": 19158
+        },
+        "last-status-check-time": 1459490490820
+      },
+      {
+        "title": "Texas Heart Institute Journal",
+        "publisher": "Texas Heart Institute Journal",
+        "ISSN": [
+          "0730-2347",
+          "1526-6702"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "International Journal of Heart Rhythm",
+        "publisher": "Medknow Publications",
+        "ISSN": [
+          "2352-4197"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "AJP Heart and Circulatory Physiology",
+        "publisher": "American Physiological Society",
+        "ISSN": [
+          "0363-6135",
+          "1522-1539"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "Russian Heart Failure Journal",
+        "publisher": "APO Society of Specialists in Heart Failure",
+        "ISSN": [
+          "1728-4651"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "Russian Heart Journal",
+        "publisher": "APO Society of Specialists in Heart Failure",
+        "ISSN": [
+          "1728-4724"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "ASEAN Heart Journal",
+        "publisher": "Springer - Global Science Journals",
+        "ISSN": [
+          "2315-4551"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "Aswan Heart Centre Science & Practice Series",
+        "publisher": "Hamad bin Khalifa University Press (HBKU Press)",
+        "ISSN": [
+          "2220-2730"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "Circulation Heart Failure",
+        "publisher": "Ovid Technologies Wolters Kluwer -American Heart Association",
+        "ISSN": [
+          "1941-3289",
+          "1941-3297"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "Congenital Heart Disease",
+        "publisher": "Wiley Blackwell (Blackwell Publishing)",
+        "ISSN": [
+          "1747-079X",
+          "1747-0803"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "Congestive Heart Failure",
+        "publisher": "Wiley Blackwell (Blackwell Publishing)",
+        "ISSN": [
+          "1527-5299",
+          "1751-7133"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "Current Heart Failure Reports",
+        "publisher": "Springer-Verlag",
+        "ISSN": [
+          "1546-9530",
+          "1546-9549"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "European Heart Journal - Cardiovascular Imaging",
+        "publisher": "Oxford University Press",
+        "ISSN": [
+          "2047-2404",
+          "2047-2412"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "European Heart Journal Acute Cardiovascular Care",
+        "publisher": "SAGE Publications",
+        "ISSN": [
+          "2048-8726",
+          "2048-8734"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "European Heart Journal Supplements",
+        "publisher": "Oxford University Press",
+        "ISSN": [
+          "1520-765X"
+        ],
+        "flags": {
+          "deposits-orcids-current": false,
+          "deposits": true,
+          "deposits-update-policies-backfile": false,
+          "deposits-award-numbers-current": true,
+          "deposits-resource-links-current": false,
+          "deposits-articles": true,
+          "deposits-funders-current": true,
+          "deposits-references-backfile": true,
+          "deposits-licenses-backfile": true,
+          "deposits-award-numbers-backfile": false,
+          "deposits-references-current": true,
+          "deposits-resource-links-backfile": true,
+          "deposits-orcids-backfile": false,
+          "deposits-funders-backfile": false,
+          "deposits-update-policies-current": false,
+          "deposits-licenses-current": false
+        },
+        "coverage": {
+          "funders-backfile": 0.0,
+          "licenses-backfile": 0.04328523948788643,
+          "funders-current": 0.20408163964748383,
+          "resource-links-backfile": 0.04328523948788643,
+          "orcids-backfile": 0.0,
+          "update-policies-current": 0.0,
+          "orcids-current": 0.0,
+          "references-backfile": 0.16648168861865997,
+          "award-numbers-backfile": 0.0,
+          "update-policies-backfile": 0.0,
+          "licenses-current": 0.0,
+          "award-numbers-current": 0.09183673560619354,
+          "resource-links-current": 0.0,
+          "references-current": 0.8877550959587097
+        },
+        "breakdowns": {
+          "dois-by-issued-year": [
+            [
+              2004,
+              130
+            ],
+            [
+              2001,
+              128
+            ],
+            [
+              2002,
+              113
+            ],
+            [
+              2005,
+              88
+            ],
+            [
+              2003,
+              74
+            ],
+            [
+              2006,
+              73
+            ],
+            [
+              2007,
+              72
+            ],
+            [
+              2008,
+              69
+            ],
+            [
+              2009,
+              61
+            ],
+            [
+              2015,
+              59
+            ],
+            [
+              2014,
+              49
+            ],
+            [
+              2010,
+              31
+            ],
+            [
+              2012,
+              26
+            ],
+            [
+              2011,
+              18
+            ],
+            [
+              2016,
+              8
+            ]
+          ]
+        },
+        "counts": {
+          "total-dois": 999,
+          "current-dois": 98,
+          "backfile-dois": 901
+        },
+        "last-status-check-time": 1459491256990
+      },
+      {
+        "title": "European Journal of Heart Failure",
+        "publisher": "Wiley Blackwell (John Wiley & Sons)",
+        "ISSN": [
+          "1388-9842",
+          "1879-0844"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "European Journal of Heart Failure Supplements",
+        "publisher": "Oxford University Press",
+        "ISSN": [
+          "1567-4215",
+          "1878-1314"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "European Heart Journal - Quality of Care and Clinical Outcomes",
+        "publisher": "Oxford University Press",
+        "ISSN": [
+          "2058-5225",
+          "2058-1742"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      },
+      {
+        "title": "Kosuyolu Heart Journal",
+        "publisher": "Bilimsel Tip Publishing House",
+        "ISSN": [
+          "2149-2972",
+          "2149-2980"
+        ],
+        "flags": null,
+        "coverage": null,
+        "breakdowns": null,
+        "counts": null,
+        "last-status-check-time": null
+      }
+    ]
+  }
+}

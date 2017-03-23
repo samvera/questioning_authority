@@ -19,4 +19,5 @@ module Qa::Authorities
   autoload :WebServiceBase
   autoload :AssignFast
   autoload :AssignFastSubauthority
+  autoload :Crossref
 end
