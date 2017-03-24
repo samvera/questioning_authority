@@ -21,6 +21,10 @@ class Qa::LinkedDataTermsController < ApplicationController
       logger.warn "Service Unavailable - Search query #{query} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
       head :not_found
       return
+    rescue RDF::FormatError
+      logger.warn "RDF Format Error - Results from search query #{query} for#{subauth_warn_msg} authority #{vocab_param} was not identified as a valid RDF format.  You may need to include the linkeddata gem."
+      head :not_found
+      return
     end
     render json: terms
   end
@@ -36,6 +40,10 @@ class Qa::LinkedDataTermsController < ApplicationController
       return
     rescue Qa::ServiceUnavailable
       logger.warn "Service Unavailable - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+      head :not_found
+      return
+    rescue RDF::FormatError
+      logger.warn "RDF Format Error - Results from fetch term #{id} for#{subauth_warn_msg} authority #{vocab_param} was not identified as a valid RDF format.  You may need to include the linkeddata gem."
       head :not_found
       return
     end
@@ -110,7 +118,7 @@ class Qa::LinkedDataTermsController < ApplicationController
     end
 
     def replacement_params
-      params.reject { |k, _v| ['q', 'vocab', 'controller', 'action', 'subauthority', 'language'].include?(k) }
+      params.reject { |k, _v| ['q', 'vocab', 'controller', 'action', 'subauthority', 'language', 'id'].include?(k) }
     end
 
     def subauth_warn_msg

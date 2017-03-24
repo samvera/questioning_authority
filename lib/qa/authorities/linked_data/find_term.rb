@@ -28,6 +28,7 @@ module Qa::Authorities
         url = auth_config.term_url_with_replacements(id, subauth, replacements)
         Rails.logger.info "QA Linked Data term url: #{url}"
         graph = get_linked_data(url)
+        return "{}" unless graph.size.positive?
         parse_term_authority_response(id, graph, language)
       end
 
