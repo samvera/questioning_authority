@@ -28,8 +28,13 @@ module Qa::Authorities
         auth_config
       end
 
-      include Qa::Authorities::LinkedData::TermConfig
-      include Qa::Authorities::LinkedData::SearchConfig
+      def search
+        @search ||= Qa::Authorities::LinkedData::SearchConfig.new(auth_config.fetch(:search))
+      end
+
+      def term
+        @term ||= Qa::Authorities::LinkedData::TermConfig.new(auth_config.fetch(:term))
+      end
 
       # Return the full configuration for an authority
       # @return [String] the authority configuration
@@ -39,39 +44,37 @@ module Qa::Authorities
         @authority_config
       end
 
-      private
+      def self.config_value(config, key)
+        return nil if config.nil? || !(config.key? key)
+        config[key]
+      end
 
-        def config_value(config, key)
-          return nil if config.nil? || !(config.key? key)
-          config[key]
-        end
+      def self.predicate_uri(config, key)
+        pred = config_value(config, key)
+        pred_uri = nil
+        pred_uri = RDF::URI(pred) unless pred.nil? || pred.length <= 0
+        pred_uri
+      end
 
-        def predicate_uri(config, key)
-          pred = config_value(config, key)
-          pred_uri = nil
-          pred_uri = RDF::URI(pred) unless pred.nil? || pred.length <= 0
-          pred_uri
-        end
+      def self.replace_pattern(url, pattern, value)
+        url.gsub("{?#{pattern}}", value)
+      end
 
-        def apply_replacements(url, config, replacements = {})
-          return url unless config.size.positive?
-          config.each do |param_key, rep_pattern|
-            s_param_key = param_key.to_s
-            value = replacements[param_key] || replacements[s_param_key] || rep_pattern[:default]
-            url = replace_pattern(url, param_key, value)
-          end
-          url
-        end
+      def self.process_subauthority(url, subauth_pattern, subauthorities, subauth_key)
+        pattern = subauth_pattern[:pattern]
+        value = subauthorities[subauth_key] || subauth_pattern[:default]
+        replace_pattern(url, pattern, value)
+      end
 
-        def process_subauthority(url, subauth_pattern, subauthorities, subauth_key)
-          pattern = subauth_pattern[:pattern]
-          value = subauthorities[subauth_key] || subauth_pattern[:default]
-          replace_pattern(url, pattern, value)
+      def self.apply_replacements(url, config, replacements = {})
+        return url unless config.size.positive?
+        config.each do |param_key, rep_pattern|
+          s_param_key = param_key.to_s
+          value = replacements[param_key] || replacements[s_param_key] || rep_pattern[:default]
+          url = replace_pattern(url, param_key, value)
         end
-
-        def replace_pattern(url, pattern, value)
-          url.gsub("{?#{pattern}}", value)
-        end
+        url
+      end
     end
   end
 end

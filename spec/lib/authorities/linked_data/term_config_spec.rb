@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Qa::Authorities::LinkedData::TermConfig do
-  let(:full_config) { Qa::Authorities::LinkedData::Config.new(:LOD_FULL_CONFIG) }
-  let(:min_config) { Qa::Authorities::LinkedData::Config.new(:LOD_MIN_CONFIG) }
-  let(:search_only_config) { Qa::Authorities::LinkedData::Config.new(:LOD_SEARCH_ONLY_CONFIG) }
+  let(:full_config) { Qa::Authorities::LinkedData::Config.new(:LOD_FULL_CONFIG).term }
+  let(:min_config) { Qa::Authorities::LinkedData::Config.new(:LOD_MIN_CONFIG).term }
+  let(:search_only_config) { Qa::Authorities::LinkedData::Config.new(:LOD_SEARCH_ONLY_CONFIG).term }
 
   describe '#term_config' do
     let(:full_term_config) do
@@ -66,10 +66,10 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
 
     it 'returns nil if only search configuration is defined' do
-      expect(search_only_config.term_config).to eq nil
+      expect(search_only_config.send(:term_config)).to be_empty
     end
     it 'returns hash of term configuration' do
-      expect(full_config.term_config).to eq full_term_config
+      expect(full_config.send(:term_config)).to eq full_term_config
     end
   end
 
@@ -82,7 +82,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
   end
 
-  describe '#term_url' do
+  describe '#url' do
     let(:url_config) do
       {
         :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
@@ -122,50 +122,50 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
 
     it 'returns nil if only search configuration is defined' do
-      expect(search_only_config.term_url).to eq nil
+      expect(search_only_config.url).to eq nil
     end
     it 'returns the term url from the configuration' do
-      expect(full_config.term_url).to eq url_config
+      expect(full_config.url).to eq url_config
     end
   end
 
-  describe '#term_url' do
+  describe '#url' do
     it 'returns nil if only search configuration is defined' do
-      expect(search_only_config.term_url_template).to eq nil
+      expect(search_only_config.url_template).to eq nil
     end
     it 'returns the term url from the configuration' do
       expected_url = 'http://localhost/test_default/term/{?subauth}/{?term_id}?param1={?param1}&param2={?param2}'
-      expect(full_config.term_url_template).to eq expected_url
+      expect(full_config.url_template).to eq expected_url
     end
   end
 
-  describe '#term_id_expects_id?' do
+  describe '#id_expects_id?' do
     it 'returns false if term_id specifies a URI is required' do
-      expect(min_config.term_id_expects_id?).to eq false
+      expect(min_config.id_expects_id?).to eq false
     end
     it 'returns true if term_id specifies an ID is required' do
-      expect(full_config.term_id_expects_id?).to eq true
+      expect(full_config.id_expects_id?).to eq true
     end
   end
 
-  describe '#term_id_expects_uri?' do
+  describe '#id_expects_uri?' do
     it 'returns false if term_id specifies a ID is required' do
-      expect(full_config.term_id_expects_uri?).to eq false
+      expect(full_config.id_expects_uri?).to eq false
     end
     it 'returns true if term_id specifies an URI is required' do
-      expect(min_config.term_id_expects_uri?).to eq true
+      expect(min_config.id_expects_uri?).to eq true
     end
   end
 
-  describe '#term_language' do
+  describe '#language' do
     it 'returns nil if only search configuration is defined' do
-      expect(search_only_config.term_language).to eq nil
+      expect(search_only_config.language).to eq nil
     end
     it 'returns nil if language is not specified' do
-      expect(min_config.term_language).to eq nil
+      expect(min_config.language).to eq nil
     end
     it 'returns the preferred language for selecting literal values if configured for term' do
-      expect(full_config.term_language).to eq [:en]
+      expect(full_config.language).to eq [:en]
     end
   end
 
@@ -296,53 +296,53 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
   end
 
-  describe '#term_subauthorities?' do
+  describe '#subauthorities?' do
     it 'returns false if only search configuration is defined' do
-      expect(search_only_config.term_subauthorities?).to eq false
+      expect(search_only_config.subauthorities?).to eq false
     end
     it 'returns false if the configuration does NOT define subauthorities' do
-      expect(min_config.term_subauthorities?).to eq false
+      expect(min_config.subauthorities?).to eq false
     end
     it 'returns true if the configuration defines subauthorities' do
-      expect(full_config.term_subauthorities?).to eq true
+      expect(full_config.subauthorities?).to eq true
     end
   end
 
-  describe '#term_subauthority?' do
+  describe '#subauthority?' do
     it 'returns false if only search configuration is defined' do
-      expect(search_only_config.term_subauthority?('fake_subauth')).to eq false
+      expect(search_only_config.subauthority?('fake_subauth')).to eq false
     end
     it 'returns false if there are no subauthorities configured' do
-      expect(min_config.term_subauthority?('fake_subauth')).to eq false
+      expect(min_config.subauthority?('fake_subauth')).to eq false
     end
     it 'returns false if the requested subauthority is NOT configured' do
-      expect(full_config.term_subauthority?('fake_subauth')).to eq false
+      expect(full_config.subauthority?('fake_subauth')).to eq false
     end
     it 'returns true if the requested subauthority is configured' do
-      expect(full_config.term_subauthority?('term_sub2_key')).to eq true
+      expect(full_config.subauthority?('term_sub2_key')).to eq true
     end
   end
 
-  describe '#term_subauthority_count' do
+  describe '#subauthority_count' do
     it 'returns 0 if only search configuration is defined' do
-      expect(search_only_config.term_subauthority_count).to eq 0
+      expect(search_only_config.subauthority_count).to eq 0
     end
     it 'returns 0 if the configuration does NOT define subauthorities' do
-      expect(min_config.term_subauthority_count).to eq 0
+      expect(min_config.subauthority_count).to eq 0
     end
     it 'returns the number of subauthorities if defined' do
-      expect(full_config.term_subauthority_count).to eq 3
+      expect(full_config.subauthority_count).to eq 3
     end
   end
 
-  describe '#term_subauthorities' do
+  describe '#subauthorities' do
     it 'returns empty hash if only search configuration is defined' do
       empty_hash = {}
-      expect(search_only_config.term_subauthorities).to eq empty_hash
+      expect(search_only_config.subauthorities).to eq empty_hash
     end
     it 'returns empty hash if no subauthorities are defined' do
       empty_hash = {}
-      expect(min_config.term_subauthorities).to eq empty_hash
+      expect(min_config.subauthorities).to eq empty_hash
     end
     it 'returns hash of all subauthority key-value patterns defined' do
       expected_hash = {
@@ -350,22 +350,22 @@ describe Qa::Authorities::LinkedData::TermConfig do
         term_sub2_key: 'term_sub2_name',
         term_sub3_key: 'term_sub3_name'
       }
-      expect(full_config.term_subauthorities).to eq expected_hash
+      expect(full_config.subauthorities).to eq expected_hash
     end
   end
 
-  describe '#term_subauthority_replacement_pattern' do
+  describe '#subauthority_replacement_pattern' do
     it 'returns empty hash if only search configuration is defined' do
       empty_hash = {}
-      expect(search_only_config.term_subauthority_replacement_pattern).to eq empty_hash
+      expect(search_only_config.subauthority_replacement_pattern).to eq empty_hash
     end
     it 'returns empty hash if no subauthorities are defined' do
       empty_hash = {}
-      expect(min_config.term_subauthority_replacement_pattern).to eq empty_hash
+      expect(min_config.subauthority_replacement_pattern).to eq empty_hash
     end
     it 'returns hash replacement pattern for subauthority and the default value' do
       expected_hash = { pattern: 'subauth', default: 'term_sub2_name' }
-      expect(full_config.term_subauthority_replacement_pattern).to eq expected_hash
+      expect(full_config.subauthority_replacement_pattern).to eq expected_hash
     end
   end
 

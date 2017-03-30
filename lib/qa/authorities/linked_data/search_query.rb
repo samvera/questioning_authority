@@ -2,7 +2,18 @@
 # them into the expected QA json results format.
 module Qa::Authorities
   module LinkedData
-    module SearchQuery
+    class SearchQuery
+      include Qa::Authorities::LinkedData::RdfHelper
+
+      # @param [SearchConfig] search_config The search portion of the config
+      def initialize(search_config)
+        @search_config = search_config
+      end
+
+      attr_reader :search_config
+
+      delegate :subauthority?, :supports_sort?, to: :search_config
+
       # Search a linked data authority
       # @param [String] the query
       # @param [Symbol] (optional) language: language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
@@ -14,9 +25,9 @@ module Qa::Authorities
       #     {"uri":"http://id.worldcat.org/fast/72456","id":"72456","label":"Cornell, Sarah Maria, 1802-1832"},
       #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
       def search(query, language: nil, replacements: {}, subauth: nil)
-        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || search_subauthority?(subauth)
-        language ||= auth_config.search_language
-        url = auth_config.search_url_with_replacements(query, subauth, replacements)
+        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
+        language ||= search_config.language
+        url = search_config.url_with_replacements(query, subauth, replacements)
         Rails.logger.info "QA Linked Data search url: #{url}"
         graph = get_linked_data(url)
         parse_search_authority_response(graph, language)
@@ -37,16 +48,16 @@ module Qa::Authorities
         end
 
         def required_search_preds
-          label_pred_uri = auth_config.search_results_label_predicate
+          label_pred_uri = search_config.results_label_predicate
           raise Qa::InvalidConfiguration, "required label_predicate is missing in search configuration for LOD authority #{auth_name}" if label_pred_uri.nil?
           { label: label_pred_uri }
         end
 
         def optional_search_preds
           preds = {}
-          preds[:altlabel] = auth_config.search_results_altlabel_predicate unless auth_config.search_results_altlabel_predicate.nil?
-          preds[:id] = auth_config.search_results_id_predicate unless auth_config.search_results_id_predicate.nil?
-          preds[:sort] = auth_config.search_results_sort_predicate unless auth_config.search_results_sort_predicate.nil?
+          preds[:altlabel] = search_config.results_altlabel_predicate unless search_config.results_altlabel_predicate.nil?
+          preds[:id] = search_config.results_id_predicate unless search_config.results_id_predicate.nil?
+          preds[:sort] = search_config.results_sort_predicate unless search_config.results_sort_predicate.nil?
           preds
         end
 
@@ -95,7 +106,7 @@ module Qa::Authorities
         end
 
         def sort_search_results(json_results)
-          return json_results unless search_supports_sort?
+          return json_results unless supports_sort?
           json_results.sort! do |a, b|
             cmp = sort_when_missing_sort_predicate(a, b)
             next unless cmp.nil?

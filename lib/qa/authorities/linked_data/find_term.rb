@@ -2,7 +2,18 @@
 # it into the expected QA json term result format.
 module Qa::Authorities
   module LinkedData
-    module FindTerm
+    class FindTerm
+      include Qa::Authorities::LinkedData::RdfHelper
+
+      # @param [TermConfig] term_config The term portion of the config
+      def initialize(term_config)
+        @term_config = term_config
+      end
+
+      attr_reader :term_config
+
+      delegate :subauthority?, to: :term_config
+
       # Find a single term in a linked data authority
       # @param [String] the id of the term to fetch
       # @param [Symbol] (optional) language: language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
@@ -23,9 +34,9 @@ module Qa::Authorities
       #     "http://www.w3.org/2004/02/skos/core#altLabel":["Ithaca (N.Y.). Cornell University"],
       #     "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"] } }
       def find(id, language: nil, replacements: {}, subauth: nil)
-        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
-        language ||= auth_config.term_language
-        url = auth_config.term_url_with_replacements(id, subauth, replacements)
+        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
+        language ||= term_config.language
+        url = term_config.term_url_with_replacements(id, subauth, replacements)
         Rails.logger.info "QA Linked Data term url: #{url}"
         graph = get_linked_data(url)
         return "{}" unless graph.size.positive?
@@ -50,18 +61,18 @@ module Qa::Authorities
         end
 
         def required_term_preds
-          label_pred_uri = auth_config.term_results_label_predicate
+          label_pred_uri = term_config.term_results_label_predicate
           raise Qa::InvalidConfiguration, "required label_predicate is missing in configuration for LOD authority #{auth_name}" if label_pred_uri.nil?
           { label: label_pred_uri }
         end
 
         def optional_term_preds
           preds = {}
-          preds[:altlabel] = auth_config.term_results_altlabel_predicate unless auth_config.term_results_altlabel_predicate.nil?
-          preds[:id] = auth_config.term_results_id_predicate unless auth_config.term_results_id_predicate.nil?
-          preds[:narrower] = auth_config.term_results_narrower_predicate unless auth_config.term_results_narrower_predicate.nil?
-          preds[:broader] = auth_config.term_results_broader_predicate unless auth_config.term_results_broader_predicate.nil?
-          preds[:sameas] = auth_config.term_results_sameas_predicate unless auth_config.term_results_sameas_predicate.nil?
+          preds[:altlabel] = term_config.term_results_altlabel_predicate unless term_config.term_results_altlabel_predicate.nil?
+          preds[:id] = term_config.term_results_id_predicate unless term_config.term_results_id_predicate.nil?
+          preds[:narrower] = term_config.term_results_narrower_predicate unless term_config.term_results_narrower_predicate.nil?
+          preds[:broader] = term_config.term_results_broader_predicate unless term_config.term_results_broader_predicate.nil?
+          preds[:sameas] = term_config.term_results_sameas_predicate unless term_config.term_results_sameas_predicate.nil?
           preds
         end
 

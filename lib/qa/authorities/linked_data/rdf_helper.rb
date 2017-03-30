@@ -7,6 +7,23 @@ module Qa::Authorities
     module RdfHelper
       private
 
+        def object_value(stmt_hash, consolidated_hash, name, as_string = true)
+          new_object_value = stmt_hash[name]
+          new_object_value = new_object_value.to_s if as_string
+          all_object_values = consolidated_hash[name] || []
+          all_object_values << new_object_value unless new_object_value.nil? || all_object_values.include?(new_object_value)
+          all_object_values
+        end
+
+        def init_consolidated_hash(consolidated_results, uri, id)
+          consolidated_hash = consolidated_results[uri] || {}
+          if consolidated_hash.empty?
+            consolidated_hash[:id] = uri
+            consolidated_hash[:id] = id unless id.nil? || id.length <= 0
+          end
+          consolidated_hash
+        end
+
         def get_linked_data(url)
           begin
             graph = RDF::Graph.load(url)
