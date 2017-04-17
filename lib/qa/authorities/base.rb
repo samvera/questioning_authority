@@ -31,7 +31,7 @@ module Qa::Authorities
     #
     # @todo better specify return type
     def find(_id)
-      raise NotImplementedError, "#{self.class}#all is unimplemented."
+      raise NotImplementedError, "#{self.class}#find is unimplemented."
     end
 
     ##

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:skosxl="http://www.w3.org/2008/05/skos-xl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xmlns:void="http://rdfs.org/ns/void#"
+         xmlns:ns0="http://art.uniroma2.it/ontologies/vocbench#">
+
+  <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_ar_1299487481966">
+    <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+  </skosxl:Label>
+
+  <skos:Concept rdf:about="http://aims.fao.org/aos/agrovoc/c_9513">
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_es_1299487482038">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_it_1299487482154">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_ko_1299487482210">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_pl_1299487482273">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_sk_1299487482378">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_en_1299487482019">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_tr_9513_1321792194941">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_de_1299487482000">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_fa_1299487482058">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_th_1299487482417">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_fr_1299487482080">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_hi_1299487482102">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel rdf:resource="http://aims.fao.org/aos/agrovoc/xl_ar_1299487481966"/>
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_ja_1299487482181">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_lo_1299487482240">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_ru_1299487482341">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_cs_1299487481982">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_zh_1299487482458">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_pt_1299487482307">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <skosxl:prefLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_hu_1299487482127">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">9513</skos:notation>
+      </skosxl:Label>
+    </skosxl:prefLabel>
+
+    <dc:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2014-07-03T18:51:03Z</dc:modified>
+    <skos:inScheme>
+      <skos:ConceptScheme rdf:about="http://aims.fao.org/aos/agrovoc">
+      </skos:ConceptScheme>
+    </skos:inScheme>
+
+    <skos:prefLabel xml:lang="hi">\xE0\xA4\xAC\xE0\xA4\x9F\xE0\xA4\xB0 \xE0\xA4\xAE\xE0\xA4\xBF\xE0\xA4\xB2\xE0\xA5\x8D\xE0\xA4\x95 / \xE0\xA4\x9B\xE0\xA4\xBE\xE0\xA4\x9B</skos:prefLabel>
+    <skos:prefLabel xml:lang="cs">podm\xC3\xA1sl\xC3\xAD</skos:prefLabel>
+    <skos:prefLabel xml:lang="fa">\xD8\xAF\xD9\x88\xD8\xBA \xDA\xA9\xD8\xB1\xD9\x87</skos:prefLabel>
+    <skos:prefLabel xml:lang="tr">yay\xC4\xB1kalt\xC4\xB1</skos:prefLabel>
+    <skos:prefLabel xml:lang="zh">\xE9\x85\xAA\xE5\xA5\xB6</skos:prefLabel>
+    <skos:prefLabel xml:lang="ru">\xD0\xBF\xD0\xB0\xD1\x85\xD1\x82\xD0\xB0</skos:prefLabel>
+    <skos:prefLabel xml:lang="it">Latticello</skos:prefLabel>
+    <skos:prefLabel xml:lang="ko">\xEC\x9A\xB0\xEB\x9D\xBD\xEC\x9C\xA0</skos:prefLabel>
+    <skos:prefLabel xml:lang="th">\xE0\xB9\x80\xE0\xB8\x99\xE0\xB8\xA2\xE0\xB8\x99\xE0\xB8\xA1\xE0\xB8\xAA\xE0\xB8\x94</skos:prefLabel>
+    <skos:prefLabel xml:lang="sk">cmar</skos:prefLabel>
+    <skos:prefLabel xml:lang="pl">Ma\xC5\x9Blanka</skos:prefLabel>
+    <skos:prefLabel xml:lang="en">buttermilk</skos:prefLabel>
+    <skos:prefLabel xml:lang="hu">\xC3\xADr\xC3\xB3</skos:prefLabel>
+    <skos:prefLabel xml:lang="pt">Leitelho</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">Buttermilch</skos:prefLabel>
+    <skos:prefLabel xml:lang="fr">Babeurre</skos:prefLabel>
+    <skos:prefLabel xml:lang="es">Suero de leche</skos:prefLabel>
+    <skos:prefLabel xml:lang="ja">\xE3\x83\x90\xE3\x82\xBF\xE3\x83\xBC\xE3\x83\x9F\xE3\x83\xAB\xE3\x82\xAF</skos:prefLabel>
+    <skos:prefLabel xml:lang="lo">\xE0\xBA\x99\xE0\xBA\xBB\xE0\xBA\xA1\xE0\xBB\x80\xE0\xBA\x99\xE0\xBA\xB5\xE0\xBA\x8D</skos:prefLabel>
+    <skos:prefLabel xml:lang="ar">\xD9\x85\xD8\xAE\xD9\x8A\xD8\xB6</skos:prefLabel>
+    <skos:broader>
+      <skos:Concept rdf:about="http://aims.fao.org/aos/agrovoc/c_4830">
+        <skos:prefLabel xml:lang="lo">\xE0\xBA\x9C\xE0\xBA\xB0\xE0\xBA\xA5\xE0\xBA\xB4\xE0\xBA\x94\xE0\xBA\x95\xE0\xBA\xB0\xE0\xBA\x9E\xE0\xBA\xB1\xE0\xBA\x99\xE0\xBA\x99\xE0\xBA\xBB\xE0\xBA\xA1</skos:prefLabel>
+        <skos:prefLabel xml:lang="hi">\xE0\xA4\xA6\xE0\xA5\x81\xE0\xA4\x97\xE0\xA5\x8D\xE0\xA4\xA7-\xE0\xA4\x89\xE0\xA4\xA4\xE0\xA5\x8D\xE0\xA4\xAA\xE0\xA4\xBE\xE0\xA4\xA6</skos:prefLabel>
+        <skos:prefLabel xml:lang="pl">Przetwory mleczne</skos:prefLabel>
+        <skos:prefLabel xml:lang="hu">tejterm\xC3\xA9k</skos:prefLabel>
+        <skos:prefLabel xml:lang="sk">mlie\xC4\x8Dne v\xC3\xBDrobky</skos:prefLabel>
+        <skos:prefLabel xml:lang="cs">ml\xC3\xA9\xC4\x8Dn\xC3\xA9 v\xC3\xBDrobky</skos:prefLabel>
+        <skos:prefLabel xml:lang="pt">Produto \xC3\xA0 base de leite</skos:prefLabel>
+        <skos:prefLabel xml:lang="en">milk products</skos:prefLabel>
+        <skos:prefLabel xml:lang="ar">\xD9\x85\xD9\x86\xD8\xAA\xD8\xAC\xD8\xA7\xD8\xAA \xD8\xA7\xD9\x84\xD8\xA3\xD9\x84\xD8\xA8\xD8\xA7\xD9\x86</skos:prefLabel>
+        <skos:prefLabel xml:lang="ja">\xE4\xB9\xB3\xE8\xA3\xBD\xE5\x93\x81</skos:prefLabel>
+        <skos:prefLabel xml:lang="es">Productos l\xC3\xA1cteos</skos:prefLabel>
+        <skos:prefLabel xml:lang="ko">\xEC\x9C\xA0\xEC\xA0\x9C\xED\x92\x88</skos:prefLabel>
+        <skos:prefLabel xml:lang="it">Prodotti derivati dal latte</skos:prefLabel>
+        <skos:prefLabel xml:lang="fr">Produit laitier</skos:prefLabel>
+        <skos:prefLabel xml:lang="fa">\xD9\x81\xD8\xB1\xD8\xA7\xD9\x88\xD8\xB1\xD8\xAF\xD9\x87\xE2\x80\x8C\xD9\x87\xD8\xA7\xDB\x8C \xD8\xB4\xDB\x8C\xD8\xB1</skos:prefLabel>
+        <skos:prefLabel xml:lang="ru">\xD0\xBC\xD0\xBE\xD0\xBB\xD0\xBE\xD1\x87\xD0\xBD\xD1\x8B\xD0\xB5 \xD0\xBF\xD1\x80\xD0\xBE\xD0\xB4\xD1\x83\xD0\xBA\xD1\x82\xD1\x8B</skos:prefLabel>
+        <skos:prefLabel xml:lang="zh">\xE4\xB9\xB3\xE5\x93\x81</skos:prefLabel>
+        <skos:prefLabel xml:lang="de">Milchprodukt</skos:prefLabel>
+        <skos:prefLabel xml:lang="th">\xE0\xB8\x9C\xE0\xB8\xA5\xE0\xB8\xB4\xE0\xB8\x95\xE0\xB8\xA0\xE0\xB8\xB1\xE0\xB8\x93\xE0\xB8\x91\xE0\xB9\x8C\xE0\xB8\x99\xE0\xB8\xA1</skos:prefLabel>
+        <skos:prefLabel xml:lang="tr">s\xC3\xBCt \xC3\xBCr\xC3\xBCn\xC3\xBC</skos:prefLabel>
+        <skos:narrower rdf:resource="http://aims.fao.org/aos/agrovoc/c_9513"/>
+      </skos:Concept>
+    </skos:broader>
+
+    <skos:altLabel xml:lang="fa">\xD8\xA2\xD8\xA8\xD8\xAF\xD9\x88\xD8\xBA</skos:altLabel>
+    <void:inDataset rdf:resource="http://aims.fao.org/aos/agrovoc/void.ttl#Agrovoc"/>
+    <ns0:hasStatus rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Published</ns0:hasStatus>
+    <skos:closeMatch>
+      <rdf:Description rdf:about="http://dbpedia.org/resource/Buttermilk">
+        <skos:closeMatch rdf:resource="http://aims.fao.org/aos/agrovoc/c_9513"/>
+      </rdf:Description>
+    </skos:closeMatch>
+
+    <skos:exactMatch>
+      <rdf:Description rdf:about="http://cat.aii.caas.cn/concept/c_26308">
+        <skos:exactMatch rdf:resource="http://aims.fao.org/aos/agrovoc/c_9513"/>
+      </rdf:Description>
+    </skos:exactMatch>
+
+    <skos:exactMatch>
+      <rdf:Description rdf:about="http://lod.nal.usda.gov/nalt/20627">
+        <skos:exactMatch rdf:resource="http://aims.fao.org/aos/agrovoc/c_9513"/>
+      </rdf:Description>
+    </skos:exactMatch>
+
+    <skos:exactMatch>
+      <rdf:Description rdf:about="http://d-nb.info/gnd/4147072-2">
+        <skos:exactMatch rdf:resource="http://aims.fao.org/aos/agrovoc/c_9513"/>
+      </rdf:Description>
+    </skos:exactMatch>
+
+    <dc:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2011-11-20T20:29:54Z</dc:created>
+    <skosxl:altLabel>
+      <skosxl:Label rdf:about="http://aims.fao.org/aos/agrovoc/xl_fa_1299487482544">
+        <skos:notation rdf:datatype="http://aims.fao.org/aos/agrovoc/AgrovocCode">63556</skos:notation>
+      </skosxl:Label>
+    </skosxl:altLabel>
+
+  </skos:Concept>
+
+</rdf:RDF>

@@ -1,0 +1,51 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:coord="http://whatever/java/ORG.oclc.util.CoordToDecimal" xmlns:naco="http://whatever/java/ORG.oclc.util.NacoNormalize" xmlns:norm="http://whatever/java/ORG.oclc.util.NormalFormC" xmlns:schema="http://schema.org/" xmlns:madsrdf="http://www.loc.gov/mads/rdf/v1#" xmlns:skosxl="http://www.w3.org/2008/05/skos-xl#" xmlns:dct="http://purl.org/dc/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:void="http://rdfs.org/ns/void#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://id.worldcat.org/fast/">
+<rdf:Description rdf:about="530369">
+<dct:identifier>530369</dct:identifier>
+<skos:inScheme rdf:resource="ontology/1.0/#fast"/>
+<rdf:type rdf:resource="http://schema.org/Organization"/>
+<skos:inScheme rdf:resource="ontology/1.0/#facet-Corporate"/>
+<skos:prefLabel>Cornell University</skos:prefLabel>
+<schema:name>Cornell University</schema:name>
+<skos:altLabel>Ithaca (N.Y.). Cornell University</skos:altLabel>
+<schema:name>Ithaca (N.Y.). Cornell University</schema:name>
+<skos:altLabel>Kornel\xCA\xB9skii universitet</skos:altLabel>
+<schema:name>Kornel\xCA\xB9skii universitet</schema:name>
+<skos:altLabel>K\xCA\xBBang-nai-erh ta hs\xC3\xBCeh</skos:altLabel>
+<schema:name>K\xCA\xBBang-nai-erh ta hs\xC3\xBCeh</schema:name>
+<schema:sameAs>
+<rdf:Description rdf:about="http://id.loc.gov/authorities/names/n79021621">
+<rdfs:label>Cornell University</rdfs:label>
+</rdf:Description>
+</schema:sameAs>
+<schema:sameAs>
+<rdf:Description rdf:about="https://viaf.org/viaf/126293486">
+<rdfs:label>Cornell University</rdfs:label>
+</rdf:Description>
+</schema:sameAs>
+</rdf:Description>
+<rdf:Description rdf:about="fst00530369">
+<rdfs:comment>This identifier is deprecated. See the rdfs:seeAlso link for the new identifier.</rdfs:comment>
+<rdfs:seeAlso rdf:resource="530369"/>
+</rdf:Description>
+<foaf:Document rdf:about="530369/rdf.xml">
+<void:inDataset rdf:resource="http://id.worldcat.org/fast/void/0.1"/>
+<foaf:primaryTopic rdf:resource="530369"/>
+<dc:format>application/rdf+xml</dc:format>
+<dct:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2005-05-13T00:00:00.0</dct:created>
+<dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-07-06T14:07:21.0</dct:modified>
+<dct:language rdf:resource="http://lexvo.org/id/iso639-3/eng"/>
+<skos:changeNote xml:lang="en">Cataloged by agency: OCoLC</skos:changeNote>
+<skos:changeNote xml:lang="en">Transcribed by agency: OCoLC</skos:changeNote>
+</foaf:Document>
+<void:Dataset rdf:about="http://id.worldcat.org/fast/void/0.1">
+<dct:title>FAST (Faceted Application of Subject Terminology) Data</dct:title>
+<dct:license>
+<rdf:Description rdf:about="http://www.oclc.org/research/activities/fast/odcby.htm">
+<dct:title>Open Data Commons Attribution License (ODC-By) v1.0</dct:title>
+<rdfs:comment>This is OCLC's "local copy" of the ODC-By license</rdfs:comment>
+<rdfs:seeAlso rdf:resource="http://opendatacommons.org/licenses/by/#toc-anchor-337-3"/>
+<owl:sameAs rdf:resource="http://opendatacommons.org/licenses/by/1-0/"/>
+</rdf:Description>
+</dct:license>
+</void:Dataset>
+</rdf:RDF>

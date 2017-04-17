@@ -1,0 +1,55 @@
+{
+  "term": {},
+  "search": {
+    "url": {
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type": "IriTemplate",
+      "template": "http://localhost/test_default/search?subauth={?subauth}&query={?query}&param1={?param1}&param2={?param2}",
+      "variableRepresentation": "BasicRepresentation",
+      "mapping": [
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "query",
+          "property": "hydra:freetextQuery",
+          "required": true
+        },
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "subauth",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default": "names"
+        },
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "param1",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default": "delta"
+        },
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "param2",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default": "foxtrot"
+        }
+      ]
+    },
+    "language": [ "en" ],
+    "results": {
+      "id_predicate":       "http://id.loc.gov/vocabulary/identifiers/lccn",
+      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",
+      "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
+      "sort_predicate":     "http://www.w3.org/2004/02/skos/core#prefLabel"
+    },
+    "subauthorities": {
+      "subjects":           "subjects",
+      "names":              "names",
+      "classification":     "classification",
+      "child_subject":      "childrensSubjects",
+      "genre":              "genreForms",
+      "demographic":        "demographicTerms"
+    }
+  }
+}
