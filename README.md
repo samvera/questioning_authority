@@ -1,7 +1,7 @@
 # Questioning Authority
 
-[![Build Status](https://travis-ci.org/projecthydra-labs/questioning_authority.png?branch=master)](https://travis-ci.org/projecthydra-labs/questioning_authority) [![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
-[![Coverage Status](https://coveralls.io/repos/github/projecthydra-labs/questioning_authority/badge.svg?branch=master)](https://coveralls.io/github/projecthydra-labs/questioning_authority?branch=master)
+[![Build Status](https://travis-ci.org/projecthydra/questioning_authority.png?branch=master)](https://travis-ci.org/projecthydra/questioning_authority) [![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
+[![Coverage Status](https://coveralls.io/repos/github/projecthydra/questioning_authority/badge.svg?branch=master)](https://coveralls.io/github/projecthydra/questioning_authority?branch=master)
 
 You should question your authorities.
 
@@ -30,9 +30,9 @@ You should question your authorities.
   * [Developer Notes](#developer-notes)
     * [Compatibility](#compatibility)
   * [Help](#help)
-  
-----   
-  
+
+----
+
 ## What does this do?
 
 Provides a set of uniform RESTful routes to query any controlled vocabulary or set of authority terms.
@@ -363,7 +363,7 @@ This may take a few minutes to finish.
 
 ### Linked Open Data (LOD) Authorities
 
-You will need to add gems that process the type of linked data returned for the authorities you use.  
+You will need to add gems that process the type of linked data returned for the authorities you use.
 
 To cover all possible formats, include the [ruby-rdf/linkeddata](https://github.com/ruby-rdf/linkeddata) gem.
 
@@ -371,23 +371,23 @@ To cover all possible formats, include the [ruby-rdf/linkeddata](https://github.
 gem 'linkeddata'
 ```
 
-This gem is included in QA for development and testing of QA, but is not automatically included in the released gem.  
-Additionally, it is unlikely that you will need all the formats included by that gem.  You may want to select only those 
-gems that are for the formats you need supported.  
+This gem is included in QA for development and testing of QA, but is not automatically included in the released gem.
+Additionally, it is unlikely that you will need all the formats included by that gem.  You may want to select only those
+gems that are for the formats you need supported.
 
 See all gems in [linkeddata.gemspec](https://github.com/ruby-rdf/linkeddata/blob/develop/linkeddata.gemspec).
 
 For example, if you know the authorites you are working with support rdf-xml, you can include the following gem instead of linkeddata.
- 
+
 ```
 gem 'rdf-rdfxml'
 ```
 
 #### Configuring a LOD Authority
 
-Access to LOD authorities can be configured.  Currently, a configuration exists in QA for OCLC Fast Linked Data, Library of 
-Congress (terms only), and Agrovoc.  Look for configuration files in 
-[/config/authorities/linked_data](https://github.com/projecthydra-labs/questioning_authority/tree/master/config/authorities/linked_data).
+Access to LOD authorities can be configured.  Currently, a configuration exists in QA for OCLC Fast Linked Data, Library of
+Congress (terms only), and Agrovoc.  Look for configuration files in
+[/config/authorities/linked_data](https://github.com/projecthydra/questioning_authority/tree/master/config/authorities/linked_data).
 
 Example configuration...
 
@@ -485,7 +485,7 @@ NOTES:
         * default: provide a default value that will be used if not specified
       * See (documentation of templated-links)[http://www.hydra-cg.com/spec/latest/core/#templated-links] for more information.
   * qa_replacement_patterns: identifies which mapping variables are being used for term_id and subauth.
-    * NOTE: The URL to make a term request via QA always uses term_id and subauth as the param names.  qa_replacement_patters allows the url template to use a different variable name for pattern replacement. 
+    * NOTE: The URL to make a term request via QA always uses term_id and subauth as the param names.  qa_replacement_patters allows the url template to use a different variable name for pattern replacement.
   * language:  (optional)  values:  array of en | fr | etc.  -- identify language to use to include in results, filtering out triples of other languages
     * NOTE: Some authoritys' API URL allows language to be specified as a parameter.  In that case, use pattern replacement to add the language to the API URL to prevent alternate languages from being returned in the results.
     * NOTE: At this writing, only label and altlabel are filtered.
@@ -499,7 +499,7 @@ NOTES:
     * broader_predicate:  (optional)
   * subauthorities:  (optional)
     * subauthority name (e.g. topic:, personal_name:, corporate_name, etc.)  Value for {?subauth} are limited to the values in the list of subauthorities.
-      
+
 * search: (optional) is used to define how to send a query to the authority and how to interpret results.
   * url: (required) templated link representation of the authority API URL and mapping of parameters for sending a query to the authority
     * template: is the authority API URL with placeholders for substitution parameters in the form {?var_name}
@@ -510,7 +510,7 @@ NOTES:
         * default: provide a default value that will be used if not specified
       * See (documentation of templated-links)[http://www.hydra-cg.com/spec/latest/core/#templated-links] for more information.
   * qa_replacement_patterns: identifies which mapping variables are being used for term_id and subauth.
-    * NOTE: The URL to make a term request via QA always uses term_id and subauth as the param names.  qa_replacement_patters allows the url template to use a different variable name for pattern replacement. 
+    * NOTE: The URL to make a term request via QA always uses term_id and subauth as the param names.  qa_replacement_patters allows the url template to use a different variable name for pattern replacement.
   * language:  (optional)  values:  array of en | fr | etc.  -- identify language to use to include in results, filtering out triples of other languages
     * NOTE: Some authoritys' API URL allows language to be specified as a parameter.  In that case, use pattern replacement to add the language to the API URL to prevent alternate languages from being returned in the results.
     * NOTE: At this writing, only label and altlabel are filtered.
@@ -522,7 +522,7 @@ NOTES:
     * subauthority name (e.g. topic:, personal_name:, corporate_name, etc.)  Value for {?subauth} are limited to the values in the list of subauthorities.
 
 
-##### Add new configuration      
+##### Add new configuration
 You can add linked data authorities by adding configuration files to your rails app in `Rails.root/config/authorities/linked_data/YOUR_AUTH.json`
 
 ##### Modify existing configuration
@@ -535,11 +535,11 @@ To query OCLC Fast Linked Data service by code...
 # Search OCLC Fast all sub-authorities with default value for number of results to return
 lda = Qa::Authorities::LinkedData::GenericAuthority.new(:OCLC_FAST)
 ld_results = lda.search "Cornell University"
- 
+
 # Search OCLC Fast all sub-authorities passing in value for number of results to return
 lda = Qa::Authorities::LinkedData::GenericAuthority.new(:OCLC_FAST)
 ld_results = lda.search "Cornell University",{"maximumRecords" => "5"}
- 
+
 # Search OCLC Fast Corporate Name sub-authority passing in value for number of results to return
 lda = Qa::Authorities::LinkedData::GenericAuthority.new(:OCLC_FAST,'corporate_name')
 ld_results = lda.search "Cornell University",{"maximumRecords" => "3"}
@@ -611,7 +611,7 @@ NOTE: All predicates with the URI as the subject will be included under "predica
 
 #### Add javascript to support autocomplete
 
-See [Using with autocomplete in Sufia](https://github.com/projecthydra-labs/questioning_authority/wiki/Using-with-autocomplete-in-Sufia) in the wiki documentation for QA.
+See [Using with autocomplete in Sufia](https://github.com/projecthydra/questioning_authority/wiki/Using-with-autocomplete-in-Sufia) in the wiki documentation for QA.
 
 
 
