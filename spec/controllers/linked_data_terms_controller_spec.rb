@@ -143,6 +143,30 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
       end
     end
+
+    context 'in GEONAMES authority' do
+      context '0 search results' do
+        before do
+          stub_request(:get, 'http://api.geonames.org/search?q=supercalifragilisticexpialidocious&maxRows=10&username=demo&type=rdf')
+            .to_return(status: 200, body: webmock_fixture('lod_geonames_query_no_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        end
+        it 'succeeds' do
+          get :search, params: { q: 'supercalifragilisticexpialidocious', vocab: 'GEONAMES' }
+          expect(response).to be_success
+        end
+      end
+
+      context '4 search results' do
+        before do
+          stub_request(:get, 'http://api.geonames.org/search?q=ithaca&maxRows=10&username=demo&type=rdf')
+            .to_return(status: 200, body: webmock_fixture('lod_geonames_query_many_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        end
+        it 'succeeds' do
+          get :search, params: { q: 'ithaca', vocab: 'GEONAMES' }
+          expect(response).to be_success
+        end
+      end
+    end
   end
 
   describe '#show' do
@@ -181,6 +205,19 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'succeeds' do
           get :show, params: { id: 'c_9513', vocab: 'AGROVOC' }
+          expect(response).to be_success
+        end
+      end
+    end
+
+    context 'in GEONAMES authority' do
+      context 'term found' do
+        before do
+          stub_request(:get, 'http://sws.geonames.org/5122432/')
+            .to_return(status: 200, body: webmock_fixture('lod_geonames_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        end
+        it 'succeeds' do
+          get :show, params: { id: 'http://sws.geonames.org/5122432/', vocab: 'GEONAMES' }
           expect(response).to be_success
         end
       end

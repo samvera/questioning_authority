@@ -4,6 +4,7 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
   describe '#search' do
     let(:lod_oclc) { described_class.new(:OCLC_FAST) }
     let(:lod_agrovoc) { described_class.new(:AGROVOC) }
+    let(:lod_geonames) { described_class.new(:GEONAMES) }
 
     context 'in OCLC_FAST authority' do
       context '0 search results' do
@@ -82,6 +83,34 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
           expect(results.first).to eq(uri: 'http://aims.fao.org/aos/agrovoc/c_8602', id: 'http://aims.fao.org/aos/agrovoc/c_8602', label: 'acidophilus milk')
           expect(results.second).to eq(uri: 'http://aims.fao.org/aos/agrovoc/c_16076', id: 'http://aims.fao.org/aos/agrovoc/c_16076', label: 'buffalo milk')
           expect(results.third).to eq(uri: 'http://aims.fao.org/aos/agrovoc/c_9513', id: 'http://aims.fao.org/aos/agrovoc/c_9513', label: 'buttermilk')
+        end
+      end
+    end
+
+    context 'in GEONAMES authority' do
+      context '0 search results' do
+        let :results do
+          stub_request(:get, 'http://api.geonames.org/search?q=supercalifragilisticexpialidocious&maxRows=10&username=demo&type=rdf')
+            .to_return(status: 200, body: webmock_fixture('lod_geonames_query_no_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+          lod_geonames.search('supercalifragilisticexpialidocious')
+        end
+        it 'returns an empty array' do
+          expect(results).to eq([])
+        end
+      end
+
+      context '4 search results' do
+        let :results do
+          stub_request(:get, 'http://api.geonames.org/search?q=ithaca&maxRows=10&username=demo&type=rdf')
+            .to_return(status: 200, body: webmock_fixture('lod_geonames_query_many_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+          lod_geonames.search('ithaca')
+        end
+        it 'is correctly parsed' do
+          expect(results.count).to eq(4)
+          expect(results).to include(uri: 'http://sws.geonames.org/261707/', id: 'http://sws.geonames.org/261707/', label: 'Ithaca Island (GR)')
+          expect(results).to include(uri: 'http://sws.geonames.org/261708/', id: 'http://sws.geonames.org/261708/', label: 'Itháki (GR)')
+          expect(results).to include(uri: 'http://sws.geonames.org/8133849/', id: 'http://sws.geonames.org/8133849/', label: 'Ithaca (GR)')
+          expect(results).to include(uri: 'http://sws.geonames.org/5122432/', id: 'http://sws.geonames.org/5122432/', label: 'Ithaca (US)')
         end
       end
     end
@@ -189,6 +218,7 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
   describe '#find' do
     let(:lod_oclc) { described_class.new(:OCLC_FAST) }
     let(:lod_agrovoc) { described_class.new(:AGROVOC) }
+    let(:lod_geonames) { described_class.new(:GEONAMES) }
     let(:lod_loc) { described_class.new(:LOC) }
 
     context 'basic parameter testing' do
@@ -306,6 +336,56 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
           expect(results['predicates']['http://purl.org/dc/terms/modified']).to eq ['2014-07-03T18:51:03Z']
           expect(results['predicates']['http://rdfs.org/ns/void#inDataset']).to eq ['http://aims.fao.org/aos/agrovoc/void.ttl#Agrovoc']
           expect(results['predicates']['http://art.uniroma2.it/ontologies/vocbench#hasStatus']).to eq ['Published']
+        end
+      end
+    end
+
+    context 'in GEONAMES authority' do
+      context 'term found' do
+        let :results do
+          stub_request(:get, 'http://sws.geonames.org/5122432/')
+            .to_return(status: 200, body: webmock_fixture('lod_geonames_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+          # lod_geonames.find(ERB::Util.url_encode('http://sws.geonames.org/5122432/').gsub(/\./,'%2E'))
+          lod_geonames.find('http://sws.geonames.org/5122432/')
+        end
+        it 'has correct primary predicate values' do
+          expect(results[:uri]).to eq('http://sws.geonames.org/5122432/')
+          expect(results[:id]).to eq('http://sws.geonames.org/5122432/')
+          expect(results[:label]).to eq ['Ithaca']
+          expect(results[:broader]).to eq ['http://sws.geonames.org/5141153/']
+          expect(results[:narrower]).to eq ['']
+          expect(results[:sameas]).to include('http://dbpedia.org/resource/Ithaca%2C_New_York')
+        end
+
+        it 'has correct number of predicates in pred-obj list' do
+          expect(results['predicates'].count).to eq 21
+        end
+
+        it 'has primary predicates in pred-obj list' do
+          expect(results['predicates']['http://www.geonames.org/ontology#name']).to eq ['Ithaca']
+          expect(results['predicates']['http://www.geonames.org/ontology#countryCode']).to eq ['US']
+          expect(results['predicates']['http://www.geonames.org/ontology#parentFeature']).to include('http://sws.geonames.org/5141153/')
+          expect(results['predicates']['http://www.w3.org/2000/01/rdf-schema#seeAlso']).to include('http://dbpedia.org/resource/Ithaca%2C_New_York')
+        end
+
+        it 'has gn predicate values' do
+          expect(results['predicates']['http://www.geonames.org/ontology#officialName']).to eq ['Ithaca']
+          expect(results['predicates']['http://www.geonames.org/ontology#population']).to eq ['30788']
+          expect(results['predicates']['http://www.geonames.org/ontology#postalCode']).to include('14850', '14851', '14852', '14853')
+          expect(results['predicates']['http://www.geonames.org/ontology#nearbyFeatures']).to eq ['http://sws.geonames.org/5122432/nearby.rdf']
+          expect(results['predicates']['http://www.geonames.org/ontology#locationMap']).to eq ['http://www.geonames.org/5122432/ithaca.html']
+          expect(results['predicates']['http://www.geonames.org/ontology#wikipediaArticle']).to include('http://en.wikipedia.org/wiki/Ithaca%2C_New_York', 'http://ru.wikipedia.org/wiki/%D0%98%D1%82%D0%B0%D0%BA%D0%B0_%28%D0%9D%D1%8C%D1%8E-%D0%99%D0%BE%D1%80%D0%BA%29')
+          expect(results['predicates']['http://www.geonames.org/ontology#alternateName'].count).to eq 19
+        end
+
+        it 'has wgs predicate values' do
+          expect(results['predicates']['http://www.w3.org/2003/01/geo/wgs84_pos#lat']).to eq ['42.44063']
+          expect(results['predicates']['http://www.w3.org/2003/01/geo/wgs84_pos#long']).to eq ['-76.49661']
+          expect(results['predicates']['http://www.w3.org/2003/01/geo/wgs84_pos#alt']).to eq ['125']
+        end
+
+        it 'has more unspecified predicate values' do
+          expect(results['predicates']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type']).to eq ['http://www.geonames.org/ontology#Feature']
         end
       end
     end

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rdf:RDF xmlns:cc="http://creativecommons.org/ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:gn="http://www.geonames.org/ontology#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#">
+  <gn:Feature rdf:about="http://sws.geonames.org/5122432/">
+    <rdfs:isDefinedBy rdf:resource="http://sws.geonames.org/5122432/about.rdf"/>
+    <gn:name>Ithaca</gn:name>
+    <gn:alternateName xml:lang="ja">イサカ</gn:alternateName>
+    <gn:alternateName xml:lang="ko">이사카</gn:alternateName>
+    <gn:alternateName>Cayuga City</gn:alternateName>
+    <gn:alternateName xml:lang="lv">Itaka</gn:alternateName>
+    <gn:officialName xml:lang="en">Ithaca</gn:officialName>
+    <gn:alternateName>Markle's Flats</gn:alternateName>
+    <gn:alternateName>Sodom</gn:alternateName>
+    <gn:alternateName>The Flats</gn:alternateName>
+    <gn:alternateName xml:lang="ur">اتھاکا، نیو یارک</gn:alternateName>
+    <gn:alternateName xml:lang="fa">ایتاکا، نیویورک</gn:alternateName>
+    <gn:alternateName xml:lang="ar">إثاكا</gn:alternateName>
+    <gn:alternateName xml:lang="he">איתקה</gn:alternateName>
+    <gn:alternateName xml:lang="ru">Итак</gn:alternateName>
+    <gn:alternateName xml:lang="bg">Итака</gn:alternateName>
+    <gn:alternateName xml:lang="ru">Итака</gn:alternateName>
+    <gn:alternateName xml:lang="sr">Итака</gn:alternateName>
+    <gn:alternateName xml:lang="tg">Итако</gn:alternateName>
+    <gn:alternateName xml:lang="uk">Ітака</gn:alternateName>
+    <gn:alternateName xml:lang="bn">ইথাকা</gn:alternateName>
+    <gn:alternateName xml:lang="zh">伊萨卡</gn:alternateName>
+    <gn:featureClass rdf:resource="http://www.geonames.org/ontology#P"/>
+    <gn:featureCode rdf:resource="http://www.geonames.org/ontology#P.PPLA2"/>
+    <gn:countryCode>US</gn:countryCode>
+    <gn:population>30788</gn:population>
+    <gn:postalCode>14850</gn:postalCode>
+    <gn:postalCode>14851</gn:postalCode>
+    <gn:postalCode>14852</gn:postalCode>
+    <gn:postalCode>14853</gn:postalCode>
+    <wgs84_pos:lat>42.44063</wgs84_pos:lat>
+    <wgs84_pos:long>-76.49661</wgs84_pos:long>
+    <wgs84_pos:alt>125</wgs84_pos:alt>
+    <gn:parentFeature rdf:resource="http://sws.geonames.org/5141153/"/>
+    <gn:parentCountry rdf:resource="http://sws.geonames.org/6252001/"/>
+    <gn:parentADM1 rdf:resource="http://sws.geonames.org/5128638/"/>
+    <gn:parentADM2 rdf:resource="http://sws.geonames.org/5141153/"/>
+    <gn:nearbyFeatures rdf:resource="http://sws.geonames.org/5122432/nearby.rdf"/>
+    <gn:locationMap rdf:resource="http://www.geonames.org/5122432/ithaca.html"/>
+    <gn:wikipediaArticle rdf:resource="http://en.wikipedia.org/wiki/Ithaca%2C_New_York"/>
+    <rdfs:seeAlso rdf:resource="http://dbpedia.org/resource/Ithaca%2C_New_York"/>
+    <gn:wikipediaArticle rdf:resource="http://ru.wikipedia.org/wiki/%D0%98%D1%82%D0%B0%D0%BA%D0%B0_%28%D0%9D%D1%8C%D1%8E-%D0%99%D0%BE%D1%80%D0%BA%29"/>
+  </gn:Feature>
+  <foaf:Document rdf:about="http://sws.geonames.org/5122432/about.rdf">
+    <foaf:primaryTopic rdf:resource="http://sws.geonames.org/5122432/"/>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by/3.0/"/>
+    <cc:attributionURL rdf:resource="http://sws.geonames.org/5122432/"/>
+    <cc:attributionName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GeoNames</cc:attributionName>
+    <dcterms:created rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2006-01-15</dcterms:created>
+    <dcterms:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2017-03-09</dcterms:modified>
+  </foaf:Document>
+</rdf:RDF>

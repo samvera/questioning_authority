@@ -92,6 +92,8 @@ module Qa::Authorities
         end
 
         def full_label(label = [], altlabel = [])
+          label.map!(&:strip)
+          altlabel.map!(&:strip)
           lbl = wrap_labels(label)
           lbl += " (#{altlabel.join(', ')})" unless altlabel.nil? || altlabel.length <= 0
           lbl = lbl.slice(0..95) + '...' if lbl.length > 98
