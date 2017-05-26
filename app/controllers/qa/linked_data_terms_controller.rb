@@ -19,11 +19,15 @@ class Qa::LinkedDataTermsController < ApplicationController
       terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params)
     rescue Qa::ServiceUnavailable
       logger.warn "Service Unavailable - Search query #{query} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
-      head :not_found
+      head :service_unavailable
+      return
+    rescue Qa::ServiceError
+      logger.warn "Internal Server Error - Search query #{query} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+      head :internal_server_error
       return
     rescue RDF::FormatError
       logger.warn "RDF Format Error - Results from search query #{query} for#{subauth_warn_msg} authority #{vocab_param} was not identified as a valid RDF format.  You may need to include the linkeddata gem."
-      head :not_found
+      head :internal_server_error
       return
     end
     render json: terms
@@ -40,11 +44,15 @@ class Qa::LinkedDataTermsController < ApplicationController
       return
     rescue Qa::ServiceUnavailable
       logger.warn "Service Unavailable - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
-      head :not_found
+      head :service_unavailable
+      return
+    rescue Qa::ServiceError
+      logger.warn "Internal Server Error - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+      head :internal_server_error
       return
     rescue RDF::FormatError
       logger.warn "RDF Format Error - Results from fetch term #{id} for#{subauth_warn_msg} authority #{vocab_param} was not identified as a valid RDF format.  You may need to include the linkeddata gem."
-      head :not_found
+      head :internal_server_error
       return
     end
     render json: term
@@ -55,7 +63,7 @@ class Qa::LinkedDataTermsController < ApplicationController
     def check_authority
       if params[:vocab].nil? || !params[:vocab].size.positive?
         logger.warn "Required param 'vocab' is missing or empty"
-        head :not_found
+        head :bad_request
       end
     end
 
@@ -63,7 +71,7 @@ class Qa::LinkedDataTermsController < ApplicationController
       return if subauthority.nil?
       unless @authority.search_subauthority?(subauthority)
         logger.warn "Unable to initialize linked data search sub-authority '#{subauthority}' for authority '#{vocab_param}'"
-        head :not_found
+        head :bad_request
       end
     end
 
@@ -71,7 +79,7 @@ class Qa::LinkedDataTermsController < ApplicationController
       return if subauthority.nil?
       unless @authority.term_subauthority?(subauthority)
         logger.warn "Unable to initialize linked data term sub-authority '#{subauthority}' for authority '#{vocab_param}'"
-        head :not_found
+        head :bad_request
       end
     end
 
@@ -79,7 +87,7 @@ class Qa::LinkedDataTermsController < ApplicationController
       @authority = Qa::Authorities::LinkedData::GenericAuthority.new(vocab_param)
     rescue Qa::InvalidLinkedDataAuthority => e
       logger.warn e.message
-      head :not_found
+      head :bad_request
     end
 
     def vocab_param
@@ -89,7 +97,7 @@ class Qa::LinkedDataTermsController < ApplicationController
     def check_query_param
       if params[:q].nil? || !params[:q].size.positive?
         logger.warn "Required search param 'q' is missing or empty"
-        head :not_found
+        head :bad_request
       end
     end
 
@@ -101,7 +109,7 @@ class Qa::LinkedDataTermsController < ApplicationController
     def check_id_param
       if params[:id].nil? || !params[:id].size.positive?
         logger.warn "Required show param 'id' is missing or empty"
-        head :not_found
+        head :bad_request
       end
     end
 

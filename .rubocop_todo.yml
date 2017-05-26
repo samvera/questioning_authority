@@ -6,6 +6,7 @@ Metrics/CyclomaticComplexity:
 
 Metrics/ClassLength:
   Exclude:
+    - 'app/controllers/qa/linked_data_terms_controller.rb'
     - 'lib/qa/authorities/linked_data/find_term.rb'
     - 'lib/qa/authorities/linked_data/search_query.rb'
 

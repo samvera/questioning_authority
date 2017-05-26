@@ -1,7 +1,7 @@
 # Questioning Authority
 
-[![Build Status](https://travis-ci.org/projecthydra/questioning_authority.png?branch=master)](https://travis-ci.org/projecthydra/questioning_authority) [![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
-[![Coverage Status](https://coveralls.io/repos/github/projecthydra/questioning_authority/badge.svg?branch=master)](https://coveralls.io/github/projecthydra/questioning_authority?branch=master)
+[![Build Status](https://travis-ci.org/samvera/questioning_authority.png?branch=master)](https://travis-ci.org/samvera/questioning_authority) [![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
+[![Coverage Status](https://coveralls.io/repos/github/samvera/questioning_authority/badge.svg?branch=master)](https://coveralls.io/github/samvera/questioning_authority?branch=master)
 
 You should question your authorities.
 
@@ -387,7 +387,7 @@ gem 'rdf-rdfxml'
 
 Access to LOD authorities can be configured.  Currently, a configuration exists in QA for OCLC Fast Linked Data, Library of
 Congress (terms only), and Agrovoc.  Look for configuration files in
-[/config/authorities/linked_data](https://github.com/projecthydra/questioning_authority/tree/master/config/authorities/linked_data).
+[/config/authorities/linked_data](https://github.com/samvera/questioning_authority/tree/master/config/authorities/linked_data).
 
 Example configuration...
 
@@ -611,7 +611,7 @@ NOTE: All predicates with the URI as the subject will be included under "predica
 
 #### Add javascript to support autocomplete
 
-See [Using with autocomplete in Sufia](https://github.com/projecthydra/questioning_authority/wiki/Using-with-autocomplete-in-Sufia) in the wiki documentation for QA.
+See [Using with autocomplete in Sufia](https://github.com/samvera/questioning_authority/wiki/Using-with-autocomplete-in-Sufia) in the wiki documentation for QA.
 
 
 
