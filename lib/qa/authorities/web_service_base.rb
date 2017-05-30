@@ -32,6 +32,7 @@ module Qa::Authorities
     # @param url [String]
     # @return [Faraday::Response]
     def response(url)
+      Faraday::Utils.default_params_encoder = Faraday::FlatParamsEncoder
       Faraday.get(url) { |req| req.headers['Accept'] = 'application/json' }
     end
   end
