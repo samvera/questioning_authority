@@ -26,8 +26,11 @@ module Qa
   # Raised when a configuration parameter is incorrect or is required and missing
   class InvalidConfiguration < ArgumentError; end
 
-  # Raised when a linked data request to a server returns a 500 error
+  # Raised when a linked data request to a server returns a 503 error
   class ServiceUnavailable < ArgumentError; end
+
+  # Raised when a linked data request to a server returns a 500 error
+  class ServiceError < ArgumentError; end
 
   # Raised when the server returns 404 for a find term request
   class TermNotFound < ArgumentError; end

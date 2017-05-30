@@ -1,0 +1,5 @@
+# Use this file to reference specific commits of gems.
+
+group :development do
+  gem 'linkeddata'
+end
