@@ -3,7 +3,7 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://aims.fao.org/skosmos/rest/v1/data?uri=http://aims.fao.org/aos/agrovoc/{?term_id}",
+      "template": "http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/data?uri=http://aims.fao.org/aos/agrovoc/{?term_id}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
@@ -31,7 +31,7 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://aims.fao.org/skosmos/rest/v1/search/?query=*{?query}*&lang={?lang}",
+      "template": "http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?query=*{?query}*&lang={?lang}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
