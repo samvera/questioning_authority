@@ -7,24 +7,24 @@ describe Qa::Authorities::Local::FileBasedAuthority do
   let(:authority_d) { Qa::Authorities::Local.subauthority_for("authority_D") }
 
   describe "#all" do
-    let(:expected) { [{ 'id' => "A1", 'label' => "Abc Term A1" },
-                      { 'id' => "A2", 'label' => "Term A2" },
-                      { 'id' => "A3", 'label' => "Abc Term A3" }] }
+    let(:expected) { [{ 'id' => "A1", 'label' => "Abc Term A1", 'active' => true },
+                      { 'id' => "A2", 'label' => "Term A2", 'active' => false },
+                      { 'id' => "A3", 'label' => "Abc Term A3", 'active' => true }] }
     it "returns all the entries" do
       expect(authority_a.all).to eq(expected)
     end
     context "when terms do not have ids" do
-      let(:expected) { [{ 'id' => "Term B1", 'label' => "Term B1" },
-                        { 'id' => "Term B2", 'label' => "Term B2" },
-                        { 'id' => "Term B3", 'label' => "Term B3" }] }
+      let(:expected) { [{ 'id' => "Term B1", 'label' => "Term B1", 'active' => true },
+                        { 'id' => "Term B2", 'label' => "Term B2", 'active' => true },
+                        { 'id' => "Term B3", 'label' => "Term B3", 'active' => true }] }
       it "sets the id to be same as the label" do
         expect(authority_b.all).to eq(expected)
       end
     end
     context "authority YAML file is a list of terms" do
-      let(:expected) { [{ 'id' => "Term C1", 'label' => "Term C1" },
-                        { 'id' => "Term C2", 'label' => "Term C2" },
-                        { 'id' => "Term C3", 'label' => "Term C3" }] }
+      let(:expected) { [{ 'id' => "Term C1", 'label' => "Term C1", 'active' => true },
+                        { 'id' => "Term C2", 'label' => "Term C2", 'active' => true },
+                        { 'id' => "Term C3", 'label' => "Term C3", 'active' => true }] }
       it "uses the terms as labels" do
         expect(authority_c.all).to eq(expected)
       end

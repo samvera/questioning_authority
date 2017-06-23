@@ -14,7 +14,7 @@ module Qa::Authorities
 
     def all
       terms.map do |res|
-        { id: res[:id], label: res[:term] }.with_indifferent_access
+        { id: res[:id], label: res[:term], active: res.fetch(:active, true) }.with_indifferent_access
       end
     end
 
