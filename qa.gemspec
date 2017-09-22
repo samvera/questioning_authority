@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "activerecord-import"
   s.add_dependency "deprecation"
   s.add_dependency "rdf"
+  s.add_dependency "addressable"
 
   s.add_development_dependency "byebug"
   s.add_development_dependency "pry"
