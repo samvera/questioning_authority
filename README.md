@@ -634,11 +634,12 @@ Commit your features into a new branch and submit a pull request.
 
 ## Compatibility
 
-Currently, it is compatible with Rails 4.0 and 4.1 under both Ruby 2.0 and 2.1.
+* Ruby 2.4 or the latest 2.3 version is recommended.  Later versions may also work.
+* Rails 5 is required. We recommend the latest Rails 5.0 release.
 
 # Help
 
-For help with Questioning Authority, contact <hydra-tech@googlegroups.com>.
+For help with Questioning Authority, contact <samvera-tech@googlegroups.com>.
 
 ### Special thanks to...
 
