@@ -1,4 +1,4 @@
-class CreateQaSubjectMeshTerms < ActiveRecord::Migration
+class CreateQaSubjectMeshTerms < ActiveRecord::Migration[4.2]
   def change
     create_table :qa_subject_mesh_terms do |t|
       t.string :term_id
