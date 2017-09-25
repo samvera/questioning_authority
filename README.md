@@ -634,7 +634,7 @@ Commit your features into a new branch and submit a pull request.
 
 ## Compatibility
 
-Currently, it is compatible with Rails 4.0 and 4.1 under both Ruby 2.0 and 2.1.
+Currently, it is compatible with Rails 5.0 and 5.1 under both Ruby 2.4.1.
 
 # Help
 
