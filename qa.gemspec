@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", "~> 5.0", "< 6.0"
+  s.add_dependency "rails", "~> 5.0"
   s.add_dependency "faraday"
   s.add_dependency "nokogiri", "~> 1.6"
   s.add_dependency "activerecord-import"
