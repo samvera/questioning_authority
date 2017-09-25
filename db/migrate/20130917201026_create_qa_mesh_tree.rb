@@ -1,4 +1,4 @@
-class CreateQaMeshTree < ActiveRecord::Migration
+class CreateQaMeshTree < ActiveRecord::Migration[4.2]
   def change
     create_table :qa_mesh_trees do |t|
       t.string :term_id
