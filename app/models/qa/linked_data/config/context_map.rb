@@ -1,3 +1,4 @@
+# Defines the external authority predicates used to extract additional context from the graph.
 module Qa
   module LinkedData
     module Config

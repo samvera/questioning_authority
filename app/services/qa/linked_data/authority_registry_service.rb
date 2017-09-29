@@ -1,4 +1,4 @@
-# Registry of authority configurations.
+# Registry of linked data authority configurations.
 module Qa
   module LinkedData
     class AuthorityRegistryService

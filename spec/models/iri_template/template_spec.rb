@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe Qa::IriTemplate::Template do
-
   let(:url_template) do
     {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",

@@ -1,3 +1,4 @@
+# Provide access to subauthorities map for linked data authority configurations.
 module Qa
   module LinkedData
     module Config

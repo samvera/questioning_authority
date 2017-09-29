@@ -1,3 +1,4 @@
+# Provide access to iri template configuration.
 module Qa
   module IriTemplate
     class Template
@@ -7,7 +8,10 @@ module Qa
       attr_reader :variable_representation # [String] always "BasicRepresentation" # TODO what other values are supported and what do they mean
       attr_reader :mapping # [Array<Qa::IriTempalte::Map>] array of maps for use with a template (required)
 
-      # @param [Hash] map - key = name of qa results field; value = predicate in result graph that has the value for the field
+      # @param [Hash] url_template configuration hash for the iri template
+      # @option url_template [String] :template the URL template with variables for substitution (required)
+      # @option url_template [String] :variable_representation always "BasicRepresentation" # TODO what other values are supported and what do they mean
+      # @option url_template [Array<Hash>] :mapping array of maps for use with a template (required)
       def initialize(url_template)
         @template = extract_template(config: url_template)
         @mapping = initialize_mapping(config: url_template)
