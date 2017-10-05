@@ -1,3 +1,30 @@
+### 2.0.0 (2017-10-05)
+
+* adding support for Rails 5.1 [Lynette Rayle]
+* removing support for Rails < 5.0 [Lynette Rayle]
+
+### 1.2.0 (2017-06-23)
+
+* provide better error messages and codes [Lynette Rayle]
+* update Agrovoc URL to latest supported URL [Lynette Rayle]
+* add active flag to terms defaulting to true [Josh Gum]
+
+### 1.1.0 (2017-05-01)
+
+* add code to process linked data authorities via configuration [Lynette Rayle]
+* linked data branch refactored [Lynette Rayle]
+* refactor json config, classes [Lynette Rayle]
+* promote out of labs [Mike Giarlo]
+* add trailing slashes to geonames uris [Justin Coyne]
+
+### 1.0.0 (2017-03-22)
+
+* update engine cart [Mike Giarlo]
+* add coveralls [Mike Giarlo]
+* make local tables generator point at the namespaced table for local authorities [Mike Giarlo]
+* apply local tables change to MySQL generator as well [Mike Giarlo]
+* added support for crossref funders [fundref] and publishers rest api.crossref.org (Julie Allinson]
+
 ### 0.11.1 (2017-03-01)
 * 2017-02-02: BUGFIX: Use flat parameters for LOC. [Josh Gum]
 * 2017-02-01: Update README with info on creating own authority versus sub-authority. [Andy Smith]
