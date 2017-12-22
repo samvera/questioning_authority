@@ -365,7 +365,7 @@ To import the mesh terms into the local database, first download the MeSH descri
 format. You can read about doing this [here](http://www.nlm.nih.gov/mesh/filelist.html). Once you have this file, use the
 following rake task to load the terms into your database:
 
-    MESH_FILE=path/to/mesh.txt rake mesh:import
+    MESH_FILE=path/to/mesh.txt rake qa:mesh:import
 
 This may take a few minutes to finish.
 

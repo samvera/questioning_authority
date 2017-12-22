@@ -10,8 +10,8 @@ describe "mesh rake tasks" do # rubocop:disable RSpec/DescribeClass
     Rake::Task.define_task(:environment) # rspec has loaded rails
   end
 
-  describe "mesh:import" do
-    let(:task_name) { "mesh:import" }
+  describe "qa:mesh:import" do
+    let(:task_name) { "qa:mesh:import" }
     let(:output) { StringIO.new }
     before do
       $stdout = output # rubocop:disable RSpec/ExpectOutput # TODO: Explore how to remove this disable
