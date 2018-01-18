@@ -21,6 +21,43 @@ module Qa
           Qa::LinkedData::AuthorityRegistryService.add(self)
         end
 
+        # Return the action config for the specified action.
+        # @param [Symbol] action with valid values :search or :term
+        # @return [Qa::LinkedData::Config::ActionConfig] returns configuration if action is valid; otherwise, returns empty hash
+        def action_config(action)
+          case action
+          when :search
+            search_config
+          when :term
+            term_config
+          else
+            false
+          end
+        end
+
+        # Return the action config for the specified action.
+        # @param [Symbol] action with valid values :search or :term
+        # @return [Qa::LinkedData::Config::ActionConfig] returns configuration if action is valid; otherwise, raises exception
+        def action_config!(action)
+          config = action_config(action)
+          raise Qa::InvalidConfiguration, "Authority does not support action #{action}" if config.blank?
+          config
+        end
+
+        # Does this authority configuration have the specified action defined?
+        # @param [Symbol] action with valid values :search or :term
+        # @return [Boolean] true if search is configured; otherwise, false
+        def supports_action?(action)
+          case action
+          when :search
+            supports_search_query?
+          when :term
+            supports_term_fetch?
+          else
+            false
+          end
+        end
+
         # Does this authority configuration have search defined?
         # @return [Boolean] true if search is configured; otherwise, false
         def supports_search_query?

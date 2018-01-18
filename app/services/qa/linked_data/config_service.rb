@@ -2,7 +2,11 @@
 module Qa
   module LinkedData
     class ConfigService
-      DEFAULT_SUBAUTH = 'subauth'.freeze
+      DEFAULT_SUBAUTH_VARIABLE = 'subauth'.freeze
+      DEFAULT_TERMID_VARIABLE = 'term_id'.freeze
+      DEFAULT_QUERY_VARIABLE = 'query'.freeze
+      TERM_RESULTS_MAP = :term
+      SEARCH_RESULTS_MAP = :search
 
       # Extract the iri template from the config
       # @param config [Hash] configuration (json) holding the iri template to be extracted
@@ -10,19 +14,22 @@ module Qa
       # @return [Qa::IriTemplate::Template>] url template for accessing the authority
       def self.extract_iri_template(config:, var: :url)
         template_config = config.fetch(var, nil)
-        raise ArgumentError, "iri template is required" unless template_config
+        raise Qa::InvalidConfiguration, "iri template is required" unless template_config
         Qa::IriTemplate::Template.new(template_config)
       end
 
       # Extract the results map from the config
       # @param config [Hash] configuration (json) holding the results map to be extracted
       # @param var [Symbol] key identifying the results map in the configuration
-      # @param results_type [Symbol] Qa::LinkedData::Config::ResultsMap::TERM_RESULTS_MAP || Qa::LinkedData::Config::ResultsMap::SEARCH_RESULTS_MAP
+      # @param results_type [Symbol] Qa::LinkedData::ConfigService::TERM_RESULTS_MAP || Qa::LinkedData::ConfigService::SEARCH_RESULTS_MAP
       # @return [Qa::IriTemplate::Template>] map of result field to a predicate in the graph
-      def self.extract_results_map(config:, var: :results, results_type:)
+      def self.extract_results_map(config:, var: :results, results_type: nil)
+        raise ArgumentError, "Unsupported results_type #{results_type}" unless [TERM_RESULTS_MAP, SEARCH_RESULTS_MAP].include?(results_type)
         results_config = config.fetch(var, nil)
-        raise ArgumentError, "results map is required" unless results_config
-        Qa::LinkedData::Config::ResultsMap.new(config: results_config, results_type: results_type)
+        raise Qa::InvalidConfiguration, "Results map is required" unless results_config
+        results_map = Qa::LinkedData::Config::SearchResultsMap.new(results_config) if results_type == SEARCH_RESULTS_MAP
+        results_map = Qa::LinkedData::Config::TermResultsMap.new(results_config) if results_type == TERM_RESULTS_MAP
+        results_map
       end
 
       # Extract the subauthorities map from the config
@@ -41,8 +48,28 @@ module Qa
       # @return [Qa::IriTemplate::Template>] name of the variable in the url template that holds the subauth.  Note values for this are controlled by the subauth_map (default='subauth')
       def self.extract_subauthority_variable(config:, var: :subauth)
         rep_patterns = config.fetch(:qa_replacement_patterns, nil)
-        return DEFAULT_SUBAUTH unless rep_patterns.present?
-        rep_patterns.fetch(var, DEFAULT_SUBAUTH)
+        return DEFAULT_SUBAUTH_VARIABLE unless rep_patterns.present?
+        rep_patterns.fetch(var, DEFAULT_SUBAUTH_VARIABLE)
+      end
+
+      # Extract the term id substitution variable from the config
+      # @param config [Hash] configuration (json) holding the term id variable name to be extracted
+      # @param var [Symbol] key identifying the term id variable in the configuration
+      # @return [Qa::IriTemplate::Template>] name of the variable in the url template that holds the term id.
+      def self.extract_termid_variable(config:, var: :term_id)
+        rep_patterns = config.fetch(:qa_replacement_patterns, nil)
+        return DEFAULT_TERMID_VARIABLE unless rep_patterns.present?
+        rep_patterns.fetch(var, DEFAULT_TERMID_VARIABLE)
+      end
+
+      # Extract the query substitution variable from the config
+      # @param config [Hash] configuration (json) holding the query variable name to be extracted
+      # @param var [Symbol] key identifying the query variable in the configuration
+      # @return [Qa::IriTemplate::Template>] name of the variable in the url template that holds the query.
+      def self.extract_query_variable(config:, var: :query)
+        rep_patterns = config.fetch(:qa_replacement_patterns, nil)
+        return DEFAULT_QUERY_VARIABLE unless rep_patterns.present?
+        rep_patterns.fetch(var, DEFAULT_QUERY_VARIABLE)
       end
 
       # Extract the context map from the config

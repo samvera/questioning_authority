@@ -14,7 +14,7 @@ module Qa
       # @option url_template [Array<Hash>] :mapping array of maps for use with a template (required)
       def initialize(url_template)
         @template = extract_template(config: url_template)
-        @mapping = initialize_mapping(config: url_template)
+        @mapping = extract_mapping(config: url_template)
         @variable_representation = url_template.fetch(:variable_representation, 'BasicRepresentation')
       end
 
@@ -24,7 +24,7 @@ module Qa
         # @param config [Hash] configuration (json) holding the variable maps to be extracted
         # @param var [Symbol] key identifying the variable mapping array in the configuration
         # @return [Array<IriTemplate::Map>] array of the variable maps
-        def initialize_mapping(config:, var: :mapping)
+        def extract_mapping(config:, var: :mapping)
           mapping = config.fetch(var, nil)
           raise ArgumentError, "mapping is required" unless mapping
           raise ArgumentError, "mapping must include at least one map" if mapping.empty?

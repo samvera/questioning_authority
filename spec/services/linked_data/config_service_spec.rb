@@ -11,20 +11,30 @@ RSpec.describe Qa::LinkedData::ConfigService do
     context 'when missing' do
       before { allow(config).to receive(:fetch).with(:url, nil).and_return(nil) }
       it 'raises an error' do
-        expect { described_class.extract_iri_template(config: config) }.to raise_error(ArgumentError, 'iri template is required')
+        expect { described_class.extract_iri_template(config: config) }.to raise_error(Qa::InvalidConfiguration, 'iri template is required')
       end
     end
   end
 
   describe '.extract_results_map' do
-    it 'returns an instance of results_map' do
-      expect(described_class.extract_results_map(config: config)).to be_kind_of Qa::LinkedData::Config::ResultsMap
+    it 'returns an instance of SearchResultsMap when search is requested' do
+      expect(described_class.extract_results_map(config: config, results_type: Qa::LinkedData::ConfigService::SEARCH_RESULTS_MAP)).to be_kind_of Qa::LinkedData::Config::SearchResultsMap
+    end
+
+    it 'returns an instance of TermResultsMap when search is requested' do
+      expect(described_class.extract_results_map(config: config, results_type: Qa::LinkedData::ConfigService::TERM_RESULTS_MAP)).to be_kind_of Qa::LinkedData::Config::TermResultsMap
     end
 
     context 'when missing' do
       before { allow(config).to receive(:fetch).with(:results, nil).and_return(nil) }
       it 'raises an error' do
-        expect { described_class.extract_results_map(config: config) }.to raise_error(ArgumentError, 'results map is required')
+        expect { described_class.extract_results_map(config: config, results_type: Qa::LinkedData::ConfigService::TERM_RESULTS_MAP) }.to raise_error(Qa::InvalidConfiguration, 'Results map is required')
+      end
+    end
+
+    context 'when results_type is not supported' do
+      it 'raises an error' do
+        expect { described_class.extract_results_map(config: config, results_type: :BAD_TYPE) }.to raise_error(ArgumentError, 'Unsupported results_type BAD_TYPE')
       end
     end
   end
@@ -53,8 +63,8 @@ RSpec.describe Qa::LinkedData::ConfigService do
 
     context 'when qa_replacement_patterns is missing' do
       before { allow(config).to receive(:fetch).with(:qa_replacement_patterns, nil).and_return(nil) }
-      it 'defaults to subauth' do
-        expect(described_class.extract_subauthority_variable(config: config)).to eq described_class::DEFAULT_SUBAUTH
+      it 'returns default' do
+        expect(described_class.extract_subauthority_variable(config: config)).to eq described_class::DEFAULT_SUBAUTH_VARIABLE
       end
     end
 
@@ -63,8 +73,62 @@ RSpec.describe Qa::LinkedData::ConfigService do
         typo_subauth = { subauht: 'custom_subauth_not_picked_up_due_to_typo' }
         allow(config).to receive(:fetch).with(:qa_replacement_patterns, nil).and_return(typo_subauth)
       end
-      it 'defaults to subauth' do
-        expect(described_class.extract_subauthority_variable(config: config)).to eq described_class::DEFAULT_SUBAUTH
+      it 'returns default' do
+        expect(described_class.extract_subauthority_variable(config: config)).to eq described_class::DEFAULT_SUBAUTH_VARIABLE
+      end
+    end
+  end
+
+  describe '.extract_termid_variable' do
+    before do
+      custom_termid = { term_id: 'custom_termid' }
+      allow(config).to receive(:fetch).with(:qa_replacement_patterns, nil).and_return(custom_termid)
+    end
+    it 'returns the name of the template variable for passing the term id on to the external authority' do
+      expect(described_class.extract_termid_variable(config: config)).to eq 'custom_termid'
+    end
+
+    context 'when qa_replacement_patterns is missing' do
+      before { allow(config).to receive(:fetch).with(:qa_replacement_patterns, nil).and_return(nil) }
+      it 'returns default' do
+        expect(described_class.extract_termid_variable(config: config)).to eq described_class::DEFAULT_TERMID_VARIABLE
+      end
+    end
+
+    context 'when term_id is missing' do
+      before do
+        typo_termid = { temr_id: 'custom_termid_not_picked_up_due_to_typo' }
+        allow(config).to receive(:fetch).with(:qa_replacement_patterns, nil).and_return(typo_termid)
+      end
+      it 'returns default' do
+        expect(described_class.extract_termid_variable(config: config)).to eq described_class::DEFAULT_TERMID_VARIABLE
+      end
+    end
+  end
+
+  describe '.extract_query_variable' do
+    before do
+      custom_query = { query: 'custom_query' }
+      allow(config).to receive(:fetch).with(:qa_replacement_patterns, nil).and_return(custom_query)
+    end
+    it 'returns the name of the template variable for passing the query on to the external authority' do
+      expect(described_class.extract_query_variable(config: config)).to eq 'custom_query'
+    end
+
+    context 'when qa_replacement_patterns is missing' do
+      before { allow(config).to receive(:fetch).with(:qa_replacement_patterns, nil).and_return(nil) }
+      it 'returns default' do
+        expect(described_class.extract_query_variable(config: config)).to eq described_class::DEFAULT_QUERY_VARIABLE
+      end
+    end
+
+    context 'when query is missing' do
+      before do
+        typo_query = { qeury: 'custom_query_not_picked_up_due_to_typo' }
+        allow(config).to receive(:fetch).with(:qa_replacement_patterns, nil).and_return(typo_query)
+      end
+      it 'returns default' do
+        expect(described_class.extract_query_variable(config: config)).to eq described_class::DEFAULT_QUERY_VARIABLE
       end
     end
   end
@@ -83,7 +147,7 @@ RSpec.describe Qa::LinkedData::ConfigService do
     end
   end
 
-  describe '.extract_language' do
+  describe '.extract_default_language' do
     it 'returns list of language codes' do
       expect(described_class.extract_default_language(config: config)).to match_array ['en', 'fr', 'de']
     end

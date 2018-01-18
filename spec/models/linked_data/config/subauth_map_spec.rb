@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Qa::LinkedData::Config::SubauthMap do
-  subject { described_class.new(config: subauth_map_config) }
+  subject { described_class.new(subauth_map_config) }
 
   let(:subauth_map_config) do
     {

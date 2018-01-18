@@ -3,7 +3,7 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://localhost/test_default/term/{?term_id}",
+      "template": "http://localhost/test_default/term/{?term_uri}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
@@ -15,7 +15,7 @@
       ]
     },
     "qa_replacement_patterns": {
-      "term_id": "term_id"
+      "term_id": "term_uri"
     },
     "term_id": "URI",
     "results": {
@@ -27,7 +27,7 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://localhost/test_default/search?query={?query}",
+      "template": "http://localhost/test_default/search?query={?q}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
@@ -39,7 +39,7 @@
       ]
     },
     "qa_replacement_patterns": {
-      "query": "query"
+      "query": "q"
     },
     "results": {
       "id_predicate":       "http://purl.org/dc/terms/identifier",

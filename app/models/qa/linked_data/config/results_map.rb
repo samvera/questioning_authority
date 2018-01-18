@@ -2,7 +2,7 @@
 module Qa
   module LinkedData
     module Config
-      class ResultsMap
+      class ResultsMap # ABSTRACT CLASS
         ID_PREDICATE = :id_predicate
         LABEL_PREDICATE = :label_predicate
         ALTLABEL_PREDICATE = :altlabel_predicate
@@ -11,106 +11,50 @@ module Qa
         NARROWER_PREDICATE = :narrower_predicate
         SAMEAS_PREDICATE = :sameas_predicate
 
-        TERM_RESULTS_MAP = :term_results_map
-        SEARCH_RESULTS_MAP = :search_results_map
+        attr_reader :predicates # [Array<RDF::URI>] array of the predicates in the results map
+        attr_reader :predicate_map # [Hash<Symbol><RDF::URI>] maps json result key to the predicate that holds the value for that key
 
-        attr_reader :results_type # [TERM_RESULTS_MAP | SEARCH_RESULTS_MAP] determines which set of predicates are required/optional/not supported
-
-        # @param config [Hash] key = name of qa results field; value = predicate in result graph that has the value for the field
-        # @param results_type [Symbol] TERM_RESULTS_MAP or SEARCH_RESULTS_MAP
-        def initialize(config: {}, results_type:)
-          raise ArgumentError, "label_predicate is required" unless config.key?(LABEL_PREDICATE)
-          raise ArgumentError, "results_type must be TERM_RESULTS_MAP | SEARCH_RESULTS_MAP" unless results_type == TERM_RESULTS_MAP || results_type == SEARCH_RESULTS_MAP
-          @results_type = results_type
-          @results_map = config
+        # @param map [Hash] key = name of qa results field; value = predicate in result graph that has the value for the field
+        # @option map [String] :id_predicate predicate that holds the id of a subject (optional, defaults to subject's uri)
+        # @option map [String] :label_predicate predicate that holds the label of a subject (required)
+        # @option map [String] :altlabel_predicate predicate that holds the altlabel of a subject (optional)
+        # @option map [String] :sort_predicate predicate that holds the value on which to sort search results (search only)
+        # @option map [String] :broader_predicate predicate that holds the uris of broader terms of a subject (term only)
+        # @option map [String] :narrower_predicate predicate that holds the uris of narrower terms of a subject (term only)
+        # @option map [String] :sameas_predicate predicate that holds the uris of terms that are the sameas the subject (term only)
+        def initialize(map = {})
+          raise ArgumentError, "label_predicate is required" unless map.key?(LABEL_PREDICATE)
+          @results_map = map
+          extract_predicates(config: map)
+          @predicate_map = extract_map
+          @predicates = extract_predicates_list
         end
 
-        # json result field to predicate mapping that is used to generate the json results to return from a QA request
-        def generate_map
-          return generate_search_map if @results_type == SEARCH_RESULTS_MAP
-          generate_term_map
-        end
+        protected
 
-        # List of predicates to keep in the graph during filtering for results generation.
-        def predicates
-          return search_predicates if @results_type == SEARCH_RESULTS_MAP
-          term_predicates
-        end
-
-        private
-
-          # json result field to predicate mapping for search
-          def generate_search_map
-            map = {}
-            map[:uri] = :subject_uri
-            map[:id] = id_predicate || :subject_uri # set id to uri if not specified
-            map[:label] = label_predicate
-            map[:altlabel] = altlabel_predicate if altlabel_predicate
-            map[:sort] = sort_predicate || label_predicate # default to alpha sort on label if unspecified
-            map
+          # json result field to predicate mapping that is used to generate the json results to return from a QA request
+          def extract_map # ABSTRACT METHOD
+            raise NoMethodError, 'extract_map is an abstract method and must be implemented by a concrete subclass'
           end
 
-          # json result field to predicate mapping for term
-          def generate_term_map
-            map = {}
-            map[:uri] = :subject_uri
-            map[:id] = id_predicate || :subject_uri # set id to uri if not specified
-            map[:label] = label_predicate
-            map[:altlabel] = altlabel_predicate if altlabel_predicate
-            map[:broader] = broader_predicate if broader_predicate
-            map[:narrower] = narrower_predicate if narrower_predicate
-            map[:sameas] = sameas_predicate if sameas_predicate
-            map
+          # List of predicates to keep in the graph during filtering for results generation.
+          def extract_predicates_list # ABSTRACT METHOD
+            raise NoMethodError, 'extract_predicates_list is an abstract method and must be implemented by a concrete subclass'
           end
 
-          # List of predicates to keep in the graph for search.
-          def search_predicates
-            preds = []
-            preds << id_predicate if id_predicate
-            preds << label_predicate
-            preds << altlabel_predicate if altlabel_predicate
-            preds << sort_predicate if sort_predicate
-            preds.uniq
+          def extract_predicates(config:)
+            @id_predicate = extract_predicate(config: config, predicate_key: ID_PREDICATE)
+            @label_predicate = extract_predicate(config: config, predicate_key: LABEL_PREDICATE)
+            @altlabel_predicate = extract_predicate(config: config, predicate_key: ALTLABEL_PREDICATE)
+            @sort_predicate = extract_predicate(config: config, predicate_key: SORT_PREDICATE)
+            @broader_predicate = extract_predicate(config: config, predicate_key: BROADER_PREDICATE)
+            @narrower_predicate = extract_predicate(config: config, predicate_key: NARROWER_PREDICATE)
+            @sameas_predicate = extract_predicate(config: config, predicate_key: SAMEAS_PREDICATE)
           end
 
-          # List of predicates to keep in the graph for term.
-          def term_predicates
-            preds = []
-            preds << id_predicate if id_predicate
-            preds << label_predicate
-            preds << altlabel_predicate if altlabel_predicate
-            preds << broader_predicate if broader_predicate
-            preds << narrower_predicate if narrower_predicate
-            preds << sameas_predicate if sameas_predicate
-            preds.uniq
-          end
-
-          def id_predicate
-            @results_map.fetch(ID_PREDICATE, nil)
-          end
-
-          def label_predicate
-            @results_map.fetch(LABEL_PREDICATE, nil)
-          end
-
-          def altlabel_predicate
-            @results_map.fetch(ALTLABEL_PREDICATE, nil)
-          end
-
-          def sort_predicate
-            @results_map.fetch(SORT_PREDICATE, nil)
-          end
-
-          def broader_predicate
-            @results_map.fetch(BROADER_PREDICATE, nil)
-          end
-
-          def narrower_predicate
-            @results_map.fetch(NARROWER_PREDICATE, nil)
-          end
-
-          def sameas_predicate
-            @results_map.fetch(SAMEAS_PREDICATE, nil)
+          def extract_predicate(config:, predicate_key:)
+            predicate = config.fetch(predicate_key, nil)
+            RDF::URI(predicate) if predicate.present?
           end
       end
     end

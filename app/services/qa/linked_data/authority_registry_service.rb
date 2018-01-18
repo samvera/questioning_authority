@@ -12,6 +12,16 @@ module Qa
         @registry[authority_name]
       end
 
+      # Fetch an authority configuration.
+      # @param [String] the name of the authority to fetch
+      # @returns [Qa::LinkedData::Config::AuthorityRegistry] the requested authority configuration if registered; otherwise, raises an exception
+      def self.retrieve!(authority_name)
+        unless Qa::LinkedData::AuthorityRegistryService.registered?(authority)
+          raise Qa::InvalidLinkedDataAuthority, "Authority (#{authority}) is not registered.  Place configuration in config/authorities/linked_data and restart server."
+        end
+        @registry[authority_name]
+      end
+
       # Register an authority.
       # @param [Qa::LinkedData::Config::AuthorityRegistry] the authority configuration to register
       def self.add(authority_config)
