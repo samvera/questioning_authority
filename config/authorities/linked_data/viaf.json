@@ -1,0 +1,86 @@
+{
+  "term": {
+    "url": {
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type":    "IriTemplate",
+      "template": "http://guardian.slis.uiowa.edu:8080/ld4l_services/viaf_entity_lookup.jsp?{?term_uri}",
+      "variableRepresentation": "BasicRepresentation",
+      "mapping": [
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "term_uri",
+          "property": "hydra:freetextQuery",
+          "required": true
+        }
+      ]
+    },
+    "qa_replacement_patterns": {
+      "term_id": "term_uri"
+    },
+    "term_id": "URI",
+    "results": {
+      "id_predicate":       "http://purl.org/dc/terms/identifier",
+      "label_predicate":    "http://schema.org/name",
+      "sameas_predicate":   "http://schema.org/sameAs"
+    }
+  },
+  "search": {
+    "url": {
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type": "IriTemplate",
+      "template": "http://services.ld4l.org/ld4l_services/viaf_entity_lookup.jsp?entity={?subauth}&name={?query}&maxRecords={?maxRecords}&lang={?lang}",
+      "variableRepresentation": "BasicRepresentation",
+      "mapping": [
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "query",
+          "property": "hydra:freetextQuery",
+          "required": true
+        },
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "query",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default": "http%3A%2F%2Fschema.org%2FPerson"
+        },
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "maxRecords",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default": "20"
+        },
+        {
+          "@type": "IriTemplateMapping",
+          "variable": "lang",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default": "en"
+        }
+      ]
+    },
+    "qa_replacement_patterns": {
+      "query":   "query"
+    },
+    "language": ["en"],
+    "results": {
+      "id_predicate":       "http://purl.org/dc/terms/identifier",
+      "label_predicate":    "http://schema.org/name",
+      "sort_predicate":     "http://vivoweb.org/ontology/core#rank",
+      "context": [
+        "http://schema.org/alternateName",
+        "http://schema.org/description",
+        "http://schema.org/birthDate",
+        "http://schema.org/deathDate",
+        "http://schema.org/sameAs"
+      ]
+    },
+    "subauth": {
+      "person":        "http%3A%2F%2Fschema.org%2FPerson",
+      "organization":  "http%3A%2F%2Fschema.org%2FOrganization",
+      "creative_work": "http%3A%2F%2Fschema.org%2FCreativeWork",
+      "place":         "http%3A%2F%2Fschema.org%2FPlace"
+    }
+  }
+}

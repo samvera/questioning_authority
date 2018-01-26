@@ -1,0 +1,30 @@
+<div id="search">
+  <%= render 'search_form' %>
+  <h1>Authority Lookup</h1>
+</div>
+<div class="panel panel-default terms-panel-wrapper">
+  <div class="panel-heading">
+    <h3 class="panel-title"><strong><%= @terms.size %> terms</strong></h3>
+  </div>
+  <div class="panel-body">
+    <h2 class="sr-only">Listing of terms with context</h2>
+      <table class="table table-striped datatable collections-list-table">
+          <caption class="sr-only">Listing of authority terms with additional context</caption>
+          <thead>
+              <tr>
+                <th class="sorts"><i id="uri" class="<%= params[:sort] == 'uri desc' ? 'caret' : params[:sort] == 'uri' ? 'caret up' : params[:sort] == "name" ? 'caret up' : '' %>"></i> URI</th>
+                <th class="sorts"><i id="label" class="<%= params[:sort] == 'label desc' ? 'caret' : params[:sort] == 'label' ? 'caret up' : '' %>"></i> Label</th>
+                <th class="sorts"><i id="altlabel" class="<%= params[:sort] == 'altlabel desc' ? 'caret' : params[:sort] == 'altlabel' ? 'caret up' : ''%>"></i> Alternate Label</th>
+                <th class="sorts"><i id="altlabel" class="<%= params[:sort].blank? ? 'caret up' : params[:sort] == 'sort desc' ? 'caret' : ''%>"></i> Search Rank</th>
+              </tr>
+          </thead>
+          <tbody>
+            <%= render partial: 'term_row', collection: @terms, as: :term %>
+          </tbody>
+      </table>
+
+<% if false %>
+<div class="pager">
+  <%= paginate @context, theme: 'blacklight', route_set: hyrax %>
+</div>
+<% end %>

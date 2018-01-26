@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Qa::IriTemplate::Template do
+RSpec.describe Qa::IriTemplate::UrlConfig do
   let(:url_template) do
     {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
@@ -54,7 +54,7 @@ RSpec.describe Qa::IriTemplate::Template do
       end
 
       it 'raises an error' do
-        expect { described_class.new(url_template) }.to raise_error(ArgumentError, 'template is required')
+        expect { described_class.new(url_template) }.to raise_error(Qa::InvalidConfiguration, 'template is required')
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe Qa::IriTemplate::Template do
       end
 
       it 'raises an error' do
-        expect { described_class.new(url_template) }.to raise_error(ArgumentError, 'mapping is required')
+        expect { described_class.new(url_template) }.to raise_error(Qa::InvalidConfiguration, 'mapping is required')
       end
     end
 
@@ -76,7 +76,7 @@ RSpec.describe Qa::IriTemplate::Template do
       end
 
       it 'raises an error' do
-        expect { described_class.new(url_template) }.to raise_error(ArgumentError, 'mapping must include at least one map')
+        expect { described_class.new(url_template) }.to raise_error(Qa::InvalidConfiguration, 'mapping must include at least one map')
       end
     end
   end
@@ -94,7 +94,7 @@ RSpec.describe Qa::IriTemplate::Template do
       mapping = subject.mapping
       expect(mapping).to be_kind_of Array
       expect(mapping.size).to eq 4
-      expect(mapping.first).to be_kind_of Qa::IriTemplate::Map
+      expect(mapping.first).to be_kind_of Qa::IriTemplate::VariableMap
     end
   end
 end

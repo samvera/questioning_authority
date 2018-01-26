@@ -11,3 +11,17 @@
 // about supported directives.
 //
 //= require_tree .
+
+//= require dataTables/jquery.dataTables
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
+
+//= require jquery-ui/core
+//= require jquery-ui/widget
+//= require jquery-ui/menu
+//= require jquery-ui/autocomplete
+//= require jquery-ui/position
+//= require jquery-ui/effect
+//= require jquery-ui/effect-highlight
+//= require jquery-ui/sortable
+
+//= require bootstrap <--

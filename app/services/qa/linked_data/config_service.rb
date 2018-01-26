@@ -11,18 +11,18 @@ module Qa
       # Extract the iri template from the config
       # @param config [Hash] configuration (json) holding the iri template to be extracted
       # @param var [Symbol] key identifying the iri template in the configuration
-      # @return [Qa::IriTemplate::Template>] url template for accessing the authority
+      # @return [Qa::IriTemplate::UrlConfig] url template for accessing the authority
       def self.extract_iri_template(config:, var: :url)
         template_config = config.fetch(var, nil)
         raise Qa::InvalidConfiguration, "iri template is required" unless template_config
-        Qa::IriTemplate::Template.new(template_config)
+        Qa::IriTemplate::UrlConfig.new(template_config)
       end
 
       # Extract the results map from the config
       # @param config [Hash] configuration (json) holding the results map to be extracted
       # @param var [Symbol] key identifying the results map in the configuration
       # @param results_type [Symbol] Qa::LinkedData::ConfigService::TERM_RESULTS_MAP || Qa::LinkedData::ConfigService::SEARCH_RESULTS_MAP
-      # @return [Qa::IriTemplate::Template>] map of result field to a predicate in the graph
+      # @return [Qa::LinkedData::ResultsMap] map of result field to a predicate in the graph
       def self.extract_results_map(config:, var: :results, results_type: nil)
         raise ArgumentError, "Unsupported results_type #{results_type}" unless [TERM_RESULTS_MAP, SEARCH_RESULTS_MAP].include?(results_type)
         results_config = config.fetch(var, nil)
@@ -35,7 +35,7 @@ module Qa
       # Extract the subauthorities map from the config
       # @param config [Hash] configuration (json) holding the subauthorities map to be extracted
       # @param var [Symbol] key identifying the subauthorities map in the configuration
-      # @return [Qa::IriTemplate::Template>] map of qa subauthority names to expected values at external authority
+      # @return [Qa::LinkedData::SubauthMap] map of qa subauthority names to expected values at external authority
       def self.extract_subauthorities_map(config:, var: :subauthorities)
         subauth_config = config.fetch(var, nil)
         return nil unless subauth_config
@@ -45,7 +45,7 @@ module Qa
       # Extract the subauthority substitution variable from the config
       # @param config [Hash] configuration (json) holding the subauthority variable name to be extracted
       # @param var [Symbol] key identifying the subauthority variable in the configuration
-      # @return [Qa::IriTemplate::Template>] name of the variable in the url template that holds the subauth.  Note values for this are controlled by the subauth_map (default='subauth')
+      # @return [String] name of the variable in the url template that holds the subauth.  Note values for this are controlled by the subauth_map (default='subauth')
       def self.extract_subauthority_variable(config:, var: :subauth)
         rep_patterns = config.fetch(:qa_replacement_patterns, nil)
         return DEFAULT_SUBAUTH_VARIABLE unless rep_patterns.present?
@@ -55,7 +55,7 @@ module Qa
       # Extract the term id substitution variable from the config
       # @param config [Hash] configuration (json) holding the term id variable name to be extracted
       # @param var [Symbol] key identifying the term id variable in the configuration
-      # @return [Qa::IriTemplate::Template>] name of the variable in the url template that holds the term id.
+      # @return [String] name of the variable in the url template that holds the term id.
       def self.extract_termid_variable(config:, var: :term_id)
         rep_patterns = config.fetch(:qa_replacement_patterns, nil)
         return DEFAULT_TERMID_VARIABLE unless rep_patterns.present?
@@ -65,7 +65,7 @@ module Qa
       # Extract the query substitution variable from the config
       # @param config [Hash] configuration (json) holding the query variable name to be extracted
       # @param var [Symbol] key identifying the query variable in the configuration
-      # @return [Qa::IriTemplate::Template>] name of the variable in the url template that holds the query.
+      # @return [String] name of the variable in the url template that holds the query.
       def self.extract_query_variable(config:, var: :query)
         rep_patterns = config.fetch(:qa_replacement_patterns, nil)
         return DEFAULT_QUERY_VARIABLE unless rep_patterns.present?
@@ -75,7 +75,7 @@ module Qa
       # Extract the context map from the config
       # @param config [Hash] configuration (json) holding the context map to be extracted
       # @param var [Symbol] key identifying the context map in the configuration
-      # @return [Qa::IriTemplate::Template>] map of extended result fields to predicates in the graph
+      # @return [Qa::LinkedData::ContextMap] map of extended result fields to predicates in the graph
       def self.extract_context_map(config:, var: :context)
         context_config = config.fetch(var, nil)
         return nil unless context_config

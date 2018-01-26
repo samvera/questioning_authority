@@ -1,10 +1,9 @@
 # Provide access to iri template variable map configuration.
 module Qa
   module IriTemplate
-    class Map
+    class VariableMap
       TYPE = "IriTemplateMapping".freeze
       attr_reader :variable
-      attr_reader :property
       attr_reader :default
 
       # @param [Hash] map configuration hash for the variable map
@@ -16,7 +15,7 @@ module Qa
         @variable = extract_variable(config: map)
         @required = extract_required(config: map)
         @default = extract_default(config: map)
-        @property = map.fetch(:property, "hydra:freetextQuery")
+        @property = map.fetch(:property, 'hydra:freetextQuery')
       end
 
       # Is this variable required?
@@ -25,12 +24,21 @@ module Qa
         @required
       end
 
-      # Default value to use if one isn't provided
-      # @returns true if required; otherwise, false
-      def default
-        return nil if required?
-        @default
+      # Value to use for the variable, using default is one isn't passed in
+      # @param [Object] value to use if it exists
+      # @returns the value to use
+      def simple_value(sub_value = nil)
+        return sub_value.to_s if sub_value.present?
+        return default if default.present?
+        raise StandardError, "#{variable} is required, but missing" if required?
+        ''
       end
+
+      # def parameter_value(sub_value = nil)
+      #   simple_value = simple_value(sub_value)
+      #   return '' if simple_value.blank?
+      #   param_value = "#{variable}=#{simple_value}"
+      # end
 
       private
 
@@ -40,7 +48,7 @@ module Qa
         # @return [String] variable for substitution in the url tmeplate
         def extract_variable(config:, var: :variable)
           varname = config.fetch(var, nil)
-          raise ArgumentError, "variable is required" unless varname
+          raise Qa::InvalidConfiguration, 'variable is required' unless varname
           varname
         end
 
@@ -50,7 +58,7 @@ module Qa
         # @return [True | False] required as true or false
         def extract_required(config:, var: :required)
           required = config.fetch(var, nil)
-          raise ArgumentError, "required must be true or false" unless required == true || required == false
+          raise Qa::InvalidConfiguration, 'required must be true or false' unless required == true || required == false
           required
         end
 
@@ -59,8 +67,7 @@ module Qa
         # @param var [Symbol] key identifying the default value in the configuration
         # @return [String] default value to use for the variable; nil if variable is required
         def extract_default(config:, var: :default)
-          return nil if required?
-          config.fetch(var, "")
+          config.fetch(var, '').to_s
         end
     end
   end

@@ -5,7 +5,7 @@ RSpec.describe Qa::LinkedData::ConfigService do
 
   describe '.extract_iri_template' do
     it 'returns an instance of iri_template' do
-      expect(described_class.extract_iri_template(config: config)).to be_kind_of Qa::IriTemplate::Template
+      expect(described_class.extract_iri_template(config: config)).to be_kind_of Qa::IriTemplate::UrlConfig
     end
 
     context 'when missing' do

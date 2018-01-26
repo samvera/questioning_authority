@@ -20,7 +20,7 @@ RSpec.describe Qa::LinkedData::Config::SearchConfig do
   describe '#initialize' do
     context 'when missing results map' do
       before do
-        allow(Qa::IriTemplate::Template).to receive(:new).and_return(instance_double("template"))
+        allow(Qa::IriTemplate::UrlConfig).to receive(:new).and_return(instance_double("template"))
       end
       let(:config) do
         { url: { template: 'foo' } }

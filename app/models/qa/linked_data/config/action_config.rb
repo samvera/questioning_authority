@@ -3,7 +3,7 @@ module Qa
   module LinkedData
     module Config
       class ActionConfig # ABSTRACT CLASS
-        attr_reader :iri_template # [Qa::LinkedData::UriTemplate::Uri] url template for accessing the authority (required)
+        attr_reader :url_config # [Qa::IriTemplate::UrlConfig] iri template configuration for accessing the authority (required)
         attr_reader :results_map # [Qa::LinkedData::Config::ResultsMap] map of result field to a predicate in the graph (required)
         attr_reader :subauth_map # [Qa::LinkedData::Config::SubauthMap] map of subauth values to expected values at external authority (optional)
         attr_reader :subauth_variable # [String] name of the variable in the url template that holds the subauth.  Note values for this are controlled by the subauth_map (required if subauth_map exists)
@@ -14,7 +14,7 @@ module Qa
         def initialize(config)
           @supports_action = config.present?
           return unless supports_action?
-          @iri_template = Qa::LinkedData::ConfigService.extract_iri_template(config: config)
+          @url_config = Qa::LinkedData::ConfigService.extract_iri_template(config: config)
           @subauth_map = Qa::LinkedData::ConfigService.extract_subauthorities_map(config: config)
           @subauth_variable = Qa::LinkedData::ConfigService.extract_subauthority_variable(config: config)
           @default_language = Qa::LinkedData::ConfigService.extract_default_language(config: config)

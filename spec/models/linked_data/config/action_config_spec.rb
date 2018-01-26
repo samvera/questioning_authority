@@ -12,7 +12,7 @@ RSpec.describe Qa::LinkedData::Config::ActionConfig do
   describe 'model attributes' do
     subject { full_search_config }
 
-    it { is_expected.to respond_to :iri_template }
+    it { is_expected.to respond_to :url_config }
     it { is_expected.to respond_to :results_map }
     it { is_expected.to respond_to :subauth_map }
     it { is_expected.to respond_to :subauth_variable }
@@ -33,7 +33,7 @@ RSpec.describe Qa::LinkedData::Config::ActionConfig do
 
     context 'when all required components present' do
       before do
-        allow(Qa::IriTemplate::Template).to receive(:new).and_return(instance_double("template"))
+        allow(Qa::IriTemplate::UrlConfig).to receive(:new).and_return(instance_double("template"))
         allow(Qa::LinkedData::Config::ResultsMap).to receive(:new).and_return(instance_double("results_map"))
       end
       let(:config) do
@@ -51,7 +51,7 @@ RSpec.describe Qa::LinkedData::Config::ActionConfig do
 
   describe '#iri_template' do
     it 'returns an instance of iri_template' do
-      expect(full_search_config.iri_template).to be_kind_of Qa::IriTemplate::Template
+      expect(full_search_config.url_config).to be_kind_of Qa::IriTemplate::UrlConfig
     end
   end
 
