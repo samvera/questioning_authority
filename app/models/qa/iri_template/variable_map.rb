@@ -24,16 +24,21 @@ module Qa
         @required
       end
 
-      # Value to use for the variable, using default is one isn't passed in
+      # TODO: When implementing more complex query substitution, simple_value is used when template url specifies variable as {var_name}.
+      # Value to use in substitution, using default if one isn't passed in
       # @param [Object] value to use if it exists
-      # @returns the value to use
+      # @returns the value to use (e.g. 'fr')
       def simple_value(sub_value = nil)
         return sub_value.to_s if sub_value.present?
         return default if default.present?
-        raise StandardError, "#{variable} is required, but missing" if required?
+        raise Qa::IriTemplate::MissingParameter, "#{variable} is required, but missing" if required?
         ''
       end
 
+      # TODO: When implementing more complex query substitution, parameter_value is used when template url specifies variable as {?var_name}.
+      # # Parameter and value to use in substitution, using default is one isn't passed in
+      # # @param [Object] value to use if it exists
+      # # @returns the parameter and value to use (e.g. 'language=fr')
       # def parameter_value(sub_value = nil)
       #   simple_value = simple_value(sub_value)
       #   return '' if simple_value.blank?

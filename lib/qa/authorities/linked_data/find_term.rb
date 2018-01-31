@@ -6,8 +6,9 @@ module Qa::Authorities
       include Qa::Authorities::LinkedData::RdfHelper
 
       # @param [TermConfig] term_config The term portion of the config
-      def initialize(term_config)
+      def initialize(term_config, auth_name)
         @term_config = term_config
+        @auth_name = auth_name
       end
 
       attr_reader :term_config
@@ -34,9 +35,11 @@ module Qa::Authorities
       #     "http://www.w3.org/2004/02/skos/core#altLabel":["Ithaca (N.Y.). Cornell University"],
       #     "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"] } }
       def find(id, language: nil, replacements: {}, subauth: nil)
-        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
+        # raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
         language ||= term_config.term_language
-        url = term_config.term_url_with_replacements(id, subauth, replacements)
+        # url = term_config.term_url_with_replacements(id, subauth, replacements)
+        url = Qa::LinkedData::AuthorityUrlService.build_url(
+            authority: @auth_name, subauthority: subauth, action: :term, action_request: id, substitutions: replacements)
         Rails.logger.info "QA Linked Data term url: #{url}"
         graph = get_linked_data(url)
         return "{}" unless graph.size.positive?

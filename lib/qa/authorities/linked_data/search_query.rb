@@ -6,8 +6,9 @@ module Qa::Authorities
       include Qa::Authorities::LinkedData::RdfHelper
 
       # @param [SearchConfig] search_config The search portion of the config
-      def initialize(search_config)
+      def initialize(search_config, auth_name)
         @search_config = search_config
+        @auth_name = auth_name
       end
 
       attr_reader :search_config
@@ -25,9 +26,12 @@ module Qa::Authorities
       #     {"uri":"http://id.worldcat.org/fast/72456","id":"72456","label":"Cornell, Sarah Maria, 1802-1832"},
       #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
       def search(query, language: nil, replacements: {}, subauth: nil)
-        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
+        # raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
         language ||= search_config.language
-        url = search_config.url_with_replacements(query, subauth, replacements)
+        # url = search_config.url_with_replacements(query, subauth, replacements)
+byebug
+        url = Qa::LinkedData::AuthorityUrlService.build_url(
+            authority: @auth_name, subauthority: subauth, action: :search, action_request: query, substitutions: replacements)
         Rails.logger.info "QA Linked Data search url: #{url}"
         graph = get_linked_data(url)
         parse_search_authority_response(graph, language)

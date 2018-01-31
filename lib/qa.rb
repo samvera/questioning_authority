@@ -34,4 +34,9 @@ module Qa
 
   # Raised when the server returns 404 for a find term request
   class TermNotFound < ArgumentError; end
+
+  # Raised when a required mapping parameter is missing while building an IRI Template
+  module IriTemplate
+    class MissingParameter < StandardError; end
+  end
 end

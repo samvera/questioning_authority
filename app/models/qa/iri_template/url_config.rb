@@ -18,6 +18,17 @@ module Qa
         @variable_representation = url_config.fetch(:variable_representation, 'BasicRepresentation')
       end
 
+      # Selective extract substitution variable-value pairs from the provided substitutions.
+      # @param [Hash, ActionController::Parameters] full set of passed in substitution values
+      # @returns [HashWithIndifferentAccess] Only variable-value pairs for variables defined in the variable mapping.
+      def extract_substitutions(substitutions)
+        selected_substitutions = HashWithIndifferentAccess.new()
+        mapping.each do |m|
+          selected_substitutions[m.variable] = substitutions[m.variable] if substitutions.key? m.variable
+        end
+        selected_substitutions
+      end
+
       private
 
         # Extract the url template from the config

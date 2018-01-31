@@ -11,6 +11,7 @@ module Qa::Authorities
     # @see Qa::Authorities::LinkedData::Config
     class GenericAuthority < Base
       attr_reader :auth_config
+      attr_reader :auth_name
 
       delegate :supports_term?, :term_subauthorities?, :term_subauthority?,
                :term_id_expects_uri?, :term_id_expects_id?, to: :term_config
@@ -19,17 +20,18 @@ module Qa::Authorities
       delegate :subauthority?, :subauthorities?, to: :search_config, prefix: 'search'
 
       def initialize(auth_name)
+        @auth_name = auth_name
         @auth_config = Qa::Authorities::LinkedData::Config.new(auth_name)
       end
 
       include WebServiceBase
 
       def search_service
-        @search_service ||= Qa::Authorities::LinkedData::SearchQuery.new(search_config)
+        @search_service ||= Qa::Authorities::LinkedData::SearchQuery.new(search_config, auth_name)
       end
 
       def item_service
-        @item_service ||= Qa::Authorities::LinkedData::FindTerm.new(term_config)
+        @item_service ||= Qa::Authorities::LinkedData::FindTerm.new(term_config, auth_name)
       end
 
       delegate :search, to: :search_service

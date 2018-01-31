@@ -4,9 +4,25 @@ module Qa
     class AuthorityRegistryService
       @registry = {}
 
+      # List registered authorities.
+      # @returns [Array<String>] registered authority names
+      def self.list
+        @registry.keys
+      end
+
       # Fetch an authority configuration.
       # @param [String] the name of the authority to fetch
-      # @returns [Qa::LinkedData::Config::AuthorityRegistry] the requested authority configuration if registered; otherwise, nil
+      # @returns [Qa::LinkedData::Config::AuthorityConfig] the requested authority configuration if registered; otherwise, nil
+      def self.retrieve_or_create(authority_name)
+        return @registry[authority_name] if registered?(authority_name)
+        auth_config = Qa::LinkedData::Config::AuthorityConfig.new(authority_name)
+        add(auth_config)
+        auth_config
+      end
+
+      # Fetch an authority configuration.
+      # @param [String] the name of the authority to fetch
+      # @returns [Qa::LinkedData::Config::AuthorityConfig] the requested authority configuration if registered; otherwise, nil
       def self.retrieve(authority_name)
         return nil unless registered?(authority_name)
         @registry[authority_name]
@@ -14,16 +30,16 @@ module Qa
 
       # Fetch an authority configuration.
       # @param [String] the name of the authority to fetch
-      # @returns [Qa::LinkedData::Config::AuthorityRegistry] the requested authority configuration if registered; otherwise, raises an exception
+      # @returns [Qa::LinkedData::Config::AuthorityConfig] the requested authority configuration if registered; otherwise, raises an exception
       def self.retrieve!(authority_name)
-        unless Qa::LinkedData::AuthorityRegistryService.registered?(authority)
-          raise Qa::InvalidLinkedDataAuthority, "Authority (#{authority}) is not registered.  Place configuration in config/authorities/linked_data and restart server."
+        unless Qa::LinkedData::AuthorityRegistryService.registered?(authority_name)
+          raise Qa::InvalidLinkedDataAuthority, "Authority (#{authority_name}) is not registered.  Place configuration in config/authorities/linked_data and restart server."
         end
         @registry[authority_name]
       end
 
       # Register an authority.
-      # @param [Qa::LinkedData::Config::AuthorityRegistry] the authority configuration to register
+      # @param [Qa::LinkedData::Config::AuthorityConfig] the authority configuration to register
       def self.add(authority_config)
         return if registered?(authority_config.authority_name) # don't register twice
         @registry[authority_config.authority_name] = authority_config
