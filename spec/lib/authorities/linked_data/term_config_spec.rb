@@ -4,6 +4,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
   let(:full_config) { Qa::Authorities::LinkedData::Config.new(:LOD_FULL_CONFIG).term }
   let(:min_config) { Qa::Authorities::LinkedData::Config.new(:LOD_MIN_CONFIG).term }
   let(:search_only_config) { Qa::Authorities::LinkedData::Config.new(:LOD_SEARCH_ONLY_CONFIG).term }
+  let(:encoding_config) { Qa::Authorities::LinkedData::Config.new(:LOD_ENCODING_CONFIG).term }
 
   describe '#term_config' do
     let(:full_term_config) do
@@ -413,6 +414,15 @@ describe Qa::Authorities::LinkedData::TermConfig do
       it 'and replacements param is included returns the url with query substitution applied ignoring the replacements' do
         expected_url = 'http://localhost/test_default/term/C123'
         expect(min_config.term_url_with_replacements('C123', nil, fake_replacement_key: 'fake_value')).to eq expected_url
+      end
+    end
+
+    context 'with encoding specified in config' do
+      it 'returns the uri as the url' do
+        expected_url = 'http://localhost/test_default/term?uri=http%3A%2F%2Fencoded%2Ebecause%3Fencode%3Dtrue&yes%3Aencoded%20here&no:encoding here&defaults:to not encoded'
+        term_uri = 'http://encoded.because?encode=true'
+        replacements = { encode_true: 'yes:encoded here', encode_false: 'no:encoding here', encode_not_specified: 'defaults:to not encoded' }
+        expect(encoding_config.term_url_with_replacements(term_uri, nil, replacements)).to eq expected_url
       end
     end
   end

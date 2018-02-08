@@ -1,0 +1,91 @@
+{
+  "term": {
+    "url": {
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type":    "IriTemplate",
+      "template": "http://localhost/test_default/term?uri={?term_uri}&{?encode_true}&{?encode_false}&{?encode_not_specified}",
+      "variableRepresentation": "BasicRepresentation",
+      "mapping": [
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "term_uri",
+          "property": "hydra:freetextQuery",
+          "required": true,
+          "encode":   true
+        },
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "encode_true",
+          "property": "hydra:freetextQuery",
+          "required": true,
+          "encode":   true
+        },
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "encode_false",
+          "property": "hydra:freetextQuery",
+          "required": true,
+          "encode":   false
+        },
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "encode_not_specified",
+          "property": "hydra:freetextQuery",
+          "required": true
+        }
+      ]
+    },
+    "qa_replacement_patterns": {
+      "term_id": "term_uri"
+    },
+    "term_id": "URI",
+    "results": {
+      "id_predicate":       "http://id.loc.gov/vocabulary/identifiers/lccn",
+      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel"
+    }
+  },
+  "search": {
+    "url": {
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type":    "IriTemplate",
+      "template": "http://localhost/test_default/search?query={?query}&{?encode_true}&{?encode_false}&{?encode_not_specified}",
+      "variableRepresentation": "BasicRepresentation",
+      "mapping": [
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "query",
+          "property": "hydra:freetextQuery",
+          "required": true,
+          "encode":   true
+        },
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "encode_true",
+          "property": "hydra:freetextQuery",
+          "required": true,
+          "encode":   true
+        },
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "encode_false",
+          "property": "hydra:freetextQuery",
+          "required": true,
+          "encode":   false
+        },
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "encode_not_specified",
+          "property": "hydra:freetextQuery",
+          "required": true
+        }
+      ]
+    },
+    "qa_replacement_patterns": {
+      "query": "query"
+    },
+    "results": {
+      "id_predicate":       "http://purl.org/dc/terms/identifier",
+      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel"
+    }
+  }
+}

@@ -9,6 +9,7 @@ Metrics/ClassLength:
     - 'app/controllers/qa/linked_data_terms_controller.rb'
     - 'lib/qa/authorities/linked_data/find_term.rb'
     - 'lib/qa/authorities/linked_data/search_query.rb'
+    - 'lib/qa/authorities/linked_data/config/term_config.rb'
 
 RSpec/ExampleLength:
   Max: 7
