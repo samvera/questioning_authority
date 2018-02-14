@@ -72,4 +72,38 @@ RSpec.describe Qa::LinkedData::Config::ActionConfig do
       expect(full_search_config.default_language).to match_array ['en', 'fr', 'de']
     end
   end
+
+  describe '#term?' do
+    before do
+      allow(Qa::IriTemplate::UrlConfig).to receive(:new).and_return(instance_double("template"))
+      allow(Qa::LinkedData::Config::ResultsMap).to receive(:new).and_return(instance_double("results_map"))
+    end
+    let(:config) do
+      {
+          url: { template: 'foo' },
+          results: { id: 'foo' }
+      }
+    end
+
+    it 'returns false' do
+      expect(described_class.new(config).term?).to eq false
+    end
+  end
+
+  describe '#search?' do
+    before do
+      allow(Qa::IriTemplate::UrlConfig).to receive(:new).and_return(instance_double("template"))
+      allow(Qa::LinkedData::Config::ResultsMap).to receive(:new).and_return(instance_double("results_map"))
+    end
+    let(:config) do
+      {
+          url: { template: 'foo' },
+          results: { id: 'foo' }
+      }
+    end
+
+    it 'returns false' do
+      expect(described_class.new(config).search?).to eq false
+    end
+  end
 end

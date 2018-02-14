@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
   describe "#sort_search_results" do
     let(:config) { Qa::Authorities::LinkedData::Config.new(auth_name).search }
-    let(:instance) { described_class.new(config) }
+    let(:instance) { described_class.new(config, auth_name) }
 
     let(:term_a) { "alpha" }
     let(:term_b) { "bravo" }

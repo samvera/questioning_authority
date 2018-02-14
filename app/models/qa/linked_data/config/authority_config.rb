@@ -79,7 +79,7 @@ module Qa
           # @return [Hash] the full authority configuration hash read from the json configuration file
           def raw_auth_config(auth_name)
             raw_config ||= LINKED_DATA_AUTHORITIES_CONFIG[auth_name]
-            raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data authority '#{auth_name}'" unless raw_config.present?
+            raise Qa::InvalidLinkedDataAuthority, "Authority (#{auth_name}) is not registered.  Place configuration in config/authorities/linked_data and restart server." unless raw_config.present?
             raw_config
           end
       end

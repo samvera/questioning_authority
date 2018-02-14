@@ -17,6 +17,12 @@ module Qa
           @supports_action
         end
         alias supports_term? supports_term_fetch?
+
+        # Is this a term configuration?
+        # @returns true if action config is a term configuration; otherwise, false
+        def term?
+          true
+        end
       end
     end
   end

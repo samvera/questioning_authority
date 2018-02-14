@@ -20,6 +20,12 @@ module Qa
           @supports_action
         end
         alias supports_search? supports_search_query?
+
+        # Is this an search configuration?
+        # @returns true if action config is a search configuration; otherwise, false
+        def search?
+          true
+        end
       end
     end
   end

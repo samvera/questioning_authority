@@ -60,4 +60,16 @@ RSpec.describe Qa::LinkedData::Config::SearchConfig do
       expect(full_search_config.supports_search?).to eq true
     end
   end
+
+  describe '#term?' do
+    it 'returns false' do
+      expect(full_search_config.term?).to eq false
+    end
+  end
+
+  describe '#search?' do
+    it 'returns true' do
+      expect(full_search_config.search?).to eq true
+    end
+  end
 end

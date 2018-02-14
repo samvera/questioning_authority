@@ -32,6 +32,18 @@ module Qa
           return false if subauth_variable.blank?
           subauth_map.valid?(subauthority)
         end
+
+        # Is this a search configuration?
+        # @returns ABSTRACT always returns false.  Override in search_config and return true.
+        def search?
+          false
+        end
+
+        # Is this a term configuration?
+        # @returns ABSTRACT always returns false.  Override in term_config and return true.
+        def term?
+          false
+        end
       end
     end
   end

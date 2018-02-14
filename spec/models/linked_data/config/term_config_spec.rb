@@ -52,4 +52,16 @@ RSpec.describe Qa::LinkedData::Config::TermConfig do
       expect(full_term_config.supports_term?).to eq true
     end
   end
+
+  describe '#term?' do
+    it 'returns true' do
+      expect(full_term_config.term?).to eq true
+    end
+  end
+
+  describe '#search?' do
+    it 'returns false' do
+      expect(full_term_config.search?).to eq false
+    end
+  end
 end
