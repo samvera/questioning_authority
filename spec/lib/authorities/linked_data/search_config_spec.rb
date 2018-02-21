@@ -4,6 +4,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
   let(:full_config) { Qa::Authorities::LinkedData::Config.new(:LOD_FULL_CONFIG).search }
   let(:min_config) { Qa::Authorities::LinkedData::Config.new(:LOD_MIN_CONFIG).search }
   let(:term_only_config) { Qa::Authorities::LinkedData::Config.new(:LOD_TERM_ONLY_CONFIG).search }
+  let(:encoding_config) { Qa::Authorities::LinkedData::Config.new(:LOD_ENCODING_CONFIG).search }
 
   describe '#search_config' do
     let(:full_search_config) do
@@ -379,6 +380,15 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
       it 'and replacements param is included returns the url with query substitution applied ignoring the replacements' do
         expected_url = 'http://localhost/test_default/search?query=Smith'
         expect(min_config.url_with_replacements('Smith', nil, fake_replacement_key: 'fake_value')).to eq expected_url
+      end
+    end
+
+    context 'with encoding specified in config' do
+      it 'returns the uri as the url' do
+        expected_url = 'http://localhost/test_default/search?query=encoded%20because%3Aencode%3Dtrue&yes%3Aencoded%20here&no:encoding here&defaults:to not encoded'
+        query = 'encoded because:encode=true'
+        replacements = { encode_true: 'yes:encoded here', encode_false: 'no:encoding here', encode_not_specified: 'defaults:to not encoded' }
+        expect(encoding_config.url_with_replacements(query, nil, replacements)).to eq expected_url
       end
     end
   end

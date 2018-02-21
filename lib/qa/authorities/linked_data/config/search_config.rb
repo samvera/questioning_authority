@@ -95,10 +95,24 @@ module Qa::Authorities
         search_config.fetch(:qa_replacement_patterns)
       end
 
+      # Should the replacement pattern be encoded?
+      # @return [Boolean] true, if the pattern should be encoded; otherwise, false
+      def qa_replacement_encoded?(pattern_key)
+        map_key = qa_replacement_patterns[pattern_key].to_sym
+        replacement_encoded? map_key
+      end
+
       # Are there replacement parameters configured for search query?
       # @return [True|False] true if there are replacement parameters configured for search query; otherwise, false
       def replacements?
         replacement_count.positive?
+      end
+
+      # Should the replacement parameter be encoded?
+      # @return [True|False] true if the replacement parameter should be encoded; otherwise, false
+      def replacement_encoded?(map_key)
+        return false unless url_mappings[map_key].key? :encode
+        url_mappings[map_key][:encode]
       end
 
       # Return the number of possible replacement values to make in the search URL
@@ -159,8 +173,8 @@ module Qa::Authorities
       # @return [String] the search encoded url
       def url_with_replacements(query, sub_auth = nil, search_replacements = {})
         return nil unless supports_search?
-        sub_auth = sub_auth.to_sym if sub_auth.is_a? String
-        url = Config.replace_pattern(url_template, qa_replacement_patterns[:query], query)
+        sub_auth = sub_auth.to_sym if sub_auth.present?
+        url = Config.replace_pattern(url_template, qa_replacement_patterns[:query], query, qa_replacement_encoded?(:query))
         url = Config.process_subauthority(url, subauthority_replacement_pattern, subauthorities, sub_auth) if subauthorities?
         url = Config.apply_replacements(url, replacements, search_replacements) if replacements?
         url

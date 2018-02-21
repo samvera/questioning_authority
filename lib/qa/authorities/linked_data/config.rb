@@ -1,6 +1,7 @@
 require 'qa/authorities/linked_data/config/term_config'.freeze
 require 'qa/authorities/linked_data/config/search_config'.freeze
 require 'json'
+require 'erb'
 
 # Provide attr_reader methods for linked data authority configurations.  Some default configurations are provided for several
 # linked data authorities and can be found at /config/authorities/linked_data.  You can add configurations for new authorities by
@@ -17,6 +18,10 @@ require 'json'
 module Qa::Authorities
   module LinkedData
     class Config
+      class << self
+        include ERB::Util
+      end
+
       attr_reader :authority_name
       attr_reader :authority_config
 
@@ -56,7 +61,8 @@ module Qa::Authorities
         pred_uri
       end
 
-      def self.replace_pattern(url, pattern, value)
+      def self.replace_pattern(url, pattern, value, encode = false)
+        value = url_encode(value).gsub(".", "%2E") if encode
         url.gsub("{?#{pattern}}", value)
       end
 
@@ -71,7 +77,7 @@ module Qa::Authorities
         config.each do |param_key, rep_pattern|
           s_param_key = param_key.to_s
           value = replacements[param_key] || replacements[s_param_key] || rep_pattern[:default]
-          url = replace_pattern(url, param_key, value)
+          url = replace_pattern(url, param_key, value, rep_pattern[:encode])
         end
         url
       end
