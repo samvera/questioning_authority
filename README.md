@@ -385,6 +385,8 @@ gem 'rdf-rdfxml'
 
 #### Configuring a LOD Authority
 
+There are a number of authority configurations that are available.  See (ld4l-labs/linked_data_authorities)[https://github.com/ld4l-labs/linked_data_authorities] for configurations and instructions on how to use them.  These are updated periodically, so check back from time to time to see what's new.
+
 Access to LOD authorities can be configured.  Currently, a configuration exists in QA for OCLC Fast Linked Data, Library of
 Congress (terms only), and Agrovoc.  Look for configuration files in
 [/config/authorities/linked_data](https://github.com/samvera/questioning_authority/tree/master/config/authorities/linked_data).

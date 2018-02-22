@@ -1,3 +1,8 @@
+### 2.0.1 (2018-02-22)
+
+* bug fix: substitution of term id was only done when the template parameter was named term_id and not when it was named term_uri [Lynette Rayle]
+* add support for configuring parameter substitution with encoded values for linked data authorities [Lynette Rayle]
+
 ### 2.0.0 (2017-10-05)
 
 * adding support for Rails 5.1 [Lynette Rayle]
