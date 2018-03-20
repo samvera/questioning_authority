@@ -26,6 +26,11 @@ You should question your authorities.
       * [Configuring a LOD Authority](#configuring-a-lod-authority)
       * [Query](#query)
       * [Find term](#find-term)
+      * [Authority Usage Notes](#linked-data-authority-usage-notes)
+        * [Agrovoc](#agrovoc-linked-data)
+        * [Geonames](#geonames-linked-data)
+        * [Library of Congress](#library-of-congress-linked-data)
+        * [OCLC FAST](#oclc-fast-linked-data)
       * [Add javascript to support autocomplete](#add-javascript-to-support-autocomplete)
   * [Developer Notes](#developer-notes)
     * [Compatibility](#compatibility)
@@ -610,6 +615,170 @@ Returns results in the format...
 ```
 
 NOTE: All predicates with the URI as the subject will be included under "predicates" key.  The selected keys are determined by the configuration file and can be one or more of id_predicate, label_predicate (required), altlabel_predicate, sameas_predicate, narrower_predicate, or broader_predicate.
+
+#### Linked Data Authority Usage Notes
+##### Agrovoc Linked Data
+
+Configuration File: [agrovoc.json](https://github.com/projecthydra/questioning_authority/blob/master/config/authorities/linked_data/agrovoc.json)
+
+*Example Search URLs*
+
+Pattern:  `http://www.your.host/qa/search/linked_data/agrovoc?q={?query}&lang={?language_code}`
+
+Localhost Examples:
+<br>http://localhost:3000/qa/search/linked_data/agrovoc?q=hive
+<br>http://localhost:3000/qa/search/linked_data/agrovoc?q=ruche&lang=fr
+
+where,
+
+| parameter | required? | description | default value | example values |
+| --------- | --------- | ----------- | ------------- | -------------- |
+| {?query}  | required  | the query string to send to the authority | N/A | cornell, twain, ezra, etc. |
+| {?language_code} | optional | results will be filtered to the language code | en | en, fr, de, etc. |
+
+*Example Fetch Term URLs*
+
+Pattern:  `http://www.your.host/qa/show/linked_data/agrovoc/{?term_id}`
+
+Localhost Examples:
+<br>http://localhost:3000/qa/show/linked_data/agrovoc/c_3655
+
+where,
+
+| parameter  | required? | description | default value | example values |
+| ---------  | --------- | ----------- | ------------- | -------------- |
+| {?term_id} | required  | the id of the term to fetch from the authority | N/A | c_123 |
+
+NOTE: A default language of `['en']` is set in the configuration for term fetch.  You can change the default language by copying the entire configuration file from QA /config/authorities/linked_data/agrovoc.json to your app in the same location.  The language can be set to one or more languages by using the standard language codes in an array, e.g. `['fr']` or `['en', 'fr']`, etc.
+
+
+##### Geonames Linked Data
+
+Configuration File: [geonames.json](https://github.com/projecthydra/questioning_authority/blob/master/config/authorities/linked_data/geonames.json)
+
+*Example Search URLs*
+
+Pattern:  `http://www.your.host/qa/search/linked_data/geonames?q={?query}&maximumRecords={?maximumRecords}&username={?username}`
+
+Localhost Examples:
+<br>http://localhost:3000/qa/search/linked_data/geonames?q=ithaca&username=yourusername
+<br>http://localhost:3000/qa/search/linked_data/geonames?q=london&maximumRecords=5&username=yourusername
+  
+where,
+
+| parameter | required? | description | default value | example values |
+| --------- | --------- | ----------- | ------------- | -------------- |
+| {?query}  | required  | the query string to send to the authority | N/A | cornell, twain, ezra, etc. |
+| {?maximumRecords | optional | the number of results for the authority to return | 20 | positive integer |
+| {?username | required | the username required to access geonames api | demo | must be updated to your username |
+
+NOTE: You must register at [geonames.org](http://www.geonames.org/login) to get a username.  The search URL will not work with the default `demo` username.  If you do not want to pass the username as part of the QA url, you can copy the entire configuration file from QA /config/authorities/linked_data/geonames.json to your app in the same location.  Then change the default value from `demo` to your username.
+
+*Example Fetch Term URLs*
+
+Pattern:  `http://www.your.host/qa/show/linked_data/geonames/{?term_uri}`
+
+Localhost Examples:
+<br>http://localhost:3000/qa/show/linked_data/geonames/http%3A%2F%2Fsws%2Egeonames%2Eorg%2F2643741
+  
+where,
+
+| parameter   | required? | description | default value | example values |
+| ---------   | --------- | ----------- | ------------- | -------------- |
+| {?term_uri} | required  | the uri of the term to fetch from the authority | N/A | `http://sws.geonames.org/5070896/` as the url encoded form.  See example below. |
+
+NOTE: The `{?term_uri}` must be URL Encoded.  The example value as part of the Fetch URL should be: http%3A%2F%2Fsws%2Egeonames%2Eorg%2F2643741
+
+
+##### Library of Congress Linked Data
+
+Configuration File: [loc.json](https://github.com/projecthydra/questioning_authority/blob/master/config/authorities/linked_data/loc.json)
+
+*Example Search URLs*
+
+Not supported.  You can use non-linked data access to Library of Congress, get the URI for each search result, and make individual term fetchs to get the remainder of the information.  This approach will be slow.
+
+*Example Fetch Term URLs*
+
+Pattern:  `http://www.your.host/qa/show/linked_data/loc/{?subauthority}/{?term_id}`
+
+Localhost Examples:
+<br>http://localhost:3000/qa/show/linked_data/loc/n79065220
+<br>http://localhost:3000/qa/show/linked_data/loc/names/n79065220
+<br>http://localhost:3000/qa/show/linked_data/loc/subjects/sh85118553
+  
+where,
+
+| parameter  | required? | description | default value | example values |
+| ---------  | --------- | ----------- | ------------- | -------------- |
+| {?term_id} | required  | the id of the term to fetch from the authority | N/A | 123 |
+| {?subauthority} | required  | a Library of Congress subauthority | names | see list below |
+
+You can use any of the following subauthorities in place of `{?subauthority}`.
+
+| use in QA URL  | translates to LoC subauthority | 
+| -------------- | ------------------------------------ |
+| subjects       | subjects           |
+| names          | names              |
+| classification | classification     |
+| child_subject  | childrensSubjects  |
+| genre          | genreForms         |
+| demographic    | demographicTerms   |
+
+NOTE: A default language of `['en']` is set in the configuration for term fetch.  You can change the default language by copying the entire configuration file from QA /config/authorities/linked_data/loc.json to your app in the same location.  The language can be set to one or more languages by using the standard language codes in an array, e.g. `['fr']` or `['en', 'fr']`, etc.
+
+
+##### OCLC FAST Linked Data
+
+Configuration File: [oclc_fast.json](https://github.com/projecthydra/questioning_authority/blob/master/config/authorities/linked_data/oclc_fast.json)
+
+*Example Search URLs*
+
+Pattern (search all):  `http://www.your.host/qa/search/linked_data/oclc_fast?q={?query}&maximumRecords={?maximumRecords}`
+Pattern (search subauthority):  `http://www.your.host/qa/search/linked_data/oclc_fast/{?subauthority}?q={?query}&maximumRecords={?maximumRecords}`
+
+Localhost Examples:
+<br>http://localhost:3000/qa/search/linked_data/oclc_fast?q=cornell
+<br>http://localhost:3000/qa/search/linked_data/oclc_fast?q=cornell&maximumRecords=3
+<br>http://localhost:3000/qa/search/linked_data/oclc_fast/personal_name?q=ezra
+<br>http://localhost:3000/qa/search/linked_data/oclc_fast/personal_name?q=ezra&maximumRecords=5
+
+where,
+
+| parameter | required? | description | default value | example values |
+| --------- | --------- | ----------- | ------------- | -------------- |
+| {?query}  | required  | the query string to send to the authority | N/A | cornell, twain, ezra, etc. |
+| {?maximumRecords | optional | the number of results for the authority to return | 20 | positive integer |
+| {?subauthority | optional | an OCLC FAST subauthority to search | ALL | see list below |
+
+You can use any of the following subauthorities in place of `{?subauthority}`.
+
+| use in QA URL  | translates to OCLC FAST subauthority | 
+| -------------- | ------------------------------------ |
+| topic          | oclc.topic           |
+| geographic     | oclc.geographic      | 
+| event_name     | oclc.eventName       |
+| personal_name  | oclc.personalName    |
+| corporate_name | oclc.corporateName   |
+| uniform_title  | oclc.uniformTitle    |
+| period         | oclc.period          |
+| form           | oclc.form            |
+| alt_lc         | oclc.altlc           |
+
+*Example Fetch Term URLs*
+
+Pattern:  `http://www.your.host/qa/show/linked_data/oclc_fast/{?term_id}`
+
+Localhost Examples:
+<br>http://localhost:3000/qa/show/linked_data/oclc_fast/409667
+
+where,
+
+| parameter  | required? | description | default value | example values |
+| ---------  | --------- | ----------- | ------------- | -------------- |
+| {?term_id} | required  | the id of the term to fetch from the authority | N/A | 123 |
+
+
 
 #### Add javascript to support autocomplete
 

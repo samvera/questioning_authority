@@ -1,0 +1,102 @@
+<rdf:RDF xmlns:cc="http://creativecommons.org/ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:gn="http://www.geonames.org/ontology#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#">
+  <gn:Feature rdf:about="http://sws.geonames.org/261707/">
+    <rdfs:isDefinedBy rdf:resource="http://sws.geonames.org/261707/about.rdf"/>
+    <gn:name>Ithaca Island  </gn:name>
+    <gn:alternateName xml:lang="ang">Iþacige  </gn:alternateName>
+    <gn:alternateName xml:lang="bg">Итака  </gn:alternateName>
+    <gn:alternateName xml:lang="ca">Ítaca  </gn:alternateName>
+    <gn:alternateName xml:lang="cs">Ithaka  </gn:alternateName>
+    <gn:alternateName xml:lang="da">Ithaka  </gn:alternateName>
+    <gn:alternateName xml:lang="de">Ithaka  </gn:alternateName>
+    <gn:alternateName xml:lang="el">Νησί Ιθάκη  </gn:alternateName>
+    <gn:alternateName xml:lang="en">Ithaca Island  </gn:alternateName>
+    <gn:alternateName xml:lang="eo">Itako  </gn:alternateName>
+    <gn:alternateName xml:lang="es">Ítaca  </gn:alternateName>
+    <gn:alternateName xml:lang="et">Ithaka  </gn:alternateName>
+    <gn:alternateName xml:lang="fi">Ithaka  </gn:alternateName>
+    <gn:alternateName xml:lang="fr">Ithaque  </gn:alternateName>
+    <gn:alternateName xml:lang="he">איתקה  </gn:alternateName>
+    <gn:alternateName xml:lang="id">Ithaca  </gn:alternateName>
+    <gn:alternateName xml:lang="it">Itaca  </gn:alternateName>
+    <gn:alternateName xml:lang="lv">Itaka  </gn:alternateName>
+    <gn:alternateName xml:lang="nl">Ithaka  </gn:alternateName>
+    <gn:alternateName xml:lang="pl">Itaka  </gn:alternateName>
+    <gn:alternateName xml:lang="pt">Ítaca  </gn:alternateName>
+    <gn:alternateName xml:lang="ro">Itaca  </gn:alternateName>
+    <gn:alternateName xml:lang="ru">Итака  </gn:alternateName>
+    <gn:alternateName xml:lang="sr">Итака  </gn:alternateName>
+    <gn:alternateName xml:lang="sv">Ithaka  </gn:alternateName>
+    <gn:featureClass rdf:resource="http://www.geonames.org/ontology#T"/>
+    <gn:featureCode rdf:resource="http://www.geonames.org/ontology#T.ISL"/>
+    <gn:countryCode>GR  </gn:countryCode>
+    <wgs84_pos:lat>38.38419</wgs84_pos:lat>
+    <wgs84_pos:long>20.67078</wgs84_pos:long>
+    <gn:parentCountry rdf:resource="http://sws.geonames.org/390903/"/>
+    <gn:nearbyFeatures rdf:resource="http://sws.geonames.org/261707/nearby.rdf"/>
+    <gn:locationMap rdf:resource="http://www.geonames.org/261707/ithaca-island.html"/>
+    <gn:wikipediaArticle rdf:resource="http://en.wikipedia.org/wiki/Ithaca"/>
+    <rdfs:seeAlso rdf:resource="http://dbpedia.org/resource/Ithaca"/>
+  </gn:Feature>
+  <gn:Feature rdf:about="http://sws.geonames.org/261708/">
+    <rdfs:isDefinedBy rdf:resource="http://sws.geonames.org/261708/about.rdf"/>
+    <gn:name>Itháki  </gn:name>
+    <gn:officialName xml:lang="el">Ιθάκη  </gn:officialName>
+    <gn:featureClass rdf:resource="http://www.geonames.org/ontology#P"/>
+    <gn:featureCode rdf:resource="http://www.geonames.org/ontology#P.PPL"/>
+    <gn:countryCode>GR  </gn:countryCode>
+    <gn:population>1843  </gn:population>
+    <wgs84_pos:lat>38.36421</wgs84_pos:lat>
+    <wgs84_pos:long>20.71848</wgs84_pos:long>
+    <gn:parentCountry rdf:resource="http://sws.geonames.org/390903/"/>
+    <gn:nearbyFeatures rdf:resource="http://sws.geonames.org/261708/nearby.rdf"/>
+    <gn:locationMap rdf:resource="http://www.geonames.org/261708/ithaki.html"/>
+    <gn:wikipediaArticle rdf:resource="http://en.wikipedia.org/wiki/Ithaca"/>
+    <rdfs:seeAlso rdf:resource="http://dbpedia.org/resource/Ithaca"/>
+  </gn:Feature>
+  <gn:Feature rdf:about="http://sws.geonames.org/8133849/">
+    <rdfs:isDefinedBy rdf:resource="http://sws.geonames.org/8133849/about.rdf"/>
+    <gn:name>Ithaca  </gn:name>
+    <gn:alternateName xml:lang="el">Ιθάκης  </gn:alternateName>
+    <gn:shortName xml:lang="en">Ithaca  </gn:shortName>
+    <gn:featureClass rdf:resource="http://www.geonames.org/ontology#A"/>
+    <gn:featureCode rdf:resource="http://www.geonames.org/ontology#A.ADM3"/>
+    <gn:countryCode>GR  </gn:countryCode>
+    <gn:population>3212  </gn:population>
+    <wgs84_pos:lat>38.40025</wgs84_pos:lat>
+    <wgs84_pos:long>20.66942</wgs84_pos:long>
+    <gn:parentCountry rdf:resource="http://sws.geonames.org/390903/"/>
+    <gn:childrenFeatures rdf:resource="http://sws.geonames.org/8133849/contains.rdf"/>
+    <gn:locationMap rdf:resource="http://www.geonames.org/8133849/dimos-ithaca.html"/>
+  </gn:Feature>
+  <gn:Feature rdf:about="http://sws.geonames.org/5122432/">
+    <rdfs:isDefinedBy rdf:resource="http://sws.geonames.org/5122432/about.rdf"/>
+    <gn:name>Ithaca</gn:name>
+    <gn:alternateName xml:lang="ar">إثاكا</gn:alternateName>
+    <gn:alternateName xml:lang="bg">Итака</gn:alternateName>
+    <gn:alternateName xml:lang="bn">ইথাকা</gn:alternateName>
+    <gn:alternateName xml:lang="fa">ایتاکا، نیویورک</gn:alternateName>
+    <gn:alternateName xml:lang="he">איתקה</gn:alternateName>
+    <gn:alternateName xml:lang="ja">イサカ</gn:alternateName>
+    <gn:alternateName xml:lang="ko">이사카</gn:alternateName>
+    <gn:alternateName xml:lang="lv">Itaka</gn:alternateName>
+    <gn:alternateName xml:lang="ru">Итак</gn:alternateName>
+    <gn:alternateName xml:lang="sr">Итака</gn:alternateName>
+    <gn:alternateName xml:lang="tg">Итако</gn:alternateName>
+    <gn:alternateName xml:lang="uk">Ітака</gn:alternateName>
+    <gn:alternateName xml:lang="ur">اتھاکا، نیو یارک</gn:alternateName>
+    <gn:alternateName xml:lang="zh">伊萨卡</gn:alternateName>
+    <gn:featureClass rdf:resource="http://www.geonames.org/ontology#P"/>
+    <gn:featureCode rdf:resource="http://www.geonames.org/ontology#P.PPLA2"/>
+    <gn:countryCode>US</gn:countryCode>
+    <gn:population>30788</gn:population>
+    <gn:postalCode>14852</gn:postalCode>
+    <wgs84_pos:lat>42.44063</wgs84_pos:lat>
+    <wgs84_pos:long>-76.49661</wgs84_pos:long>
+    <wgs84_pos:alt>125</wgs84_pos:alt>
+    <gn:parentCountry rdf:resource="http://sws.geonames.org/6252001/"/>
+    <gn:nearbyFeatures rdf:resource="http://sws.geonames.org/5122432/nearby.rdf"/>
+    <gn:locationMap rdf:resource="http://www.geonames.org/5122432/ithaca.html"/>
+    <gn:wikipediaArticle rdf:resource="http://en.wikipedia.org/wiki/Ithaca%2C_New_York"/>
+    <rdfs:seeAlso rdf:resource="http://dbpedia.org/resource/Ithaca%2C_New_York"/>
+  </gn:Feature>
+</rdf:RDF>
