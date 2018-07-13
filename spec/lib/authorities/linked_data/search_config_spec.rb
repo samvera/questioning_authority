@@ -336,29 +336,32 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
     end
   end
 
+  # rubocop:disable RSpec/RepeatedExample
   describe '#search_url_with_replacements' do
     it 'returns nil if only term configuration is defined' do
       expect(term_only_config.url_with_replacements('Smith')).to eq nil
     end
-    it 'returns the url with query substitution applied' do
-      expected_url = 'http://localhost/test_default/search?subauth=search_sub1_name&query=Smith&param1=delta&param2=echo'
-      expect(full_config.url_with_replacements('Smith')).to eq expected_url
-    end
-    it 'returns the url with default subauthority when NOT specified' do
-      expected_url = 'http://localhost/test_default/search?subauth=search_sub1_name&query=Smith&param1=delta&param2=echo'
-      expect(full_config.url_with_replacements('Smith')).to eq expected_url
-    end
-    it 'returns the url with subauthority substitution when specified' do
-      expected_url = 'http://localhost/test_default/search?subauth=search_sub3_name&query=Smith&param1=delta&param2=echo'
-      expect(full_config.url_with_replacements('Smith', 'search_sub3_key')).to eq expected_url
-    end
-    it 'returns the url with default values when replacements are NOT specified' do
-      expected_url = 'http://localhost/test_default/search?subauth=search_sub1_name&query=Smith&param1=delta&param2=echo'
-      expect(full_config.url_with_replacements('Smith')).to eq expected_url
-    end
-    it 'returns the url with replacement substitution values when replacements are specified' do
-      expected_url = 'http://localhost/test_default/search?subauth=search_sub1_name&query=Smith&param1=golf&param2=hotel'
-      expect(full_config.url_with_replacements('Smith', nil, param1: 'golf', param2: 'hotel')).to eq expected_url
+    context 'when subauthorities ARE defined' do
+      it 'returns the url with query substitution applied' do
+        expected_url = 'http://localhost/test_default/search?subauth=search_sub1_name&query=Smith&param1=delta&param2=echo'
+        expect(full_config.url_with_replacements('Smith')).to eq expected_url
+      end
+      it 'returns the url with default subauthority when NOT specified' do
+        expected_url = 'http://localhost/test_default/search?subauth=search_sub1_name&query=Smith&param1=delta&param2=echo'
+        expect(full_config.url_with_replacements('Smith')).to eq expected_url
+      end
+      it 'returns the url with subauthority substitution when specified' do
+        expected_url = 'http://localhost/test_default/search?subauth=search_sub3_name&query=Smith&param1=delta&param2=echo'
+        expect(full_config.url_with_replacements('Smith', 'search_sub3_key')).to eq expected_url
+      end
+      it 'returns the url with default values when replacements are NOT specified' do
+        expected_url = 'http://localhost/test_default/search?subauth=search_sub1_name&query=Smith&param1=delta&param2=echo'
+        expect(full_config.url_with_replacements('Smith')).to eq expected_url
+      end
+      it 'returns the url with replacement substitution values when replacements are specified' do
+        expected_url = 'http://localhost/test_default/search?subauth=search_sub1_name&query=Smith&param1=golf&param2=hotel'
+        expect(full_config.url_with_replacements('Smith', nil, param1: 'golf', param2: 'hotel')).to eq expected_url
+      end
     end
 
     context 'when subauthorities are not defined' do
@@ -392,4 +395,5 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
       end
     end
   end
+  # rubocop:enable RSpec/RepeatedExample
 end

@@ -3,7 +3,8 @@ require 'spec_helper'
 describe Qa::Authorities::Getty do
   describe "#new" do
     it "raises an exception" do
-      expect { described_class.new }.to raise_error RuntimeError, "Initializing with as sub authority is removed. use Module.subauthority_for(nil) instead"
+      msg = "Initializing with as sub authority is removed. use Module.subauthority_for(nil) instead"
+      expect { described_class.new }.to raise_error RuntimeError, msg
     end
   end
 

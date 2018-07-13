@@ -29,7 +29,16 @@ describe Qa::TermsController, type: :controller do
     end
     context "when a sub-authority does not exist" do
       it "returns 404 if a sub-authority does not exist" do
-        expect(Rails.logger).to receive(:warn).with("Unable to initialize sub-authority non-existent-subauthority for Qa::Authorities::Loc. Valid sub-authorities are [\"subjects\", \"names\", \"classification\", \"childrensSubjects\", \"genreForms\", \"performanceMediums\", \"graphicMaterials\", \"organizations\", \"relators\", \"countries\", \"ethnographicTerms\", \"geographicAreas\", \"languages\", \"iso639-1\", \"iso639-2\", \"iso639-5\", \"preservation\", \"actionsGranted\", \"agentType\", \"edtf\", \"contentLocationType\", \"copyrightStatus\", \"cryptographicHashFunctions\", \"environmentCharacteristic\", \"environmentPurpose\", \"eventRelatedAgentRole\", \"eventRelatedObjectRole\", \"eventType\", \"formatRegistryRole\", \"hardwareType\", \"inhibitorTarget\", \"inhibitorType\", \"objectCategory\", \"preservationLevelRole\", \"relationshipSubType\", \"relationshipType\", \"rightsBasis\", \"rightsRelatedAgentRole\", \"signatureEncoding\", \"signatureMethod\", \"softwareType\", \"storageMedium\"]")
+        msg = "Unable to initialize sub-authority non-existent-subauthority for Qa::Authorities::Loc. Valid sub-authorities are " \
+              "[\"subjects\", \"names\", \"classification\", \"childrensSubjects\", \"genreForms\", \"performanceMediums\", " \
+              "\"graphicMaterials\", \"organizations\", \"relators\", \"countries\", \"ethnographicTerms\", \"geographicAreas\", " \
+              "\"languages\", \"iso639-1\", \"iso639-2\", \"iso639-5\", \"preservation\", \"actionsGranted\", \"agentType\", " \
+              "\"edtf\", \"contentLocationType\", \"copyrightStatus\", \"cryptographicHashFunctions\", " \
+              "\"environmentCharacteristic\", \"environmentPurpose\", \"eventRelatedAgentRole\", \"eventRelatedObjectRole\", " \
+              "\"eventType\", \"formatRegistryRole\", \"hardwareType\", \"inhibitorTarget\", \"inhibitorType\", \"objectCategory\", " \
+              "\"preservationLevelRole\", \"relationshipSubType\", \"relationshipType\", \"rightsBasis\", \"rightsRelatedAgentRole\", " \
+              "\"signatureEncoding\", \"signatureMethod\", \"softwareType\", \"storageMedium\"]"
+        expect(Rails.logger).to receive(:warn).with(msg)
         get :search, params: { q: "a query", vocab: "loc", subauthority: "non-existent-subauthority" }
         expect(response.code).to eq("404")
       end

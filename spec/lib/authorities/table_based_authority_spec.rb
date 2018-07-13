@@ -25,9 +25,11 @@ describe Qa::Authorities::Local::TableBasedAuthority do
   end
 
   describe "#all" do
-    let(:expected) { [{ 'id' => "A1", 'label' => "Abc Term A1" },
-                      { 'id' => "A2", 'label' => "Term A2" },
-                      { 'id' => "A3", 'label' => "Abc Term A3" }] }
+    let(:expected) do
+      [{ 'id' => "A1", 'label' => "Abc Term A1" },
+       { 'id' => "A2", 'label' => "Term A2" },
+       { 'id' => "A3", 'label' => "Abc Term A3" }]
+    end
     it "returns all the entries" do
       expect(language.all).to eq [
         { "id" => "http://id.loc.gov/vocabulary/languages/fre", "label" => "French" },
