@@ -10,17 +10,12 @@ class Qa::SubjectMeshTerm < ActiveRecord::Base
   end
 
   def synonyms
-    s = read_attribute(:synonyms)
+    s = self[:synonyms]
     s.nil? ? [] : s.split("|")
   end
 
   def synonyms=(syn_list)
-    write_attribute(:synonyms,
-                    if syn_list.respond_to?(:join)
-                      syn_list.join('|')
-                    else
-                      syn_list
-                    end)
+    self[:synonyms] = syn_list.respond_to?(:join) ? syn_list.join('|') : syn_list
   end
 
   def parents

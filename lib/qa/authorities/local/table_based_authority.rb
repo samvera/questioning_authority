@@ -9,7 +9,8 @@ module Qa::Authorities
         @checked_for_index ||= begin
           conn = ActiveRecord::Base.connection
           if table_or_view_exists? && !conn.indexes(table_name).find { |i| i.name == table_index }
-            Rails.logger.error "You've installed local authority tables, but you haven't indexed the label.  Rails doesn't support functional indexes in migrations, so you'll have to add this manually:\n" \
+            Rails.logger.error "You've installed local authority tables, but you haven't indexed the label.  " \
+              "Rails doesn't support functional indexes in migrations, so you'll have to add this manually:\n" \
               "CREATE INDEX \"#{table_index}\" ON \"#{table_name}\" (local_authority_id, lower(label))\n" \
               "   OR on Sqlite: \n" \
               "CREATE INDEX \"#{table_index}\" ON \"#{table_name}\" (local_authority_id, label collate nocase)\n" \

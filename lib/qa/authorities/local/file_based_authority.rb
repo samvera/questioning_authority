@@ -25,7 +25,7 @@ module Qa::Authorities
     private
 
       def terms
-        subauthority_hash = YAML.load(File.read(subauthority_filename))
+        subauthority_hash = YAML.load(File.read(subauthority_filename)) # rubocop:disable Security/YAMLLoad # TODO: Explore how to change this to safe_load.  Many tests fail when making this change.
         terms = subauthority_hash.with_indifferent_access.fetch(:terms, [])
         normalize_terms(terms)
       end

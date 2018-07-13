@@ -12,6 +12,7 @@ RSpec/MessageSpies:
 Metrics/BlockLength:
   ExcludedMethods: ['included']
   Exclude:
+    - 'qa.gemspec'
     - 'spec/**/*.rb'
 
 AllCops:
