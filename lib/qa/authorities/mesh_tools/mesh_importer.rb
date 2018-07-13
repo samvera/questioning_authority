@@ -1,7 +1,7 @@
 module Qa::Authorities
   module MeshTools
     class MeshImporter
-      def import_from_file(f)
+      def import_from_file(f) # rubocop:disable Metrics/MethodLength
         entries = []
         trees = []
         mesh = Qa::Authorities::MeshTools::MeshDataParser.new(f)

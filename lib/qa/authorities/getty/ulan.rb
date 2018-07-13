@@ -11,7 +11,7 @@ module Qa::Authorities
       "http://vocab.getty.edu/sparql.json?query=#{URI.escape(sparql(q)).gsub('&', '%26')}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"
     end
 
-    def sparql(q)
+    def sparql(q) # rubocop:disable Metrics/MethodLength
       search = untaint(q)
       # if more than one term is supplied, check both preferred and alt labels
       if search.include?(' ')

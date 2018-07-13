@@ -16,22 +16,22 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", "~> 5.0"
-  s.add_dependency "faraday"
-  s.add_dependency "nokogiri", "~> 1.6"
-  s.add_dependency "activerecord-import"
-  s.add_dependency "deprecation"
-  s.add_dependency "rdf"
+  s.add_dependency 'activerecord-import'
+  s.add_dependency 'deprecation'
+  s.add_dependency 'faraday'
+  s.add_dependency 'nokogiri', '~> 1.6'
+  s.add_dependency 'rails', '~> 5.0'
+  s.add_dependency 'rdf'
 
-  s.add_development_dependency "byebug"
-  s.add_development_dependency "pry"
-  s.add_development_dependency 'pry-byebug'
-  s.add_development_dependency "linkeddata"
-  s.add_development_dependency "engine_cart", '~> 0.8'
-  s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "simplecov"
-  s.add_development_dependency "sqlite3"
-  s.add_development_dependency "webmock"
   # the hyrax style guide is based on `bixby`. see `.rubocop.yml`
   s.add_development_dependency 'bixby', '~> 1.0.0'
+  s.add_development_dependency 'byebug'
+  s.add_development_dependency 'engine_cart', '~> 0.8'
+  s.add_development_dependency 'linkeddata'
+  s.add_development_dependency 'pry'
+  s.add_development_dependency 'pry-byebug'
+  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'webmock'
 end

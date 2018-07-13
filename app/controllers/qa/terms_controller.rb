@@ -32,7 +32,7 @@ class Qa::TermsController < ApplicationController
     head :not_found unless params[:vocab].present?
   end
 
-  def init_authority
+  def init_authority # rubocop:disable Metrics/MethodLength
     begin
       mod = authority_class.camelize.constantize
     rescue NameError
