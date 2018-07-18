@@ -57,11 +57,26 @@ module Qa::Authorities
           msg[a..z]
         end
 
+        # Filter a graph to the specified languages
+        # @param [RDF::Graph] the graph to be filtered.
+        # @param [String | Symbol | Array<String|Symbol>] language for filtering graph (e.g. "en" or :en or ["en", "fr"] or [:en, :fr])
+        # @returns [RDF::Graph] graph of linked data filtered on the specified languages
         def filter_language(graph, language)
           language = normalize_language(language)
           return graph if language.nil?
           graph.each do |st|
             graph.delete(st) unless !st.object.respond_to?(:language) || st.object.language.nil? || language.include?(st.object.language)
+          end
+          graph
+        end
+
+        # Filter a graph to remove any statement with a blanknode for the subject
+        # @param [RDF::Graph] the graph to be filtered.
+        # @returns [RDF::Graph] graph of linked data with blanknodes removed
+        def filter_out_blanknodes(graph)
+          return graph if graph.subjects.blank?
+          graph.each do |st|
+            graph.delete(st) if st.subject.anonymous?
           end
           graph
         end
