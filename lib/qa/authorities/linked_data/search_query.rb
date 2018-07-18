@@ -37,6 +37,7 @@ module Qa::Authorities
 
         def parse_search_authority_response(graph, language)
           graph = filter_language(graph, language) unless language.nil?
+          graph = filter_out_blanknodes(graph)
           results = extract_preds(graph, preds_for_search)
           consolidated_results = consolidate_search_results(results)
           json_results = convert_search_to_json(consolidated_results)
