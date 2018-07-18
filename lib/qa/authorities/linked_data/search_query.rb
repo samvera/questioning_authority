@@ -110,7 +110,10 @@ module Qa::Authorities
           return json_results unless supports_sort?
           json_results.sort! do |a, b|
             cmp = sort_when_missing_sort_predicate(a, b)
-            next unless cmp.nil?
+            next cmp unless cmp.nil?
+
+            cmp = numeric_sort(a, b)
+            next cmp unless cmp.nil?
 
             as = a[:sort].collect(&:downcase)
             bs = b[:sort].collect(&:downcase)
@@ -138,6 +141,18 @@ module Qa::Authorities
           return -1 if as.size <= current_list_size # consider shorter a list of values lower then longer b list
           return 1 if bs.size <= current_list_size # consider shorter b list of values lower then longer a list
           nil
+        end
+
+        def numeric_sort(a, b)
+          return nil if a[:sort].size > 1
+          return nil if b[:sort].size > 1
+          return nil unless s_is_i? a[:sort][0]
+          return nil unless s_is_i? b[:sort][0]
+          Integer(a[:sort][0]) <=> Integer(b[:sort][0])
+        end
+
+        def s_is_i?(s)
+          /\A[-+]?\d+\z/ === s # rubocop:disable Style/CaseEquality
         end
     end
   end
