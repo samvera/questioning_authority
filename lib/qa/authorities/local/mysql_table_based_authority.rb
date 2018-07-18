@@ -6,7 +6,7 @@ module Qa
 
         def self.check_for_index
           conn = ActiveRecord::Base.connection
-          if table_or_view_exists? && conn.index_name_exists?(table_name.to_sym, table_index, :default).blank?
+          if table_or_view_exists? && conn.index_name_exists?(table_name.to_sym, table_index, :default).blank? # rubocop:disable Style/GuardClause
             Rails.logger.error "You've installed mysql local authority tables, but you haven't indexed the lower label. "
             "Rails doesn't support functional indexes in migrations, so we tried to execute it for you but something went wrong...\n" \
             "Make sure your table has a lower_label column, which is virtually created, and that the column is indexed." \

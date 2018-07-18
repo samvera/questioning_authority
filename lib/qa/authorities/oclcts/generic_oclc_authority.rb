@@ -27,9 +27,7 @@ module Qa::Authorities
         a = {}
         zthes_record = raw_response.xpath("sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData/Zthes/term[termId='#{id}']", 'sru' => 'http://www.loc.gov/zing/srw/')
         zthes_record.children.each do |child|
-          if (child.is_a? Nokogiri::XML::Element) && !child.children.nil? && (child.children.size == 1) && (child.children.first.is_a? Nokogiri::XML::Text)
-            a[child.name] = child.children.first.to_s
-          end
+          a[child.name] = child.children.first.to_s if (child.is_a? Nokogiri::XML::Element) && !child.children.nil? && (child.children.size == 1) && (child.children.first.is_a? Nokogiri::XML::Text)
         end
         a
       end

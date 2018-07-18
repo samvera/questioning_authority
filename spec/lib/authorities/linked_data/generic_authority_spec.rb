@@ -93,6 +93,7 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
     #   # let(:lod_loc) { Qa::Authorities::LinkedData::GenericAuthority.new(:LOC) }
     # end
 
+    # rubocop:disable RSpec/NestedGroups
     describe "language processing" do
       context "when filtering #search results" do
         context "and lang NOT passed in" do
@@ -184,6 +185,7 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
         end
       end
     end
+    # rubocop:enable RSpec/NestedGroups
   end
 
   describe '#find' do
@@ -195,7 +197,7 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
       context 'with bad id' do
         before do
           stub_request(:get, 'http://id.worldcat.org/fast/FAKE_ID')
-            .to_return(status: 404, body: '', headers:  {})
+            .to_return(status: 404, body: '', headers: {})
         end
         it 'raises a TermNotFound exception' do
           expect { lod_oclc.find('FAKE_ID') }.to raise_error Qa::TermNotFound, /.*\/FAKE_ID\ Not Found - Term may not exist at LOD Authority./
@@ -256,14 +258,19 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
         it 'has primary predicates in pred-obj list' do
           expect(results['predicates']['http://purl.org/dc/terms/identifier']).to eq ['530369']
           expect(results['predicates']['http://www.w3.org/2004/02/skos/core#prefLabel']).to eq ['Cornell University']
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#altLabel']).to include('Ithaca (N.Y.). Cornell University', "Kornel\\xCA\\xB9skii universitet", "K\\xCA\\xBBang-nai-erh ta hs\\xC3\\xBCeh")
+          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#altLabel'])
+            .to include('Ithaca (N.Y.). Cornell University', "Kornel\\xCA\\xB9skii universitet",
+                        "K\\xCA\\xBBang-nai-erh ta hs\\xC3\\xBCeh")
           expect(results['predicates']['http://schema.org/sameAs']).to include('http://id.loc.gov/authorities/names/n79021621', 'https://viaf.org/viaf/126293486')
         end
 
         it 'has unspecified predicate values' do
           expect(results['predicates']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type']).to eq ['http://schema.org/Organization']
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#inScheme']).to include('http://id.worldcat.org/fast/ontology/1.0/#fast', 'http://id.worldcat.org/fast/ontology/1.0/#facet-Corporate')
-          expect(results['predicates']['http://schema.org/name']).to include('Cornell University', 'Ithaca (N.Y.). Cornell University', "Kornel\\xCA\\xB9skii universitet", "K\\xCA\\xBBang-nai-erh ta hs\\xC3\\xBCeh")
+          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#inScheme'])
+            .to include('http://id.worldcat.org/fast/ontology/1.0/#fast', 'http://id.worldcat.org/fast/ontology/1.0/#facet-Corporate')
+          expect(results['predicates']['http://schema.org/name'])
+            .to include('Cornell University', 'Ithaca (N.Y.). Cornell University', "Kornel\\xCA\\xB9skii universitet",
+                        "K\\xCA\\xBBang-nai-erh ta hs\\xC3\\xBCeh")
         end
       end
     end
@@ -290,11 +297,24 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
         it 'has primary predicates in pred-obj list' do
           expect(results['predicates']['http://www.w3.org/2004/02/skos/core#prefLabel']).to eq ['buttermilk']
           expect(results['predicates']['http://www.w3.org/2004/02/skos/core#broader']).to eq ['http://aims.fao.org/aos/agrovoc/c_4830']
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#exactMatch']).to include('http://cat.aii.caas.cn/concept/c_26308', 'http://lod.nal.usda.gov/nalt/20627', 'http://d-nb.info/gnd/4147072-2')
+          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#exactMatch'])
+            .to include('http://cat.aii.caas.cn/concept/c_26308', 'http://lod.nal.usda.gov/nalt/20627',
+                        'http://d-nb.info/gnd/4147072-2')
         end
 
         it 'has skos predicate values' do
-          expect(results['predicates']['http://www.w3.org/2008/05/skos-xl#prefLabel']).to include('http://aims.fao.org/aos/agrovoc/xl_es_1299487482038', 'http://aims.fao.org/aos/agrovoc/xl_it_1299487482154', 'http://aims.fao.org/aos/agrovoc/xl_ko_1299487482210', 'http://aims.fao.org/aos/agrovoc/xl_pl_1299487482273', 'http://aims.fao.org/aos/agrovoc/xl_sk_1299487482378', 'http://aims.fao.org/aos/agrovoc/xl_en_1299487482019', 'http://aims.fao.org/aos/agrovoc/xl_tr_9513_1321792194941', 'http://aims.fao.org/aos/agrovoc/xl_de_1299487482000', 'http://aims.fao.org/aos/agrovoc/xl_fa_1299487482058', 'http://aims.fao.org/aos/agrovoc/xl_th_1299487482417', 'http://aims.fao.org/aos/agrovoc/xl_fr_1299487482080', 'http://aims.fao.org/aos/agrovoc/xl_hi_1299487482102', 'http://aims.fao.org/aos/agrovoc/xl_ar_1299487481966', 'http://aims.fao.org/aos/agrovoc/xl_ja_1299487482181', 'http://aims.fao.org/aos/agrovoc/xl_lo_1299487482240', 'http://aims.fao.org/aos/agrovoc/xl_ru_1299487482341', 'http://aims.fao.org/aos/agrovoc/xl_cs_1299487481982', 'http://aims.fao.org/aos/agrovoc/xl_zh_1299487482458', 'http://aims.fao.org/aos/agrovoc/xl_pt_1299487482307', 'http://aims.fao.org/aos/agrovoc/xl_hu_1299487482127')
+          expect(results['predicates']['http://www.w3.org/2008/05/skos-xl#prefLabel'])
+            .to include('http://aims.fao.org/aos/agrovoc/xl_es_1299487482038', 'http://aims.fao.org/aos/agrovoc/xl_it_1299487482154',
+                        'http://aims.fao.org/aos/agrovoc/xl_ko_1299487482210', 'http://aims.fao.org/aos/agrovoc/xl_pl_1299487482273',
+                        'http://aims.fao.org/aos/agrovoc/xl_sk_1299487482378', 'http://aims.fao.org/aos/agrovoc/xl_en_1299487482019',
+                        'http://aims.fao.org/aos/agrovoc/xl_tr_9513_1321792194941',
+                        'http://aims.fao.org/aos/agrovoc/xl_de_1299487482000', 'http://aims.fao.org/aos/agrovoc/xl_fa_1299487482058',
+                        'http://aims.fao.org/aos/agrovoc/xl_th_1299487482417', 'http://aims.fao.org/aos/agrovoc/xl_fr_1299487482080',
+                        'http://aims.fao.org/aos/agrovoc/xl_hi_1299487482102', 'http://aims.fao.org/aos/agrovoc/xl_ar_1299487481966',
+                        'http://aims.fao.org/aos/agrovoc/xl_ja_1299487482181', 'http://aims.fao.org/aos/agrovoc/xl_lo_1299487482240',
+                        'http://aims.fao.org/aos/agrovoc/xl_ru_1299487482341', 'http://aims.fao.org/aos/agrovoc/xl_cs_1299487481982',
+                        'http://aims.fao.org/aos/agrovoc/xl_zh_1299487482458', 'http://aims.fao.org/aos/agrovoc/xl_pt_1299487482307',
+                        'http://aims.fao.org/aos/agrovoc/xl_hu_1299487482127')
           expect(results['predicates']['http://www.w3.org/2004/02/skos/core#inScheme']).to eq ['http://aims.fao.org/aos/agrovoc']
           expect(results['predicates']['http://www.w3.org/2004/02/skos/core#closeMatch']).to eq ['http://dbpedia.org/resource/Buttermilk']
           expect(results['predicates']['http://www.w3.org/2008/05/skos-xl#altLabel']).to eq ['http://aims.fao.org/aos/agrovoc/xl_fa_1299487482544']
@@ -337,22 +357,43 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
 
         it 'has loc mads predicate values' do
           expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#classification']).to eq ['Q']
-          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#isMemberOfMADSCollection']).to include('http://id.loc.gov/authorities/subjects/collection_LCSHAuthorizedHeadings', 'http://id.loc.gov/authorities/subjects/collection_LCSH_General', 'http://id.loc.gov/authorities/subjects/collection_SubdivideGeographically')
-          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#hasCloseExternalAuthority']).to include('http://data.bnf.fr/ark:/12148/cb12321484k', 'http://data.bnf.fr/ark:/12148/cb119673416', 'http://data.bnf.fr/ark:/12148/cb119934236', 'http://data.bnf.fr/ark:/12148/cb12062047t', 'http://data.bnf.fr/ark:/12148/cb119469567', 'http://data.bnf.fr/ark:/12148/cb11933232c', 'http://data.bnf.fr/ark:/12148/cb122890536', 'http://data.bnf.fr/ark:/12148/cb121155321', 'http://data.bnf.fr/ark:/12148/cb15556043g', 'http://data.bnf.fr/ark:/12148/cb123662513', 'http://d-nb.info/gnd/4066562-8', 'http://data.bnf.fr/ark:/12148/cb120745812', 'http://data.bnf.fr/ark:/12148/cb11973101n', 'http://data.bnf.fr/ark:/12148/cb13328497r')
-          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#isMemberOfMADSScheme']).to eq ['http://id.loc.gov/authorities/subjects']
-          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#editorialNote']).to eq ['headings beginning with the word [Scientific;] and subdivision [Science] under ethnic groups and individual wars, e.g. [World War, 1939-1945--Science]']
+          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#isMemberOfMADSCollection'])
+            .to include('http://id.loc.gov/authorities/subjects/collection_LCSHAuthorizedHeadings',
+                        'http://id.loc.gov/authorities/subjects/collection_LCSH_General',
+                        'http://id.loc.gov/authorities/subjects/collection_SubdivideGeographically')
+          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#hasCloseExternalAuthority'])
+            .to include('http://data.bnf.fr/ark:/12148/cb12321484k', 'http://data.bnf.fr/ark:/12148/cb119673416',
+                        'http://data.bnf.fr/ark:/12148/cb119934236', 'http://data.bnf.fr/ark:/12148/cb12062047t',
+                        'http://data.bnf.fr/ark:/12148/cb119469567', 'http://data.bnf.fr/ark:/12148/cb11933232c',
+                        'http://data.bnf.fr/ark:/12148/cb122890536', 'http://data.bnf.fr/ark:/12148/cb121155321',
+                        'http://data.bnf.fr/ark:/12148/cb15556043g', 'http://data.bnf.fr/ark:/12148/cb123662513',
+                        'http://d-nb.info/gnd/4066562-8', 'http://data.bnf.fr/ark:/12148/cb120745812',
+                        'http://data.bnf.fr/ark:/12148/cb11973101n', 'http://data.bnf.fr/ark:/12148/cb13328497r')
+          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#isMemberOfMADSScheme'])
+            .to eq ['http://id.loc.gov/authorities/subjects']
+          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#editorialNote'])
+            .to eq ['headings beginning with the word [Scientific;] and subdivision [Science] under ethnic groups and individual wars, e.g. [World War, 1939-1945--Science]']
         end
 
         it 'has more unspecified predicate values' do
           expect(results['predicates']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type']).to include('http://www.loc.gov/mads/rdf/v1#Topic', 'http://www.loc.gov/mads/rdf/v1#Authority', 'http://www.w3.org/2004/02/skos/core#Concept')
           expect(results['predicates']['http://www.w3.org/2002/07/owl#sameAs']).to include('info:lc/authorities/sh85118553', 'http://id.loc.gov/authorities/sh85118553#concept')
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#closeMatch']).to include('http://data.bnf.fr/ark:/12148/cb12321484k', 'http://data.bnf.fr/ark:/12148/cb119673416', 'http://data.bnf.fr/ark:/12148/cb119934236', 'http://data.bnf.fr/ark:/12148/cb12062047t', 'http://data.bnf.fr/ark:/12148/cb119469567', 'http://data.bnf.fr/ark:/12148/cb11933232c', 'http://data.bnf.fr/ark:/12148/cb122890536', 'http://data.bnf.fr/ark:/12148/cb121155321', 'http://data.bnf.fr/ark:/12148/cb15556043g', 'http://data.bnf.fr/ark:/12148/cb123662513', 'http://d-nb.info/gnd/4066562-8', 'http://data.bnf.fr/ark:/12148/cb120745812', 'http://data.bnf.fr/ark:/12148/cb11973101n', 'http://data.bnf.fr/ark:/12148/cb13328497r')
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#editorial']).to eq ['headings beginning with the word [Scientific;] and subdivision [Science] under ethnic groups and individual wars, e.g. [World War, 1939-1945--Science]']
+          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#closeMatch'])
+            .to include('http://data.bnf.fr/ark:/12148/cb12321484k', 'http://data.bnf.fr/ark:/12148/cb119673416',
+                        'http://data.bnf.fr/ark:/12148/cb119934236', 'http://data.bnf.fr/ark:/12148/cb12062047t',
+                        'http://data.bnf.fr/ark:/12148/cb119469567', 'http://data.bnf.fr/ark:/12148/cb11933232c',
+                        'http://data.bnf.fr/ark:/12148/cb122890536', 'http://data.bnf.fr/ark:/12148/cb121155321',
+                        'http://data.bnf.fr/ark:/12148/cb15556043g', 'http://data.bnf.fr/ark:/12148/cb123662513',
+                        'http://d-nb.info/gnd/4066562-8', 'http://data.bnf.fr/ark:/12148/cb120745812',
+                        'http://data.bnf.fr/ark:/12148/cb11973101n', 'http://data.bnf.fr/ark:/12148/cb13328497r')
+          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#editorial'])
+            .to eq ['headings beginning with the word [Scientific;] and subdivision [Science] under ethnic groups and individual wars, e.g. [World War, 1939-1945--Science]']
           expect(results['predicates']['http://www.w3.org/2004/02/skos/core#inScheme']).to eq ['http://id.loc.gov/authorities/subjects']
         end
       end
     end
 
+    # rubocop:disable RSpec/NestedGroups
     describe "language processing" do
       context "when filtering #find result" do
         context "and lang NOT passed in" do
@@ -461,6 +502,7 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
         end
       end
     end
+    # rubocop:enable RSpec/NestedGroups
   end
 
   describe '#new' do

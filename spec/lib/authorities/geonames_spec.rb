@@ -37,12 +37,12 @@ describe Qa::Authorities::Geonames do
       end
 
       context "with custom label" do
+        let!(:original_label) { described_class.label }
         before do
-          @original_label = described_class.label
-          described_class.label = -> (item) { item['name'] }
+          described_class.label = ->(item) { item['name'] }
         end
         after do
-          described_class.label = @original_label
+          described_class.label = original_label
         end
         it "uses the lambda" do
           expect(subject.first['label']).to eq("Port Moresby")

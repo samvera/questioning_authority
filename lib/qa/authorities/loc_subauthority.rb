@@ -18,7 +18,7 @@ module Qa::Authorities::LocSubauthority
     ]
   end
 
-  def vocabularies
+  def vocabularies # rubocop:disable Metrics/MethodLength
     [
       "graphicMaterials",
       "organizations",
@@ -40,7 +40,7 @@ module Qa::Authorities::LocSubauthority
     ["edtf"]
   end
 
-  def preservation
+  def preservation # rubocop:disable Metrics/MethodLength
     [
       "contentLocationType",
       "copyrightStatus",

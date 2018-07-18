@@ -76,7 +76,7 @@ module Qa::Authorities
           preds
         end
 
-        def consolidate_term_results(results)
+        def consolidate_term_results(results) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize # TODO: Explore a way to simplify
           consolidated_results = {}
           results.each do |statement|
             stmt_hash = statement.to_h
@@ -123,7 +123,7 @@ module Qa::Authorities
           json_results.first
         end
 
-        def predicates_with_subject_uri(graph, expected_uri)
+        def predicates_with_subject_uri(graph, expected_uri) # rubocop:disable Metrics/MethodLength
           predicates_hash = {}
           graph.statements.each do |st|
             subj = st.subject.to_s

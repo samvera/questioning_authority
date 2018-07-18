@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# rubocop:disable RSpec/InstanceVariable # TODO: Explore if there is a way to remove this disable
 describe Qa::SubjectMeshTerm, type: :model do
   before(:all) do
     @term = Qa::SubjectMeshTerm.new
@@ -47,3 +48,4 @@ describe Qa::SubjectMeshTerm, type: :model do
   #  @term.parents.map { |p| p.term_id }.should == ["1", "2", "3"]
   # end
 end
+# rubocop:enable RSpec/InstanceVariable

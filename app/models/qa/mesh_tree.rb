@@ -6,12 +6,8 @@ class Qa::MeshTree < ActiveRecord::Base
   end
 
   def eval_tree_path
-    trees = read_attribute(:eval_tree_path) || write_attribute(:eval_tree_path, "")
-    if trees
-      trees.split("|")
-    else
-      []
-    end
+    trees = self[:eval_tree_path] || (self[:eval_tree_path] = "")
+    trees ? trees.split("|") : []
   end
 
   def classify_tree
@@ -20,10 +16,10 @@ class Qa::MeshTree < ActiveRecord::Base
   end
 
   def classify_tree!
-    unless classify_tree.empty?
+    unless classify_tree.empty? # rubocop:disable Style/GuardClause
       tree_path = classify_tree.join('|')
-      puts "After Join #{tree_path.inspect}"
-      update_attribute(:eval_tree_path, tree_path)
+      Rails.logger.info "After Join #{tree_path.inspect}"
+      update_attribute(:eval_tree_path, tree_path) # rubocop:disable Rails/SkipsModelValidations # TODO: Explore how to avoid use of update_attribute.
     end
   end
 

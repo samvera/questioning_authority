@@ -20,15 +20,13 @@ module Qa::Authorities
         if config[:local_path].starts_with?(File::Separator)
           config[:local_path]
         else
-          File.join(Rails.root, config[:local_path])
+          Rails.root.join(config[:local_path]).to_s # TODO: Rails.root.join returns class Pathname, which may be ok.  Added to_s because of failing regression test.
         end
       end
 
       # Local sub-authorities are any YAML files in the subauthorities_path
       def names
-        unless Dir.exist? subauthorities_path
-          raise Qa::ConfigDirectoryNotFound, "There's no directory at #{subauthorities_path}. You must create it in order to use local authorities"
-        end
+        raise Qa::ConfigDirectoryNotFound, "There's no directory at #{subauthorities_path}. You must create it in order to use local authorities" unless Dir.exist? subauthorities_path
         Dir.entries(subauthorities_path).map { |f| File.basename(f, ".yml") if f =~ /yml$/ }.compact
       end
 

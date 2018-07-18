@@ -370,32 +370,35 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
   end
 
+  # rubocop:disable RSpec/RepeatedExample
   describe '#term_url_with_replacements' do
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_url_with_replacements('C123')).to eq nil
     end
-    it 'returns the url with query substitution applied' do
-      expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=alpha&param2=beta'
-      expect(full_config.term_url_with_replacements('C123')).to eq expected_url
-    end
-    it 'returns the url with default subauthority when NOT specified' do
-      expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=alpha&param2=beta'
-      expect(full_config.term_url_with_replacements('C123')).to eq expected_url
-    end
-    it 'returns the url with subauthority substitution when specified' do
-      expected_url = 'http://localhost/test_default/term/term_sub3_name/C123?param1=alpha&param2=beta'
-      expect(full_config.term_url_with_replacements('C123', 'term_sub3_key')).to eq expected_url
-    end
-    it 'returns the url with default values when replacements are NOT specified' do
-      expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=alpha&param2=beta'
-      expect(full_config.term_url_with_replacements('C123')).to eq expected_url
-    end
-    it 'returns the url with replacement substitution values when replacements are specified' do
-      expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=golf&param2=hotel'
-      expect(full_config.term_url_with_replacements('C123', nil, param1: 'golf', param2: 'hotel')).to eq expected_url
+    context 'when subauthorities ARE defined' do
+      it 'returns the url with query substitution applied' do
+        expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=alpha&param2=beta'
+        expect(full_config.term_url_with_replacements('C123')).to eq expected_url
+      end
+      it 'returns the url with default subauthority when NOT specified' do
+        expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=alpha&param2=beta'
+        expect(full_config.term_url_with_replacements('C123')).to eq expected_url
+      end
+      it 'returns the url with subauthority substitution when specified' do
+        expected_url = 'http://localhost/test_default/term/term_sub3_name/C123?param1=alpha&param2=beta'
+        expect(full_config.term_url_with_replacements('C123', 'term_sub3_key')).to eq expected_url
+      end
+      it 'returns the url with default values when replacements are NOT specified' do
+        expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=alpha&param2=beta'
+        expect(full_config.term_url_with_replacements('C123')).to eq expected_url
+      end
+      it 'returns the url with replacement substitution values when replacements are specified' do
+        expected_url = 'http://localhost/test_default/term/term_sub2_name/C123?param1=golf&param2=hotel'
+        expect(full_config.term_url_with_replacements('C123', nil, param1: 'golf', param2: 'hotel')).to eq expected_url
+      end
     end
 
-    context 'when subauthorities are not defined' do
+    context 'when subauthorities are NOT defined' do
       it 'returns the url with query substitution applied' do
         expected_url = 'http://localhost/test_default/term/C123'
         expect(min_config.term_url_with_replacements('C123')).to eq expected_url
@@ -426,4 +429,5 @@ describe Qa::Authorities::LinkedData::TermConfig do
       end
     end
   end
+  # rubocop:enable RSpec/RepeatedExample
 end

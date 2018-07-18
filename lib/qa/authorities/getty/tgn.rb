@@ -16,7 +16,7 @@ module Qa::Authorities
     # Use a regex to exclude the continent and 'world' from the query
     # If only one word is entered only search the name (not the parent string)
     # If more than one word is entered, one word must appear in the name, and all words in either parent or name
-    def sparql(q)
+    def sparql(q) # rubocop:disable Metrics/MethodLength
       search = untaint(q)
       if search.include?(' ')
         ex = "(("

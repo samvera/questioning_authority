@@ -14,7 +14,7 @@ class Qa::LinkedDataTermsController < ApplicationController
 
   # Return a list of terms based on a query
   # @see Qa::Authorities::LinkedData::SearchQuery#search
-  def search
+  def search # rubocop:disable Metrics/MethodLength
     begin
       terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params)
     rescue Qa::ServiceUnavailable
@@ -26,7 +26,8 @@ class Qa::LinkedDataTermsController < ApplicationController
       head :internal_server_error
       return
     rescue RDF::FormatError
-      logger.warn "RDF Format Error - Results from search query #{query} for#{subauth_warn_msg} authority #{vocab_param} was not identified as a valid RDF format.  You may need to include the linkeddata gem."
+      logger.warn "RDF Format Error - Results from search query #{query} for#{subauth_warn_msg} authority #{vocab_param} " \
+                  "was not identified as a valid RDF format.  You may need to include the linkeddata gem."
       head :internal_server_error
       return
     end
@@ -35,7 +36,7 @@ class Qa::LinkedDataTermsController < ApplicationController
 
   # Return all the information for a given term
   # @see Qa::Authorities::LinkedData::FindTerm#find
-  def show
+  def show # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     begin
       term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params)
     rescue Qa::TermNotFound
@@ -51,7 +52,8 @@ class Qa::LinkedDataTermsController < ApplicationController
       head :internal_server_error
       return
     rescue RDF::FormatError
-      logger.warn "RDF Format Error - Results from fetch term #{id} for#{subauth_warn_msg} authority #{vocab_param} was not identified as a valid RDF format.  You may need to include the linkeddata gem."
+      logger.warn "RDF Format Error - Results from fetch term #{id} for#{subauth_warn_msg} authority #{vocab_param} " \
+                  "was not identified as a valid RDF format.  You may need to include the linkeddata gem."
       head :internal_server_error
       return
     end
@@ -61,7 +63,7 @@ class Qa::LinkedDataTermsController < ApplicationController
   private
 
     def check_authority
-      if params[:vocab].nil? || !params[:vocab].size.positive?
+      if params[:vocab].nil? || !params[:vocab].size.positive? # rubocop:disable Style/GuardClause
         logger.warn "Required param 'vocab' is missing or empty"
         head :bad_request
       end
@@ -69,7 +71,7 @@ class Qa::LinkedDataTermsController < ApplicationController
 
     def check_search_subauthority
       return if subauthority.nil?
-      unless @authority.search_subauthority?(subauthority)
+      unless @authority.search_subauthority?(subauthority) # rubocop:disable Style/GuardClause
         logger.warn "Unable to initialize linked data search sub-authority '#{subauthority}' for authority '#{vocab_param}'"
         head :bad_request
       end
@@ -77,7 +79,7 @@ class Qa::LinkedDataTermsController < ApplicationController
 
     def check_show_subauthority
       return if subauthority.nil?
-      unless @authority.term_subauthority?(subauthority)
+      unless @authority.term_subauthority?(subauthority) # rubocop:disable Style/GuardClause
         logger.warn "Unable to initialize linked data term sub-authority '#{subauthority}' for authority '#{vocab_param}'"
         head :bad_request
       end
@@ -95,7 +97,7 @@ class Qa::LinkedDataTermsController < ApplicationController
     end
 
     def check_query_param
-      if params[:q].nil? || !params[:q].size.positive?
+      if params[:q].nil? || !params[:q].size.positive? # rubocop:disable Style/GuardClause
         logger.warn "Required search param 'q' is missing or empty"
         head :bad_request
       end
@@ -107,7 +109,7 @@ class Qa::LinkedDataTermsController < ApplicationController
     end
 
     def check_id_param
-      if params[:id].nil? || !params[:id].size.positive?
+      if params[:id].nil? || !params[:id].size.positive? # rubocop:disable Style/GuardClause
         logger.warn "Required show param 'id' is missing or empty"
         head :bad_request
       end

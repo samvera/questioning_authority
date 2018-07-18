@@ -8,11 +8,11 @@ describe Qa::Authorities::Local do
   end
 
   describe "#subauthorities_path" do
+    let!(:original_path) { described_class.config[:local_path] }
     before do
-      @original_path = described_class.config[:local_path]
       described_class.config[:local_path] = path
     end
-    after { described_class.config[:local_path] = @original_path }
+    after { described_class.config[:local_path] = original_path }
 
     context "configured with a full path" do
       let(:path) { "/full/path" }
@@ -25,8 +25,8 @@ describe Qa::Authorities::Local do
     context "configured with a relative path" do
       let(:path) { "relative/path" }
 
-      it "returns a path relative to the Rails applicaition" do
-        expect(described_class.subauthorities_path).to eq(File.join(Rails.root, path))
+      it "returns a path relative to the Rails application" do
+        expect(described_class.subauthorities_path).to eq(Rails.root.join(path).to_s)
       end
     end
   end
@@ -37,11 +37,11 @@ describe Qa::Authorities::Local do
     end
 
     context "when the path doesn't exist" do
+      let!(:original_path) { described_class.config[:local_path] }
       before do
-        @original_path = described_class.config[:local_path]
         described_class.config[:local_path] = '/foo/bar'
       end
-      after { described_class.config[:local_path] = @original_path }
+      after { described_class.config[:local_path] = original_path }
 
       it "raises an error" do
         expect { described_class.names }.to raise_error Qa::ConfigDirectoryNotFound
@@ -70,8 +70,7 @@ describe Qa::Authorities::Local do
   describe ".register" do
     before do
       class SolrAuthority
-        def initialize(one)
-        end
+        def initialize(one); end
       end
       described_class.register_subauthority('new_sub', 'SolrAuthority')
     end

@@ -8,7 +8,7 @@ Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'linked_data', '*.json')
 end
 
 # load app configured linked data authorities and overrides
-Dir[File.join(Rails.root, 'config', 'authorities', 'linked_data', '*.json')].each do |fn|
+Dir[Rails.root.join('config', 'authorities', 'linked_data', '*.json')].each do |fn|
   auth = File.basename(fn, '.json').upcase.to_sym
   json = File.read(File.expand_path(fn, __FILE__))
   cfg = JSON.parse(json).deep_symbolize_keys

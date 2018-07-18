@@ -19,7 +19,7 @@ require 'pry'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   config.fixture_path = File.expand_path("../fixtures", __FILE__)
@@ -49,7 +49,7 @@ end
 
 # returns the file contents
 def load_fixture_file(fname)
-  File.open(Rails.root.join("spec/fixtures", fname)) do |f|
+  File.open(Rails.root.join('spec', 'fixtures', fname)) do |f|
     return f.read
   end
 end

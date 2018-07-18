@@ -69,7 +69,8 @@ describe Qa::Authorities::Getty::TGN do
   describe "#sparql" do
     context "using a single subject term" do
       subject { authority.sparql('search_term') }
-      it { is_expected.to eq 'SELECT DISTINCT ?s ?name ?par {
+      it {
+        is_expected.to eq 'SELECT DISTINCT ?s ?name ?par {
               ?s a skos:Concept; luc:term "search_term";
                  skos:inScheme <http://vocab.getty.edu/tgn/> ;
                  gvp:prefLabelGVP [skosxl:literalForm ?name] ;
@@ -79,13 +80,16 @@ describe Qa::Authorities::Getty::TGN do
     end
     context "using a two subject terms" do
       subject { authority.sparql('search term') }
-      it { is_expected.to eq "SELECT DISTINCT ?s ?name ?par {
+      # rubocop:disable Metrics/LineLength
+      it {
+        is_expected.to eq "SELECT DISTINCT ?s ?name ?par {
               ?s a skos:Concept; luc:term \"search term\";
                  skos:inScheme <http://vocab.getty.edu/tgn/> ;
                  gvp:prefLabelGVP [skosxl:literalForm ?name] ;
                   gvp:parentString ?par .
               FILTER ((regex(CONCAT(?name, ', ', REPLACE(str(?par), \",[^,]+,[^,]+$\", \"\")), \"search\",\"i\" ) && regex(CONCAT(?name, ', ', REPLACE(str(?par), \",[^,]+,[^,]+$\", \"\")), \"term\",\"i\" ) ) && (regex(?name, \"search\",\"i\" ) || regex(?name, \"term\",\"i\" ) ) ) .
             } ORDER BY ?name ASC(?par)" }
+      # rubocop:enable Metrics/LineLength
     end
   end
 end

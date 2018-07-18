@@ -5,7 +5,7 @@ module Qa::Local
       source_root File.expand_path('../templates', __FILE__)
       include ActiveRecord::Generators::Migration
 
-      def migrations
+      def migrations # rubocop:disable Metrics/MethodLength
         unless defined?(ActiveRecord::ConnectionAdapters::Mysql2Adapter) && ActiveRecord::Base.connection.instance_of?(ActiveRecord::ConnectionAdapters::Mysql2Adapter)
           message = "Use the table based generator if you are not using mysql 'rails generate qa:local:tables'"
           say_status("error", message, :red)

@@ -69,7 +69,8 @@ describe Qa::Authorities::Getty::Ulan do
   describe "#sparql" do
     context "using a single subject term" do
       subject { authority.sparql('search_term') }
-      it { is_expected.to eq 'SELECT DISTINCT ?s ?name ?bio {
+      it {
+        is_expected.to eq 'SELECT DISTINCT ?s ?name ?bio {
               ?s a skos:Concept; luc:term "search_term";
                  skos:inScheme <http://vocab.getty.edu/ulan/> ;
                  gvp:prefLabelGVP [skosxl:literalForm ?name] ;
@@ -80,7 +81,8 @@ describe Qa::Authorities::Getty::Ulan do
     end
     context "using a two subject terms" do
       subject { authority.sparql('search term') }
-      it { is_expected.to eq "SELECT DISTINCT ?s ?name ?bio {
+      it {
+        is_expected.to eq "SELECT DISTINCT ?s ?name ?bio {
               ?s a skos:Concept; luc:term \"search term\";
                  skos:inScheme <http://vocab.getty.edu/ulan/> ;
                  gvp:prefLabelGVP [skosxl:literalForm ?name] ;

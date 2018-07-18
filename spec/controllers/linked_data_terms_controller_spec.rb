@@ -6,13 +6,13 @@ describe Qa::LinkedDataTermsController, type: :controller do
   end
 
   describe '#check_authority' do
-    it 'returns 400 if the vocabulary is not specified' do
+    it 'for search returns 400 if the vocabulary is not specified' do
       expect(Rails.logger).to receive(:warn).with("Required param 'vocab' is missing or empty")
       get :search, params: { q: 'a query', vocab: '' }
       expect(response.code).to eq('400')
     end
 
-    it 'returns 400 if the vocabulary is not specified' do
+    it 'for show returns 400 if the vocabulary is not specified' do
       expect(Rails.logger).to receive(:warn).with("Required param 'vocab' is missing or empty")
       get :show, params: { id: 'C_1234', vocab: '' }
       expect(response.code).to eq('400')
@@ -92,7 +92,8 @@ describe Qa::LinkedDataTermsController, type: :controller do
           allow(RDF::Graph).to receive(:load).and_raise(RDF::FormatError)
         end
         it 'returns 500' do
-          expect(Rails.logger).to receive(:warn).with("RDF Format Error - Results from search query my_query for authority OCLC_FAST was not identified as a valid RDF format.  You may need to include the linkeddata gem.")
+          msg = "RDF Format Error - Results from search query my_query for authority OCLC_FAST was not identified as a valid RDF format.  You may need to include the linkeddata gem."
+          expect(Rails.logger).to receive(:warn).with(msg)
           get :search, params: { q: 'my_query', vocab: 'OCLC_FAST', maximumRecords: '3' }
           expect(response.code).to eq('500')
         end
@@ -214,7 +215,8 @@ describe Qa::LinkedDataTermsController, type: :controller do
           allow(RDF::Graph).to receive(:load).and_raise(RDF::FormatError)
         end
         it 'returns 500' do
-          expect(Rails.logger).to receive(:warn).with("RDF Format Error - Results from fetch term 530369 for authority OCLC_FAST was not identified as a valid RDF format.  You may need to include the linkeddata gem.")
+          msg = "RDF Format Error - Results from fetch term 530369 for authority OCLC_FAST was not identified as a valid RDF format.  You may need to include the linkeddata gem."
+          expect(Rails.logger).to receive(:warn).with(msg)
           get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
           expect(response.code).to eq('500')
         end
@@ -245,7 +247,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
 
     context 'when requested term is not found at the server' do
       before do
-        stub_request(:get, 'http://id.worldcat.org/fast/FAKE_ID').to_return(status: 404, body: '', headers:  {})
+        stub_request(:get, 'http://id.worldcat.org/fast/FAKE_ID').to_return(status: 404, body: '', headers: {})
       end
       it 'returns 404' do
         expect(Rails.logger).to receive(:warn).with('Term Not Found - Fetch term FAKE_ID unsuccessful for authority OCLC_FAST')

@@ -1,8 +1,12 @@
 require: rubocop-rspec
 
-Metrics/CyclomaticComplexity:
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 9
   Exclude:
-    - 'lib/qa/authorities/mesh_tools/mesh_data_parser.rb'
+    - 'spec/**/*.rb'
 
 Metrics/ClassLength:
   Exclude:
@@ -11,11 +15,6 @@ Metrics/ClassLength:
     - 'lib/qa/authorities/linked_data/search_query.rb'
     - 'lib/qa/authorities/linked_data/config/term_config.rb'
 
-RSpec/ExampleLength:
-  Max: 7
+Metrics/CyclomaticComplexity:
   Exclude:
-    - 'spec/lib/mesh_data_parser_spec.rb'
-    - 'spec/lib/authorities/mesh_spec.rb'
-
-RSpec/NamedSubject:
-  Enabled: false
+    - 'lib/qa/authorities/mesh_tools/mesh_data_parser.rb'

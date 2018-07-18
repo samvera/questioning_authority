@@ -61,7 +61,7 @@ module Qa::Authorities
           preds
         end
 
-        def consolidate_search_results(results)
+        def consolidate_search_results(results) # rubocop:disable Metrics/MethodLength
           consolidated_results = {}
           return consolidated_results if results.nil? || !results.count.positive?
           results.each do |statement|
@@ -105,7 +105,7 @@ module Qa::Authorities
           lbl
         end
 
-        def sort_search_results(json_results)
+        def sort_search_results(json_results) # rubocop:disable Metrics/MethodLength
           return json_results unless supports_sort?
           json_results.sort! do |a, b|
             cmp = sort_when_missing_sort_predicate(a, b)

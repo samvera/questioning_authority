@@ -68,7 +68,8 @@ describe Qa::Authorities::Getty::AAT do
 
   describe "#sparql" do
     subject { authority.sparql('search_term') }
-    it { is_expected.to eq 'SELECT ?s ?name {
+    it {
+      is_expected.to eq 'SELECT ?s ?name {
               ?s a skos:Concept; luc:term "search_term";
                  skos:inScheme <http://vocab.getty.edu/aat/> ;
                  gvp:prefLabelGVP [skosxl:literalForm ?name].

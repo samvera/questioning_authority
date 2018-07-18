@@ -47,6 +47,7 @@ EOS
     expect(records[1]).to eq({})
   end
 
+  # rubocop:disable Metrics/LineLength
   it 'parses a sample mesh file' do
     mesh = described_class.new(webmock_fixture('mesh.txt'))
     records = mesh.all_records
@@ -116,4 +117,5 @@ EOS
                              "DX" => ["19840101"],
                              "UI" => ["D000001"])
   end
+  # rubocop:enable Metrics/LineLength
 end

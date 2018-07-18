@@ -1,7 +1,7 @@
 # Encapsulate information about assignFAST subauthorities
 module Qa::Authorities::AssignFastSubauthority
   # Hash of subauthority names used in qa routes => 'index' used by API
-  Subauthorities = {
+  SUBAUTHORITIES = {
     'all'        => 'suggestall',
     'personal'   => 'suggest00',
     'corporate'  => 'suggest10',
@@ -16,7 +16,7 @@ module Qa::Authorities::AssignFastSubauthority
   #
   # @return [Array<String>]
   def subauthorities
-    Subauthorities.keys
+    SUBAUTHORITIES.keys
   end
 
   # Get an API index name from an English name
@@ -24,6 +24,6 @@ module Qa::Authorities::AssignFastSubauthority
   # @param [String] English name
   # @return [String] index name
   def index_for_authority(authority)
-    Subauthorities[authority]
+    SUBAUTHORITIES[authority]
   end
 end
