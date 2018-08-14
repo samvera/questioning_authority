@@ -1,7 +1,15 @@
 # Questioning Authority
 
-[![Build Status](https://travis-ci.org/samvera/questioning_authority.png?branch=master)](https://travis-ci.org/samvera/questioning_authority) [![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
+Code:
+[![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
+[![Build Status](https://travis-ci.org/samvera/questioning_authority.png?branch=master)](https://travis-ci.org/samvera/questioning_authority)
 [![Coverage Status](https://coveralls.io/repos/github/samvera/questioning_authority/badge.svg?branch=master)](https://coveralls.io/github/samvera/questioning_authority?branch=master)
+
+Docs:
+[![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
+[![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
+
+Jump In: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samvera.org/)
 
 You should question your authorities.
 
@@ -29,10 +37,12 @@ You should question your authorities.
       * [Add javascript to support autocomplete](#add-javascript-to-support-autocomplete)
   * [Developer Notes](#developer-notes)
     * [Compatibility](#compatibility)
+    * [Product Owner & Maintenance](#product-owner--maintenance)
+      * [Product Owner](#product-owner)
   * [Help](#help)
+  * [Acknowledgments](#acknowledgments)
 
 ----
-
 ## What does this do?
 
 Provides a set of uniform RESTful routes to query any controlled vocabulary or set of authority terms.
@@ -639,9 +649,26 @@ Commit your features into a new branch and submit a pull request.
 * Ruby 2.4 or the latest 2.3 version is recommended.  Later versions may also work.
 * Rails 5 is required. We recommend the latest Rails 5.0 release.
 
+## Product Owner & Maintenance
+
+Questioning Authority is a Core Component of the Samvera community. The documentation for
+what this means can be found
+[here](http://samvera.github.io/core_components.html#requirements-for-a-core-component).
+
+### Product Owner
+
+[elrayle](https://github.com/elrayle)
+
 # Help
 
-For help with Questioning Authority, contact <samvera-tech@googlegroups.com>.
+The Samvera community is here to help. Please see our [support guide](./SUPPORT.md).
+
+# Acknowledgments
+
+This software has been developed by and is brought to you by the Samvera community.  Learn more at the
+[Samvera website](http://samvera.org/).
+
+![Samvera Logo](https://wiki.duraspace.org/download/thumbnails/87459292/samvera-fall-font2-200w.png?version=1&modificationDate=1498550535816&api=v2)
 
 ### Special thanks to...
 
