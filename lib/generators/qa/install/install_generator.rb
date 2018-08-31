@@ -7,6 +7,10 @@ class Qa::InstallGenerator < Rails::Generators::Base
     end
   end
 
+  def create_initializer_config_file
+    copy_file 'config/initializers/qa.rb'
+  end
+
   def copy_oclcts_configs
     copy_file "config/oclcts-authorities.yml", "config/oclcts-authorities.yml"
   end

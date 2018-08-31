@@ -92,6 +92,32 @@ describe Qa::TermsController, type: :controller do
         get :search, params: { q: "Berry", vocab: "loc", subauthority: "names" }
         expect(response).to be_successful
       end
+
+      context 'when cors headers are enabled' do
+        before do
+          Qa.config.enable_cors_headers
+          stub_request(:get, "http://id.loc.gov/search/?format=json&q=Berry&q=cs:http://id.loc.gov/authorities/names")
+            .with(headers: { 'Accept' => 'application/json' })
+            .to_return(body: webmock_fixture("loc-names-response.txt"), status: 200)
+        end
+        it 'Access-Control-Allow-Origin is *' do
+          get :search, params: { q: "Tibetan", vocab: "tgnlang" }
+          expect(response.headers['Access-Control-Allow-Origin']).to eq '*'
+        end
+      end
+
+      context 'when cors headers are disabled' do
+        before do
+          Qa.config.disable_cors_headers
+          stub_request(:get, "http://id.loc.gov/search/?format=json&q=Berry&q=cs:http://id.loc.gov/authorities/names")
+            .with(headers: { 'Accept' => 'application/json' })
+            .to_return(body: webmock_fixture("loc-names-response.txt"), status: 200)
+        end
+        it 'Access-Control-Allow-Origin is not present' do
+          get :search, params: { q: "Tibetan", vocab: "tgnlang" }
+          expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
+        end
+      end
     end
 
     context "assign_fast" do
@@ -116,6 +142,26 @@ describe Qa::TermsController, type: :controller do
       it "returns all MeSH terms" do
         get :index, params: { vocab: "mesh" }
         expect(response).to be_successful
+      end
+
+      context 'when cors headers are enabled' do
+        before do
+          Qa.config.enable_cors_headers
+        end
+        it 'Access-Control-Allow-Origin is *' do
+          get :index, params: { vocab: "local", subauthority: "states" }
+          expect(response.headers['Access-Control-Allow-Origin']).to eq '*'
+        end
+      end
+
+      context 'when cors headers are disabled' do
+        before do
+          Qa.config.disable_cors_headers
+        end
+        it 'Access-Control-Allow-Origin is not present' do
+          get :index, params: { vocab: "local", subauthority: "states" }
+          expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
+        end
       end
     end
 
@@ -156,6 +202,26 @@ describe Qa::TermsController, type: :controller do
       it "returns an individual subject term" do
         get :show, params: { vocab: "loc", subauthority: "subjects", id: "sh85077565" }
         expect(response).to be_successful
+      end
+
+      context 'when cors headers are enabled' do
+        before do
+          Qa.config.enable_cors_headers
+        end
+        it 'Access-Control-Allow-Origin is *' do
+          get :show, params: { vocab: "mesh", id: "D000001" }
+          expect(response.headers['Access-Control-Allow-Origin']).to eq '*'
+        end
+      end
+
+      context 'when cors headers are disabled' do
+        before do
+          Qa.config.disable_cors_headers
+        end
+        it 'Access-Control-Allow-Origin is not present' do
+          get :show, params: { vocab: "mesh", id: "D000001" }
+          expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
+        end
       end
     end
   end

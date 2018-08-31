@@ -3,12 +3,13 @@
 # All the authority classes inherit from a super class so they implement the
 # same methods.
 
-class Qa::TermsController < ApplicationController
+class Qa::TermsController < Qa::ApplicationController
   before_action :check_vocab_param, :init_authority
   before_action :check_query_param, only: :search
 
   # If the subauthority supports it, return a list of all terms in the authority
   def index
+    cors_allow_origin_header
     render json: begin
       @authority.all
     rescue NotImplementedError
@@ -19,12 +20,14 @@ class Qa::TermsController < ApplicationController
   # Return a list of terms based on a query
   def search
     terms = @authority.method(:search).arity == 2 ? @authority.search(url_search, self) : @authority.search(url_search)
+    cors_allow_origin_header
     render json: terms
   end
 
   # If the subauthority supports it, return all the information for a given term
   def show
     term = @authority.find(params[:id])
+    cors_allow_origin_header
     render json: term
   end
 

@@ -6,7 +6,23 @@ module Qa
   extend ActiveSupport::Autoload
 
   autoload :Authorities
+  autoload :Configuration
   autoload :Services
+
+  # @api public
+  #
+  # Exposes the Questioning Authority configuration
+  #
+  # @yield [Qa::Configuration] if a block is passed
+  # @return [Qa::Configuration]
+  # @see Qa::Configuration for configuration options
+  def self.config(&block)
+    @config ||= Qa::Configuration.new
+
+    yield @config if block
+
+    @config
+  end
 
   # Raised when the configuration directory for local authorities doesn't exist
   class ConfigDirectoryNotFound < StandardError; end

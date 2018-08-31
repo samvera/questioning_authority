@@ -123,6 +123,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         expect(response.code).to eq('503')
       end
     end
+
     context 'in OCLC_FAST authority' do
       context '0 search results' do
         before do
@@ -167,6 +168,30 @@ describe Qa::LinkedDataTermsController, type: :controller do
         it 'succeeds' do
           get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', subauthority: 'personal_name', maximumRecords: '3' }
           expect(response).to be_successful
+        end
+      end
+
+      context 'when cors headers are enabled' do
+        before do
+          Qa.config.enable_cors_headers
+          stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=oclc.personalName%20all%20%22cornell%22&sortKeys=usage')
+            .to_return(status: 200, body: webmock_fixture('lod_oclc_personalName_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        end
+        it 'Access-Control-Allow-Origin is *' do
+          get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', subauthority: 'personal_name', maximumRecords: '3' }
+          expect(response.headers['Access-Control-Allow-Origin']).to eq '*'
+        end
+      end
+
+      context 'when cors headers are disabled' do
+        before do
+          Qa.config.disable_cors_headers
+          stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=oclc.personalName%20all%20%22cornell%22&sortKeys=usage')
+            .to_return(status: 200, body: webmock_fixture('lod_oclc_personalName_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        end
+        it 'Access-Control-Allow-Origin is not present' do
+          get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', subauthority: 'personal_name', maximumRecords: '3' }
+          expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
         end
       end
     end
@@ -265,6 +290,30 @@ describe Qa::LinkedDataTermsController, type: :controller do
         it 'succeeds' do
           get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
           expect(response).to be_successful
+        end
+      end
+
+      context 'when cors headers are enabled' do
+        before do
+          Qa.config.enable_cors_headers
+          stub_request(:get, 'http://id.worldcat.org/fast/530369')
+            .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        end
+        it 'Access-Control-Allow-Origin is *' do
+          get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
+          expect(response.headers['Access-Control-Allow-Origin']).to eq '*'
+        end
+      end
+
+      context 'when cors headers are disabled' do
+        before do
+          Qa.config.disable_cors_headers
+          stub_request(:get, 'http://id.worldcat.org/fast/530369')
+            .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        end
+        it 'Access-Control-Allow-Origin is not present' do
+          get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
+          expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
         end
       end
     end
