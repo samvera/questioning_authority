@@ -72,7 +72,7 @@ describe Qa::TermsController, type: :controller do
       end
       it "succeeds" do
         get :search, params: { q: "a query", vocab: "local", subauthority: "two_args" }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -85,12 +85,12 @@ describe Qa::TermsController, type: :controller do
 
       it "returns a set of terms for a tgnlang query" do
         get :search, params: { q: "Tibetan", vocab: "tgnlang" }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it "does not return 404 if subauthority is valid" do
         get :search, params: { q: "Berry", vocab: "loc", subauthority: "names" }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       context 'when cors headers are enabled' do
@@ -128,7 +128,7 @@ describe Qa::TermsController, type: :controller do
       end
       it "succeeds if authority class is camelcase" do
         get :search, params: { q: "word", vocab: "assign_fast", subauthority: "topical" }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
   end
@@ -137,11 +137,11 @@ describe Qa::TermsController, type: :controller do
     context "with supported authorities" do
       it "returns all local authority state terms" do
         get :index, params: { vocab: "local", subauthority: "states" }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
       it "returns all MeSH terms" do
         get :index, params: { vocab: "mesh" }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       context 'when cors headers are enabled' do
@@ -191,17 +191,17 @@ describe Qa::TermsController, type: :controller do
 
       it "returns an individual state term" do
         get :show, params: { vocab: "local", subauthority: "states", id: "OH" }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it "returns an individual MeSH term" do
         get :show, params: { vocab: "mesh", id: "D000001" }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it "returns an individual subject term" do
         get :show, params: { vocab: "loc", subauthority: "subjects", id: "sh85077565" }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       context 'when cors headers are enabled' do

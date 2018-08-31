@@ -132,7 +132,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'succeeds' do
           get :search, params: { q: 'supercalifragilisticexpialidocious', vocab: 'OCLC_FAST', maximumRecords: '3' }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
 
@@ -143,7 +143,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'succeeds' do
           get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', maximumRecords: '3' }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
     end
@@ -156,7 +156,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'succeeds' do
           get :search, params: { q: 'supercalifragilisticexpialidocious', vocab: 'OCLC_FAST', subauthority: 'personal_name', maximumRecords: '3' }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
 
@@ -167,7 +167,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'succeeds' do
           get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', subauthority: 'personal_name', maximumRecords: '3' }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
 
@@ -204,7 +204,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'succeeds' do
           get :search, params: { q: 'supercalifragilisticexpialidocious', vocab: 'AGROVOC' }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
 
@@ -215,7 +215,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'succeeds' do
           get :search, params: { q: 'milk', vocab: 'AGROVOC' }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
     end
@@ -289,7 +289,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'succeeds' do
           get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
 
@@ -326,7 +326,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'succeeds' do
           get :show, params: { id: 'c_9513', vocab: 'AGROVOC' }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
     end
@@ -339,7 +339,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'succeeds' do
           get :show, params: { id: 'sh85118553', vocab: 'LOC', subauthority: 'subjects' }
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
     end
