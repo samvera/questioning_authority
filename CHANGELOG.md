@@ -4,7 +4,7 @@
 * add ability to sort linked data results based on a numeric ranking predicate
 * filter out blanknodes from the linked data result set
 * update supporting documents to match samvera community support documents
-* add support for Rails 5.2
+* add support for Rails 5.1
 * add support for CORS headers (configurable; off by default)
 
 ### 2.0.1 (2018-02-22)
