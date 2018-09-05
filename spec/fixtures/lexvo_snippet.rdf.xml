@@ -89,3 +89,4 @@ Niger–Congo family.</rdfs:comment>
   <lvont:label rdf:resource="http://lexvo.org/id/term/pms/Lenga%20Ari" /> <!-- Lenga Ari -->
   <skos:prefLabel xml:lang="en">Ari</skos:prefLabel>
 </rdf:Description>
+</rdf:RDF>

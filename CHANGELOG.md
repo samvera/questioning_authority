@@ -1,10 +1,14 @@
+### 2.1.1 (2018-09-05)
+
+* bugfix that allows application's ApplicationController to interact appropriately with engine's controllers
+
 ### 2.1.0 (2018-09-04)
 
 * security vulnerability for rubocop resolved by moving to using bixby for rubocop
 * add ability to sort linked data results based on a numeric ranking predicate
 * filter out blanknodes from the linked data result set
 * update supporting documents to match samvera community support documents
-* add support for Rails 5.1
+* add support for Rails 5.2
 * add support for CORS headers (configurable; off by default)
 
 ### 2.0.1 (2018-02-22)
