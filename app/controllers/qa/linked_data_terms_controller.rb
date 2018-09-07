@@ -1,10 +1,12 @@
 # This controller is used for all requests to linked data authorities. It will verify params and figure
 # out which linked data authority to query based on the 'vocab' param.
 
-class Qa::LinkedDataTermsController < Qa::ApplicationController
+class Qa::LinkedDataTermsController < ::ApplicationController
   before_action :check_authority, :init_authority
   before_action :check_search_subauthority, :check_query_param, only: :search
   before_action :check_show_subauthority, :check_id_param, only: :show
+
+  delegate :cors_allow_origin_header, to: Qa::ApplicationController
 
   # Provide a warning if there is a request for all terms.
   def index
@@ -31,7 +33,7 @@ class Qa::LinkedDataTermsController < Qa::ApplicationController
       head :internal_server_error
       return
     end
-    cors_allow_origin_header
+    cors_allow_origin_header(response)
     render json: terms
   end
 
@@ -58,7 +60,7 @@ class Qa::LinkedDataTermsController < Qa::ApplicationController
       head :internal_server_error
       return
     end
-    cors_allow_origin_header
+    cors_allow_origin_header(response)
     render json: term
   end
 

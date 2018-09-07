@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe Qa::Services::RDFAuthorityParser do
-  let(:source) { [File.join(fixture_path, 'lexvo_snippet.rdf')] }
+  let(:source) { [File.join(fixture_path, 'lexvo_snippet.rdf.xml')] }
   let(:format) { 'rdfxml' }
   let(:predicate) { RDF::URI("http://www.w3.org/2008/05/skos#prefLabel") }
   let(:name) { 'language' }
