@@ -2,9 +2,11 @@
 # out which linked data authority to query based on the 'vocab' param.
 
 class Qa::LinkedDataTermsController < ::ApplicationController
-  before_action :check_authority, :init_authority
+  before_action :check_authority, :init_authority, except: [:list, :reload]
   before_action :check_search_subauthority, :check_query_param, only: :search
   before_action :check_show_subauthority, :check_id_param, only: :show
+  before_action :check_uri_param, only: :fetch
+  before_action :validate_auth_reload_token, only: :reload
 
   delegate :cors_allow_origin_header, to: Qa::ApplicationController
 
@@ -14,55 +16,85 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     head :not_found
   end
 
-  # Return a list of terms based on a query
-  # @see Qa::Authorities::LinkedData::SearchQuery#search
-  def search # rubocop:disable Metrics/MethodLength
-    begin
-      terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params)
-    rescue Qa::ServiceUnavailable
-      logger.warn "Service Unavailable - Search query #{query} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
-      head :service_unavailable
-      return
-    rescue Qa::ServiceError
-      logger.warn "Internal Server Error - Search query #{query} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
-      head :internal_server_error
-      return
-    rescue RDF::FormatError
-      logger.warn "RDF Format Error - Results from search query #{query} for#{subauth_warn_msg} authority #{vocab_param} " \
-                  "was not identified as a valid RDF format.  You may need to include the linkeddata gem."
-      head :internal_server_error
-      return
-    end
-    cors_allow_origin_header(response)
-    render json: terms
+  # Return a list of supported authority names
+  # get "/list/linked_data/authorities"
+  # @see Qa::Authorities::LinkedData::AuthorityService#authority_names
+  def list
+    render json: Qa::Authorities::LinkedData::AuthorityService.authority_names.to_json
   end
 
-  # Return all the information for a given term
+  # Reload authority configurations
+  # get "/reload/linked_data/authorities?auth_token=YOUR_AUTH_TOKEN_DEFINED_HERE"
+  # @see Qa::Authorities::LinkedData::AuthorityService#load_authorities
+  def reload
+    Qa::Authorities::LinkedData::AuthorityService.load_authorities
+    list
+  end
+
+  # Return a list of terms based on a query
+  # get "/search/linked_data/:vocab(/:subauthority)"
+  # @see Qa::Authorities::LinkedData::SearchQuery#search
+  def search
+    terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params)
+    cors_allow_origin_header(response)
+    render json: terms
+  rescue Qa::ServiceUnavailable
+    logger.warn "Service Unavailable - Search query #{query} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+    head :service_unavailable
+  rescue Qa::ServiceError
+    logger.warn "Internal Server Error - Search query #{query} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+    head :internal_server_error
+  rescue RDF::FormatError
+    logger.warn "RDF Format Error - Results from search query #{query} for#{subauth_warn_msg} authority #{vocab_param} " \
+                "was not identified as a valid RDF format.  You may need to include the linkeddata gem."
+    head :internal_server_error
+  end
+
+  # Return all the information for a given term given an id or URI
+  # get "/show/linked_data/:vocab/:id"
+  # get "/show/linked_data/:vocab/:subauthority/:id
   # @see Qa::Authorities::LinkedData::FindTerm#find
   def show # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    begin
-      term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params, jsonld: jsonld?)
-    rescue Qa::TermNotFound
-      logger.warn "Term Not Found - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
-      head :not_found
-      return
-    rescue Qa::ServiceUnavailable
-      logger.warn "Service Unavailable - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
-      head :service_unavailable
-      return
-    rescue Qa::ServiceError
-      logger.warn "Internal Server Error - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
-      head :internal_server_error
-      return
-    rescue RDF::FormatError
-      logger.warn "RDF Format Error - Results from fetch term #{id} for#{subauth_warn_msg} authority #{vocab_param} " \
-                  "was not identified as a valid RDF format.  You may need to include the linkeddata gem."
-      head :internal_server_error
-      return
-    end
+    term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params, jsonld: jsonld?)
     cors_allow_origin_header(response)
     content_type = jsonld? ? 'application/ld+json' : 'application/json'
     render json: term, content_type: content_type
+  rescue Qa::TermNotFound
+    logger.warn "Term Not Found - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+    head :not_found
+  rescue Qa::ServiceUnavailable
+    logger.warn "Service Unavailable - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+    head :service_unavailable
+  rescue Qa::ServiceError
+    logger.warn "Internal Server Error - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+    head :internal_server_error
+  rescue RDF::FormatError
+    logger.warn "RDF Format Error - Results from fetch term #{id} for#{subauth_warn_msg} authority #{vocab_param} " \
+                "was not identified as a valid RDF format.  You may need to include the linkeddata gem."
+    head :internal_server_error
+  end
+
+  # Return all the information for a given term given a URI
+  # get "/fetch/linked_data/:vocab"
+  # @see Qa::Authorities::LinkedData::FindTerm#find
+  def fetch # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    term = @authority.find(uri, subauth: subauthority, language: language, replacements: replacement_params, jsonld: jsonld?)
+    cors_allow_origin_header(response)
+    content_type = jsonld? ? 'application/ld+json' : 'application/json'
+    render json: term, content_type: content_type
+  rescue Qa::TermNotFound
+    logger.warn "Term Not Found - Fetch term #{uri} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+    head :not_found
+  rescue Qa::ServiceUnavailable
+    logger.warn "Service Unavailable - Fetch term #{uri} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+    head :service_unavailable
+  rescue Qa::ServiceError
+    logger.warn "Internal Server Error - Fetch term #{uri} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
+    head :internal_server_error
+  rescue RDF::FormatError
+    logger.warn "RDF Format Error - Results from fetch term #{uri} for#{subauth_warn_msg} authority #{vocab_param} " \
+                "was not identified as a valid RDF format.  You may need to include the linkeddata gem."
+    head :internal_server_error
   end
 
   private
@@ -102,10 +134,20 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     end
 
     def check_query_param
-      if params[:q].nil? || !params[:q].size.positive? # rubocop:disable Style/GuardClause
-        logger.warn "Required search param 'q' is missing or empty"
-        head :bad_request
-      end
+      missing_required_param('search', 'q') if params[:q].blank?
+    end
+
+    def check_id_param
+      missing_required_param('show', 'id') if id.blank?
+    end
+
+    def check_uri_param
+      missing_required_param('fetch', 'uri') if uri.blank?
+    end
+
+    def missing_required_param(action_name, param_name)
+      logger.warn "Required #{action_name} param '#{param_name}' is missing or empty"
+      head :bad_request
     end
 
     # converts wildcards into URL-encoded characters
@@ -113,11 +155,8 @@ class Qa::LinkedDataTermsController < ::ApplicationController
       params[:q].gsub("*", "%2A")
     end
 
-    def check_id_param
-      if params[:id].nil? || !params[:id].size.positive? # rubocop:disable Style/GuardClause
-        logger.warn "Required show param 'id' is missing or empty"
-        head :bad_request
-      end
+    def uri
+      params[:uri]
     end
 
     def id
@@ -148,5 +187,14 @@ class Qa::LinkedDataTermsController < ::ApplicationController
 
     def jsonld?
       format == 'jsonld'
+    end
+
+    def validate_auth_reload_token
+      token = params.key?(:auth_token) ? params[:auth_token] : nil
+      valid = Qa.config.valid_authority_reload_token?(token)
+      return true if valid
+      logger.warn "FAIL: unable to reload authorities; error_msg: Invalid token (#{token}) does not match expected token."
+      head :unauthorized
+      false
     end
 end

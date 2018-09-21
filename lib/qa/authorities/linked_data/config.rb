@@ -44,7 +44,7 @@ module Qa::Authorities
       # Return the full configuration for an authority
       # @return [String] the authority configuration
       def auth_config
-        @authority_config ||= LINKED_DATA_AUTHORITIES_CONFIG[@authority_name]
+        @authority_config ||= Qa::Authorities::LinkedData::AuthorityService.authority_config(@authority_name)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data authority '#{@authority_name}'" if @authority_config.nil?
         @authority_config
       end

@@ -61,6 +61,14 @@ describe Qa::LinkedDataTermsController, type: :controller do
     end
   end
 
+  describe '#check_uri_param' do
+    it 'returns 400 if the uri is missing' do
+      expect(Rails.logger).to receive(:warn).with("Required fetch param 'uri' is missing or empty")
+      get :fetch, params: { uri: '', vocab: 'OCLC_FAST' }
+      expect(response.code).to eq('400')
+    end
+  end
+
   describe '#init_authority' do
     context 'when the authority does not exist' do
       it 'returns 400' do
@@ -68,6 +76,18 @@ describe Qa::LinkedDataTermsController, type: :controller do
         get :search, params: { q: 'a query', vocab: 'fake_authority' }
         expect(response.code).to eq('400')
       end
+    end
+  end
+
+  describe '#list' do
+    let(:expected_results) { ['Auth1', 'Auth2', 'Auth3'] }
+    before do
+      allow(Qa::Authorities::LinkedData::AuthorityService).to receive(:authority_names).and_return(expected_results)
+    end
+    it 'returns list of authorities' do
+      get :list
+      expect(response).to be_successful
+      expect(response.body).to eq expected_results.to_json
     end
   end
 
@@ -344,6 +364,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
             get :show, params: { id: 'c_9513', vocab: 'AGROVOC', format: 'jsonld' }
             expect(response).to be_successful
             expect(response.content_type).to eq 'application/ld+json'
+            expect(JSON.parse(response.body).keys).to match_array ["@context", "@graph"]
           end
         end
       end
@@ -360,6 +381,144 @@ describe Qa::LinkedDataTermsController, type: :controller do
           expect(response).to be_successful
           expect(response.content_type).to eq 'application/json'
         end
+      end
+    end
+  end
+
+  describe '#fetch' do
+    context 'producing internal server error' do
+      context 'when server returns 500' do
+        before do
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369').to_return(status: 500)
+        end
+        it 'returns 500' do
+          expect(Rails.logger).to receive(:warn).with("Internal Server Error - Fetch term http://test.org/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
+          get :fetch, params: { vocab: 'LOD_TERM_URI_PARAM_CONFIG', uri: 'http://test.org/530369' }
+          expect(response.code).to eq('500')
+        end
+      end
+
+      context 'when rdf format error' do
+        before do
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369').to_return(status: 200)
+          allow(RDF::Graph).to receive(:load).and_raise(RDF::FormatError)
+        end
+        it 'returns 500' do
+          msg = "RDF Format Error - Results from fetch term http://test.org/530369 for authority LOD_TERM_URI_PARAM_CONFIG was not identified as a valid RDF format.  " \
+                "You may need to include the linkeddata gem."
+          expect(Rails.logger).to receive(:warn).with(msg)
+          get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+          expect(response.code).to eq('500')
+        end
+      end
+
+      context "when error isn't specifically handled" do
+        before do
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369').to_return(status: 501)
+        end
+        it 'returns 500' do
+          expect(Rails.logger).to receive(:warn).with("Internal Server Error - Fetch term http://test.org/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
+          get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+          expect(response.code).to eq('500')
+        end
+      end
+    end
+
+    context 'when service unavailable' do
+      before do
+        stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369').to_return(status: 503)
+      end
+      it 'returns 503' do
+        expect(Rails.logger).to receive(:warn).with("Service Unavailable - Fetch term http://test.org/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
+        get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+        expect(response.code).to eq('503')
+      end
+    end
+
+    context 'when requested term is not found at the server' do
+      before do
+        stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/FAKE_ID').to_return(status: 404, body: '', headers: {})
+      end
+      it 'returns 404' do
+        expect(Rails.logger).to receive(:warn).with('Term Not Found - Fetch term http://test.org/FAKE_ID unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG')
+        get :fetch, params: { uri: 'http://test.org/FAKE_ID', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+        expect(response.code).to eq('404')
+      end
+    end
+
+    context 'in LOD_TERM_URI_PARAM_CONFIG authority' do
+      context 'term found' do
+        before do
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369')
+            .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        end
+
+        it 'succeeds and defaults to json content type' do
+          get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+          expect(response).to be_successful
+          expect(response.content_type).to eq 'application/json'
+        end
+
+        context 'and it was requested as json' do
+          it 'succeeds and returns term data as json content type' do
+            get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'json' }
+            expect(response).to be_successful
+            expect(response.content_type).to eq 'application/json'
+          end
+        end
+
+        context 'and it was requested as jsonld' do
+          it 'succeeds and returns term data as jsonld content type' do
+            get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'jsonld' }
+            expect(response).to be_successful
+            expect(response.content_type).to eq 'application/ld+json'
+            expect(JSON.parse(response.body).keys).to match_array ["@context", "@graph"]
+          end
+        end
+      end
+
+      context 'when cors headers are enabled' do
+        before do
+          Qa.config.enable_cors_headers
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369')
+            .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        end
+        it 'Access-Control-Allow-Origin is *' do
+          get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+          expect(response.headers['Access-Control-Allow-Origin']).to eq '*'
+        end
+      end
+
+      context 'when cors headers are disabled' do
+        before do
+          Qa.config.disable_cors_headers
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369')
+            .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        end
+        it 'Access-Control-Allow-Origin is not present' do
+          get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+          expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
+        end
+      end
+    end
+  end
+
+  describe '#reload' do
+    before do
+      Qa.config.authorized_reload_token = 'A_TOKEN'
+    end
+
+    context 'when token does not match' do
+      it 'returns 401' do
+        get :reload, params: { auth_token: 'BAD_TOKEN' }
+        expect(response.code).to eq('401')
+      end
+    end
+
+    context 'when token does match' do
+      it 'returns 200' do
+        get :reload, params: { auth_token: 'A_TOKEN' }
+        expect(response.code).to eq('200')
       end
     end
   end
