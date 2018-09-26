@@ -62,7 +62,7 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
     context 'in AGROVOC authority' do
       context '0 search results' do
         let :results do
-          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*supercalifragilisticexpialidocious*')
+          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*supercalifragilisticexpialidocious*&maxhits=20')
             .to_return(status: 200, body: webmock_fixture('lod_agrovoc_query_no_results.json'), headers: { 'Content-Type' => 'application/json' })
           lod_agrovoc.search('supercalifragilisticexpialidocious')
         end
@@ -73,7 +73,7 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
 
       context '3 search results' do
         let :results do
-          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*milk*')
+          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*milk*&maxhits=20')
             .to_return(status: 200, body: webmock_fixture('lod_agrovoc_query_many_results.json'), headers: { 'Content-Type' => 'application/json' })
           lod_agrovoc.search('milk')
         end

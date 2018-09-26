@@ -31,7 +31,7 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?query=*{?query}*&lang={?lang}",
+      "template": "http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?query=*{?query}*&lang={?lang}&maxhits={?maxRecords}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
@@ -39,6 +39,13 @@
           "variable": "query",
           "property": "hydra:freetextQuery",
           "required": true
+        },
+        {
+          "@type":    "IriTemplateMapping",
+          "variable": "maxRecords",
+          "property": "hydra:freetextQuery",
+          "required": false,
+          "default":  "20"
         },
         {
           "@type":    "IriTemplateMapping",

@@ -1,5 +1,7 @@
 module Qa
   class ApplicationController < ActionController::Base
+    skip_before_action :verify_authenticity_token, only: :options, raise: false
+
     # Process the OPTIONS method for all routes
     # @see route definitions in /config/routes.rb
     # @note Reference: https://fetch.spec.whatwg.org/#http-access-control-allow-headers
