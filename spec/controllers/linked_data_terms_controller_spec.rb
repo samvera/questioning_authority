@@ -199,7 +199,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
     context 'in AGROVOC authority' do
       context '0 search results' do
         before do
-          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*supercalifragilisticexpialidocious*')
+          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*supercalifragilisticexpialidocious*&maxhits=20')
             .to_return(status: 200, body: webmock_fixture('lod_agrovoc_query_no_results.json'), headers: { 'Content-Type' => 'application/json' })
         end
         it 'succeeds' do
@@ -210,7 +210,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
 
       context '3 search results' do
         before do
-          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*milk*')
+          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*milk*&maxhits=20')
             .to_return(status: 200, body: webmock_fixture('lod_agrovoc_query_many_results.json'), headers: { 'Content-Type' => 'application/json' })
         end
         it 'succeeds' do

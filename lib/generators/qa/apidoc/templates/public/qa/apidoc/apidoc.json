@@ -1,0 +1,753 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "QA 2.1 Linked Data API",
+    "version": "2.1",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://{site_host}/{apiBase}",
+      "description": "QA v2.1 API Server",
+      "variables": {
+        "site_host": {
+          "default": "localhost:3000",
+          "description": ""
+        },
+        "apiBase": {
+          "default": "qa"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/search/linked_data/{vocab}": {
+      "get": {
+        "summary": "Send a query string to an authority and return search results.  Parameters are typical examples.  Actual parameters are driven by the authority's config file.",
+        "operationId": "GET_searchAuthority",
+        "tags": [
+          "Search Query"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "agrovoc",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The query string",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "default": "milk",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limit number of returned results",
+            "in": "query",
+            "name": "maxRecords",
+            "required": false,
+            "schema": {
+              "default": 4,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Limit string values to this language when multiple languages are provided.",
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "schema": {
+              "default": "en",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully accessed authority and received results.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if cors_headers_enabled",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_query_results"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "summary": "CORS preflight request",
+        "operationId": "OPTIONS_searchAuthority",
+        "tags": [
+          "Search Query"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "agrovoc",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "When CORS is enabled, perform CORS preflight for searching an authority",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Indicates which method a future CORS request to the same resource might use.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "OPTIONS action is not implement when CORS headers are not enabled",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search/linked_data/{vocab}/{subauthority}": {
+      "get": {
+        "summary": "Send a query string to a subauthority in an authority and return search results.",
+        "operationId": "GET_searchSubauthority",
+        "tags": [
+          "Search Query"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "oclc_fast",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the subauthority.",
+            "in": "path",
+            "name": "subauthority",
+            "required": true,
+            "schema": {
+              "default": "personal_name",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The query string",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "default": "twain",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limit number of returned results.  NOTE: Most authorities use maxRecords instead of maximumRecords for this parameter.",
+            "in": "query",
+            "name": "maximumRecords",
+            "required": false,
+            "schema": {
+              "default": 4,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Limit string values to this language when multiple languages are provided.",
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "schema": {
+              "default": "en",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully accessed subauthority in an authority and received results.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_query_results"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "summary": "CORS preflight request",
+        "operationId": "OPTIONS_searchSubauthority",
+        "tags": [
+          "Search Query"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "oclc_fast",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the subauthority.",
+            "in": "path",
+            "name": "subauthority",
+            "required": true,
+            "schema": {
+              "default": "personal_name",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Perform CORS preflight for searching a subauthoroity in an authority",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Indicates which method a future CORS request to the same resource might use.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "OPTIONS action is not implement when CORS headers are not enabled",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/show/linked_data/{vocab}/{id}": {
+      "get": {
+        "operationId": "GET_fetchByIDFromAuthority",
+        "summary": "Get a single term from an authority.  Generally there are no additional parameters.  See the authority's configuration file to be sure.  Some authorities support `lang` which can be used to filter the language of returned strings.",
+        "tags": [
+          "Fetch Term"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "agrovoc",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The ID or URI for the term being retrieved.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "default": "c_9513",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully accessed authority and received term.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_term"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "summary": "CORS preflight request",
+        "operationId": "OPTIONS_fetchFromAuthority",
+        "tags": [
+          "Fetch Term"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "agrovoc",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The ID or URI for the term being retrieved.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "default": "c_9513",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Perform CORS preflight for fetching a term from an authority",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Indicates which method a future CORS request to the same resource might use.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "OPTIONS action is not implement when CORS headers are not enabled",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/show/linked_data/{vocab}/{subauthority}/{id}": {
+      "get": {
+        "operationId": "GET_fetchByIDFromSubauthority",
+        "summary": "Get a single term from a subauthority in an authority.  Generally there are no additional parameters.  See the authority's configuration file to be sure.  Some authorities support `lang` which can be used to filter the language of returned strings.",
+        "tags": [
+          "Fetch Term"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "loc",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the subauthority.",
+            "in": "path",
+            "name": "subauthority",
+            "required": true,
+            "schema": {
+              "default": "names",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The ID or URI for the term being retrieved.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "default": "n92016188",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully accessed subauthority in the authority and received term.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_term_result"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "summary": "CORS preflight request",
+        "operationId": "OPTIONS_fetchFromSubauthority",
+        "tags": [
+          "Fetch Term"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "loc",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the subauthority.",
+            "in": "path",
+            "name": "subauthority",
+            "required": true,
+            "schema": {
+              "default": "names",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The ID or URI for the term being retrieved.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "default": "n92016188",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Perform CORS preflight for fetching a term from a subauthority in an authority",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Indicates which method a future CORS request to the same resource might use.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "OPTIONS action is not implement when CORS headers are not enabled",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "linked_data_query_results": {
+        "type": "array",
+        "items": {
+          "required": [
+            "id",
+            "uri",
+            "label"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "uri": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "context": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "linked_data_term": {
+        "required": [
+          "id",
+          "uri",
+          "label"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "altlabel": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "broader": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "narrower": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sameas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "predicates": {
+            "type": "object",
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Search Query",
+      "description": "Services sending a search query to an authority to retrieve multiple results."
+    },
+    {
+      "name": "Fetch Term",
+      "description": "Services to fetch a single term from an authority."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+Description:
+  This generator adds interactive documentation for the linked data API.
+
+Example:
+  rails generate qa:apidoc
+
+  This will create:
+    public/qa/apidoc/*
+
+  You can access the UI at:
+    https://YOUR_APP_HOST/qa/apidoc/

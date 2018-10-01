@@ -3,18 +3,6 @@ inherit_gem:
 
 inherit_from: .rubocop_todo.yml
 
-# By default RSpec/MessageSpies has the following:
-#   Prefer have_received for setting message expectations. Setup form as a spy using allow or instance_spy.
-# The default assumes EnforcedStyle is 'have_received'. Most of our specs are 'receive'
-RSpec/MessageSpies:
-  Enabled: false
-
-Metrics/BlockLength:
-  ExcludedMethods: ['included']
-  Exclude:
-    - 'qa.gemspec'
-    - 'spec/**/*.rb'
-
 AllCops:
   TargetRubyVersion: 2.1
   DisplayCopNames: true
@@ -24,3 +12,19 @@ AllCops:
     - 'vendor/**/*'
   Include:
     - '**/Rakefile'
+
+Lint/ImplicitStringConcatenation:
+  Exclude:
+    - 'lib/generators/qa/**/*'
+
+Metrics/BlockLength:
+  ExcludedMethods: ['included']
+  Exclude:
+    - 'qa.gemspec'
+    - 'spec/**/*.rb'
+
+# By default RSpec/MessageSpies has the following:
+#   Prefer have_received for setting message expectations. Setup form as a spy using allow or instance_spy.
+# The default assumes EnforcedStyle is 'have_received'. Most of our specs are 'receive'
+RSpec/MessageSpies:
+  Enabled: false
