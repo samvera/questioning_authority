@@ -1,3 +1,7 @@
+### 2.1.2 (2018-10-01)
+
+* add qa:apidoc generator to optionally add QA Linked Data API documentation to app using swagger
+
 ### 2.1.1 (2018-09-05)
 
 * bugfix that allows application's ApplicationController to interact appropriately with engine's controllers
