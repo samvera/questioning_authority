@@ -625,7 +625,26 @@ NOTE: All predicates with the URI as the subject will be included under "predica
 
 See [Using with autocomplete in Sufia](https://github.com/samvera/questioning_authority/wiki/Using-with-autocomplete-in-Sufia) in the wiki documentation for QA.
 
+If you are using jQueryUI >= 1.8 you can use the [autocomplete function](http://api.jqueryui.com/autocomplete/), for example:
 
+```
+  $(function(){
+    $('#some_input').autocomplete({
+      source: function (request, response) {
+        $.ajax({
+          url: "/qa/search/loc/subjects?q=" + request.term,
+          type: 'GET',
+          dataType: 'json',
+          complete: function (xhr, status) {
+            var results = $.parseJSON(xhr.responseText);
+            response(results);
+          }
+        });
+      },
+      autoFocus: true
+    });
+  });
+```
 
 # Developer Notes
 
