@@ -77,19 +77,19 @@ describe Qa::Authorities::Getty::Ulan do
                  foaf:focus/gvp:biographyPreferred [schema:description ?bio] ;
                  skos:altLabel ?alt .
               FILTER regex(?name, "search_term", "i") .
-            } ORDER BY ?name' }
+            } ORDER BY ?name'.gsub(/[\s\n]+/, ' ') }
     end
     context "using a two subject terms" do
       subject { authority.sparql('search term') }
       it {
-        is_expected.to eq "SELECT DISTINCT ?s ?name ?bio {
-              ?s a skos:Concept; luc:term \"search term\";
+        is_expected.to eq %(SELECT DISTINCT ?s ?name ?bio {
+              ?s a skos:Concept; luc:term "search term";
                  skos:inScheme <http://vocab.getty.edu/ulan/> ;
                  gvp:prefLabelGVP [skosxl:literalForm ?name] ;
                  foaf:focus/gvp:biographyPreferred [schema:description ?bio] ;
                  skos:altLabel ?alt .
-              FILTER (regex(CONCAT(?name, ' ', ?alt), \"search\",\"i\" ) && regex(CONCAT(?name, ' ', ?alt), \"term\",\"i\" ) ) .
-            } ORDER BY ?name" }
+              FILTER ((regex(?name, "search", "i") || regex(?alt, "search", "i")) && (regex(?name, "term", "i") || regex(?alt, "term", "i"))) .
+            } ORDER BY ?name).gsub(/[\s\n]+/, ' ') }
     end
   end
 end
