@@ -313,7 +313,7 @@ This will create two tables/models Qa::LocalAuthority and Qa::LocalAuthorityEntr
                                    label: 'Uighur',
                                    uri: 'http://id.loc.gov/vocabulary/languages/uig')
 
-Unfortunately, Rails doesn't have a mechnism for adding functional indexes to tables, so if you have a lot of rows, you'll want to add an index:
+Unfortunately, Rails doesn't have a mechanism for adding functional indexes to tables, so if you have a lot of rows, you'll want to add an index:
 
     CREATE INDEX "index_qa_local_authority_entries_on_lower_label" ON
       "qa_local_authority_entries" (local_authority_id, lower(label))
@@ -340,7 +340,7 @@ The entire list (up to the first 1000 terms) can also be returned using:
 
 #### Loading RDF data into database tables
 
- You can use the Qa::Services::RDFAuthorityParser to import rdf files into yopur database tables.  See the class file, lib/qa/services/rdf_authority_parser.rb, for examples and more information.
+ You can use the Qa::Services::RDFAuthorityParser to import rdf files into your database tables.  See the class file, lib/qa/services/rdf_authority_parser.rb, for examples and more information.
  To run the class in your local project you must include `gem 'linkeddata'` into your Gemfile and `require 'linkeddata'` into an initializer or your application.rb
 
 ### Medical Subject Headings (MeSH)
@@ -358,7 +358,7 @@ Then, create the tables in your database
 
     rake db:migrate
 
-Now that you've setup your application to use MeSH terms, you'll now need to load the tems into your
+Now that you've setup your application to use MeSH terms, you'll now need to load the terms into your
 database so you can query them locally.
 
 To import the mesh terms into the local database, first download the MeSH descriptor dump in ASCII
@@ -625,7 +625,26 @@ NOTE: All predicates with the URI as the subject will be included under "predica
 
 See [Using with autocomplete in Sufia](https://github.com/samvera/questioning_authority/wiki/Using-with-autocomplete-in-Sufia) in the wiki documentation for QA.
 
+If you are using jQueryUI >= 1.8 you can use the [autocomplete function](http://api.jqueryui.com/autocomplete/), for example:
 
+```
+  $(function(){
+    $('#some_input').autocomplete({
+      source: function (request, response) {
+        $.ajax({
+          url: "/qa/search/loc/subjects?q=" + request.term,
+          type: 'GET',
+          dataType: 'json',
+          complete: function (xhr, status) {
+            var results = $.parseJSON(xhr.responseText);
+            response(results);
+          }
+        });
+      },
+      autoFocus: true
+    });
+  });
+```
 
 # Developer Notes
 
