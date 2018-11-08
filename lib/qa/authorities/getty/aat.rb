@@ -10,16 +10,23 @@ module Qa::Authorities
       "http://vocab.getty.edu/sparql.json?query=#{URI.escape(sparql(q))}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"
     end
 
-    def sparql(q)
+    def sparql(q) # rubocop:disable Metrics/MethodLength
       search = untaint(q)
+      if search.include?(' ')
+        clauses = search.split(' ').collect do |i|
+          %((regex(?name, "#{i}", "i")))
+        end
+        ex = "(#{clauses.join(' && ')})"
+      else
+        ex = %(regex(?name, "#{search}", "i"))
+      end
       # The full text index matches on fields besides the term, so we filter to ensure the match is in the term.
-      sparql = "SELECT ?s ?name {
-              ?s a skos:Concept; luc:term \"#{search}\";
+      %(SELECT ?s ?name {
+              ?s a skos:Concept; luc:term "#{search}";
                  skos:inScheme <http://vocab.getty.edu/aat/> ;
                  gvp:prefLabelGVP [skosxl:literalForm ?name].
-              FILTER regex(?name, \"#{search}\", \"i\") .
-            } ORDER BY ?name"
-      sparql
+              FILTER #{ex} .
+            } ORDER BY ?name).gsub(/[\s\n]+/, " ")
     end
 
     def untaint(q)

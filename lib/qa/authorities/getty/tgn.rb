@@ -19,31 +19,20 @@ module Qa::Authorities
     def sparql(q) # rubocop:disable Metrics/MethodLength
       search = untaint(q)
       if search.include?(' ')
-        ex = "(("
-        search.split(' ').each do |i|
-          ex += "regex(CONCAT(?name, ', ', REPLACE(str(?par), \",[^,]+,[^,]+$\", \"\")), \"#{i}\",\"i\" ) && "
+        clauses = search.split(' ').collect do |i|
+          %((regex(?name, "#{i}", "i") || regex(?alt, "#{i}", "i")))
         end
-        ex = ex[0..ex.length - 4]
-        ex += ') && ('
-        search.split(' ').each do |i|
-          ex += "regex(?name, \"#{i}\",\"i\" ) || "
-        end
-        ex = ex[0..ex.length - 4]
-        ex += ") )"
-
+        ex = "(#{clauses.join(' && ')})"
       else
-        ex = "regex(?name, \"#{search}\", \"i\")"
+        ex = %(regex(?name, "#{search}", "i"))
       end
-
-      # The full text index matches on fields besides the term, so we filter to ensure the match is in the term.
-      sparql = "SELECT DISTINCT ?s ?name ?par {
-              ?s a skos:Concept; luc:term \"#{search}\";
-                 skos:inScheme <http://vocab.getty.edu/tgn/> ;
-                 gvp:prefLabelGVP [skosxl:literalForm ?name] ;
+      %(SELECT DISTINCT ?s ?name ?par {
+        ?s a skos:Concept; luc:term "#{search}";
+            skos:inScheme <http://vocab.getty.edu/ulan/> ;
+            gvp:prefLabelGVP [skosxl:literalForm ?name] ;
                   gvp:parentString ?par .
-              FILTER #{ex} .
-            } ORDER BY ?name ASC(?par)"
-      sparql
+        FILTER #{ex} .
+      } ORDER BY ?name ASC(?par)).gsub(/[\s\n]+/, " ")
     end
 
     def untaint(q)

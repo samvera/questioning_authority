@@ -65,31 +65,20 @@ describe Qa::Authorities::Getty::TGN do
     subject { authority.request_options }
     it { is_expected.to eq(accept: "application/sparql-results+json") }
   end
-
+  # rubocop:disable Metrics/LineLength
   describe "#sparql" do
     context "using a single subject term" do
       subject { authority.sparql('search_term') }
       it {
-        is_expected.to eq 'SELECT DISTINCT ?s ?name ?par {
-              ?s a skos:Concept; luc:term "search_term";
-                 skos:inScheme <http://vocab.getty.edu/tgn/> ;
-                 gvp:prefLabelGVP [skosxl:literalForm ?name] ;
-                  gvp:parentString ?par .
-              FILTER regex(?name, "search_term", "i") .
-            } ORDER BY ?name ASC(?par)' }
+        is_expected.to eq %(SELECT DISTINCT ?s ?name ?par { ?s a skos:Concept; luc:term "search_term"; skos:inScheme <http://vocab.getty.edu/ulan/> ; gvp:prefLabelGVP [skosxl:literalForm ?name] ; gvp:parentString ?par . FILTER regex(?name, "search_term", "i") . } ORDER BY ?name ASC(?par))
+      }
     end
     context "using a two subject terms" do
       subject { authority.sparql('search term') }
-      # rubocop:disable Metrics/LineLength
       it {
-        is_expected.to eq "SELECT DISTINCT ?s ?name ?par {
-              ?s a skos:Concept; luc:term \"search term\";
-                 skos:inScheme <http://vocab.getty.edu/tgn/> ;
-                 gvp:prefLabelGVP [skosxl:literalForm ?name] ;
-                  gvp:parentString ?par .
-              FILTER ((regex(CONCAT(?name, ', ', REPLACE(str(?par), \",[^,]+,[^,]+$\", \"\")), \"search\",\"i\" ) && regex(CONCAT(?name, ', ', REPLACE(str(?par), \",[^,]+,[^,]+$\", \"\")), \"term\",\"i\" ) ) && (regex(?name, \"search\",\"i\" ) || regex(?name, \"term\",\"i\" ) ) ) .
-            } ORDER BY ?name ASC(?par)" }
-      # rubocop:enable Metrics/LineLength
+        is_expected.to eq %(SELECT DISTINCT ?s ?name ?par { ?s a skos:Concept; luc:term "search term"; skos:inScheme <http://vocab.getty.edu/ulan/> ; gvp:prefLabelGVP [skosxl:literalForm ?name] ; gvp:parentString ?par . FILTER ((regex(?name, "search", "i") || regex(?alt, "search", "i")) && (regex(?name, "term", "i") || regex(?alt, "term", "i"))) . } ORDER BY ?name ASC(?par))
+      }
     end
   end
+  # rubocop:enable Metrics/LineLength
 end

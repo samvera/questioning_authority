@@ -65,15 +65,20 @@ describe Qa::Authorities::Getty::AAT do
     subject { authority.request_options }
     it { is_expected.to eq(accept: "application/sparql-results+json") }
   end
-
+  # rubocop:disable Metrics/LineLength
   describe "#sparql" do
-    subject { authority.sparql('search_term') }
-    it {
-      is_expected.to eq 'SELECT ?s ?name {
-              ?s a skos:Concept; luc:term "search_term";
-                 skos:inScheme <http://vocab.getty.edu/aat/> ;
-                 gvp:prefLabelGVP [skosxl:literalForm ?name].
-              FILTER regex(?name, "search_term", "i") .
-            } ORDER BY ?name' }
+    context "using a single subject term" do
+      subject { authority.sparql('search_term') }
+      it {
+        is_expected.to eq %(SELECT ?s ?name { ?s a skos:Concept; luc:term "search_term"; skos:inScheme <http://vocab.getty.edu/aat/> ; gvp:prefLabelGVP [skosxl:literalForm ?name]. FILTER regex(?name, "search_term", "i") . } ORDER BY ?name)
+      }
+    end
+    context "using a two subject terms" do
+      subject { authority.sparql('search term') }
+      it {
+        is_expected.to eq %(SELECT ?s ?name { ?s a skos:Concept; luc:term "search term"; skos:inScheme <http://vocab.getty.edu/aat/> ; gvp:prefLabelGVP [skosxl:literalForm ?name]. FILTER ((regex(?name, "search", "i")) && (regex(?name, "term", "i"))) . } ORDER BY ?name)
+      }
+    end
   end
+  # rubocop:enable Metrics/LineLength
 end
