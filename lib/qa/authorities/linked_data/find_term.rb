@@ -33,13 +33,14 @@ module Qa::Authorities
       #     "http://schema.org/name":["Cornell University","Ithaca (N.Y.). Cornell University"],
       #     "http://www.w3.org/2004/02/skos/core#altLabel":["Ithaca (N.Y.). Cornell University"],
       #     "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"] } }
-      def find(id, language: nil, replacements: {}, subauth: nil)
+      def find(id, language: nil, replacements: {}, subauth: nil, jsonld: false)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
         language ||= term_config.term_language
         url = term_config.term_url_with_replacements(id, subauth, replacements)
         Rails.logger.info "QA Linked Data term url: #{url}"
         graph = get_linked_data(url)
         return "{}" unless graph.size.positive?
+        return graph.dump(:jsonld, standard_prefixes: true) if jsonld
         parse_term_authority_response(id, graph, language)
       end
 

@@ -324,9 +324,27 @@ describe Qa::LinkedDataTermsController, type: :controller do
           stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/data?uri=http://aims.fao.org/aos/agrovoc/c_9513')
             .to_return(status: 200, body: webmock_fixture('lod_agrovoc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
         end
-        it 'succeeds' do
+
+        it 'succeeds and defaults to json content type' do
           get :show, params: { id: 'c_9513', vocab: 'AGROVOC' }
           expect(response).to be_successful
+          expect(response.content_type).to eq 'application/json'
+        end
+
+        context 'and it was requested as json' do
+          it 'succeeds and returns term data as json content type' do
+            get :show, params: { id: 'c_9513', vocab: 'AGROVOC', format: 'json' }
+            expect(response).to be_successful
+            expect(response.content_type).to eq 'application/json'
+          end
+        end
+
+        context 'and it was requested as jsonld' do
+          it 'succeeds and returns term data as jsonld content type' do
+            get :show, params: { id: 'c_9513', vocab: 'AGROVOC', format: 'jsonld' }
+            expect(response).to be_successful
+            expect(response.content_type).to eq 'application/ld+json'
+          end
         end
       end
     end
@@ -337,9 +355,10 @@ describe Qa::LinkedDataTermsController, type: :controller do
           stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh85118553')
             .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
         end
-        it 'succeeds' do
+        it 'succeeds and defaults to json content type' do
           get :show, params: { id: 'sh85118553', vocab: 'LOC', subauthority: 'subjects' }
           expect(response).to be_successful
+          expect(response.content_type).to eq 'application/json'
         end
       end
     end
