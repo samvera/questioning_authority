@@ -41,7 +41,7 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # @see Qa::Authorities::LinkedData::FindTerm#find
   def show # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     begin
-      term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params)
+      term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params, jsonld: jsonld?)
     rescue Qa::TermNotFound
       logger.warn "Term Not Found - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
       head :not_found
@@ -61,7 +61,8 @@ class Qa::LinkedDataTermsController < ::ApplicationController
       return
     end
     cors_allow_origin_header(response)
-    render json: term
+    content_type = jsonld? ? 'application/ld+json' : 'application/json'
+    render json: term, content_type: content_type
   end
 
   private
@@ -137,5 +138,15 @@ class Qa::LinkedDataTermsController < ::ApplicationController
 
     def subauth_warn_msg
       subauthority.nil? ? "" : " sub-authority #{subauthority} in"
+    end
+
+    def format
+      return 'json' unless params.key?(:format)
+      return 'json' if params[:format].blank?
+      params[:format]
+    end
+
+    def jsonld?
+      format == 'jsonld'
     end
 end
