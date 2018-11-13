@@ -22,7 +22,13 @@ module Qa::Authorities
         @auth_config = Qa::Authorities::LinkedData::Config.new(auth_name)
       end
 
-      include WebServiceBase
+      def reload_authorities
+        @authorities_service.load_authorities
+      end
+
+      def authorities_service
+        @authorities_service ||= Qa::Authorities::LinkedData::AuthorityService
+      end
 
       def search_service
         @search_service ||= Qa::Authorities::LinkedData::SearchQuery.new(search_config)
@@ -34,6 +40,7 @@ module Qa::Authorities
 
       delegate :search, to: :search_service
       delegate :find, to: :item_service
+      delegate :load_authorities, :authority_names, to: :authorities_service
 
       private
 

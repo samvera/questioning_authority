@@ -3,6 +3,7 @@ module Qa::Authorities
     extend ActiveSupport::Autoload
     autoload :GenericAuthority
     autoload :RdfHelper
+    autoload :AuthorityService
     autoload :SearchQuery
     autoload :FindTerm
     autoload :Config

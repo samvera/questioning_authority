@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "QA 2.1 Linked Data API",
-    "version": "2.1",
+    "title": "QA 2.2 Linked Data API",
+    "version": "2.2",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -11,7 +11,7 @@
   "servers": [
     {
       "url": "http://{site_host}/{apiBase}",
-      "description": "QA v2.1 API Server",
+      "description": "QA v2.2 API Server",
       "variables": {
         "site_host": {
           "default": "localhost:3000",
@@ -24,6 +24,87 @@
     }
   ],
   "paths": {
+    "/list/linked_data/authorities": {
+      "get": {
+        "summary": "List currently loaded linked data authorities",
+        "operationId": "GET_listAuthorities",
+        "tags": [
+          "Authority Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully accessed authority and received results.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if cors_headers_enabled",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_authorities_list_result"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reload/linked_data/authorities": {
+      "get": {
+        "summary": "Reload linked data authorities.  Using this command avoids having to restart the rails server.",
+        "operationId": "GET_reloadAuthorities",
+        "tags": [
+          "Authority Management"
+        ],
+        "parameters": [
+          {
+            "description": "Security token which must be included for this command to execute.",
+            "in": "query",
+            "name": "auth_token",
+            "required": true,
+            "schema": {
+              "default": "",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully reloaded authorities.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if cors_headers_enabled",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_authorities_list_result"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/search/linked_data/{vocab}": {
       "get": {
         "summary": "Send a query string to an authority and return search results.  Parameters are typical examples.  Actual parameters are driven by the authority's config file.",
@@ -38,7 +119,7 @@
             "name": "vocab",
             "required": true,
             "schema": {
-              "default": "agrovoc",
+              "default": "oclc_fast",
               "type": "string"
             }
           },
@@ -48,14 +129,14 @@
             "name": "q",
             "required": true,
             "schema": {
-              "default": "milk",
+              "default": "science",
               "type": "string"
             }
           },
           {
-            "description": "Limit number of returned results",
+            "description": "Limit number of returned results. NOTE: Most authorities use maxRecords instead of maximumRecords for this parameter.",
             "in": "query",
-            "name": "maxRecords",
+            "name": "maximumRecords",
             "required": false,
             "schema": {
               "default": 4,
@@ -92,8 +173,8 @@
               }
             }
           },
-          "503": {
-            "description": "Service Unavailable",
+          "400": {
+            "description": "Bad Request - occurs when required params are missing (e.g. q)",
             "content": {
               "text/plain": {
                 "schema": {
@@ -104,7 +185,18 @@
             }
           },
           "500": {
-            "description": "Internal Server Error",
+            "description": "Internal Server Error - can be raised while attempting to access the external authority OR during processing of results when results are not a valid RDF Format",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable - can be raised while attempting to access the external authority",
             "content": {
               "text/plain": {
                 "schema": {
@@ -129,7 +221,7 @@
             "name": "vocab",
             "required": true,
             "schema": {
-              "default": "agrovoc",
+              "default": "oclc_fast",
               "type": "string"
             }
           }
@@ -252,8 +344,8 @@
               }
             }
           },
-          "503": {
-            "description": "Service Unavailable",
+          "400": {
+            "description": "Bad Request - occurs when required params are missing (e.g. q)",
             "content": {
               "text/plain": {
                 "schema": {
@@ -264,7 +356,18 @@
             }
           },
           "500": {
-            "description": "Internal Server Error",
+            "description": "Internal Server Error - can be raised while attempting to access the external authority OR during processing of results when results are not a valid RDF Format",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable - can be raised while attempting to access the external authority",
             "content": {
               "text/plain": {
                 "schema": {
@@ -358,7 +461,7 @@
             "name": "vocab",
             "required": true,
             "schema": {
-              "default": "agrovoc",
+              "default": "oclc_fast",
               "type": "string"
             }
           },
@@ -368,8 +471,22 @@
             "name": "id",
             "required": true,
             "schema": {
-              "default": "c_9513",
+              "default": "1914919",
               "type": "string"
+            }
+          },
+          {
+            "description": "The format of the returned result.",
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "default": "json",
+              "type": "string",
+              "enum": [
+                "json",
+                "jsonld"
+              ]
             }
           }
         ],
@@ -387,7 +504,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/linked_data_term"
+                  "$ref": "#/components/schemas/linked_data_term_json_result"
+                }
+              },
+              "application/ld+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_term_jsonld_result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - occurs when required params are missing (e.g. id)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
                 }
               }
             }
@@ -403,8 +536,8 @@
               }
             }
           },
-          "503": {
-            "description": "Service Unavailable",
+          "500": {
+            "description": "Internal Server Error - can be raised while attempting to access the external authority OR during processing of results when results are not a valid RDF Format",
             "content": {
               "text/plain": {
                 "schema": {
@@ -414,8 +547,8 @@
               }
             }
           },
-          "500": {
-            "description": "Internal Server Error",
+          "503": {
+            "description": "Service Unavailable - can be raised while attempting to access the external authority",
             "content": {
               "text/plain": {
                 "schema": {
@@ -440,7 +573,7 @@
             "name": "vocab",
             "required": true,
             "schema": {
-              "default": "agrovoc",
+              "default": "oclc_fast",
               "type": "string"
             }
           },
@@ -450,7 +583,7 @@
             "name": "id",
             "required": true,
             "schema": {
-              "default": "c_9513",
+              "default": "1914919",
               "type": "string"
             }
           }
@@ -532,6 +665,20 @@
               "default": "n92016188",
               "type": "string"
             }
+          },
+          {
+            "description": "The format of the returned result.",
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "default": "json",
+              "type": "string",
+              "enum": [
+                "json",
+                "jsonld"
+              ]
+            }
           }
         ],
         "responses": {
@@ -548,7 +695,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/linked_data_term_result"
+                  "$ref": "#/components/schemas/linked_data_term_json_result"
+                }
+              },
+              "application/ld+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_term_jsonld_result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - occurs when required params are missing (e.g. id)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
                 }
               }
             }
@@ -564,8 +727,8 @@
               }
             }
           },
-          "503": {
-            "description": "Service Unavailable",
+          "500": {
+            "description": "Internal Server Error - can be raised while attempting to access the external authority OR during processing of results when results are not a valid RDF Format",
             "content": {
               "text/plain": {
                 "schema": {
@@ -575,8 +738,8 @@
               }
             }
           },
-          "500": {
-            "description": "Internal Server Error",
+          "503": {
+            "description": "Service Unavailable - can be raised while attempting to access the external authority",
             "content": {
               "text/plain": {
                 "schema": {
@@ -665,10 +828,398 @@
           }
         }
       }
+    },
+    "/fetch/linked_data/{vocab}": {
+      "get": {
+        "operationId": "GET_fetchURIFromAuthority",
+        "summary": "Get a single term from an authority given the term's URI.  Generally there are no additional parameters.  See the authority's configuration file to be sure.  Some authorities support `lang` which can be used to filter the language of returned strings.  NOTE: The authorities provided with QA do not support fetch by URI.  See more authority configs at: https://github.com/LD4P/linked_data_authorities",
+        "tags": [
+          "Fetch Term"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "loc",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The URI for the term being retrieved.",
+            "in": "query",
+            "name": "uri",
+            "required": true,
+            "schema": {
+              "default": "http://id.loc.gov/authorities/genreForms/gf2011026141",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The format of the returned result.",
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "default": "json",
+              "type": "string",
+              "enum": [
+                "json",
+                "jsonld"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully accessed authority and received term.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_term_json_result"
+                }
+              },
+              "application/ld+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_term_jsonld_result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - occurs when required params are missing (e.g. uri)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - can be raised while attempting to access the external authority OR during processing of results when results are not a valid RDF Format",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable - can be raised while attempting to access the external authority",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "summary": "CORS preflight request",
+        "operationId": "OPTIONS_fetchFromAuthority",
+        "tags": [
+          "Fetch Term"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "loc",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The ID or URI for the term being retrieved.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "default": "http://id.loc.gov/authorities/genreForms/gf2011026141",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Perform CORS preflight for fetching a term from an authority",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Indicates which method a future CORS request to the same resource might use.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "OPTIONS action is not implement when CORS headers are not enabled",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fetch/linked_data/{vocab}/{subauthority}": {
+      "get": {
+        "operationId": "GET_fetchByURIFromSubauthority",
+        "summary": "Get a single term from a subauthority in an authority given the term's URI.  Generally there are no additional parameters.  See the authority's configuration file to be sure.  Some authorities support `lang` which can be used to filter the language of returned strings.  NOTE: There currently aren't any authorities configured that support subauthorities and access terms using a URI instead of an ID.  The default values in this example show what you might see but DO NOT WORK with the current LOC config.",
+        "tags": [
+          "Fetch Term"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "loc",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the subauthority.",
+            "in": "path",
+            "name": "subauthority",
+            "required": true,
+            "schema": {
+              "default": "names",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The URI for the term being retrieved.",
+            "in": "query",
+            "name": "uri",
+            "required": true,
+            "schema": {
+              "default": "http://id.loc.gov/authorities/names/n92016188",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The format of the returned result.",
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "default": "json",
+              "type": "string",
+              "enum": [
+                "json",
+                "jsonld"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully accessed subauthority in the authority and received term.",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_term_json_result"
+                }
+              },
+              "application/ld+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/linked_data_term_jsonld_result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - occurs when required params are missing (e.g. uri)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - can be raised while attempting to access the external authority OR during processing of results when results are not a valid RDF Format",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable - can be raised while attempting to access the external authority",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "summary": "CORS preflight request",
+        "operationId": "OPTIONS_fetchFromSubauthority",
+        "tags": [
+          "Fetch Term"
+        ],
+        "parameters": [
+          {
+            "description": "Name of the authority's configuration file.",
+            "in": "path",
+            "name": "vocab",
+            "required": true,
+            "schema": {
+              "default": "loc",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Name of the subauthority.",
+            "in": "path",
+            "name": "subauthority",
+            "required": true,
+            "schema": {
+              "default": "names",
+              "type": "string"
+            }
+          },
+          {
+            "description": "The URI for the term being retrieved.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "default": "http://id.loc.gov/authorities/names/n92016188",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Perform CORS preflight for fetching a term from a subauthority in an authority",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS header will be * if CORS headers are enabled",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "description": "Indicates which method a future CORS request to the same resource might use.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "OPTIONS action is not implement when CORS headers are not enabled",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "linked_data_authorities_list_result": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
       "linked_data_query_results": {
         "type": "array",
         "items": {
@@ -693,7 +1244,7 @@
           }
         }
       },
-      "linked_data_term": {
+      "linked_data_term_json_result": {
         "required": [
           "id",
           "uri",
@@ -737,10 +1288,28 @@
             "type": "object",
           }
         }
+      },
+      "linked_data_term_jsonld_result": {
+        "required": [
+          "@context",
+          "@graph"
+        ],
+        "properties": {
+          "@context": {
+            "type": "object"
+          },
+          "@graph": {
+            "type": "object"
+          }
+        }
       }
     }
   },
   "tags": [
+    {
+      "name": "Authority Management",
+      "description": "Services managing all authorities."
+    },
     {
       "name": "Search Query",
       "description": "Services sending a search query to an authority to retrieve multiple results."
