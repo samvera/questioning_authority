@@ -1,3 +1,9 @@
+### 2.2.0 (2018-11-16)
+
+* extend linked data API to include the ability to 'list' authorities, 'reload' authorities, and 'fetch'
+* allow fetch of a single linked data term to be returned with format json or jsonld
+* performance and accuracy enhancements to Getty vocabs query
+
 ### 2.1.2 (2018-10-01)
 
 * add qa:apidoc generator to optionally add QA Linked Data API documentation to app using swagger
