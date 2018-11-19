@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe Qa::Authorities::LinkedData::AuthorityService do
   let(:auth_names) do
-    [:AGROVOC,
-     :LOC,
+    [:LOC,
      :LOD_ENCODING_CONFIG,
      :LOD_FULL_CONFIG,
      :LOD_LANG_DEFAULTS,

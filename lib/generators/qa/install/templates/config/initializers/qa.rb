@@ -9,5 +9,5 @@ Qa.config do |config|
   # action '/reload/linked_data/authorities?auth_token=YOUR_AUTH_TOKEN_DEFINED_HERE' without
   # requiring a restart of rails. By default, reloading through the browser is not allowed
   # when the token is nil or blank.  Change to any string to control who has access to reload.
-  # config.authorized_reload_token = YOUR_AUTH_TOKEN_DEFINED_HERE
+  # config.authorized_reload_token = 'YOUR_AUTH_TOKEN_DEFINED_HERE'
 end

@@ -3,7 +3,6 @@ require 'spec_helper'
 RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
   describe '#search' do
     let(:lod_oclc) { described_class.new(:OCLC_FAST) }
-    let(:lod_agrovoc) { described_class.new(:AGROVOC) }
 
     context 'in OCLC_FAST authority' do
       context '0 search results' do
@@ -55,33 +54,6 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
           expect(results.first).to eq(uri: 'http://id.worldcat.org/fast/409667', id: '409667', label: 'Cornell, Ezra, 1807-1874')
           expect(results.second).to eq(uri: 'http://id.worldcat.org/fast/5140', id: '5140', label: 'Cornell, Joseph')
           expect(results.third).to eq(uri: 'http://id.worldcat.org/fast/72456', id: '72456', label: 'Cornell, Sarah Maria, 1802-1832')
-        end
-      end
-    end
-
-    context 'in AGROVOC authority' do
-      context '0 search results' do
-        let :results do
-          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*supercalifragilisticexpialidocious*&maxhits=20')
-            .to_return(status: 200, body: webmock_fixture('lod_agrovoc_query_no_results.json'), headers: { 'Content-Type' => 'application/json' })
-          lod_agrovoc.search('supercalifragilisticexpialidocious')
-        end
-        it 'returns an empty array' do
-          expect(results).to eq([])
-        end
-      end
-
-      context '3 search results' do
-        let :results do
-          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*milk*&maxhits=20')
-            .to_return(status: 200, body: webmock_fixture('lod_agrovoc_query_many_results.json'), headers: { 'Content-Type' => 'application/json' })
-          lod_agrovoc.search('milk')
-        end
-        it 'is correctly parsed' do
-          expect(results.count).to eq(64)
-          expect(results.first).to eq(uri: 'http://aims.fao.org/aos/agrovoc/c_8602', id: 'http://aims.fao.org/aos/agrovoc/c_8602', label: 'acidophilus milk')
-          expect(results.second).to eq(uri: 'http://aims.fao.org/aos/agrovoc/c_16076', id: 'http://aims.fao.org/aos/agrovoc/c_16076', label: 'buffalo milk')
-          expect(results.third).to eq(uri: 'http://aims.fao.org/aos/agrovoc/c_9513', id: 'http://aims.fao.org/aos/agrovoc/c_9513', label: 'buttermilk')
         end
       end
     end
@@ -190,7 +162,6 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
 
   describe '#find' do
     let(:lod_oclc) { described_class.new(:OCLC_FAST) }
-    let(:lod_agrovoc) { described_class.new(:AGROVOC) }
     let(:lod_loc) { described_class.new(:LOC) }
 
     context 'basic parameter testing' do
@@ -271,61 +242,6 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
           expect(results['predicates']['http://schema.org/name'])
             .to include('Cornell University', 'Ithaca (N.Y.). Cornell University', "Kornel\\xCA\\xB9skii universitet",
                         "K\\xCA\\xBBang-nai-erh ta hs\\xC3\\xBCeh")
-        end
-      end
-    end
-
-    context 'in AGROVOC authority' do
-      context 'term found' do
-        let :results do
-          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/data?uri=http://aims.fao.org/aos/agrovoc/c_9513')
-            .to_return(status: 200, body: webmock_fixture('lod_agrovoc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
-          lod_agrovoc.find('c_9513')
-        end
-        it 'has correct primary predicate values' do
-          expect(results[:uri]).to eq('http://aims.fao.org/aos/agrovoc/c_9513')
-          expect(results[:id]).to eq('http://aims.fao.org/aos/agrovoc/c_9513')
-          expect(results[:label]).to eq ['buttermilk']
-          expect(results[:broader]).to eq ['http://aims.fao.org/aos/agrovoc/c_4830']
-          expect(results[:sameas]).to include('http://cat.aii.caas.cn/concept/c_26308', 'http://lod.nal.usda.gov/nalt/20627', 'http://d-nb.info/gnd/4147072-2')
-        end
-
-        it 'has correct number of predicates in pred-obj list' do
-          expect(results['predicates'].count).to eq 12
-        end
-
-        it 'has primary predicates in pred-obj list' do
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#prefLabel']).to eq ['buttermilk']
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#broader']).to eq ['http://aims.fao.org/aos/agrovoc/c_4830']
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#exactMatch'])
-            .to include('http://cat.aii.caas.cn/concept/c_26308', 'http://lod.nal.usda.gov/nalt/20627',
-                        'http://d-nb.info/gnd/4147072-2')
-        end
-
-        it 'has skos predicate values' do
-          expect(results['predicates']['http://www.w3.org/2008/05/skos-xl#prefLabel'])
-            .to include('http://aims.fao.org/aos/agrovoc/xl_es_1299487482038', 'http://aims.fao.org/aos/agrovoc/xl_it_1299487482154',
-                        'http://aims.fao.org/aos/agrovoc/xl_ko_1299487482210', 'http://aims.fao.org/aos/agrovoc/xl_pl_1299487482273',
-                        'http://aims.fao.org/aos/agrovoc/xl_sk_1299487482378', 'http://aims.fao.org/aos/agrovoc/xl_en_1299487482019',
-                        'http://aims.fao.org/aos/agrovoc/xl_tr_9513_1321792194941',
-                        'http://aims.fao.org/aos/agrovoc/xl_de_1299487482000', 'http://aims.fao.org/aos/agrovoc/xl_fa_1299487482058',
-                        'http://aims.fao.org/aos/agrovoc/xl_th_1299487482417', 'http://aims.fao.org/aos/agrovoc/xl_fr_1299487482080',
-                        'http://aims.fao.org/aos/agrovoc/xl_hi_1299487482102', 'http://aims.fao.org/aos/agrovoc/xl_ar_1299487481966',
-                        'http://aims.fao.org/aos/agrovoc/xl_ja_1299487482181', 'http://aims.fao.org/aos/agrovoc/xl_lo_1299487482240',
-                        'http://aims.fao.org/aos/agrovoc/xl_ru_1299487482341', 'http://aims.fao.org/aos/agrovoc/xl_cs_1299487481982',
-                        'http://aims.fao.org/aos/agrovoc/xl_zh_1299487482458', 'http://aims.fao.org/aos/agrovoc/xl_pt_1299487482307',
-                        'http://aims.fao.org/aos/agrovoc/xl_hu_1299487482127')
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#inScheme']).to eq ['http://aims.fao.org/aos/agrovoc']
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#closeMatch']).to eq ['http://dbpedia.org/resource/Buttermilk']
-          expect(results['predicates']['http://www.w3.org/2008/05/skos-xl#altLabel']).to eq ['http://aims.fao.org/aos/agrovoc/xl_fa_1299487482544']
-        end
-
-        it 'has more unspecified predicate values' do
-          expect(results['predicates']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type']).to eq ['http://www.w3.org/2004/02/skos/core#Concept']
-          expect(results['predicates']['http://purl.org/dc/terms/created']).to eq ['2011-11-20T20:29:54Z']
-          expect(results['predicates']['http://purl.org/dc/terms/modified']).to eq ['2014-07-03T18:51:03Z']
-          expect(results['predicates']['http://rdfs.org/ns/void#inDataset']).to eq ['http://aims.fao.org/aos/agrovoc/void.ttl#Agrovoc']
-          expect(results['predicates']['http://art.uniroma2.it/ontologies/vocbench#hasStatus']).to eq ['Published']
         end
       end
     end
