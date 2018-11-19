@@ -1,3 +1,7 @@
+### 3.0.0 (2018-11-19)
+
+* remove agrovoc linked data configuration
+
 ### 2.2.0 (2018-11-16)
 
 * extend linked data API to include the ability to 'list' authorities, 'reload' authorities, and 'fetch'
