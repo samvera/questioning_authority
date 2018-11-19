@@ -215,30 +215,6 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
       end
     end
-
-    context 'in AGROVOC authority' do
-      context '0 search results' do
-        before do
-          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*supercalifragilisticexpialidocious*&maxhits=20')
-            .to_return(status: 200, body: webmock_fixture('lod_agrovoc_query_no_results.json'), headers: { 'Content-Type' => 'application/json' })
-        end
-        it 'succeeds' do
-          get :search, params: { q: 'supercalifragilisticexpialidocious', vocab: 'AGROVOC' }
-          expect(response).to be_successful
-        end
-      end
-
-      context '3 search results' do
-        before do
-          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/search/?lang=en&query=*milk*&maxhits=20')
-            .to_return(status: 200, body: webmock_fixture('lod_agrovoc_query_many_results.json'), headers: { 'Content-Type' => 'application/json' })
-        end
-        it 'succeeds' do
-          get :search, params: { q: 'milk', vocab: 'AGROVOC' }
-          expect(response).to be_successful
-        end
-      end
-    end
   end
 
   describe '#show' do
@@ -307,9 +283,27 @@ describe Qa::LinkedDataTermsController, type: :controller do
           stub_request(:get, 'http://id.worldcat.org/fast/530369')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
         end
-        it 'succeeds' do
+        it 'succeeds and defaults to json content type' do
           get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
           expect(response).to be_successful
+          expect(response.content_type).to eq 'application/json'
+        end
+
+        context 'and it was requested as json' do
+          it 'succeeds and returns term data as json content type' do
+            get :show, params: { id: '530369', vocab: 'OCLC_FAST', format: 'json' }
+            expect(response).to be_successful
+            expect(response.content_type).to eq 'application/json'
+          end
+        end
+
+        context 'and it was requested as jsonld' do
+          it 'succeeds and returns term data as jsonld content type' do
+            get :show, params: { id: '530369', vocab: 'OCLC_FAST', format: 'jsonld' }
+            expect(response).to be_successful
+            expect(response.content_type).to eq 'application/ld+json'
+            expect(JSON.parse(response.body).keys).to match_array ["@context", "@graph"]
+          end
         end
       end
 
@@ -334,38 +328,6 @@ describe Qa::LinkedDataTermsController, type: :controller do
         it 'Access-Control-Allow-Origin is not present' do
           get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
           expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
-        end
-      end
-    end
-
-    context 'in AGROVOC authority' do
-      context 'term found' do
-        before do
-          stub_request(:get, 'http://artemide.art.uniroma2.it:8081/agrovoc/rest/v1/data?uri=http://aims.fao.org/aos/agrovoc/c_9513')
-            .to_return(status: 200, body: webmock_fixture('lod_agrovoc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
-        end
-
-        it 'succeeds and defaults to json content type' do
-          get :show, params: { id: 'c_9513', vocab: 'AGROVOC' }
-          expect(response).to be_successful
-          expect(response.content_type).to eq 'application/json'
-        end
-
-        context 'and it was requested as json' do
-          it 'succeeds and returns term data as json content type' do
-            get :show, params: { id: 'c_9513', vocab: 'AGROVOC', format: 'json' }
-            expect(response).to be_successful
-            expect(response.content_type).to eq 'application/json'
-          end
-        end
-
-        context 'and it was requested as jsonld' do
-          it 'succeeds and returns term data as jsonld content type' do
-            get :show, params: { id: 'c_9513', vocab: 'AGROVOC', format: 'jsonld' }
-            expect(response).to be_successful
-            expect(response.content_type).to eq 'application/ld+json'
-            expect(JSON.parse(response.body).keys).to match_array ["@context", "@graph"]
-          end
         end
       end
     end
