@@ -29,15 +29,19 @@ module Qa::Authorities
         language ||= search_config.language
         url = search_config.url_with_replacements(query, subauth, replacements)
         Rails.logger.info "QA Linked Data search url: #{url}"
-        graph = get_linked_data(url)
-        parse_search_authority_response(graph, language)
+        graph = load_graph(url: url, language: language)
+        parse_search_authority_response(graph)
       end
 
       private
 
-        def parse_search_authority_response(graph, language)
-          graph = filter_language(graph, language) unless language.nil?
-          graph = filter_out_blanknodes(graph)
+        def load_graph(url:, language:)
+          graph_service = Qa::LinkedData::GraphService.new(url: url)
+          graph_service.filter(language: language, remove_blanknode_subjects: true)
+          graph_service.graph
+        end
+
+        def parse_search_authority_response(graph)
           results = extract_preds(graph, preds_for_search)
           consolidated_results = consolidate_search_results(results)
           json_results = convert_search_to_json(consolidated_results)

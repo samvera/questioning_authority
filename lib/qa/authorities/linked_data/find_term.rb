@@ -38,16 +38,21 @@ module Qa::Authorities
         language ||= term_config.term_language
         url = term_config.term_url_with_replacements(id, subauth, replacements)
         Rails.logger.info "QA Linked Data term url: #{url}"
-        graph = get_linked_data(url)
+        graph = load_graph(url: url, language: language)
         return "{}" unless graph.size.positive?
         return graph.dump(:jsonld, standard_prefixes: true) if jsonld
-        parse_term_authority_response(id, graph, language)
+        parse_term_authority_response(id, graph)
       end
 
       private
 
-        def parse_term_authority_response(id, graph, language)
-          graph = filter_language(graph, language) unless language.nil?
+        def load_graph(url:, language:)
+          graph_service = Qa::LinkedData::GraphService.new(url: url)
+          graph_service.filter(language: language)
+          graph_service.graph
+        end
+
+        def parse_term_authority_response(id, graph)
           results = extract_preds(graph, preds_for_term)
           consolidated_results = consolidate_term_results(results)
           json_results = convert_term_to_json(consolidated_results)
@@ -130,16 +135,16 @@ module Qa::Authorities
             subj = st.subject.to_s
             next unless subj == expected_uri
             pred = st.predicate.to_s
-            obj  = st.object.to_s
-            next if blank_node? obj
+            obj  = st.object
+            next if obj.anonymous?
             if predicates_hash.key?(pred)
               objs = predicates_hash[pred]
               objs = [] unless objs.is_a?(Array)
               objs << predicates_hash[pred] unless objs.length.positive?
-              objs << obj
+              objs << obj.to_s
               predicates_hash[pred] = objs
             else
-              predicates_hash[pred] = [obj]
+              predicates_hash[pred] = [obj.to_s]
             end
           end
           predicates_hash

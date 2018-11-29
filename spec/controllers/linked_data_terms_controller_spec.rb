@@ -437,6 +437,17 @@ describe Qa::LinkedDataTermsController, type: :controller do
             expect(JSON.parse(response.body).keys).to match_array ["@context", "@graph"]
           end
         end
+
+        context 'blank nodes not included in predicates list' do
+          before do
+            stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369wbn')
+              .to_return(status: 200, body: webmock_fixture('lod_term_with_blanknode_objects.nt'), headers: { 'Content-Type' => 'application/n-triples' })
+          end
+          it 'succeeds' do
+            get :fetch, params: { uri: 'http://test.org/530369wbn', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+            expect(response).to be_successful
+          end
+        end
       end
 
       context 'when cors headers are enabled' do

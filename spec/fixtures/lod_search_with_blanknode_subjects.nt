@@ -1,0 +1,12 @@
+<http://id.worldcat.org/fast/530369> <http://purl.org/dc/terms/identifier> "530369" .
+<http://id.worldcat.org/fast/530369> <http://schema.org/name> "Cornell University" .
+<http://id.worldcat.org/fast/530369> <http://schema.org/sameAs> _:b0 .
+_:b0 <http://www.w3.org/2000/01/rdf-schema#label> "Cornell University" .
+<http://id.worldcat.org/fast/5140> <http://purl.org/dc/terms/identifier> "5140" .
+<http://id.worldcat.org/fast/5140> <http://schema.org/name> "Cornell, Joseph" .
+<http://id.worldcat.org/fast/5140> <http://schema.org/sameAs> _:b1 .
+_:b1 <http://www.w3.org/2000/01/rdf-schema#label> "Cornell, Joseph" .
+<http://id.worldcat.org/fast/557490> <http://purl.org/dc/terms/identifier> "557490" .
+<http://id.worldcat.org/fast/557490> <http://schema.org/name> "New York State School of Industrial and Labor Relations" .
+<http://id.worldcat.org/fast/557490> <http://schema.org/sameAs> _:b2 .
+_:b2 <http://www.w3.org/2000/01/rdf-schema#label> "New York State School of Industrial and Labor Relations" .
