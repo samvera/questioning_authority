@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Qa::Authorities::LinkedData::AuthorityService do
+describe Qa::LinkedData::AuthorityService do
   let(:auth_names) do
     [:LOC,
      :LOD_ENCODING_CONFIG,

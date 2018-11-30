@@ -27,7 +27,7 @@ module Qa::Authorities
       end
 
       def authorities_service
-        @authorities_service ||= Qa::Authorities::LinkedData::AuthorityService
+        @authorities_service ||= Qa::LinkedData::AuthorityService
       end
 
       def search_service

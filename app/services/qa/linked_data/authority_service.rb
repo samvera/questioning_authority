@@ -1,6 +1,5 @@
-# This module has the primary QA search method.  It also includes methods to process the linked data results and convert
-# them into the expected QA json results format.
-module Qa::Authorities
+# This module loads linked data authorities and provides access to their configurations.
+module Qa
   module LinkedData
     class AuthorityService
       # Load or reload the linked data configuration files
@@ -32,7 +31,7 @@ module Qa::Authorities
 
       # Get the configuration for an authority
       # @param [String] name of the authority
-      # @return [Array<String>] configuration for the specified authority
+      # @return [Hash] configuration for the specified authority
       def self.authority_config(authname)
         authority_configs[authname]
       end
