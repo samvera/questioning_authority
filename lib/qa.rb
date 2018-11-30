@@ -42,6 +42,9 @@ module Qa
   # Raised when a configuration parameter is incorrect or is required and missing
   class InvalidConfiguration < ArgumentError; end
 
+  # Raised when a request is made for an unsupported action (e.g. :search, :term are supported)
+  class UnsupportedAction < ArgumentError; end
+
   # Raised when a linked data request to a server returns a 503 error
   class ServiceUnavailable < ArgumentError; end
 
@@ -50,4 +53,9 @@ module Qa
 
   # Raised when the server returns 404 for a find term request
   class TermNotFound < ArgumentError; end
+
+  # Raised when a required mapping parameter is missing while building an IRI Template
+  module IriTemplate
+    class MissingParameter < StandardError; end
+  end
 end

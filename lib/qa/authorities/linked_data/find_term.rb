@@ -36,7 +36,7 @@ module Qa::Authorities
       def find(id, language: nil, replacements: {}, subauth: nil, jsonld: false)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
         language ||= term_config.term_language
-        url = term_config.term_url_with_replacements(id, subauth, replacements)
+        url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: term_config, action: :term, action_request: id, substitutions: replacements, subauthority: subauth)
         Rails.logger.info "QA Linked Data term url: #{url}"
         graph = load_graph(url: url, language: language)
         return "{}" unless graph.size.positive?
