@@ -1,0 +1,8 @@
+<http://test.org/530369wbn> <http://purl.org/dc/terms/identifier> "530369" .
+<http://test.org/530369wbn> <http://www.w3.org/2004/02/skos/core#inScheme> <http://id.worldcat.org/fast/ontology/1.0/#fast> .
+<http://test.org/530369wbn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Organization> .
+<http://test.org/530369wbn> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cornell University" .
+<http://test.org/530369wbn> <http://schema.org/name> "Cornell University" .
+<http://test.org/530369wbn> <http://www.w3.org/2004/02/skos/core#altLabel> "Ithaca (N.Y.). Cornell University" .
+<http://test.org/530369wbn> <http://schema.org/sameAs> _:b0 .
+_:b0 <http://www.w3.org/2000/01/rdf-schema#label> "Cornell University" .
