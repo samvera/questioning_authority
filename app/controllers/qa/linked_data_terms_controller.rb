@@ -18,16 +18,16 @@ class Qa::LinkedDataTermsController < ::ApplicationController
 
   # Return a list of supported authority names
   # get "/list/linked_data/authorities"
-  # @see Qa::Authorities::LinkedData::AuthorityService#authority_names
+  # @see Qa::LinkedData::AuthorityService#authority_names
   def list
-    render json: Qa::Authorities::LinkedData::AuthorityService.authority_names.to_json
+    render json: Qa::LinkedData::AuthorityService.authority_names.to_json
   end
 
   # Reload authority configurations
   # get "/reload/linked_data/authorities?auth_token=YOUR_AUTH_TOKEN_DEFINED_HERE"
-  # @see Qa::Authorities::LinkedData::AuthorityService#load_authorities
+  # @see Qa::LinkedData::AuthorityService#load_authorities
   def reload
-    Qa::Authorities::LinkedData::AuthorityService.load_authorities
+    Qa::LinkedData::AuthorityService.load_authorities
     list
   end
 

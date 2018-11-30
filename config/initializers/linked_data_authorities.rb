@@ -1,1 +1,1 @@
-Qa::Authorities::LinkedData::AuthorityService.load_authorities
+Qa::LinkedData::AuthorityService.load_authorities

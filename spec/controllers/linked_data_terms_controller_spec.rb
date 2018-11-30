@@ -82,7 +82,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
   describe '#list' do
     let(:expected_results) { ['Auth1', 'Auth2', 'Auth3'] }
     before do
-      allow(Qa::Authorities::LinkedData::AuthorityService).to receive(:authority_names).and_return(expected_results)
+      allow(Qa::LinkedData::AuthorityService).to receive(:authority_names).and_return(expected_results)
     end
     it 'returns list of authorities' do
       get :list
