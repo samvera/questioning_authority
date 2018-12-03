@@ -1,4 +1,6 @@
 # Provide access to iri template variable map configuration.
+# See https://www.hydra-cg.com/spec/latest/core/#templated-links for information on IRI Templated Links - Variable Mapping.
+# TODO: It would be good to find a more complete resource describing templated links.
 module Qa
   module IriTemplate
     class VariableMap
@@ -30,9 +32,8 @@ module Qa
       # @returns the value to use (e.g. 'fr')
       def simple_value(sub_value = nil)
         return sub_value.to_s if sub_value.present?
-        return default if default.present?
         raise Qa::IriTemplate::MissingParameter, "#{variable} is required, but missing" if required?
-        ''
+        default
       end
 
       # TODO: When implementing more complex query substitution, parameter_value is used when template url specifies variable as {?var_name}.
@@ -49,30 +50,27 @@ module Qa
 
         # Extract the variable name from the config
         # @param config [Hash] configuration (json) holding the variable map
-        # @param var [Symbol] key identifying the variable in the configuration
         # @return [String] variable for substitution in the url tmeplate
-        def extract_variable(config:, var: :variable)
-          varname = config.fetch(var, nil)
+        def extract_variable(config:)
+          varname = config.fetch(:variable, nil)
           raise Qa::InvalidConfiguration, 'variable is required' unless varname
           varname
         end
 
         # Extract the variable name from the config
         # @param config [Hash] configuration (json) holding the variable map
-        # @param var [Symbol] key in the configuration identifying whether the variable is required
         # @return [True | False] required as true or false
-        def extract_required(config:, var: :required)
-          required = config.fetch(var, nil)
+        def extract_required(config:)
+          required = config.fetch(:required, nil)
           raise Qa::InvalidConfiguration, 'required must be true or false' unless required == true || required == false
           required
         end
 
-        # Extract the default value from the config ignoring defaults for required variables
+        # Extract the default value from the config
         # @param config [Hash] configuration (json) holding the variable map
-        # @param var [Symbol] key identifying the default value in the configuration
-        # @return [String] default value to use for the variable; nil if variable is required
-        def extract_default(config:, var: :default)
-          config.fetch(var, '').to_s
+        # @return [String] default value to use for the variable; defaults to empty string
+        def extract_default(config:)
+          config.fetch(:default, '').to_s
         end
     end
   end

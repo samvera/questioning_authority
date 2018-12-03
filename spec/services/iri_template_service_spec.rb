@@ -3,40 +3,40 @@ require 'spec_helper'
 RSpec.describe Qa::IriTemplateService do
   let(:url_template) do
     {
-      '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
-      '@type' => 'IriTemplate',
-      'template' => 'http://localhost/test_default/search?subauth={?subauth}&query={?query}&max_records={?max_records}&language={?language}',
-      'variableRepresentation' => 'BasicRepresentation',
-      'mapping' => [
+      :'@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+      :'@type' => 'IriTemplate',
+      template: 'http://localhost/test_default/search?subauth={?subauth}&query={?query}&max_records={?max_records}&language={?language}',
+      variableRepresentation: 'BasicRepresentation',
+      mapping: [
         {
-          '@type' => 'IriTemplateMapping',
-          'variable' => 'query',
-          'property' => 'hydra:freetextQuery',
-          'required' => true
+          :'@type' => 'IriTemplateMapping',
+          variable: 'query',
+          property: 'hydra:freetextQuery',
+          required: true
         },
         {
-          '@type' => 'IriTemplateMapping',
-          'variable' => 'subauth',
-          'property' => 'hydra:freetextQuery',
-          'required' => false,
-          'default' => 'personal_names'
+          :'@type' => 'IriTemplateMapping',
+          variable: 'subauth',
+          property: 'hydra:freetextQuery',
+          required: false,
+          default: 'personal_names'
         },
         {
-          '@type' => 'IriTemplateMapping',
-          'variable' => 'max_records',
-          'property' => 'hydra:freetextQuery',
-          'required' => false,
-          'default' => 20
+          :'@type' => 'IriTemplateMapping',
+          variable: 'max_records',
+          property: 'hydra:freetextQuery',
+          required: false,
+          default: 20
         },
         {
-          '@type' => 'IriTemplateMapping',
-          'variable' => 'language',
-          'property' => 'hydra:freetextQuery',
-          'required' => false,
-          'default' => 'en'
+          :'@type' => 'IriTemplateMapping',
+          variable: 'language',
+          property: 'hydra:freetextQuery',
+          required: false,
+          default: 'en'
         }
       ]
-    }.with_indifferent_access
+    }
   end
   let(:url_config) { Qa::IriTemplate::UrlConfig.new(url_template) }
 

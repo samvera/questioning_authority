@@ -1,4 +1,4 @@
-# Provide service for constructing the external access URL for an authority.
+# Provide service for building a URL based on an IRI Templated Link and its variable mappings based on provided substitutions.
 module Qa
   class IriTemplateService
     # Construct an url from an IriTemplate making identified substitutions

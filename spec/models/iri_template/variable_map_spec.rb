@@ -5,11 +5,11 @@ RSpec.describe Qa::IriTemplate::VariableMap do
 
   let(:map) do
     {
-      "@type" => "IriTemplateMapping",
-      "property" => "hydra:freetextQuery",
-      "variable" => "subauth",
-      "required" => true
-    }.with_indifferent_access
+      :"@type" => "IriTemplateMapping",
+      property: "hydra:freetextQuery",
+      variable: "subauth",
+      required: true
+    }
   end
 
   describe 'model attributes' do
@@ -114,6 +114,7 @@ RSpec.describe Qa::IriTemplate::VariableMap do
 
       context 'and default is defined' do
         before do
+          map[:required] = false
           map[:default] = 'personal_name'
         end
 

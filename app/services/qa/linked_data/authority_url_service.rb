@@ -10,9 +10,7 @@ module Qa
       # @param substitutions [Hash] variable-value pairs to substitute into the URL template
       # @returns a valid URL the submits the action request to the external authority
       def self.build_url(action_config:, action:, action_request:, substitutions: {}, subauthority: nil)
-        # auth_config = Qa::Authorities::LinkedData::Config.new(authority)
         action_validation(action)
-        # action_config = action_config(auth_config, action)
         url_config = Qa::IriTemplate::UrlConfig.new(action_url(action_config, action))
         selected_substitutions = url_config.extract_substitutions(substitutions)
         selected_substitutions[action_request_variable(action_config, action)] = action_request
