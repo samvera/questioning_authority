@@ -27,7 +27,7 @@ module Qa::Authorities
       def search(query, language: nil, replacements: {}, subauth: nil)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
         language ||= search_config.language
-        url = search_config.url_with_replacements(query, subauth, replacements)
+        url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth)
         Rails.logger.info "QA Linked Data search url: #{url}"
         graph = load_graph(url: url, language: language)
         parse_search_authority_response(graph)
