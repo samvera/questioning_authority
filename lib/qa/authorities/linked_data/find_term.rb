@@ -10,7 +10,7 @@ module Qa::Authorities
         @term_config = term_config
       end
 
-      attr_reader :term_config
+      attr_reader :term_config, :graph
 
       delegate :term_subauthority?, to: :term_config
 
@@ -38,26 +38,25 @@ module Qa::Authorities
         language ||= term_config.term_language
         url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: term_config, action: :term, action_request: id, substitutions: replacements, subauthority: subauth)
         Rails.logger.info "QA Linked Data term url: #{url}"
-        graph = load_graph(url: url, language: language)
+        load_graph(url: url, language: language)
         return "{}" unless graph.size.positive?
         return graph.dump(:jsonld, standard_prefixes: true) if jsonld
-        parse_term_authority_response(id, graph)
+        parse_term_authority_response(id)
       end
 
       private
 
         def load_graph(url:, language:)
-          graph_service = Qa::LinkedData::GraphService.new(url: url)
-          graph_service.filter(language: language)
-          graph_service.graph
+          @graph = Qa::LinkedData::GraphService.load_graph(url: url)
+          @graph = Qa::LinkedData::GraphService.filter(graph: @graph, language: language) unless language.blank?
         end
 
-        def parse_term_authority_response(id, graph)
+        def parse_term_authority_response(id)
           results = extract_preds(graph, preds_for_term)
           consolidated_results = consolidate_term_results(results)
           json_results = convert_term_to_json(consolidated_results)
           termhash = select_json_result_for_id(json_results, id)
-          predicates_hash = predicates_with_subject_uri(graph, termhash[:uri])
+          predicates_hash = predicates_with_subject_uri(termhash[:uri])
           termhash['predicates'] = predicates_hash unless predicates_hash.length <= 0
           termhash
         end
@@ -129,7 +128,7 @@ module Qa::Authorities
           json_results.first
         end
 
-        def predicates_with_subject_uri(graph, expected_uri) # rubocop:disable Metrics/MethodLength
+        def predicates_with_subject_uri(expected_uri) # rubocop:disable Metrics/MethodLength
           predicates_hash = {}
           graph.statements.each do |st|
             subj = st.subject.to_s
