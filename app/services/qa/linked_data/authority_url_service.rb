@@ -8,7 +8,7 @@ module Qa
       # @param action [Symbol] action with valid values :search or :term
       # @param action_request [String] the request the user is making of the authority (e.g. query text or term id/uri)
       # @param substitutions [Hash] variable-value pairs to substitute into the URL template
-      # @returns a valid URL the submits the action request to the external authority
+      # @return a valid URL the submits the action request to the external authority
       def self.build_url(action_config:, action:, action_request:, substitutions: {}, subauthority: nil)
         action_validation(action)
         url_config = Qa::IriTemplate::UrlConfig.new(action_url(action_config, action))

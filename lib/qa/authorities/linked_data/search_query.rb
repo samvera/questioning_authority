@@ -10,7 +10,8 @@ module Qa::Authorities
         @search_config = search_config
       end
 
-      attr_reader :search_config, :graph
+      attr_reader :search_config, :graph, :language
+      private :language
 
       delegate :subauthority?, :supports_sort?, to: :search_config
 
@@ -27,15 +28,16 @@ module Qa::Authorities
       def search(query, language: nil, replacements: {}, subauth: nil)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
         language ||= search_config.language
+        @language = language
         url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth)
         Rails.logger.info "QA Linked Data search url: #{url}"
-        load_graph(url: url, language: language)
+        load_graph(url: url)
         parse_search_authority_response
       end
 
       private
 
-        def load_graph(url:, language:)
+        def load_graph(url:)
           @graph = Qa::LinkedData::GraphService.load_graph(url: url)
           @graph = Qa::LinkedData::GraphService.filter(graph: @graph, language: language, remove_blanknode_subjects: true)
         end
@@ -65,7 +67,7 @@ module Qa::Authorities
           preds
         end
 
-        def consolidate_search_results(results) # rubocop:disable Metrics/MethodLength
+        def consolidate_search_results(results) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
           consolidated_results = {}
           return consolidated_results if results.nil? || !results.count.positive?
           results.each do |statement|
@@ -80,9 +82,9 @@ module Qa::Authorities
           end
           consolidated_results.each do |res|
             consolidated_hash = res[1]
-            consolidated_hash[:label] = sort_string_by_language consolidated_hash[:label]
-            consolidated_hash[:altlabel] = sort_string_by_language consolidated_hash[:altlabel]
-            consolidated_hash[:sort] = sort_string_by_language consolidated_hash[:sort]
+            consolidated_hash[:label] = Qa::LinkedData::LanguageSortService.new(consolidated_hash[:label], language).sort
+            consolidated_hash[:altlabel] = Qa::LinkedData::LanguageSortService.new(consolidated_hash[:altlabel], language).sort
+            consolidated_hash[:sort] = Qa::LinkedData::LanguageSortService.new(consolidated_hash[:sort], language).sort
           end
           consolidated_results
         end
@@ -109,53 +111,12 @@ module Qa::Authorities
           lbl
         end
 
-        def sort_search_results(json_results) # rubocop:disable Metrics/MethodLength
+        def sort_search_results(json_results)
           return json_results unless supports_sort?
-          json_results.sort! do |a, b|
-            cmp = sort_when_missing_sort_predicate(a, b)
-            next cmp unless cmp.nil?
-
-            cmp = numeric_sort(a, b)
-            next cmp unless cmp.nil?
-
-            as = a[:sort].collect(&:downcase)
-            bs = b[:sort].collect(&:downcase)
-            cmp = 0
-            0.upto([as.size, bs.size].max - 1) do |i|
-              cmp = sort_when_same_but_one_has_more_values(as, bs, i)
-              break unless cmp.nil?
-
-              cmp = (as[i] <=> bs[i])
-              break if cmp.nonzero? # stop checking as soon as a value in the two lists are different
-            end
-            cmp
-          end
+          return json_results if json_results.empty?
+          sort_key = json_results.first.key?(:sort) ? :sort : :label
+          json_results = Qa::LinkedData::DeepSortService.new(json_results, sort_key, language).sort
           json_results.each { |h| h.delete(:sort) }
-        end
-
-        def sort_when_missing_sort_predicate(a, b)
-          return 0 unless a.key?(:sort) || b.key?(:sort) # leave unchanged if both are missing
-          return -1 unless a.key? :sort # consider missing a value lower than existing b value
-          return 1 unless b.key? :sort # consider missing b value lower than existing a value
-          nil
-        end
-
-        def sort_when_same_but_one_has_more_values(as, bs, current_list_size)
-          return -1 if as.size <= current_list_size # consider shorter a list of values lower then longer b list
-          return 1 if bs.size <= current_list_size # consider shorter b list of values lower then longer a list
-          nil
-        end
-
-        def numeric_sort(a, b)
-          return nil if a[:sort].size > 1
-          return nil if b[:sort].size > 1
-          return nil unless s_is_i? a[:sort][0]
-          return nil unless s_is_i? b[:sort][0]
-          Integer(a[:sort][0]) <=> Integer(b[:sort][0])
-        end
-
-        def s_is_i?(s)
-          /\A[-+]?\d+\z/ === s # rubocop:disable Style/CaseEquality
         end
     end
   end

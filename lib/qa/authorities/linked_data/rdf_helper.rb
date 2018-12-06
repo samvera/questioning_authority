@@ -39,10 +39,9 @@ module Qa::Authorities
         end
 
         def sort_string_by_language(str_literals)
-          return str_literals if str_literals.nil? || str_literals.size <= 0
-          str_literals.sort! { |a, b| a.language <=> b.language }
-          str_literals.collect!(&:to_s)
-          str_literals.uniq!
+          return str_literals if str_literals.blank?
+          str_literals = Qa::LinkedData::LanguageSortService.new(str_literals).sort
+          str_literals.map!(&:to_s).uniq!
           str_literals.delete_if { |s| s.nil? || s.length <= 0 }
         end
     end

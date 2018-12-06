@@ -99,8 +99,8 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
             json_results = [{ label: "[#{term_b}, #{term_c}]", sort: [term_b, term_c] },
                             { label: "[#{term_b}]", sort: [term_b] },
                             { label: "[#{term_b}, #{term_a}]", sort: [term_b, term_a] }]
-            expected_results = [{ label: "[#{term_b}]" },
-                                { label: "[#{term_b}, #{term_a}]" },
+            expected_results = [{ label: "[#{term_b}, #{term_a}]" },
+                                { label: "[#{term_b}]" },
                                 { label: "[#{term_b}, #{term_c}]" }]
             expect(instance.send(:sort_search_results, json_results)).to eq expected_results
           end
@@ -111,8 +111,8 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
             json_results = [{ label: "[#{term_b}, #{term_d}, #{term_c}]", sort: [term_b, term_d, term_c] },
                             { label: "[#{term_a}, #{term_c}]", sort: [term_a, term_c] },
                             { label: "[#{term_b}, #{term_d}, #{term_a}]", sort: [term_b, term_d, term_a] }]
-            expected_results = [{ label: "[#{term_a}, #{term_c}]" },
-                                { label: "[#{term_b}, #{term_d}, #{term_a}]" },
+            expected_results = [{ label: "[#{term_b}, #{term_d}, #{term_a}]" },
+                                { label: "[#{term_a}, #{term_c}]" },
                                 { label: "[#{term_b}, #{term_d}, #{term_c}]" }]
             expect(instance.send(:sort_search_results, json_results)).to eq expected_results
           end
