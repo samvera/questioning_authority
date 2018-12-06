@@ -10,7 +10,7 @@ module Qa::Authorities
         @search_config = search_config
       end
 
-      attr_reader :search_config
+      attr_reader :search_config, :graph
 
       delegate :subauthority?, :supports_sort?, to: :search_config
 
@@ -29,19 +29,18 @@ module Qa::Authorities
         language ||= search_config.language
         url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth)
         Rails.logger.info "QA Linked Data search url: #{url}"
-        graph = load_graph(url: url, language: language)
-        parse_search_authority_response(graph)
+        load_graph(url: url, language: language)
+        parse_search_authority_response
       end
 
       private
 
         def load_graph(url:, language:)
-          graph_service = Qa::LinkedData::GraphService.new(url: url)
-          graph_service.filter(language: language, remove_blanknode_subjects: true)
-          graph_service.graph
+          @graph = Qa::LinkedData::GraphService.load_graph(url: url)
+          @graph = Qa::LinkedData::GraphService.filter(graph: @graph, language: language) unless language.blank?
         end
 
-        def parse_search_authority_response(graph)
+        def parse_search_authority_response
           results = extract_preds(graph, preds_for_search)
           consolidated_results = consolidate_search_results(results)
           json_results = convert_search_to_json(consolidated_results)

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe Qa::LinkedData::GraphService do
-  describe '#initialize' do
-    subject { described_class.new(url: url).graph }
+  describe '.load_graph' do
+    subject { described_class.load_graph(url: url) }
     let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
 
     context 'when graph can be loaded' do
@@ -26,12 +26,12 @@ RSpec.describe Qa::LinkedData::GraphService do
       end
 
       it 'raises error' do
-        expect { described_class.new(url: url) }.to raise_error(Qa::TermNotFound, "#{url} Not Found - Term may not exist at LOD Authority. (HTTPNotFound - 404)")
+        expect { described_class.load_graph(url: url) }.to raise_error(Qa::TermNotFound, "#{url} Not Found - Term may not exist at LOD Authority. (HTTPNotFound - 404)")
       end
     end
 
     context 'when service error' do
-      subject { described_class.new(url: url) }
+      subject { described_class.load_graph(url: url) }
 
       let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
       let(:uri) { URI(url) }
@@ -47,7 +47,7 @@ RSpec.describe Qa::LinkedData::GraphService do
     end
 
     context 'when service unavailable' do
-      subject { described_class.new(url: url) }
+      subject { described_class.load_graph(url: url) }
 
       let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
       let(:uri) { URI(url) }
@@ -63,7 +63,7 @@ RSpec.describe Qa::LinkedData::GraphService do
     end
 
     context "when error isn't specifically handled" do
-      subject { described_class.new(url: url) }
+      subject { described_class.load_graph(url: url) }
 
       let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
       let(:uri) { URI(url) }
@@ -79,12 +79,12 @@ RSpec.describe Qa::LinkedData::GraphService do
     end
   end
 
-  describe '#filter' do
+  describe '.filter' do
     context 'with language filter' do
-      subject { service.graph }
+      subject { described_class.filter(graph: graph, language: language) }
 
       let(:url) { 'http://authority.with.language/search?query=foo' }
-      let(:service) { described_class.new(url: url) }
+      let(:graph) { described_class.load_graph(url: url) }
 
       let(:en_dried_milk) { RDF::Literal.new("dried milk", language: :en) }
       let(:fr_dried_milk) { RDF::Literal.new("lait en poudre", language: :fr) }
@@ -101,7 +101,6 @@ RSpec.describe Qa::LinkedData::GraphService do
       before do
         stub_request(:get, 'http://authority.with.language/search?query=foo')
           .to_return(status: 200, body: webmock_fixture('lod_lang_search_enfrde.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
-        service.filter(language: language)
       end
 
       context 'and one language passed in as string' do
@@ -176,21 +175,41 @@ RSpec.describe Qa::LinkedData::GraphService do
         end
       end
     end
+
+    context 'with filter out subject blanknodes' do
+      subject { described_class.filter(graph: graph, remove_blanknode_subjects: true) }
+
+      let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
+      let(:graph) { described_class.load_graph(url: url) }
+
+      before do
+        stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage')
+          .to_return(status: 200, body: webmock_fixture('lod_search_with_blanknode_subjects.nt'), headers: { 'Content-Type' => 'application/n-triples' })
+      end
+
+      it 'removes statements where the subject is a blanknode' do
+        expect(graph.size).to be 12
+        expect(subject.size).to be 9
+      end
+    end
   end
 
-  # describe '.filter_out_subject_blanknodes' do
-  #   let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
-  #   let(:graph) { described_class.graph(url) }
-  #
-  #   before do
-  #     stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage')
-  #       .to_return(status: 200, body: webmock_fixture('lod_search_with_blanknode_subjects.nt'), headers: { 'Content-Type' => 'application/n-triples' })
-  #   end
-  #
-  #   it 'removes statements where the subject is a blanknode' do
-  #     expect(graph.size).to be 12
-  #     filtered_graph = described_class.filter_out_subject_blanknodes(graph)
-  #     expect(filtered_graph.size).to be 9
-  #   end
-  # end
+  describe '.object_values' do
+    subject { described_class.object_values(graph: graph, subject: subject_uri, predicate: predicate_uri) }
+
+    let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
+    let(:graph) { described_class.load_graph(url: url) }
+    let(:subject_uri) { RDF::URI('http://id.worldcat.org/fast/530369') }
+    let(:predicate_uri) { RDF::URI('http://schema.org/sameAs') }
+
+    before do
+      stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage')
+        .to_return(status: 200, body: webmock_fixture('lod_oclc_all_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+    end
+
+    it 'returns all values for the subject-predicate pair' do
+      expect(subject.size).to be 2
+      expect(subject.map(&:to_s)).to match_array ['http://id.loc.gov/authorities/names/n79021621', 'https://viaf.org/viaf/126293486']
+    end
+  end
 end
