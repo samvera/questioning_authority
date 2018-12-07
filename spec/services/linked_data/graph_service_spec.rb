@@ -188,8 +188,8 @@ RSpec.describe Qa::LinkedData::GraphService do
       end
 
       it 'removes statements where the subject is a blanknode' do
-        expect(graph.size).to be 12
-        expect(subject.size).to be 9
+        expect(graph.size).to be 18
+        expect(subject.size).to be 12
       end
     end
   end
