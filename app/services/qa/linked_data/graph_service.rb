@@ -19,8 +19,8 @@ module Qa
         # @param remove_blanknode_subjects [Boolean] will remove any statement whose subject is a blanknode, if true
         # @returns [RDF::Graph] a new instance of graph with statements not matching the filters removed
         def filter(graph:, language: nil, remove_blanknode_subjects: false)
-          return unless graph.present?
-          return unless language.present? || remove_blanknode_subjects
+          return graph unless graph.present?
+          return graph unless language.present? || remove_blanknode_subjects
           filtered_graph = graph
           language = normalize_language(language)
           filtered_graph.each do |st|

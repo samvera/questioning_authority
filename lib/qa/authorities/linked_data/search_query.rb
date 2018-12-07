@@ -37,7 +37,7 @@ module Qa::Authorities
 
         def load_graph(url:, language:)
           @graph = Qa::LinkedData::GraphService.load_graph(url: url)
-          @graph = Qa::LinkedData::GraphService.filter(graph: @graph, language: language) unless language.blank?
+          @graph = Qa::LinkedData::GraphService.filter(graph: @graph, language: language, remove_blanknode_subjects: true)
         end
 
         def parse_search_authority_response

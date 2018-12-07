@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'json'
 
 describe Qa::LinkedDataTermsController, type: :controller do
   before do
@@ -164,6 +165,21 @@ describe Qa::LinkedDataTermsController, type: :controller do
         it 'succeeds' do
           get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', maximumRecords: '3' }
           expect(response).to be_successful
+        end
+      end
+
+      context '3 search results with blank nodes removed' do
+        before do
+          stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=5&query=cql.any%20all%20%22ezra%22&sortKeys=usage')
+            .to_return(status: 200, body: webmock_fixture('lod_search_with_blanknode_subjects.nt'), headers: { 'Content-Type' => 'application/n-triples' })
+        end
+        it 'succeeds' do
+          get :search, params: { q: 'ezra', vocab: 'OCLC_FAST', maximumRecords: '5' }
+          expect(response).to be_successful
+          results = JSON.parse(response.body)
+          blank_nodes = results.select { |r| r['uri'].start_with?('_:b') }
+          expect(blank_nodes.size).to eq 0
+          expect(results.size).to eq 3
         end
       end
     end
