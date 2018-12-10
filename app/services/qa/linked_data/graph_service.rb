@@ -5,7 +5,7 @@ module Qa
       class << self
         # Retrieve linked data from specified url
         # @param [String] url from which to retrieve linked data
-        # @returns [RDF::Graph] graph of linked data
+        # @return [RDF::Graph] graph of linked data
         def load_graph(url:)
           RDF::Graph.load(url)
         rescue IOError => e
@@ -17,7 +17,7 @@ module Qa
         # @param language [String | Symbol | Array<String|Symbol>] will keep any statement whose object's language matches the language filter
         #          (only applies to statements that respond to language) (e.g. "en" or :en or ["en", "fr"] or [:en, :fr])
         # @param remove_blanknode_subjects [Boolean] will remove any statement whose subject is a blanknode, if true
-        # @returns [RDF::Graph] a new instance of graph with statements not matching the filters removed
+        # @return [RDF::Graph] a new instance of graph with statements not matching the filters removed
         def filter(graph:, language: nil, remove_blanknode_subjects: false)
           return graph unless graph.present?
           return graph unless language.present? || remove_blanknode_subjects
@@ -33,7 +33,7 @@ module Qa
         # @param graph [RDF::Graph] the graph to search
         # @param subject [RDF::URI] the URI of the subject
         # @param predicate [RDF::URI] the URI of the predicate
-        # @returns [Array] all object values for the subject-predicate pair
+        # @return [Array] all object values for the subject-predicate pair
         def object_values(graph:, subject:, predicate:)
           values = []
           graph.query([subject, predicate, :object]) do |statement|
@@ -81,7 +81,7 @@ module Qa
 
           # Normalize language
           # @param [String | Symbol | Array] language for filtering graph (e.g. "en" OR :en OR ["en", "fr"] OR [:en, :fr])
-          # @returns [Array<Symbol>] an array of languages encoded as symbols (e.g. [:en] OR [:en, :fr])
+          # @return [Array<Symbol>] an array of languages encoded as symbols (e.g. [:en] OR [:en, :fr])
           def normalize_language(language)
             return language if language.blank?
             language = [language] unless language.is_a? Array

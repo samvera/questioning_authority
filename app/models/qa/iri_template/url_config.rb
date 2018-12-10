@@ -22,7 +22,7 @@ module Qa
 
       # Selective extract substitution variable-value pairs from the provided substitutions.
       # @param [Hash, ActionController::Parameters] full set of passed in substitution values
-      # @returns [HashWithIndifferentAccess] Only variable-value pairs for variables defined in the variable mapping.
+      # @return [HashWithIndifferentAccess] Only variable-value pairs for variables defined in the variable mapping.
       def extract_substitutions(substitutions)
         selected_substitutions = HashWithIndifferentAccess.new
         mapping.each do |m|
