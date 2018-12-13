@@ -10,7 +10,8 @@ module Qa::Authorities
         @term_config = term_config
       end
 
-      attr_reader :term_config, :graph
+      attr_reader :term_config, :full_graph, :filtered_graph, :language
+      private :full_graph, :filtered_graph, :language
 
       delegate :term_subauthority?, to: :term_config
 
@@ -35,24 +36,27 @@ module Qa::Authorities
       #     "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"] } }
       def find(id, language: nil, replacements: {}, subauth: nil, jsonld: false)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
-        language ||= term_config.term_language
+        @language = Qa::LinkedData::LanguageService.preferred_language(user_language: language, authority_language: term_config.term_language)
         url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: term_config, action: :term, action_request: id, substitutions: replacements, subauthority: subauth)
         Rails.logger.info "QA Linked Data term url: #{url}"
-        load_graph(url: url, language: language)
-        return "{}" unless graph.size.positive?
-        return graph.dump(:jsonld, standard_prefixes: true) if jsonld
+        load_graph(url: url)
+        return "{}" unless full_graph.size.positive?
+        return full_graph.dump(:jsonld, standard_prefixes: true) if jsonld
         parse_term_authority_response(id)
       end
 
       private
 
-        def load_graph(url:, language:)
-          @graph = Qa::LinkedData::GraphService.load_graph(url: url)
-          @graph = Qa::LinkedData::GraphService.filter(graph: @graph, language: language) unless language.blank?
+        def load_graph(url:)
+          # @graph = Qa::LinkedData::GraphService.load_graph(url: url)
+          @full_graph = Qa::LinkedData::GraphService.load_graph(url: url)
+          return unless @full_graph.size.positive?
+          @filtered_graph = Qa::LinkedData::GraphService.deep_copy(graph: @full_graph)
+          @filtered_graph = Qa::LinkedData::GraphService.filter(graph: @filtered_graph, language: language) unless language.blank?
         end
 
         def parse_term_authority_response(id)
-          results = extract_preds(graph, preds_for_term)
+          results = extract_preds(filtered_graph, preds_for_term)
           consolidated_results = consolidate_term_results(results)
           json_results = convert_term_to_json(consolidated_results)
           termhash = select_json_result_for_id(json_results, id)
@@ -130,7 +134,7 @@ module Qa::Authorities
 
         def predicates_with_subject_uri(expected_uri) # rubocop:disable Metrics/MethodLength
           predicates_hash = {}
-          graph.statements.each do |st|
+          @full_graph.statements.each do |st|
             subj = st.subject.to_s
             next unless subj == expected_uri
             pred = st.predicate.to_s

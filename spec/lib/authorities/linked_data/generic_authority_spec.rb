@@ -69,50 +69,75 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
     describe "language processing" do
       context "when filtering #search results" do
         context "and lang NOT passed in" do
-          context "and NO default defined in config" do
-            let(:lod_lang_no_defaults) { described_class.new(:LOD_LANG_NO_DEFAULTS) }
-            let :results do
-              stub_request(:get, "http://localhost/test_no_default/search?query=milk")
-                .to_return(status: 200, body: webmock_fixture("lod_lang_search_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-              lod_lang_no_defaults.search('milk')
+          context "and NO language defined in authority config" do
+            context "and NO language defined in Qa config" do
+              let(:lod_lang_no_defaults) { described_class.new(:LOD_LANG_NO_DEFAULTS) }
+              let :results do
+                stub_request(:get, "http://localhost/test_no_default/search?query=milk")
+                  .to_return(status: 200, body: webmock_fixture("lod_lang_search_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
+                lod_lang_no_defaults.search('milk')
+              end
+
+              before do
+                Qa.config.default_language = []
+              end
+
+              after do
+                Qa.config.default_language = :en
+              end
+
+              it "is not filtered" do
+                expect(results.first[:label]).to eq('[buttermilk, Babeurre] (yummy, délicieux)')
+                expect(results.second[:label]).to eq('[condensed milk, lait condensé] (creamy, crémeux)')
+                expect(results.third[:label]).to eq('[dried milk, lait en poudre] (powdery, poudreux)')
+              end
             end
-            it "is not filtered" do
-              expect(results.first[:label]).to eq('[buttermilk, Babeurre] (yummy, délicieux)')
-              expect(results.second[:label]).to eq('[condensed milk, lait condensé] (creamy, crémeux)')
-              expect(results.third[:label]).to eq('[dried milk, lait en poudre] (powdery, poudreux)')
+
+            context "and default_language is defined in Qa config" do
+              let(:lod_lang_no_defaults) { described_class.new(:LOD_LANG_NO_DEFAULTS) }
+              let :results do
+                stub_request(:get, "http://localhost/test_no_default/search?query=milk")
+                  .to_return(status: 200, body: webmock_fixture("lod_lang_search_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
+                lod_lang_no_defaults.search('milk')
+              end
+              it "filters using Qa configured default" do
+                expect(results.first[:label]).to eq('buttermilk (yummy)')
+                expect(results.second[:label]).to eq('condensed milk (creamy)')
+                expect(results.third[:label]).to eq('dried milk (powdery)')
+              end
             end
           end
 
-          context "and default IS defined in config" do
+          context "and language IS defined in authority config" do
             let(:lod_lang_defaults) { described_class.new(:LOD_LANG_DEFAULTS) }
             let :results do
               stub_request(:get, "http://localhost/test_default/search?query=milk")
                 .to_return(status: 200, body: webmock_fixture("lod_lang_search_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
               lod_lang_defaults.search('milk')
             end
-            it "is filtered to default" do
-              expect(results.first[:label]).to eq('buttermilk (yummy)')
-              expect(results.second[:label]).to eq('condensed milk (creamy)')
-              expect(results.third[:label]).to eq('dried milk (powdery)')
+            it "is filtered to authority defined language" do
+              expect(results.first[:label]).to eq('Babeurre (délicieux)')
+              expect(results.second[:label]).to eq('lait condensé (crémeux)')
+              expect(results.third[:label]).to eq('lait en poudre (poudreux)')
             end
           end
         end
 
-        context "and multiple defaults ARE defined in config" do
+        context "and multiple languages ARE defined in authority config" do
           let(:lod_lang_multi_defaults) { described_class.new(:LOD_LANG_MULTI_DEFAULTS) }
           let :results do
             stub_request(:get, "http://localhost/test_default/search?query=milk")
               .to_return(status: 200, body: webmock_fixture("lod_lang_search_enfrde.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
             lod_lang_multi_defaults.search('milk')
           end
-          it "is filtered to default" do
+          it "is filtered to authority defined languages" do
             expect(results.first[:label]).to eq('[buttermilk, Babeurre] (yummy, délicieux)')
             expect(results.second[:label]).to eq('[condensed milk, lait condensé] (creamy, crémeux)')
             expect(results.third[:label]).to eq('[dried milk, lait en poudre] (powdery, poudreux)')
           end
         end
 
-        context "and lang IS passed in" do
+        context "and language IS passed in to search" do
           let(:lod_lang_defaults) { described_class.new(:LOD_LANG_DEFAULTS) }
           let :results do
             stub_request(:get, "http://localhost/test_default/search?query=milk")
@@ -313,46 +338,71 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
     describe "language processing" do
       context "when filtering #find result" do
         context "and lang NOT passed in" do
-          context "and NO default defined in config" do
-            let(:lod_lang_no_defaults) { described_class.new(:LOD_LANG_NO_DEFAULTS) }
-            let :results do
-              stub_request(:get, "http://localhost/test_no_default/term/c_9513")
-                .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-              lod_lang_no_defaults.find('c_9513')
+          context "and NO language defined in authority config" do
+            context "and NO language defined in Qa config" do
+              let(:lod_lang_no_defaults) { described_class.new(:LOD_LANG_NO_DEFAULTS) }
+              let :results do
+                stub_request(:get, "http://localhost/test_no_default/term/c_9513")
+                  .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
+                lod_lang_no_defaults.find('c_9513')
+              end
+
+              before do
+                Qa.config.default_language = []
+              end
+
+              after do
+                Qa.config.default_language = :en
+              end
+
+              it "is not filtered" do
+                expect(results[:label]).to eq ['buttermilk', 'Babeurre']
+                expect(results[:altlabel]).to eq ['yummy', 'délicieux']
+                expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to include("buttermilk", "Babeurre")
+                expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#altLabel"]).to include("yummy", "délicieux")
+              end
             end
-            it "is not filtered" do
-              expect(results[:label]).to eq ['buttermilk', 'Babeurre']
-              expect(results[:altlabel]).to eq ['yummy', 'délicieux']
-              expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to include("buttermilk", "Babeurre")
-              expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#altLabel"]).to include("yummy", "délicieux")
+            context "and default_language is defined in Qa config" do
+              let(:lod_lang_no_defaults) { described_class.new(:LOD_LANG_NO_DEFAULTS) }
+              let :results do
+                stub_request(:get, "http://localhost/test_no_default/term/c_9513")
+                  .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
+                lod_lang_no_defaults.find('c_9513')
+              end
+              it "filters using Qa configured default for summary but not for predicates list" do
+                expect(results[:label]).to eq ['buttermilk']
+                expect(results[:altlabel]).to eq ['yummy']
+                expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to include("buttermilk", "Babeurre")
+                expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#altLabel"]).to include("yummy", "délicieux")
+              end
             end
           end
-          context "and default IS defined in config" do
+          context "and language IS defined in authority config" do
             let(:lod_lang_defaults) { described_class.new(:LOD_LANG_DEFAULTS) }
             let :results do
               stub_request(:get, "http://localhost/test_default/term/c_9513")
                 .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
               lod_lang_defaults.find('c_9513')
             end
-            it "is filtered to default" do
-              expect(results[:label]).to eq ['buttermilk']
-              expect(results[:altlabel]).to eq ['yummy']
-              expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to eq ['buttermilk']
-              expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#altLabel"]).to eq ['yummy']
+            it "filters using authority configured language for summary but not for predicates list" do
+              expect(results[:label]).to eq ['Babeurre']
+              expect(results[:altlabel]).to eq ['délicieux']
+              expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to include("buttermilk", "Babeurre")
+              expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#altLabel"]).to include("yummy", "délicieux")
             end
           end
-          context "and multiple defaults ARE defined in config" do
+          context "and multiple languages ARE defined in authority config" do
             let(:lod_lang_multi_defaults) { described_class.new(:LOD_LANG_MULTI_DEFAULTS) }
             let :results do
               stub_request(:get, "http://localhost/test_default/term/c_9513")
                 .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfrde.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
               lod_lang_multi_defaults.find('c_9513')
             end
-            it "is filtered to default" do
+            it "filters using authority configured languages for summary but not for predicates list" do
               expect(results[:label]).to eq ['buttermilk', 'Babeurre']
               expect(results[:altlabel]).to eq ['yummy', 'délicieux']
-              expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to include("buttermilk", "Babeurre")
-              expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#altLabel"]).to include("yummy", "délicieux")
+              expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to include("buttermilk", "Babeurre", "Buttermilch")
+              expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#altLabel"]).to include("yummy", "délicieux", "lecker")
             end
           end
         end
@@ -367,8 +417,8 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
           it "is filtered to specified language" do
             expect(results[:label]).to eq ['Babeurre']
             expect(results[:altlabel]).to eq ['délicieux']
-            expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to eq ['Babeurre']
-            expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#altLabel"]).to eq ['délicieux']
+            expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to include("buttermilk", "Babeurre")
+            expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#altLabel"]).to include("yummy", "délicieux")
           end
         end
 
@@ -381,7 +431,7 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
           end
           it "is filtered to specified language" do
             expect(results[:label]).to eq ['Babeurre']
-            expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to eq ['Babeurre']
+            expect(results["predicates"]["http://www.w3.org/2004/02/skos/core#prefLabel"]).to include("buttermilk", "Babeurre")
           end
         end
 

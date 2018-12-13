@@ -39,8 +39,8 @@ module Qa
         end
 
         def language(literal)
-          language = literal.language if literal.respond_to?(:language)
-          language.present? ? language : LANGUAGE_LOCALE_KEY_FOR_NO_LANGUAGE
+          return LANGUAGE_LOCALE_KEY_FOR_NO_LANGUAGE unless Qa::LinkedData::LanguageService.literal_has_language_marker? literal
+          literal.language
         end
 
         def move_no_language_to_end

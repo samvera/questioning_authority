@@ -10,4 +10,8 @@ Qa.config do |config|
   # requiring a restart of rails. By default, reloading through the browser is not allowed
   # when the token is nil or blank.  Change to any string to control who has access to reload.
   # config.authorized_reload_token = 'YOUR_AUTH_TOKEN_DEFINED_HERE'
+
+  # For linked data access, specify default language for sorting and selection.  The default is only used if a language is not
+  # specified in the authority's configuration file and not passed in as a parameter.  (e.g. :en, [:en], or [:en, :fr])
+  # config.default_language = :en
 end

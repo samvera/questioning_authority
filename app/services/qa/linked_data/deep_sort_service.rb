@@ -18,7 +18,7 @@ module Qa
       #      :altlabel=>[],
       #      :sort=>[#<RDF::Literal:0x3fcff54b4c18("1")>]}
       #   ]
-      def initialize(the_array, sort_key, preferred_language = :en)
+      def initialize(the_array, sort_key, preferred_language = nil)
         @sortable_elements = the_array.map { |element| DeepSortElement.new(element, sort_key, preferred_language) }
       end
 
@@ -91,9 +91,9 @@ module Qa
           to_downcase(literal(idx))
         end
 
-        def language(literal = literals.first)
-          return literal.language if literal.respond_to?(:language)
-          nil
+        def language(lit = literals.first)
+          return nil unless Qa::LinkedData::LanguageService.literal_has_language_marker? lit
+          lit.language
         end
 
         def includes_preferred_language?
@@ -206,8 +206,7 @@ module Qa
           end
 
           def language?(lit)
-            lang = lit.language if lit.respond_to?(:language)
-            lang.present?
+            Qa::LinkedData::LanguageService.literal_has_language_marker? lit
           end
 
           def preferred_language?(lang)
