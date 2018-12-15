@@ -3,8 +3,6 @@
 module Qa::Authorities
   module LinkedData
     class SearchQuery
-      include Qa::Authorities::LinkedData::RdfHelper
-
       # @param [SearchConfig] search_config The search portion of the config
       def initialize(search_config)
         @search_config = search_config
@@ -42,56 +40,34 @@ module Qa::Authorities
         end
 
         def parse_search_authority_response
-          results = extract_preds(graph, preds_for_search)
-          consolidated_results = consolidate_search_results(results)
-          json_results = convert_search_to_json(consolidated_results)
-          sort_search_results(json_results)
+          results = Qa::LinkedData::Mapper::SearchResultsMapperService.map_values(graph: @graph, predicate_map: preds_for_search,
+                                                                                  sort_key: :sort, preferred_language: @language)
+          convert_search_to_json(results)
         end
 
         def preds_for_search
-          { required: required_search_preds, optional: optional_search_preds }
-        end
-
-        def required_search_preds
           label_pred_uri = search_config.results_label_predicate
           raise Qa::InvalidConfiguration, "required label_predicate is missing in search configuration for LOD authority #{auth_name}" if label_pred_uri.nil?
-          { label: label_pred_uri }
-        end
-
-        def optional_search_preds
-          preds = {}
+          preds = { label: label_pred_uri }
+          preds[:uri] = :subject_uri
           preds[:altlabel] = search_config.results_altlabel_predicate unless search_config.results_altlabel_predicate.nil?
           preds[:id] = search_config.results_id_predicate unless search_config.results_id_predicate.nil?
-          preds[:sort] = search_config.results_sort_predicate unless search_config.results_sort_predicate.nil?
+          preds[:sort] = sort_predicate.present? ? sort_predicate : preds[:label]
           preds
         end
 
-        def consolidate_search_results(results) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-          consolidated_results = {}
-          return consolidated_results if results.nil? || !results.count.positive?
-          results.each do |statement|
-            stmt_hash = statement.to_h
-            uri = stmt_hash[:uri].to_s
-            consolidated_hash = init_consolidated_hash(consolidated_results, uri, stmt_hash[:id].to_s)
-
-            consolidated_hash[:label] = object_value(stmt_hash, consolidated_hash, :label, false)
-            consolidated_hash[:altlabel] = object_value(stmt_hash, consolidated_hash, :altlabel, false)
-            consolidated_hash[:sort] = object_value(stmt_hash, consolidated_hash, :sort, false)
-            consolidated_results[uri] = consolidated_hash
-          end
-          consolidated_results.each do |res|
-            consolidated_hash = res[1]
-            consolidated_hash[:label] = Qa::LinkedData::LanguageSortService.new(consolidated_hash[:label], language).sort
-            consolidated_hash[:altlabel] = Qa::LinkedData::LanguageSortService.new(consolidated_hash[:altlabel], language).sort
-            consolidated_hash[:sort] = Qa::LinkedData::LanguageSortService.new(consolidated_hash[:sort], language).sort
-          end
-          consolidated_results
+        def sort_predicate
+          @sort_predicate ||= search_config.results_sort_predicate
         end
 
-        def convert_search_to_json(consolidated_results)
+        def convert_search_to_json(results)
           json_results = []
-          consolidated_results.each do |uri, h|
-            json_results << { uri: uri, id: h[:id], label: full_label(h[:label], h[:altlabel]), sort: h[:sort] }
+          results.each do |result|
+            uri = result[:uri].first.to_s
+            id = result[:id].first.to_s
+            label = Qa::LinkedData::LanguageSortService.new(result[:label], language).sort
+            altlabel = Qa::LinkedData::LanguageSortService.new(result[:altlabel], language).sort
+            json_results << { uri: uri, id: id, label: full_label(label, altlabel) }
           end
           json_results
         end
@@ -108,14 +84,6 @@ module Qa::Authorities
           lbl = labels.join(', ') if labels.size.positive?
           lbl = '[' + lbl + ']' if labels.size > 1
           lbl
-        end
-
-        def sort_search_results(json_results)
-          return json_results unless supports_sort?
-          return json_results if json_results.empty?
-          sort_key = json_results.first.key?(:sort) ? :sort : :label
-          json_results = Qa::LinkedData::DeepSortService.new(json_results, sort_key, language).sort
-          json_results.each { |h| h.delete(:sort) }
         end
     end
   end
