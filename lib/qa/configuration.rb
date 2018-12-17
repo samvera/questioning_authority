@@ -30,5 +30,12 @@ module Qa
 
     # Hold linked data authority configs
     attr_accessor :linked_data_authority_configs
+
+    # For linked data access, specify default language for sorting and selection.  The default is only used if a language is not
+    # specified in the authority's configuration file and not passed in as a parameter.  (e.g. :en, [:en], or [:en, :fr])
+    attr_writer :default_language
+    def default_language
+      @default_language ||= :en
+    end
   end
 end

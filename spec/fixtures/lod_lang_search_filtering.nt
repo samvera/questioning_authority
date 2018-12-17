@@ -1,0 +1,11 @@
+<http://id.worldcat.org/fast/530369> <http://purl.org/dc/terms/identifier> "530369" .
+<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#prefLabel> "buttermilk"@en
+<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#prefLabel> "Babeurre"@fr
+<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#prefLabel> "Buttermilch"
+<http://id.worldcat.org/fast/5140> <http://purl.org/dc/terms/identifier> "5140" .
+<http://id.worldcat.org/fast/5140> <http://www.w3.org/2004/02/skos/core#prefLabel> "dried milk"@en
+<http://id.worldcat.org/fast/5140> <http://www.w3.org/2004/02/skos/core#prefLabel> "lait en poudre"@fr
+<http://id.worldcat.org/fast/5140> <http://www.w3.org/2004/02/skos/core#prefLabel> "getrocknete Milch"@de
+<http://id.worldcat.org/fast/557490> <http://purl.org/dc/terms/identifier> "557490" .
+<http://id.worldcat.org/fast/557490> <http://www.w3.org/2004/02/skos/core#prefLabel> "condensed milk"@en
+<http://id.worldcat.org/fast/557490> <http://www.w3.org/2004/02/skos/core#prefLabel> "Kondensmilch"@de

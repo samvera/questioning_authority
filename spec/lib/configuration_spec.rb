@@ -1,12 +1,7 @@
+require 'spec_helper'
+
 RSpec.describe Qa::Configuration do
   subject { described_class.new }
-
-  it { is_expected.to respond_to(:cors_headers?) }
-  it { is_expected.to respond_to(:enable_cors_headers) }
-  it { is_expected.to respond_to(:disable_cors_headers) }
-  it { is_expected.to respond_to(:authorized_reload_token=) }
-  it { is_expected.to respond_to(:authorized_reload_token) }
-  it { is_expected.to respond_to(:valid_authority_reload_token?) }
 
   describe '#enable_cors_headers' do
     it 'turns on cors headers support' do
@@ -52,6 +47,24 @@ RSpec.describe Qa::Configuration do
 
       it 'returns false if the passed in token does not match' do
         expect(subject.valid_authority_reload_token?('BAD TOKEN')).to be false
+      end
+    end
+  end
+
+  describe '#default_language' do
+    context 'when NOT configured' do
+      it 'returns :en as the default language' do
+        expect(subject.default_language).to be :en
+      end
+    end
+
+    context 'when configured' do
+      before do
+        subject.default_language = [:fr]
+      end
+
+      it 'returns the configured default language' do
+        expect(subject.default_language).to match_array [:fr]
       end
     end
   end

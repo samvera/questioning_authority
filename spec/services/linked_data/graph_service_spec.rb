@@ -103,26 +103,8 @@ RSpec.describe Qa::LinkedData::GraphService do
           .to_return(status: 200, body: webmock_fixture('lod_lang_search_enfrde.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
       end
 
-      context 'and one language passed in as string' do
-        let(:language) { "en" }
-
-        it 'returns the graph with only the English subset of triples' do
-          expect(subject.has_object?(en_dried_milk)).to be true
-          expect(subject.has_object?(en_buttermilk)).to be true
-          expect(subject.has_object?(en_condensed_milk)).to be true
-
-          expect(subject.has_object?(fr_dried_milk)).to be false
-          expect(subject.has_object?(fr_buttermilk)).to be false
-          expect(subject.has_object?(fr_condensed_milk)).to be false
-
-          expect(subject.has_object?(de_dried_milk)).to be false
-          expect(subject.has_object?(de_buttermilk)).to be false
-          expect(subject.has_object?(de_condensed_milk)).to be false
-        end
-      end
-
-      context 'when one language passed in as symbol' do
-        let(:language) { :fr }
+      context 'when one language passed in' do
+        let(:language) { [:fr] }
 
         it 'returns the graph with only the French subset of triples' do
           expect(subject.has_object?(en_dried_milk)).to be false
@@ -139,8 +121,43 @@ RSpec.describe Qa::LinkedData::GraphService do
         end
       end
 
-      context 'when multiple languages passed in as strings in an array' do
-        let(:language) { ["en", "fr"] }
+      context "when mix of language markers on graph statements" do
+        let(:nomarker_de_buttermilk) { RDF::Literal.new("Buttermilch") }
+        let(:language) { [:fr] }
+
+        before do
+          stub_request(:get, 'http://authority.with.language/search?query=foo')
+            .to_return(status: 200, body: webmock_fixture('lod_lang_search_filtering.nt'), headers: { 'Content-Type' => 'application/n-triples' })
+        end
+
+        it 'filters down to the expected size' do
+          expect(graph.size).to eq 11
+          expect(subject.size).to eq 8
+        end
+
+        it 'the graph includes triples where object has the targeted language marker (e.g. :fr)' do
+          expect(subject.has_object?(fr_dried_milk)).to be true
+          expect(subject.has_object?(fr_buttermilk)).to be true
+        end
+
+        it 'the graph includes triples where object does not have a language marker' do
+          expect(subject.has_object?(nomarker_de_buttermilk)).to be true
+        end
+
+        it "the graph includes triples regardless of language when there are no object's for the predicate that have the targeted language marker" do
+          expect(subject.has_object?(en_condensed_milk)).to be true
+          expect(subject.has_object?(de_condensed_milk)).to be true
+        end
+
+        it 'filters out the rest' do
+          expect(subject.has_object?(en_dried_milk)).to be false
+          expect(subject.has_object?(en_buttermilk)).to be false
+          expect(subject.has_object?(de_dried_milk)).to be false
+        end
+      end
+
+      context 'when multiple languages passed in' do
+        let(:language) { [:en, :fr] }
 
         it 'returns the graph with English and French subset of triples' do
           expect(subject.has_object?(en_dried_milk)).to be true
@@ -154,24 +171,6 @@ RSpec.describe Qa::LinkedData::GraphService do
           expect(subject.has_object?(de_dried_milk)).to be false
           expect(subject.has_object?(de_buttermilk)).to be false
           expect(subject.has_object?(de_condensed_milk)).to be false
-        end
-      end
-
-      context 'when multiple languages passed in as symbols in an array' do
-        let(:language) { [:en, :de] }
-
-        it 'returns the graph with English and German subset of triples' do
-          expect(subject.has_object?(en_dried_milk)).to be true
-          expect(subject.has_object?(en_buttermilk)).to be true
-          expect(subject.has_object?(en_condensed_milk)).to be true
-
-          expect(subject.has_object?(fr_dried_milk)).to be false
-          expect(subject.has_object?(fr_buttermilk)).to be false
-          expect(subject.has_object?(fr_condensed_milk)).to be false
-
-          expect(subject.has_object?(de_dried_milk)).to be true
-          expect(subject.has_object?(de_buttermilk)).to be true
-          expect(subject.has_object?(de_condensed_milk)).to be true
         end
       end
     end

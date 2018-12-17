@@ -11,7 +11,7 @@ module Qa::Authorities
       end
 
       attr_reader :search_config, :graph, :language
-      private :language
+      private :graph, :language
 
       delegate :subauthority?, :supports_sort?, to: :search_config
 
@@ -27,8 +27,7 @@ module Qa::Authorities
       #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
       def search(query, language: nil, replacements: {}, subauth: nil)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
-        language ||= search_config.language
-        @language = language
+        @language = Qa::LinkedData::LanguageService.preferred_language(user_language: language, authority_language: search_config.language)
         url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth)
         Rails.logger.info "QA Linked Data search url: #{url}"
         load_graph(url: url)
