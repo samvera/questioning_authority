@@ -3,6 +3,9 @@ module Qa
   module LinkedData
     module Mapper
       class GraphMapperService
+        class_attribute :graph_service
+        self.graph_service = Qa::LinkedData::GraphService
+
         # Extract predicates specified in the predicate_map from the graph and return as a value map for a single subject URI.
         # @param graph [RDF::Graph] the graph from which to extract result values
         # @param predicate_map [Hash<Symbol><String||Symbol>] value either maps to a predicate in the graph or is :subject_uri indicating to use the subject uri as the value
@@ -25,7 +28,7 @@ module Qa
         def self.map_values(graph:, predicate_map:, subject_uri:)
           value_map = {}
           predicate_map.each do |key, predicate|
-            values = predicate == :subject_uri ? [subject_uri] : Qa::LinkedData::GraphService.object_values(graph: graph, subject: subject_uri, predicate: predicate)
+            values = predicate == :subject_uri ? [subject_uri] : graph_service.object_values(graph: graph, subject: subject_uri, predicate: predicate)
             values = yield values if block_given?
             value_map[key] = values
           end

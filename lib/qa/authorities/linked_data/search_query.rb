@@ -3,6 +3,13 @@
 module Qa::Authorities
   module LinkedData
     class SearchQuery
+      class_attribute :authority_service, :graph_service, :language_service, :language_sort_service, :results_mapper_service
+      self.authority_service = Qa::LinkedData::AuthorityUrlService
+      self.graph_service = Qa::LinkedData::GraphService
+      self.language_service = Qa::LinkedData::LanguageService
+      self.language_sort_service = Qa::LinkedData::LanguageSortService
+      self.results_mapper_service = Qa::LinkedData::Mapper::SearchResultsMapperService
+
       # @param [SearchConfig] search_config The search portion of the config
       def initialize(search_config)
         @search_config = search_config
@@ -14,7 +21,7 @@ module Qa::Authorities
       delegate :subauthority?, :supports_sort?, to: :search_config
 
       # Search a linked data authority
-      # @param [String] the query
+      # @praram [String] the query
       # @param [Symbol] (optional) language: language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
       # @param [Hash] (optional) replacements: replacement values with { pattern_name (defined in YAML config) => value }
       # @param [String] subauth: the subauthority to query
@@ -25,8 +32,8 @@ module Qa::Authorities
       #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
       def search(query, language: nil, replacements: {}, subauth: nil)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
-        @language = Qa::LinkedData::LanguageService.preferred_language(user_language: language, authority_language: search_config.language)
-        url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth)
+        @language = language_service.preferred_language(user_language: language, authority_language: search_config.language)
+        url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth)
         Rails.logger.info "QA Linked Data search url: #{url}"
         load_graph(url: url)
         parse_search_authority_response
@@ -35,13 +42,13 @@ module Qa::Authorities
       private
 
         def load_graph(url:)
-          @graph = Qa::LinkedData::GraphService.load_graph(url: url)
-          @graph = Qa::LinkedData::GraphService.filter(graph: @graph, language: language, remove_blanknode_subjects: true)
+          @graph = graph_service.load_graph(url: url)
+          @graph = graph_service.filter(graph: @graph, language: language, remove_blanknode_subjects: true)
         end
 
         def parse_search_authority_response
-          results = Qa::LinkedData::Mapper::SearchResultsMapperService.map_values(graph: @graph, predicate_map: preds_for_search,
-                                                                                  sort_key: :sort, preferred_language: @language)
+          results = results_mapper_service.map_values(graph: @graph, predicate_map: preds_for_search,
+                                                      sort_key: :sort, preferred_language: @language)
           convert_search_to_json(results)
         end
 
@@ -65,8 +72,8 @@ module Qa::Authorities
           results.each do |result|
             uri = result[:uri].first.to_s
             id = result[:id].first.to_s
-            label = Qa::LinkedData::LanguageSortService.new(result[:label], language).sort
-            altlabel = Qa::LinkedData::LanguageSortService.new(result[:altlabel], language).sort
+            label = language_sort_service.new(result[:label], language).sort
+            altlabel = language_sort_service.new(result[:altlabel], language).sort
             json_results << { uri: uri, id: id, label: full_label(label, altlabel) }
           end
           json_results

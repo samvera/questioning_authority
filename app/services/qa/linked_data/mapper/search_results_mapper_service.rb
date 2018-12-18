@@ -3,6 +3,10 @@ module Qa
   module LinkedData
     module Mapper
       class SearchResultsMapperService
+        class_attribute :graph_mapper_service, :deep_sort_service
+        self.graph_mapper_service = Qa::LinkedData::Mapper::GraphMapperService
+        self.deep_sort_service = Qa::LinkedData::DeepSortService
+
         class << self
           # class_attribute :graph_mapper_service
           # graph_mapper_service = QA::LinkedData::Mapper::GraphMapperService
@@ -34,10 +38,10 @@ module Qa
             search_matches = []
             graph.subjects.each do |subject|
               next if subject.anonymous? # skip blank nodes
-              values = Qa::LinkedData::Mapper::GraphMapperService.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject)
+              values = graph_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject)
               search_matches << values unless sort_key.present? && values[sort_key].blank?
             end
-            search_matches = Qa::LinkedData::DeepSortService.new(search_matches, sort_key, preferred_language).sort
+            search_matches = deep_sort_service.new(search_matches, sort_key, preferred_language).sort
             search_matches
           end
         end
