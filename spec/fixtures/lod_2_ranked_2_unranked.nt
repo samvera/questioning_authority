@@ -1,0 +1,17 @@
+<http://id.worldcat.org/fast/530369> <http://purl.org/dc/terms/identifier> "530369" .
+<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cornell University" .
+<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#altLabel> "Ithaca (N.Y.). Cornell University" .
+<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#sameAs> <http://id.loc.gov/authorities/names/n79021621> .
+<http://id.worldcat.org/fast/530369> <http://vivoweb.org/ontology/core#rank> "1" .
+<http://id.worldcat.org/fast/510103> <http://purl.org/dc/terms/identifier> "510103" .
+<http://id.worldcat.org/fast/510103> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cornell University. Libraries" .
+<http://id.worldcat.org/fast/510103> <http://www.w3.org/2004/02/skos/core#altLabel> "Cornell University. Central Libraries" .
+<http://id.worldcat.org/fast/510103> <http://www.w3.org/2004/02/skos/core#altLabel> "Cornell University. John M. Olin Library" .
+<http://id.worldcat.org/fast/510103> <http://www.w3.org/2004/02/skos/core#altLabel> "Cornell University. White Library" .
+<http://id.worldcat.org/fast/510103> <http://www.w3.org/2004/02/skos/core#sameAs> "http://id.loc.gov/authorities/names/n50000040" .
+<http://id.worldcat.org/fast/510103> <http://www.w3.org/2004/02/skos/core#sameAs> "https://viaf.org/viaf/147713418" .
+<http://id.worldcat.org/fast/5140> <http://purl.org/dc/terms/identifier> "5140" .
+<http://id.worldcat.org/fast/5140> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cornell, Joseph" .
+<http://id.worldcat.org/fast/5140> <http://www.w3.org/2004/02/skos/core#altLabel> <_:b0> .
+<_:b0> <http://www.w3.org/2004/02/skos/core#prefLabel> "Joseph Cornell" .
+<http://id.worldcat.org/fast/5140> <http://vivoweb.org/ontology/core#rank> "3" .

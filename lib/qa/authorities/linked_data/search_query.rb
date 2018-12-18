@@ -3,7 +3,12 @@
 module Qa::Authorities
   module LinkedData
     class SearchQuery
-      include Qa::Authorities::LinkedData::RdfHelper
+      class_attribute :authority_service, :graph_service, :language_service, :language_sort_service, :results_mapper_service
+      self.authority_service = Qa::LinkedData::AuthorityUrlService
+      self.graph_service = Qa::LinkedData::GraphService
+      self.language_service = Qa::LinkedData::LanguageService
+      self.language_sort_service = Qa::LinkedData::LanguageSortService
+      self.results_mapper_service = Qa::LinkedData::Mapper::SearchResultsMapperService
 
       # @param [SearchConfig] search_config The search portion of the config
       def initialize(search_config)
@@ -16,7 +21,7 @@ module Qa::Authorities
       delegate :subauthority?, :supports_sort?, to: :search_config
 
       # Search a linked data authority
-      # @param [String] the query
+      # @praram [String] the query
       # @param [Symbol] (optional) language: language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
       # @param [Hash] (optional) replacements: replacement values with { pattern_name (defined in YAML config) => value }
       # @param [String] subauth: the subauthority to query
@@ -27,8 +32,8 @@ module Qa::Authorities
       #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
       def search(query, language: nil, replacements: {}, subauth: nil)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
-        @language = Qa::LinkedData::LanguageService.preferred_language(user_language: language, authority_language: search_config.language)
-        url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth)
+        @language = language_service.preferred_language(user_language: language, authority_language: search_config.language)
+        url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth)
         Rails.logger.info "QA Linked Data search url: #{url}"
         load_graph(url: url)
         parse_search_authority_response
@@ -37,61 +42,39 @@ module Qa::Authorities
       private
 
         def load_graph(url:)
-          @graph = Qa::LinkedData::GraphService.load_graph(url: url)
-          @graph = Qa::LinkedData::GraphService.filter(graph: @graph, language: language, remove_blanknode_subjects: true)
+          @graph = graph_service.load_graph(url: url)
+          @graph = graph_service.filter(graph: @graph, language: language, remove_blanknode_subjects: true)
         end
 
         def parse_search_authority_response
-          results = extract_preds(graph, preds_for_search)
-          consolidated_results = consolidate_search_results(results)
-          json_results = convert_search_to_json(consolidated_results)
-          sort_search_results(json_results)
+          results = results_mapper_service.map_values(graph: @graph, predicate_map: preds_for_search,
+                                                      sort_key: :sort, preferred_language: @language)
+          convert_search_to_json(results)
         end
 
         def preds_for_search
-          { required: required_search_preds, optional: optional_search_preds }
-        end
-
-        def required_search_preds
           label_pred_uri = search_config.results_label_predicate
           raise Qa::InvalidConfiguration, "required label_predicate is missing in search configuration for LOD authority #{auth_name}" if label_pred_uri.nil?
-          { label: label_pred_uri }
-        end
-
-        def optional_search_preds
-          preds = {}
+          preds = { label: label_pred_uri }
+          preds[:uri] = :subject_uri
           preds[:altlabel] = search_config.results_altlabel_predicate unless search_config.results_altlabel_predicate.nil?
           preds[:id] = search_config.results_id_predicate unless search_config.results_id_predicate.nil?
-          preds[:sort] = search_config.results_sort_predicate unless search_config.results_sort_predicate.nil?
+          preds[:sort] = sort_predicate.present? ? sort_predicate : preds[:label]
           preds
         end
 
-        def consolidate_search_results(results) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-          consolidated_results = {}
-          return consolidated_results if results.nil? || !results.count.positive?
-          results.each do |statement|
-            stmt_hash = statement.to_h
-            uri = stmt_hash[:uri].to_s
-            consolidated_hash = init_consolidated_hash(consolidated_results, uri, stmt_hash[:id].to_s)
-
-            consolidated_hash[:label] = object_value(stmt_hash, consolidated_hash, :label, false)
-            consolidated_hash[:altlabel] = object_value(stmt_hash, consolidated_hash, :altlabel, false)
-            consolidated_hash[:sort] = object_value(stmt_hash, consolidated_hash, :sort, false)
-            consolidated_results[uri] = consolidated_hash
-          end
-          consolidated_results.each do |res|
-            consolidated_hash = res[1]
-            consolidated_hash[:label] = Qa::LinkedData::LanguageSortService.new(consolidated_hash[:label], language).sort
-            consolidated_hash[:altlabel] = Qa::LinkedData::LanguageSortService.new(consolidated_hash[:altlabel], language).sort
-            consolidated_hash[:sort] = Qa::LinkedData::LanguageSortService.new(consolidated_hash[:sort], language).sort
-          end
-          consolidated_results
+        def sort_predicate
+          @sort_predicate ||= search_config.results_sort_predicate
         end
 
-        def convert_search_to_json(consolidated_results)
+        def convert_search_to_json(results)
           json_results = []
-          consolidated_results.each do |uri, h|
-            json_results << { uri: uri, id: h[:id], label: full_label(h[:label], h[:altlabel]), sort: h[:sort] }
+          results.each do |result|
+            uri = result[:uri].first.to_s
+            id = result[:id].first.to_s
+            label = language_sort_service.new(result[:label], language).sort
+            altlabel = language_sort_service.new(result[:altlabel], language).sort
+            json_results << { uri: uri, id: id, label: full_label(label, altlabel) }
           end
           json_results
         end
@@ -108,14 +91,6 @@ module Qa::Authorities
           lbl = labels.join(', ') if labels.size.positive?
           lbl = '[' + lbl + ']' if labels.size > 1
           lbl
-        end
-
-        def sort_search_results(json_results)
-          return json_results unless supports_sort?
-          return json_results if json_results.empty?
-          sort_key = json_results.first.key?(:sort) ? :sort : :label
-          json_results = Qa::LinkedData::DeepSortService.new(json_results, sort_key, language).sort
-          json_results.each { |h| h.delete(:sort) }
         end
     end
   end
