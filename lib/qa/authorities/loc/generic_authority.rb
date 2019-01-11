@@ -24,8 +24,8 @@ module Qa::Authorities
     end
 
     def build_query_url(q)
-      escaped_query = URI.escape(q)
-      authority_fragment = Loc.get_url_for_authority(subauthority) + URI.escape(subauthority)
+      escaped_query = CGI.escape(q)
+      authority_fragment = "#{Loc.get_url_for_authority(subauthority)}#{CGI.escape(subauthority)}"
       "http://id.loc.gov/search/?q=#{escaped_query}&q=#{authority_fragment}&format=json"
     end
 
