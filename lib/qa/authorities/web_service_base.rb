@@ -1,5 +1,6 @@
 require 'faraday'
-require 'rubygems' #Require ruby gems in case this requires backwards compatibility for pre 1.9.0
+require 'rubygems'
+# Require ruby gems in case this requires backwards compatibility for pre 1.9.0
 module Qa::Authorities
   ##
   # Mix-in to retreive and parse JSON content from the web with Faraday.
@@ -36,13 +37,11 @@ module Qa::Authorities
     end
 
     def get_escaped_val(val)
-      escaped_val = ""
       if ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new('2.4.0')
-        escaped_val = URI.escape(val)
+        URI.escape(val)
       else
-        escaped_val = CGI.escape(val)
+        CGI.escape(val)
       end
-      escaped_val
     end
   end
 end
