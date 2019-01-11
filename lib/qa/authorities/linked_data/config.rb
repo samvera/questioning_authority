@@ -60,27 +60,6 @@ module Qa::Authorities
         pred_uri = RDF::URI(pred) unless pred.nil? || pred.length <= 0
         pred_uri
       end
-
-      def self.replace_pattern(url, pattern, value, encode = false)
-        value = url_encode(value).gsub(".", "%2E") if encode
-        url.gsub("{?#{pattern}}", value)
-      end
-
-      def self.process_subauthority(url, subauth_pattern, subauthorities, subauth_key)
-        pattern = subauth_pattern[:pattern]
-        value = subauthorities[subauth_key] || subauth_pattern[:default]
-        replace_pattern(url, pattern, value)
-      end
-
-      def self.apply_replacements(url, config, replacements = {})
-        return url unless config.size.positive?
-        config.each do |param_key, rep_pattern|
-          s_param_key = param_key.to_s
-          value = replacements[param_key] || replacements[s_param_key] || rep_pattern[:default]
-          url = replace_pattern(url, param_key, value, rep_pattern[:encode])
-        end
-        url
-      end
     end
   end
 end

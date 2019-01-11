@@ -112,24 +112,10 @@ module Qa::Authorities
         Config.config_value(term_config, :qa_replacement_patterns)
       end
 
-      # Should the replacement pattern be encoded?
-      # @return [Boolean] true, if the pattern should be encoded; otherwise, false
-      def term_qa_replacement_encoded?(pattern_key)
-        map_key = term_qa_replacement_patterns[pattern_key].to_sym
-        term_replacement_encoded? map_key
-      end
-
       # Are there replacement parameters configured for term fetch?
       # @return [Boolean] true if there are replacement parameters configured for term fetch; otherwise, false
       def term_replacements?
         term_replacement_count.positive?
-      end
-
-      # Should the replacement parameter be encoded?
-      # @return [Boolean] true if the replacement parameter should be encoded; otherwise, false
-      def term_replacement_encoded?(map_key)
-        return false unless term_url_mappings[map_key].key? :encode
-        term_url_mappings[map_key][:encode]
       end
 
       # Return the number of possible replacement values to make in the term URL
@@ -180,20 +166,6 @@ module Qa::Authorities
         @term_subauthority_replacement_pattern ||= {} if term_config.nil? || !term_subauthorities?
         pattern = term_qa_replacement_patterns[:subauth]
         @term_subauthority_replacement_pattern ||= { pattern: pattern, default: term_url_mappings[pattern.to_sym][:default] }
-      end
-
-      # Build a linked data authority term url
-      # @param [String] the id
-      # @param [String] (optional) subauthority key
-      # @param [Hash] (optional) replacement values with { pattern_name (defined in YAML config) => value }
-      # @return [String] the term encoded url
-      def term_url_with_replacements(id, sub_auth = nil, replacements = {})
-        return nil unless supports_term?
-        sub_auth = sub_auth.to_sym if sub_auth.is_a? String
-        url = Config.replace_pattern(term_url_template, term_qa_replacement_patterns[:term_id], id, term_qa_replacement_encoded?(:term_id))
-        url = Config.process_subauthority(url, term_subauthority_replacement_pattern, term_subauthorities, sub_auth) if term_subauthorities?
-        url = Config.apply_replacements(url, term_replacements, replacements) if term_replacements?
-        url
       end
     end
   end
