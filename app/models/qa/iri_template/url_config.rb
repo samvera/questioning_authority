@@ -15,9 +15,10 @@ module Qa
       # @option url_config [String] :variable_representation always "BasicRepresentation" # TODO what other values are supported and what do they mean
       # @option url_config [Array<Hash>] :mapping array of maps for use with a template (required)
       def initialize(url_config)
-        @template = extract_template(config: url_config)
-        @mapping = extract_mapping(config: url_config)
-        @variable_representation = url_config.fetch(:variable_representation, 'BasicRepresentation')
+        @url_config = url_config
+        @template = Qa::LinkedData::Config::Helper.fetch_required(url_config, :template, nil)
+        @mapping = extract_mapping
+        @variable_representation = Qa::LinkedData::Config::Helper.fetch(url_config, :variable_representation, 'BasicRepresentation')
       end
 
       # Selective extract substitution variable-value pairs from the provided substitutions.
@@ -33,21 +34,11 @@ module Qa
 
       private
 
-        # Extract the url template from the config
-        # @param config [Hash] configuration holding the template to be extracted
-        # @return [String] url template for accessing the authority
-        def extract_template(config:)
-          template = config.fetch(:template, nil)
-          raise Qa::InvalidConfiguration, "template is required" unless template
-          template
-        end
-
         # Initialize the variable maps
         # @param config [Hash] configuration holding the variable maps to be extracted
         # @return [Array<IriTemplate::Map>] array of the variable maps
-        def extract_mapping(config:)
-          mapping = config.fetch(:mapping, nil)
-          raise Qa::InvalidConfiguration, "mapping is required" unless mapping
+        def extract_mapping
+          mapping = Qa::LinkedData::Config::Helper.fetch_required(@url_config, :mapping, nil)
           raise Qa::InvalidConfiguration, "mapping must include at least one map" if mapping.empty?
           mapping.collect { |m| Qa::IriTemplate::VariableMap.new(m) }
         end

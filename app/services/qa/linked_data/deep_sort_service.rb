@@ -4,7 +4,7 @@ module Qa
     class DeepSortService
       # @params [Array<Hash<Symbol,Array<RDF::Literal>>>] the array of hashes to sort
       # @params [sort_key] the key in the hash on whose value the array will be sorted
-      # @returns instance of this class
+      # @return instance of this class
       # @example the_array parameter
       #   [
       #     {:uri=>[#<RDF::URI:0x3fcff54a829c URI:http://id.loc.gov/authorities/names/n2010043281>],
@@ -29,7 +29,7 @@ module Qa
       # * preference for numeric sort (if only one value each and both are integers or a string that can be converted to an integer)
       # * single value sort (if only one value each and at least one is not an integer)
       # * multiple values sort (if either has multiple values)
-      # @returns the sorted array
+      # @return the sorted array
       # @example returned sorted array
       #   [
       #     {:uri=>[#<RDF::URI:0x3fcff54a829c URI:http://id.loc.gov/authorities/names/n201002344>],
@@ -68,7 +68,7 @@ module Qa
           multiple_value_comparator(other)
         end
 
-        # @returns true if there is a single literal that is an integer or a string that can be converted to an integer; otherwise, false
+        # @return true if there is a single literal that is an integer or a string that can be converted to an integer; otherwise, false
         def integer?
           return false unless single?
           (/\A[-+]?\d+\z/ === literal.to_s) # rubocop:disable Style/CaseEquality
@@ -78,7 +78,7 @@ module Qa
           Integer(literal(idx).to_s)
         end
 
-        # @returns true if there is only one value; otherwise, false
+        # @return true if there is only one value; otherwise, false
         def single?
           @single ||= literals.size == 1
         end
