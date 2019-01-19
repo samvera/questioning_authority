@@ -127,6 +127,31 @@ describe Qa::Authorities::LinkedData::Config do
             altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
             sort_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
           },
+          context: {
+            groups: {
+              dates: {
+                group_label_i18n: "qa.linked_data.authority.locnames_ld4l_cache.dates",
+                group_label_default: "Dates"
+              }
+            },
+            properties: [
+              {
+                property_label_i18n: "qa.linked_data.authority.locgenres_ld4l_cache.authoritative_label",
+                property_label_default: "Authoritative Label",
+                lpath: "madsrdf:authoritativeLabel",
+                selectable: true,
+                drillable: false
+              },
+              {
+                group_id: "dates",
+                property_label_i18n: "qa.linked_data.authority.locnames_ld4l_cache.birth_date",
+                property_label_default: "Birth",
+                lpath: "madsrdf:identifiesRWO/madsrdf:birthDate/schema:label",
+                selectable: false,
+                drillable: false
+              }
+            ]
+          },
           subauthorities: {
             search_sub1_key: 'search_sub1_name',
             search_sub2_key: 'search_sub2_name',

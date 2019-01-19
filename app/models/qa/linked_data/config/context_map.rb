@@ -17,7 +17,7 @@ module Qa
         #     "groups": {
         #       "dates": {
         #         "group_label_i18n": "qa.linked_data.authority.locnames_ld4l_cache.dates",
-        #         "group_label_default": "Dates",
+        #         "group_label_default": "Dates"
         #       }
         #     },
         #     "properties": [
