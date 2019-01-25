@@ -29,9 +29,9 @@ module Qa
           value_map = {}
           predicate_map.each do |key, predicate|
             values = predicate == :subject_uri ? [subject_uri] : graph_service.object_values(graph: graph, subject: subject_uri, predicate: predicate)
-            values = yield values if block_given?
             value_map[key] = values
           end
+          value_map = yield value_map if block_given?
           value_map
         end
       end

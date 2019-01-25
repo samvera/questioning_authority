@@ -71,6 +71,35 @@ RSpec.describe Qa::LinkedData::Mapper::GraphMapperService do
         validate_entry(subject, :sort, ['3'], RDF::Literal)
       end
     end
+
+    context 'when block is passed in' do
+      let(:subject_uri) { RDF::URI.new('http://id.worldcat.org/fast/5140') }
+      let(:context) do
+        { location: '42.4488° N, 76.4763° W' }
+      end
+      let(:subject) do
+        described_class.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri) do |value_map|
+          value_map[:context] = context
+          value_map
+        end
+      end
+
+      it 'yields to passed in block' do
+        expect(subject.count).to eq 7
+        expect(subject).to be_kind_of Hash
+        expect(subject.keys).to match_array [:uri, :id, :label, :altlabel, :sameas, :sort, :context]
+
+        validate_entry(subject, :uri, [subject_uri.to_s], RDF::URI)
+        validate_entry(subject, :id, ['5140'], RDF::Literal)
+        validate_entry(subject, :label, ['Cornell, Joseph'], RDF::Literal)
+        validate_entry(subject, :altlabel, [], NilClass)
+        validate_entry(subject, :sameas, [], NilClass)
+        validate_entry(subject, :sort, ['3'], RDF::Literal)
+
+        expect(subject[:context]).to be_kind_of Hash
+        expect(subject[:context]).to include(context)
+      end
+    end
   end
 
   def validate_entry(results, key, values, entry_kind)
