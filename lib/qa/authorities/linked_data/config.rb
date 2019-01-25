@@ -23,27 +23,30 @@ module Qa::Authorities
       end
 
       attr_reader :authority_name
-      attr_reader :authority_config
 
       # Initialize to hold the configuration for the specifed authority.  Configurations are defined in config/authorities/linked_data.  See README for more information.
       # @param [String] the name of the configuration file for the authority
       # @return [Qa::Authorities::LinkedData::Config] instance of this class
       def initialize(auth_name)
         @authority_name = auth_name
-        auth_config
+        authority_config
       end
 
       def search
-        @search ||= Qa::Authorities::LinkedData::SearchConfig.new(auth_config.fetch(:search))
+        @search ||= Qa::Authorities::LinkedData::SearchConfig.new(authority_config.fetch(:search), prefixes)
       end
 
       def term
-        @term ||= Qa::Authorities::LinkedData::TermConfig.new(auth_config.fetch(:term))
+        @term ||= Qa::Authorities::LinkedData::TermConfig.new(authority_config.fetch(:term), prefixes)
+      end
+
+      def prefixes
+        @prefixes ||= authority_config.fetch(:prefixes, {})
       end
 
       # Return the full configuration for an authority
       # @return [String] the authority configuration
-      def auth_config
+      def authority_config
         @authority_config ||= Qa::LinkedData::AuthorityService.authority_config(@authority_name)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data authority '#{@authority_name}'" if @authority_config.nil?
         @authority_config

@@ -8,9 +8,6 @@ module Qa
         self.deep_sort_service = Qa::LinkedData::DeepSortService
 
         class << self
-          # class_attribute :graph_mapper_service
-          # graph_mapper_service = QA::LinkedData::Mapper::GraphMapperService
-
           # Extract predicates specified in the predicate_map from the graph and return as an array of value maps for each search result subject URI.
           # If a sort key is present, a subject will only be included in the results if it has a statement with the sort predicate.
           # @param graph [RDF::Graph] the graph from which to extract result values

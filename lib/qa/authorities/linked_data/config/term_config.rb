@@ -6,8 +6,9 @@ module Qa::Authorities
   module LinkedData
     class TermConfig
       # @param [Hash] config the term portion of the config
-      def initialize(config)
+      def initialize(config, prefixes = {})
         @term_config = config
+        @prefixes = prefixes
       end
 
       attr_reader :term_config

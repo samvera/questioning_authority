@@ -24,7 +24,7 @@ RSpec.describe Qa::LinkedData::Config::ContextMap do
         {
           property_label_i18n: 'qa.linked_data.authority.locgenres_ld4l_cache.authoritative_label',
           property_label_default: 'default_Authoritative Label',
-          lpath: 'madsrdf:authoritativeLabel',
+          ldpath: 'madsrdf:authoritativeLabel',
           selectable: true,
           drillable: false
         },
@@ -32,7 +32,7 @@ RSpec.describe Qa::LinkedData::Config::ContextMap do
           group_id: 'dates',
           property_label_i18n: 'qa.linked_data.authority.locnames_ld4l_cache.birth_date',
           property_label_default: 'default_Birth',
-          lpath: 'madsrdf:identifiesRWO/madsrdf:birthDate/schema:label',
+          ldpath: 'madsrdf:identifiesRWO/madsrdf:birthDate/schema:label',
           selectable: false,
           drillable: false
         },
@@ -40,7 +40,7 @@ RSpec.describe Qa::LinkedData::Config::ContextMap do
           group_id: 'dates',
           property_label_i18n: 'qa.linked_data.authority.locnames_ld4l_cache.death_date',
           property_label_default: 'default_Death',
-          lpath: 'madsrdf:identifiesRWO/madsrdf:deathDate/schema:label',
+          ldpath: 'madsrdf:identifiesRWO/madsrdf:deathDate/schema:label',
           selectable: false,
           drillable: false
         }

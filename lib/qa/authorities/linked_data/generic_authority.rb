@@ -10,7 +10,8 @@ module Qa::Authorities
     # @see Qa::LinkedDataTermsController#show
     # @see Qa::Authorities::LinkedData::Config
     class GenericAuthority < Base
-      attr_reader :auth_config
+      attr_reader :authority_config
+      private :authority_config
 
       delegate :supports_term?, :term_subauthorities?, :term_subauthority?,
                :term_id_expects_uri?, :term_id_expects_id?, to: :term_config
@@ -19,7 +20,7 @@ module Qa::Authorities
       delegate :subauthority?, :subauthorities?, to: :search_config, prefix: 'search'
 
       def initialize(auth_name)
-        @auth_config = Qa::Authorities::LinkedData::Config.new(auth_name)
+        @authority_config = Qa::Authorities::LinkedData::Config.new(auth_name)
       end
 
       def reload_authorities
@@ -45,11 +46,11 @@ module Qa::Authorities
       private
 
         def search_config
-          auth_config.search
+          authority_config.search
         end
 
         def term_config
-          auth_config.term
+          authority_config.term
         end
     end
   end
