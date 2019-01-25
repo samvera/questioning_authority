@@ -25,13 +25,15 @@ module Qa::Authorities
       # @param language [Symbol] (optional) language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
       # @param replacements [Hash] (optional) replacement values with { pattern_name (defined in YAML config) => value }
       # @param subauth [String] (optional) the subauthority to query
+      # @param context [Boolean] (optional) true if context should be returned with the results; otherwise, false (default: false)
       # @return [String] json results
       # @example Json Results for Linked Data Search
       #   [ {"uri":"http://id.worldcat.org/fast/5140","id":"5140","label":"Cornell, Joseph"},
       #     {"uri":"http://id.worldcat.org/fast/72456","id":"72456","label":"Cornell, Sarah Maria, 1802-1832"},
       #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
-      def search(query, language: nil, replacements: {}, subauth: nil)
+      def search(query, language: nil, replacements: {}, subauth: nil, context: false)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
+        @context = context
         @language = language_service.preferred_language(user_language: language, authority_language: search_config.language)
         url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth)
         Rails.logger.info "QA Linked Data search url: #{url}"
@@ -48,8 +50,16 @@ module Qa::Authorities
 
         def parse_search_authority_response
           results = results_mapper_service.map_values(graph: @graph, predicate_map: preds_for_search, sort_key: :sort,
-                                                      preferred_language: @language)
+                                                      preferred_language: @language, context_map: context_map)
           convert_results_to_json(results)
+        end
+
+        def context_map
+          context? ? search_config.context_map : nil
+        end
+
+        def context?
+          @context == true
         end
 
         def preds_for_search
@@ -78,6 +88,7 @@ module Qa::Authorities
           json_result[:uri] = result[:uri].first.to_s
           json_result[:id] = result[:id].first.to_s
           json_result[:label] = full_label(result[:label], result[:altlabel])
+          json_result[:context] = result[:context] if context?
           json_result
         end
 
