@@ -83,7 +83,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
   end
 
-  describe '#term_url' do
+  describe '#url_config' do
     let(:url_config) do
       {
         :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
@@ -123,20 +123,10 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
 
     it 'returns nil if only search configuration is defined' do
-      expect(search_only_config.term_url).to eq nil
+      expect(search_only_config.url_config).to eq nil
     end
-    it 'returns the term url from the configuration' do
-      expect(full_config.term_url).to eq url_config
-    end
-  end
-
-  describe '#term_url' do
-    it 'returns nil if only search configuration is defined' do
-      expect(search_only_config.term_url_template).to eq nil
-    end
-    it 'returns the term url from the configuration' do
-      expected_url = 'http://localhost/test_default/term/{?subauth}/{?term_id}?param1={?param1}&param2={?param2}'
-      expect(full_config.term_url_template).to eq expected_url
+    it 'returns the url config from the configuration' do
+      expect(full_config.url_config).to be_kind_of Qa::IriTemplate::UrlConfig
     end
   end
 
@@ -255,48 +245,6 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
   end
 
-  describe '#term_replacements?' do
-    it 'returns false if only search configuration is defined' do
-      expect(search_only_config.term_replacements?).to eq false
-    end
-    it 'returns false if the configuration does NOT define replacements' do
-      expect(min_config.term_replacements?).to eq false
-    end
-    it 'returns true if the configuration defines replacements' do
-      expect(full_config.term_replacements?).to eq true
-    end
-  end
-
-  describe '#term_replacement_count' do
-    it 'returns 0 if only search configuration is defined' do
-      expect(search_only_config.term_replacement_count).to eq 0
-    end
-    it 'returns 0 if replacement_count is NOT defined' do
-      expect(min_config.term_replacement_count).to eq 0
-    end
-    it 'returns the number of replacements if defined' do
-      expect(full_config.term_replacement_count).to eq 2
-    end
-  end
-
-  describe '#term_replacements' do
-    it 'returns empty hash if only search configuration is defined' do
-      empty_hash = {}
-      expect(search_only_config.term_replacements).to eq empty_hash
-    end
-    it 'returns empty hash if no replacement patterns are defined' do
-      empty_hash = {}
-      expect(min_config.term_replacements).to eq empty_hash
-    end
-    it 'returns hash of all replacement patterns' do
-      expected_hash = {
-        param1: { :@type => 'IriTemplateMapping', variable: 'param1', property: 'hydra:freetextQuery', required: false, default: 'alpha' },
-        param2: { :@type => 'IriTemplateMapping', variable: 'param2', property: 'hydra:freetextQuery', required: false, default: 'beta' }
-      }
-      expect(full_config.term_replacements).to eq expected_hash
-    end
-  end
-
   describe '#term_subauthorities?' do
     it 'returns false if only search configuration is defined' do
       expect(search_only_config.term_subauthorities?).to eq false
@@ -352,21 +300,6 @@ describe Qa::Authorities::LinkedData::TermConfig do
         term_sub3_key: 'term_sub3_name'
       }
       expect(full_config.term_subauthorities).to eq expected_hash
-    end
-  end
-
-  describe '#term_subauthority_replacement_pattern' do
-    it 'returns empty hash if only search configuration is defined' do
-      empty_hash = {}
-      expect(search_only_config.term_subauthority_replacement_pattern).to eq empty_hash
-    end
-    it 'returns empty hash if no subauthorities are defined' do
-      empty_hash = {}
-      expect(min_config.term_subauthority_replacement_pattern).to eq empty_hash
-    end
-    it 'returns hash replacement pattern for subauthority and the default value' do
-      expected_hash = { pattern: 'subauth', default: 'term_sub2_name' }
-      expect(full_config.term_subauthority_replacement_pattern).to eq expected_hash
     end
   end
 end

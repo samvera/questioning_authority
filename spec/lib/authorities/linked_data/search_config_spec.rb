@@ -55,6 +55,31 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
           altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
           sort_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
         },
+        context: {
+          groups: {
+            dates: {
+              group_label_i18n: "qa.linked_data.authority.locnames_ld4l_cache.dates",
+              group_label_default: "Dates"
+            }
+          },
+          properties: [
+            {
+              property_label_i18n: "qa.linked_data.authority.locgenres_ld4l_cache.authoritative_label",
+              property_label_default: "Authoritative Label",
+              lpath: "madsrdf:authoritativeLabel",
+              selectable: true,
+              drillable: false
+            },
+            {
+              group_id: "dates",
+              property_label_i18n: "qa.linked_data.authority.locnames_ld4l_cache.birth_date",
+              property_label_default: "Birth",
+              lpath: "madsrdf:identifiesRWO/madsrdf:birthDate/schema:label",
+              selectable: false,
+              drillable: false
+            }
+          ]
+        },
         subauthorities: {
           search_sub1_key: 'search_sub1_name',
           search_sub2_key: 'search_sub2_name',
@@ -80,60 +105,12 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
     end
   end
 
-  describe '#url' do
-    let(:url_config) do
-      {
-        :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
-        :@type => 'IriTemplate',
-        template: 'http://localhost/test_default/search?subauth={?subauth}&query={?query}&param1={?param1}&param2={?param2}',
-        variableRepresentation: 'BasicRepresentation',
-        mapping: [
-          {
-            :@type => 'IriTemplateMapping',
-            variable: 'query',
-            property: 'hydra:freetextQuery',
-            required: true
-          },
-          {
-            :@type => 'IriTemplateMapping',
-            variable: 'subauth',
-            property: 'hydra:freetextQuery',
-            required: false,
-            default: 'search_sub1_name'
-          },
-          {
-            :@type => 'IriTemplateMapping',
-            variable: 'param1',
-            property: 'hydra:freetextQuery',
-            required: false,
-            default: 'delta'
-          },
-          {
-            :@type => 'IriTemplateMapping',
-            variable: 'param2',
-            property: 'hydra:freetextQuery',
-            required: false,
-            default: 'echo'
-          }
-        ]
-      }
-    end
-
+  describe '#url_config' do
     it 'returns nil if only term configuration is defined' do
-      expect(term_only_config.url).to eq nil
+      expect(term_only_config.url_config).to eq nil
     end
-    it 'returns the search url from the configuration' do
-      expect(full_config.url).to eq url_config
-    end
-  end
-
-  describe '#url_template' do
-    it 'returns nil if only term configuration is defined' do
-      expect(term_only_config.url).to eq nil
-    end
-    it 'returns the search url from the configuration' do
-      expected_url_template = 'http://localhost/test_default/search?subauth={?subauth}&query={?query}&param1={?param1}&param2={?param2}'
-      expect(full_config.url_template).to eq expected_url_template
+    it 'returns the url config from the configuration' do
+      expect(full_config.url_config).to be_kind_of Qa::IriTemplate::UrlConfig
     end
   end
 
@@ -221,45 +198,27 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
     end
   end
 
-  describe '#replacements?' do
+  describe '#supports_context?' do
     it 'returns false if only term configuration is defined' do
-      expect(term_only_config.replacements?).to eq false
+      expect(term_only_config.supports_context?).to eq false
     end
-    it 'returns false if the configuration does NOT define replacements' do
-      expect(min_config.replacements?).to eq false
+    it 'returns false if NOT defined in the configuration' do
+      expect(min_config.supports_context?).to eq false
     end
-    it 'returns true if the configuration defines replacements' do
-      expect(full_config.replacements?).to eq true
-    end
-  end
-
-  describe '#replacement_count' do
-    it 'returns 0 if only term configuration is defined' do
-      expect(term_only_config.replacement_count).to eq 0
-    end
-    it 'returns 0 if replacement_count is NOT defined' do
-      expect(min_config.replacement_count).to eq 0
-    end
-    it 'returns the number of replacements if defined' do
-      expect(full_config.replacement_count).to eq 2
+    it 'returns true if defined in the configuration' do
+      expect(full_config.supports_context?).to eq true
     end
   end
 
-  describe '#replacements' do
-    it 'returns empty hash if only term configuration is defined' do
-      empty_hash = {}
-      expect(term_only_config.replacements).to eq empty_hash
+  describe '#context_map' do
+    it 'returns nil if only term configuration is defined' do
+      expect(term_only_config.context_map).to eq nil
     end
-    it 'returns empty hash if no replacement patterns are defined' do
-      empty_hash = {}
-      expect(min_config.replacements).to eq empty_hash
+    it 'returns nil if NOT defined in the configuration' do
+      expect(min_config.context_map).to eq nil
     end
-    it 'returns hash of all replacement patterns' do
-      expected_hash = {
-        param1: { :@type => 'IriTemplateMapping', variable: 'param1', property: 'hydra:freetextQuery', required: false, default: 'delta' },
-        param2: { :@type => 'IriTemplateMapping', variable: 'param2', property: 'hydra:freetextQuery', required: false, default: 'echo' }
-      }
-      expect(full_config.replacements).to eq expected_hash
+    it 'returns the context map if defined in the configuration' do
+      expect(full_config.context_map).to be_kind_of Qa::LinkedData::Config::ContextMap
     end
   end
 
@@ -318,21 +277,6 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
         search_sub3_key: 'search_sub3_name'
       }
       expect(full_config.subauthorities).to eq expected_hash
-    end
-  end
-
-  describe '#subauthority_replacement_pattern' do
-    it 'returns empty hash if only term configuration is defined' do
-      empty_hash = {}
-      expect(term_only_config.subauthority_replacement_pattern).to eq empty_hash
-    end
-    it 'returns empty hash if no subauthorities are defined' do
-      empty_hash = {}
-      expect(min_config.subauthority_replacement_pattern).to eq empty_hash
-    end
-    it 'returns hash replacement pattern for subauthority and the default value' do
-      expected_hash = { pattern: 'subauth', default: 'search_sub1_name' }
-      expect(full_config.subauthority_replacement_pattern).to eq expected_hash
     end
   end
 end
