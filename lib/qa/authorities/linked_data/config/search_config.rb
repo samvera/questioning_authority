@@ -5,6 +5,8 @@
 module Qa::Authorities
   module LinkedData
     class SearchConfig
+      attr_reader :prefixes
+
       # @param [Hash] config the search portion of the config
       def initialize(config, prefixes = {})
         @search_config = config
@@ -85,7 +87,7 @@ module Qa::Authorities
       # @return [Qa::LinkedData::Config::ContextMap] the context map
       def context_map
         return nil unless search_config.key?(:context)
-        @context_map ||= Qa::LinkedData::Config::ContextMap.new(search_config.fetch(:context))
+        @context_map ||= Qa::LinkedData::Config::ContextMap.new(search_config.fetch(:context), prefixes)
       end
 
       # Return parameters that are required for QA api

@@ -14,6 +14,13 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
     }
   end
 
+  let(:prefixes) do
+    {
+      schema: "http://www.w3.org/2000/01/rdf-schema#",
+      skos: "http://www.w3.org/2004/02/skos/core#"
+    }
+  end
+
   describe '#new' do
     context 'when ldpath is missing' do
       before { property_map.delete(:ldpath) }
@@ -37,6 +44,14 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
       it 'raises an error' do
         expect { subject }.to raise_error(Qa::InvalidConfiguration, 'drillable must be true or false')
       end
+    end
+
+    it 'accepts a single parameter for property_map' do
+      expect(subject).to be_kind_of described_class
+    end
+
+    it 'accepts required property_map parameter and optional prefixes parameter' do
+      expect(described_class.new(property_map, prefixes)).to be_kind_of described_class
     end
   end
 

@@ -48,6 +48,23 @@ RSpec.describe Qa::LinkedData::Config::ContextMap do
     }
   end
 
+  let(:prefixes) do
+    {
+      schema: "http://www.w3.org/2000/01/rdf-schema#",
+      skos: "http://www.w3.org/2004/02/skos/core#"
+    }
+  end
+
+  describe '#new' do
+    it 'accepts a single parameter for context_map' do
+      expect(subject).to be_kind_of described_class
+    end
+
+    it 'accepts required context_map parameter and optional prefixes parameter' do
+      expect(described_class.new(context_map, prefixes)).to be_kind_of described_class
+    end
+  end
+
   describe '#properties' do
     it 'returns the configured url template' do
       expect(subject.properties.size).to eq 3
