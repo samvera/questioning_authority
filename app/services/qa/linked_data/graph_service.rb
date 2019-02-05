@@ -46,6 +46,7 @@ module Qa
           graph.statements.each do |st|
             new_graph.insert(st.dup)
           end
+          new_graph
         end
 
         private

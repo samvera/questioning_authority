@@ -24,7 +24,7 @@ module Qa
         #       {
         #         "property_label_i18n": "qa.linked_data.authority.locgenres_ld4l_cache.authoritative_label",
         #         "property_label_default": "Authoritative Label",
-        #         "lpath": "madsrdf:authoritativeLabel",
+        #         "ldpath": "madsrdf:authoritativeLabel",
         #         "selectable": true,
         #         "drillable": false
         #       },
@@ -32,7 +32,7 @@ module Qa
         #         "group_id": "dates",
         #         "property_label_i18n": "qa.linked_data.authority.locnames_ld4l_cache.birth_date",
         #         "property_label_default": "Birth",
-        #         "lpath": "madsrdf:identifiesRWO/madsrdf:birthDate/schema:label",
+        #         "ldpath": "madsrdf:identifiesRWO/madsrdf:birthDate/schema:label",
         #         "selectable": false,
         #         "drillable": false
         #       }

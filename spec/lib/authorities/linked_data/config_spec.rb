@@ -21,9 +21,13 @@ describe Qa::Authorities::LinkedData::Config do
     end
   end
 
-  describe '#auth_config' do
+  describe '#authority_config' do
     let(:full_auth_config) do
       {
+        prefixes: {
+          schema: "http://www.w3.org/2000/01/rdf-schema#",
+          skos: "http://www.w3.org/2004/02/skos/core#"
+        },
         term: {
           url: {
             :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
@@ -138,7 +142,7 @@ describe Qa::Authorities::LinkedData::Config do
               {
                 property_label_i18n: "qa.linked_data.authority.locgenres_ld4l_cache.authoritative_label",
                 property_label_default: "Authoritative Label",
-                lpath: "madsrdf:authoritativeLabel",
+                ldpath: "madsrdf:authoritativeLabel",
                 selectable: true,
                 drillable: false
               },
@@ -146,7 +150,7 @@ describe Qa::Authorities::LinkedData::Config do
                 group_id: "dates",
                 property_label_i18n: "qa.linked_data.authority.locnames_ld4l_cache.birth_date",
                 property_label_default: "Birth",
-                lpath: "madsrdf:identifiesRWO/madsrdf:birthDate/schema:label",
+                ldpath: "madsrdf:identifiesRWO/madsrdf:birthDate/schema:label",
                 selectable: false,
                 drillable: false
               }
@@ -161,8 +165,36 @@ describe Qa::Authorities::LinkedData::Config do
       }
     end
 
+    let(:authority_config) { full_config.authority_config }
+
     it 'returns hash of the full authority configuration' do
-      expect(full_config.auth_config).to eq full_auth_config
+      expect(authority_config).to eq full_auth_config
+    end
+  end
+
+  describe '#search' do
+    it 'returns instance of search config class' do
+      expect(full_config.search).to be_kind_of Qa::Authorities::LinkedData::SearchConfig
+    end
+  end
+
+  describe '#term' do
+    it 'returns instance of term config class' do
+      expect(full_config.term).to be_kind_of Qa::Authorities::LinkedData::TermConfig
+    end
+  end
+
+  describe '#prefixes' do
+    let(:expected_results) do
+      {
+        schema: "http://www.w3.org/2000/01/rdf-schema#",
+        skos: "http://www.w3.org/2004/02/skos/core#"
+      }
+    end
+
+    it 'returns hash of prefix definitions' do
+      expect(full_config.prefixes).to be_kind_of Hash
+      expect(full_config.prefixes).to eq expected_results
     end
   end
 end

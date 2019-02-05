@@ -47,7 +47,7 @@ RSpec.describe Qa::IriTemplate::UrlConfig do
     it { is_expected.to respond_to :mapping }
   end
 
-  describe '#initialize' do
+  describe '#new' do
     context 'when missing template' do
       before do
         allow(url_template).to receive(:fetch).with(:template, nil).and_return(nil)

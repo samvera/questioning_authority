@@ -18,7 +18,7 @@ RSpec.describe Qa::IriTemplate::VariableMap do
     # it { is_expected.to respond_to :parameter_value }
   end
 
-  describe '#initialize' do
+  describe '#new' do
     context 'when variable is missing' do
       before do
         map.delete(:variable)

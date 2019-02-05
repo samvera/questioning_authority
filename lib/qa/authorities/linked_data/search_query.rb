@@ -22,9 +22,9 @@ module Qa::Authorities
 
       # Search a linked data authority
       # @praram [String] the query
-      # @param [Symbol] (optional) language: language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
-      # @param [Hash] (optional) replacements: replacement values with { pattern_name (defined in YAML config) => value }
-      # @param [String] subauth: the subauthority to query
+      # @param language [Symbol] (optional) language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
+      # @param replacements [Hash] (optional) replacement values with { pattern_name (defined in YAML config) => value }
+      # @param subauth [String] (optional) the subauthority to query
       # @return [String] json results
       # @example Json Results for Linked Data Search
       #   [ {"uri":"http://id.worldcat.org/fast/5140","id":"5140","label":"Cornell, Joseph"},
@@ -47,9 +47,9 @@ module Qa::Authorities
         end
 
         def parse_search_authority_response
-          results = results_mapper_service.map_values(graph: @graph, predicate_map: preds_for_search,
-                                                      sort_key: :sort, preferred_language: @language)
-          convert_search_to_json(results)
+          results = results_mapper_service.map_values(graph: @graph, predicate_map: preds_for_search, sort_key: :sort,
+                                                      preferred_language: @language)
+          convert_results_to_json(results)
         end
 
         def preds_for_search
@@ -67,21 +67,25 @@ module Qa::Authorities
           @sort_predicate ||= search_config.results_sort_predicate
         end
 
-        def convert_search_to_json(results)
+        def convert_results_to_json(results)
           json_results = []
-          results.each do |result|
-            uri = result[:uri].first.to_s
-            id = result[:id].first.to_s
-            label = language_sort_service.new(result[:label], language).sort
-            altlabel = language_sort_service.new(result[:altlabel], language).sort
-            json_results << { uri: uri, id: id, label: full_label(label, altlabel) }
-          end
+          results.each { |result| json_results << convert_result_to_json(result) }
           json_results
         end
 
+        def convert_result_to_json(result)
+          json_result = {}
+          json_result[:uri] = result[:uri].first.to_s
+          json_result[:id] = result[:id].first.to_s
+          json_result[:label] = full_label(result[:label], result[:altlabel])
+          json_result
+        end
+
         def full_label(label = [], altlabel = [])
+          label = language_sort_service.new(label, language).sort
+          altlabel = language_sort_service.new(altlabel, language).sort
           lbl = wrap_labels(label)
-          lbl += " (#{altlabel.join(', ')})" unless altlabel.nil? || altlabel.length <= 0
+          lbl += " (#{altlabel.join(', ')})" if altlabel.present?
           lbl = lbl.slice(0..95) + '...' if lbl.length > 98
           lbl.strip
         end

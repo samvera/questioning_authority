@@ -8,22 +8,18 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
       group_id: 'dates',
       property_label_i18n: 'qa.linked_data.authority.locnames_ld4l_cache.birth_date',
       property_label_default: 'default_Birth',
-      lpath: 'madsrdf:identifiesRWO/madsrdf:birthDate/schema:label',
+      ldpath: 'madsrdf:identifiesRWO/madsrdf:birthDate/schema:label',
       selectable: false,
       drillable: false
     }
   end
 
-  describe 'model attributes' do
-    it { is_expected.to respond_to :lpath }
-  end
-
-  describe '#initialize' do
-    context 'when lpath is missing' do
-      before { property_map.delete(:lpath) }
+  describe '#new' do
+    context 'when ldpath is missing' do
+      before { property_map.delete(:ldpath) }
 
       it 'raises an error' do
-        expect { subject }.to raise_error(Qa::InvalidConfiguration, 'lpath is required')
+        expect { subject }.to raise_error(Qa::InvalidConfiguration, 'ldpath is required')
       end
     end
 
@@ -100,7 +96,7 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
     context 'when map defines property_label_i18n key' do
       context 'and i18n translation is defined in locales' do
         before do
-          allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.birth_date', 'default_Birth').and_return('Birth')
+          allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.birth_date', default: 'default_Birth').and_return('Birth')
         end
 
         it 'returns the translated text' do
@@ -111,7 +107,7 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
       context 'and i18n translation is NOT defined in locales' do
         context 'and default is defined in the map' do
           before do
-            allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.birth_date', 'default_Birth').and_return('default_Birth')
+            allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.birth_date', default: 'default_Birth').and_return('default_Birth')
           end
 
           it 'returns the default value' do
@@ -122,7 +118,7 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
         context 'and default is NOT defined in the map' do
           before do
             property_map.delete(:property_label_default)
-            allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.birth_date', nil).and_return(nil)
+            allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.birth_date', default: nil).and_return(nil)
           end
 
           it 'returns nil' do
@@ -163,6 +159,22 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
 
       it 'returns nil' do
         expect(subject.group_id).to eq nil
+      end
+    end
+  end
+
+  describe '#group?' do
+    context 'when map defines group_id' do
+      it 'returns true' do
+        expect(subject.group?).to be true
+      end
+    end
+
+    context 'when map does NOT define group_id' do
+      before { property_map.delete(:group_id) }
+
+      it 'returns false' do
+        expect(subject.group?).to be false
       end
     end
   end
