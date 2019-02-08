@@ -5,14 +5,15 @@ module Qa
       class ContextMap
         attr_reader :properties # [Array<Qa::LinkedData::Config::ContextPropertyMap>] set of property map models
 
-        attr_reader :context_map, :groups
-        private :context_map, :groups
+        attr_reader :context_map, :groups, :prefixes
+        private :context_map, :groups, :prefixes
 
         # @param [Hash] context_map that defines groups and properties for additional context to display during the selection process
         # @option context_map [Hash] :groups (optional) predefine group ids and labels to be used in the properties section to group properties
         # @option groups [Hash] key=group_id; value=[Hash] with group_label_i18n and/or group_label_default
         # @option context_map [Array<Hash>] :properties (optional) property maps defining how to get and display the additional context (if none, context will not be added)
-        # @example
+        # @param [Hash] shortcut names for URI prefixes with key = part of predicate that is the same for all terms (e.g. { "madsrdf": "http://www.loc.gov/mads/rdf/v1#" })
+        # @example context_map example
         #   {
         #     "groups": {
         #       "dates": {
@@ -38,8 +39,9 @@ module Qa
         #       }
         #     ]
         #   }
-        def initialize(context_map = {})
+        def initialize(context_map = {}, prefixes = {})
           @context_map = context_map
+          @prefixes = prefixes
           extract_groups
           extract_properties
         end
@@ -53,7 +55,7 @@ module Qa
           def extract_properties
             @properties = []
             properties_map = Qa::LinkedData::Config::Helper.fetch(context_map, :properties, {})
-            properties_map.each { |property_map| @properties << ContextPropertyMap.new(property_map) }
+            properties_map.each { |property_map| @properties << ContextPropertyMap.new(property_map, prefixes) }
           end
 
           def extract_groups

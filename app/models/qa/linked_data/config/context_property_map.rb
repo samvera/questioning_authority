@@ -6,8 +6,8 @@ module Qa
         attr_reader :group_id, # id that identifies which group the property should be in
                     :label # plain text label extracted from locales or using the default
 
-        attr_reader :property_map, :ldpath
-        private :property_map, :ldpath
+        attr_reader :property_map, :ldpath, :prefixes
+        private :property_map, :ldpath, :prefixes
 
         # @param [Hash] property_map defining information to return to provide context
         # @option property_map [String] :group_id (optional) default label to use for a property (default: no label)
@@ -16,7 +16,8 @@ module Qa
         # @option property_map [String] :ldpath (required) identifies the values to extract from the graph (based on http://marmotta.apache.org/ldpath/language.html)
         # @option property_map [Boolean] :selectable (optional) if true, this property can selected as the value (default: false)
         # @option property_map [Boolean] :drillable (optional) if true, the label for this property can be used to execute a second query allowing navi (default: false)
-        # @example property_map
+        # @param [Hash] shortcut names for URI prefixes with key = part of predicate that is the same for all terms (e.g. { "madsrdf": "http://www.loc.gov/mads/rdf/v1#" })
+        # @example property_map example
         #   {
         #     "group_id": "dates",
         #     "property_label_i18n": "qa.linked_data.authority.locnames_ld4l_cache.birth_date",
@@ -25,13 +26,14 @@ module Qa
         #     "selectable": false,
         #     "drillable": false
         #   }
-        def initialize(property_map = {})
+        def initialize(property_map = {}, prefixes = {})
           @property_map = property_map
           @group_id = Qa::LinkedData::Config::Helper.fetch_symbol(property_map, :group_id, nil)
           @label = extract_label
           @ldpath = Qa::LinkedData::Config::Helper.fetch_required(property_map, :ldpath, false)
           @selectable = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :selectable, false)
           @drillable = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :drillable, false)
+          @prefixes = prefixes
         end
 
         # Can this property be the selected value?
