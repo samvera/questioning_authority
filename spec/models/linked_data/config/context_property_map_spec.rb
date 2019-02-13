@@ -193,4 +193,19 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
       end
     end
   end
+
+  describe '#values' do
+    let(:program) { instance_double(Ldpath::Program) }
+    let(:coordinates) { '42.4488° N, 76.4763° W' }
+    let(:subject_uri) { instance_double(RDF::URI) }
+    let(:graph) { instance_double(RDF::Graph) }
+
+    before do
+      allow(Ldpath::Program).to receive(:parse).with(anything).and_return(program)
+      allow(program).to receive(:evaluate).with(anything, anything).and_return('property' => [coordinates, coordinates, coordinates]) # check that uniq is applied
+    end
+    it 'returns the ldpath program for this property map' do
+      expect(subject.values(graph, subject_uri)).to match_array coordinates
+    end
+  end
 end

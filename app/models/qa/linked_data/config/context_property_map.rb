@@ -1,4 +1,6 @@
 # Defines the external authority predicates used to extract additional context from the graph.
+require 'ldpath'
+
 module Qa
   module LinkedData
     module Config
@@ -48,6 +50,13 @@ module Qa
           @drillable
         end
 
+        def values(graph, subject_uri)
+          output = ldpath_program.evaluate subject_uri, graph
+          output.present? ? output['property'].uniq : nil
+        rescue
+          'PARSE ERROR'
+        end
+
         def group?
           group_id.present?
         end
@@ -59,6 +68,14 @@ module Qa
             default = Qa::LinkedData::Config::Helper.fetch(property_map, :property_label_default, nil)
             return I18n.t(i18n_key, default: default) if i18n_key.present?
             default
+          end
+
+          def ldpath_program
+            return @program if @program.present?
+            program_code = ""
+            prefixes.each { |key, url| program_code << "@prefix #{key} : <#{url}> \;\n" }
+            program_code << "property = #{ldpath} \;"
+            @program = Ldpath::Program.parse program_code
           end
       end
     end
