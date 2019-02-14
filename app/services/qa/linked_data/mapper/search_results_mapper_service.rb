@@ -3,9 +3,10 @@ module Qa
   module LinkedData
     module Mapper
       class SearchResultsMapperService
-        class_attribute :graph_mapper_service, :deep_sort_service
+        class_attribute :graph_mapper_service, :deep_sort_service, :context_mapper_service
         self.graph_mapper_service = Qa::LinkedData::Mapper::GraphMapperService
         self.deep_sort_service = Qa::LinkedData::DeepSortService
+        self.context_mapper_service = Qa::LinkedData::Mapper::ContextMapperService
 
         class << self
           # Extract predicates specified in the predicate_map from the graph and return as an array of value maps for each search result subject URI.
@@ -21,6 +22,7 @@ module Qa
           #     sort: 'http://vivoweb.org/ontology/core#rank'
           #   }
           # @param sort_key [Symbol] the key in the predicate map for the value on which to sort
+          # @param context_map [Qa::LinkedData::Config::ContextMap] map of additional context to include in the results
           # @return [Array<Hash<Symbol><Array<Object>>>] mapped result values with each result as an element in the array
           #    with hash of map key = array of object values for predicates identified in map parameter.
           # @example value map for a single result
@@ -31,11 +33,17 @@ module Qa
           #      :altlabel=>[],
           #      :sort=>[#<RDF::Literal:0x3fcff54b4c18("2")>]}
           #   ]
-          def map_values(graph:, predicate_map:, sort_key:, preferred_language: nil)
+          def map_values(graph:, predicate_map:, sort_key:, preferred_language: nil, context_map: nil)
             search_matches = []
             graph.subjects.each do |subject|
               next if subject.anonymous? # skip blank nodes
-              values = graph_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject)
+              values = graph_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject) do |value_map|
+                next value_map if context_map.blank?
+                context = {}
+                context = context_mapper_service.map_context(graph: graph, context_map: context_map, subject_uri: subject) if context_map.present?
+                value_map[:context] = context
+                value_map
+              end
               search_matches << values unless sort_key.present? && values[sort_key].blank?
             end
             search_matches = deep_sort_service.new(search_matches, sort_key, preferred_language).sort
