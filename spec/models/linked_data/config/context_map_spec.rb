@@ -6,10 +6,6 @@ RSpec.describe Qa::LinkedData::Config::ContextMap do
   before do
     # simulate the existence of the i18n entries
     allow(I18n).to receive(:t).and_call_original
-    allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.dates', 'default_Dates').and_return('Dates')
-    allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.authoritative_label', 'default_Authoritative Label').and_return('Authoritative Label')
-    allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.birth_date', 'default_Birth').and_return('Birth')
-    allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.death_date', 'default_Death').and_return('Death')
   end
 
   let(:context_map) do
@@ -75,6 +71,10 @@ RSpec.describe Qa::LinkedData::Config::ContextMap do
   describe '#group_label' do
     context 'when map defines group_label_i18n key' do
       context 'and i18n translation is defined in locales' do
+        before do
+          allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.dates', default: 'default_Dates').and_return('Dates')
+        end
+
         it 'returns the translated text' do
           expect(subject.group_label(:dates)).to eq 'Dates'
         end
@@ -83,7 +83,7 @@ RSpec.describe Qa::LinkedData::Config::ContextMap do
       context 'and i18n translation is NOT defined in locales' do
         context 'and default is defined in the map' do
           before do
-            allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.dates', 'default_Dates').and_return('default_Dates')
+            allow(I18n).to receive(:t).with('qa.linked_data.authority.locnames_ld4l_cache.dates', default: 'default_Dates').and_return('default_Dates')
           end
 
           it 'returns the default value' do

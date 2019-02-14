@@ -10,14 +10,16 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
       property_label_default: 'default_Birth',
       ldpath: 'madsrdf:identifiesRWO/madsrdf:birthDate/schema:label',
       selectable: false,
-      drillable: false
+      drillable: false,
+      expansion_label_ldpath: 'skos:prefLabel ::xsd:string',
+      expansion_id_ldpath: 'loc:lccn ::xsd:string'
     }
   end
 
   let(:prefixes) do
     {
-      schema: "http://www.w3.org/2000/01/rdf-schema#",
-      skos: "http://www.w3.org/2004/02/skos/core#"
+      schema: 'http://www.w3.org/2000/01/rdf-schema#',
+      skos: 'http://www.w3.org/2004/02/skos/core#'
     }
   end
 
@@ -204,8 +206,67 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
       allow(Ldpath::Program).to receive(:parse).with(anything).and_return(program)
       allow(program).to receive(:evaluate).with(anything, anything).and_return('property' => [coordinates, coordinates, coordinates]) # check that uniq is applied
     end
-    it 'returns the ldpath program for this property map' do
+    it 'returns the values selected from the graph' do
       expect(subject.values(graph, subject_uri)).to match_array coordinates
+    end
+
+    context 'when program gets parse error' do
+      let(:ldpath) { property_map[:ldpath] }
+      let(:cause) { "undefined method `ascii_tree' for nil:NilClass" }
+      let(:warning) { Qa::LinkedData::Config::ContextPropertyMap::PARSE_LOGGER_ERROR }
+      let(:log_message) { "WARNING: #{warning} (ldpath='#{ldpath}')\n    cause: #{cause}" }
+      before do
+        allow(Ldpath::Program).to receive(:parse).with(anything).and_raise(cause)
+      end
+      it 'logs error and returns PARSE ERROR as the value' do
+        Rails.logger.should_receive(:warn).with(log_message)
+        expect(subject.values(graph, subject_uri)).to eq Qa::LinkedData::Config::ContextPropertyMap::PARSE_ERROR_VALUE
+      end
+    end
+  end
+
+  describe '#expand_uri?' do
+    context 'when map has a value for expansion_label_ldpath' do
+      it 'returns true' do
+        expect(subject.expand_uri?).to be true
+      end
+    end
+
+    context 'when map does NOT have a value for expansion_label_ldpath' do
+      before { property_map.delete(:expansion_label_ldpath) }
+
+      it 'returns false' do
+        expect(subject.expand_uri?).to be false
+      end
+    end
+  end
+
+  describe '#expanded_values' do
+    let(:graph) { instance_double(RDF::Graph) }
+    let(:subject_uri) { instance_double(RDF::URI) }
+
+    let(:basic_program) { instance_double(Ldpath::Program) }
+    let(:expanded_label_program) { instance_double(Ldpath::Program) }
+    let(:expanded_id_program) { instance_double(Ldpath::Program) }
+
+    let(:expanded_uri) { instance_double(RDF::URI) }
+    let(:expanded_label) { 'A Broader Term' }
+    let(:expanded_id) { '123' }
+
+    before do
+      allow(Ldpath::Program).to receive(:parse).with('property = madsrdf:identifiesRWO/madsrdf:birthDate/schema:label ;').and_return(basic_program)
+      allow(Ldpath::Program).to receive(:parse).with('property = skos:prefLabel ::xsd:string ;').and_return(expanded_label_program)
+      allow(Ldpath::Program).to receive(:parse).with('property = loc:lccn ::xsd:string ;').and_return(expanded_id_program)
+      allow(basic_program).to receive(:evaluate).with(subject_uri, graph).and_return('property' => [expanded_uri])
+      allow(expanded_label_program).to receive(:evaluate).with(RDF::URI.new(subject_uri), graph).and_return('property' => [expanded_label])
+      allow(expanded_id_program).to receive(:evaluate).with(RDF::URI.new(subject_uri), graph).and_return('property' => [expanded_id])
+    end
+    it 'returns the uri, id, label for the expanded uri value' do
+      expanded_values = subject.expanded_values(graph, subject_uri).first
+      expect(expanded_values).to be_kind_of Hash
+      expect(expanded_values[:uri]).to eq expanded_uri
+      expect(expanded_values[:id]).to eq expanded_id
+      expect(expanded_values[:label]).to eq expanded_label
     end
   end
 end

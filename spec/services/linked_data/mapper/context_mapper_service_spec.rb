@@ -28,18 +28,21 @@ RSpec.describe Qa::LinkedData::Mapper::ContextMapperService do
     allow(birth_date_property_map).to receive(:group?).and_return(false)
     allow(birth_date_property_map).to receive(:selectable?).and_return(false)
     allow(birth_date_property_map).to receive(:drillable?).and_return(false)
+    allow(birth_date_property_map).to receive(:expand_uri?).and_return(false)
 
     allow(death_date_property_map).to receive(:label).and_return('Death')
     allow(death_date_property_map).to receive(:values).with(graph, subject_uri).and_return(death_date_values)
     allow(death_date_property_map).to receive(:group?).and_return(false)
     allow(death_date_property_map).to receive(:selectable?).and_return(false)
     allow(death_date_property_map).to receive(:drillable?).and_return(false)
+    allow(death_date_property_map).to receive(:expand_uri?).and_return(false)
 
     allow(occupation_property_map).to receive(:label).and_return('Occupation')
     allow(occupation_property_map).to receive(:values).with(graph, subject_uri).and_return(occupation_values)
     allow(occupation_property_map).to receive(:group?).and_return(false)
     allow(occupation_property_map).to receive(:selectable?).and_return(false)
     allow(occupation_property_map).to receive(:drillable?).and_return(false)
+    allow(occupation_property_map).to receive(:expand_uri?).and_return(false)
   end
 
   describe '.map_context' do

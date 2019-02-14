@@ -5,11 +5,14 @@ module Qa
   module LinkedData
     module Config
       class ContextPropertyMap
+        PARSE_ERROR_VALUE = 'PARSE ERROR'.freeze
+        PARSE_LOGGER_ERROR = 'LDPath failed to parse during LDPath program creation.'.freeze
+
         attr_reader :group_id, # id that identifies which group the property should be in
                     :label # plain text label extracted from locales or using the default
 
-        attr_reader :property_map, :ldpath, :prefixes
-        private :property_map, :ldpath, :prefixes
+        attr_reader :property_map, :ldpath, :expansion_label_ldpath, :expansion_id_ldpath, :prefixes
+        private :property_map, :ldpath, :expansion_label_ldpath, :expansion_id_ldpath, :prefixes
 
         # @param [Hash] property_map defining information to return to provide context
         # @option property_map [String] :group_id (optional) default label to use for a property (default: no label)
@@ -35,30 +38,55 @@ module Qa
           @ldpath = Qa::LinkedData::Config::Helper.fetch_required(property_map, :ldpath, false)
           @selectable = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :selectable, false)
           @drillable = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :drillable, false)
+          @expansion_label_ldpath = Qa::LinkedData::Config::Helper.fetch(property_map, :expansion_label_ldpath, nil)
+          @expansion_id_ldpath = Qa::LinkedData::Config::Helper.fetch(property_map, :expansion_id_ldpath, nil)
           @prefixes = prefixes
         end
 
         # Can this property be the selected value?
-        # @return true if can be selected; otherwise, false
+        # @return [Boolean] true if this property's value can be selected; otherwise, false
         def selectable?
           @selectable
         end
 
         # Can this property be used as a new query
-        # @return true if can be selected; otherwise, false
+        # @return [Boolean] true if this property's value can be used to drill up/down to another level; otherwise, false
         def drillable?
           @drillable
         end
 
-        def values(graph, subject_uri)
-          output = ldpath_program.evaluate subject_uri, graph
-          output.present? ? output['property'].uniq : nil
-        rescue
-          'PARSE ERROR'
-        end
-
         def group?
           group_id.present?
+        end
+
+        # Should this URI value be expanded to include its label?
+        # @return [Boolean] true if this property's value is expected to be a URI and its label should be included in the value; otherwise, false
+        def expand_uri?
+          expansion_label_ldpath.present?
+        end
+
+        # Values of this property for a specfic subject URI
+        # @return [Array<String>] values for this property
+        def values(graph, subject_uri)
+          ldpath_evaluate(basic_program, graph, subject_uri)
+        end
+
+        # Values of this property for a specfic subject URI with URI values expanded to include id and label.
+        # @return [Array<Hash>] expanded values for this property
+        # @example returned values
+        #   [{
+        #     uri: "http://id.loc.gov/authorities/genreForms/gf2014026551",
+        #     id: "gf2014026551",
+        #     label: "Space operas"
+        #   }]
+        def expanded_values(graph, subject_uri)
+          values = values(graph, subject_uri)
+          return values unless expand_uri?
+          return values unless values.respond_to? :map!
+          values.map! do |uri|
+            { uri: uri, id: expansion_id(graph, uri), label: expansion_label(graph, uri) }
+          end
+          values
         end
 
         private
@@ -70,12 +98,43 @@ module Qa
             default
           end
 
-          def ldpath_program
-            return @program if @program.present?
+          def basic_program
+            @basic_program ||= ldpath_program(ldpath)
+          end
+
+          def expansion_label_program
+            @expansion_label_program ||= ldpath_program(expansion_label_ldpath)
+          end
+
+          def expansion_id_program
+            @expansion_id_program ||= ldpath_program(expansion_id_ldpath)
+          end
+
+          def ldpath_program(ldpath)
             program_code = ""
             prefixes.each { |key, url| program_code << "@prefix #{key} : <#{url}> \;\n" }
             program_code << "property = #{ldpath} \;"
-            @program = Ldpath::Program.parse program_code
+            Ldpath::Program.parse program_code
+          rescue => e
+            Rails.logger.warn("WARNING: #{PARSE_LOGGER_ERROR} (ldpath='#{ldpath}')\n    cause: #{e.message}")
+            nil
+          end
+
+          def ldpath_evaluate(program, graph, subject_uri)
+            return PARSE_ERROR_VALUE if program.blank?
+            output = program.evaluate subject_uri, graph
+            output.present? ? output['property'].uniq : nil
+          end
+
+          def expansion_label(graph, uri)
+            label = ldpath_evaluate(expansion_label_program, graph, RDF::URI(uri))
+            label.size == 1 ? label.first : label
+          end
+
+          def expansion_id(graph, uri)
+            return uri if expansion_id_ldpath.blank?
+            id = ldpath_evaluate(expansion_id_program, graph, RDF::URI(uri))
+            id.size == 1 ? id.first : id
           end
       end
     end
