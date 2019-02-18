@@ -1,0 +1,9 @@
+---
+en:
+  qa:
+    linked_data:
+      ldpath:
+        evaluate_error: LDPATH EVALUATION ERROR (See log for more information)
+        evaluate_logger_error: LDPath failed to evaluate the graph with the provided ldpath.
+        parse_error: LDPATH PARSE ERROR (See log for more information)
+        parse_logger_error: LDPath failed to parse during ldpath program creation.

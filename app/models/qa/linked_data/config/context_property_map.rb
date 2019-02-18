@@ -5,11 +5,10 @@ module Qa
   module LinkedData
     module Config
       class ContextPropertyMap
-        PARSE_ERROR_VALUE = 'PARSE ERROR'.freeze
-        PARSE_LOGGER_ERROR = 'LDPath failed to parse during LDPath program creation.'.freeze
+        VALUE_ON_ERROR = [].freeze
 
         attr_reader :group_id, # id that identifies which group the property should be in
-                    :label # plain text label extracted from locales or using the default
+                    :label
 
         attr_reader :property_map, :ldpath, :expansion_label_ldpath, :expansion_id_ldpath, :prefixes
         private :property_map, :ldpath, :expansion_label_ldpath, :expansion_id_ldpath, :prefixes
@@ -116,14 +115,17 @@ module Qa
             program_code << "property = #{ldpath} \;"
             Ldpath::Program.parse program_code
           rescue => e
-            Rails.logger.warn("WARNING: #{PARSE_LOGGER_ERROR} (ldpath='#{ldpath}')\n    cause: #{e.message}")
-            nil
+            Rails.logger.warn("WARNING: #{I18n.t('qa.linked_data.ldpath.parse_logger_error')} (ldpath='#{ldpath}')\n    cause: #{e.message}")
+            raise StandardError, I18n.t('qa.linked_data.ldpath.parse_error')
           end
 
           def ldpath_evaluate(program, graph, subject_uri)
-            return PARSE_ERROR_VALUE if program.blank?
+            return VALUE_ON_ERROR if program.blank?
             output = program.evaluate subject_uri, graph
             output.present? ? output['property'].uniq : nil
+          rescue => e
+            Rails.logger.warn("WARNING: #{I18n.t('qa.linked_data.ldpath.evaluate_logger_error')} (ldpath='#{ldpath}')\n    cause: #{e.message}")
+            raise StandardError, I18n.t('qa.linked_data.ldpath.evaluate_error')
           end
 
           def expansion_label(graph, uri)

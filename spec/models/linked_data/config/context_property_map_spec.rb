@@ -210,17 +210,31 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
       expect(subject.values(graph, subject_uri)).to match_array coordinates
     end
 
-    context 'when program gets parse error' do
+    context 'when ldpath_program gets parse error' do
       let(:ldpath) { property_map[:ldpath] }
       let(:cause) { "undefined method `ascii_tree' for nil:NilClass" }
-      let(:warning) { Qa::LinkedData::Config::ContextPropertyMap::PARSE_LOGGER_ERROR }
+      let(:warning) { I18n.t('qa.linked_data.ldpath.parse_logger_error') }
       let(:log_message) { "WARNING: #{warning} (ldpath='#{ldpath}')\n    cause: #{cause}" }
-      before do
-        allow(Ldpath::Program).to receive(:parse).with(anything).and_raise(cause)
-      end
+
+      before { allow(Ldpath::Program).to receive(:parse).with(anything).and_raise(cause) }
+
       it 'logs error and returns PARSE ERROR as the value' do
-        Rails.logger.should_receive(:warn).with(log_message)
-        expect(subject.values(graph, subject_uri)).to eq Qa::LinkedData::Config::ContextPropertyMap::PARSE_ERROR_VALUE
+        expect(Rails.logger).to receive(:warn).with(log_message)
+        expect { subject.values(graph, subject_uri) }.to raise_error StandardError, I18n.t('qa.linked_data.ldpath.parse_error')
+      end
+    end
+
+    context 'when ldpath_evaluate gets parse error' do
+      let(:ldpath) { property_map[:ldpath] }
+      let(:cause) { "unknown cause" }
+      let(:warning) { I18n.t('qa.linked_data.ldpath.evaluate_logger_error') }
+      let(:log_message) { "WARNING: #{warning} (ldpath='#{ldpath}')\n    cause: #{cause}" }
+
+      before { allow(program).to receive(:evaluate).with(subject_uri, graph).and_raise(cause) }
+
+      it 'logs error and returns PARSE ERROR as the value' do
+        expect(Rails.logger).to receive(:warn).with(log_message)
+        expect { subject.values(graph, subject_uri) }.to raise_error StandardError, I18n.t('qa.linked_data.ldpath.evaluate_error')
       end
     end
   end

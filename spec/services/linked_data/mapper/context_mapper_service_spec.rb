@@ -114,6 +114,17 @@ RSpec.describe Qa::LinkedData::Mapper::ContextMapperService do
         expect(result['selectable']).to be true
       end
     end
+
+    context 'when error occurs' do
+      let(:cause) { I18n.t('qa.linked_data.ldpath.parse_error') }
+      before { allow(occupation_property_map).to receive(:values).with(graph, subject_uri).and_raise(cause) }
+      it 'includes error message and empty value array' do
+        result = find_property_to_test(subject, 'Occupation')
+        expect(result.key?('error')).to be true
+        expect(result['error']).to eq cause
+        expect(result['values']).to match_array([])
+      end
+    end
   end
 
   def find_property_to_test(results, label)
