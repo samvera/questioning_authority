@@ -21,23 +21,36 @@ module Qa
           def map_context(graph:, context_map:, subject_uri:)
             context = []
             context_map.properties.each do |property_map|
-              values = property_map.values(graph, subject_uri)
-              next if values.blank?
-              context << construct_context(context_map, property_map, values)
+              populated_property_map = populate_property_map(context_map, property_map, graph, subject_uri)
+              next if populated_property_map.blank?
+              context << populated_property_map
             end
             context
           end
 
           private
 
-            def construct_context(context_map, property_map, values)
+            def populate_property_map(context_map, property_map, graph, subject_uri)
+              begin
+                values = property_values(property_map, graph, subject_uri)
+              rescue => e
+                values = Qa::LinkedData::Config::ContextPropertyMap::VALUE_ON_ERROR
+                error = e.message
+              end
+
               property_info = {}
-              property_info["group"] = context_map.group_label(property_map.group_id) if property_map.group? # TODO: should be group label
+              property_info["group"] = context_map.group_label(property_map.group_id) if property_map.group?
               property_info["property"] = property_map.label
               property_info["values"] = values
               property_info["selectable"] = property_map.selectable?
               property_info["drillable"] = property_map.drillable?
+              property_info["error"] = error if error.present?
               property_info
+            end
+
+            def property_values(property_map, graph, subject_uri)
+              return property_map.expanded_values(graph, subject_uri) if property_map.expand_uri?
+              property_map.values(graph, subject_uri)
             end
         end
       end

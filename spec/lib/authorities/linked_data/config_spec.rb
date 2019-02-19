@@ -136,6 +136,10 @@ describe Qa::Authorities::LinkedData::Config do
               dates: {
                 group_label_i18n: "qa.linked_data.authority.locnames_ld4l_cache.dates",
                 group_label_default: "Dates"
+              },
+              hierarchy: {
+                group_label_i18n: "qa.linked_data.authority.locgenres_ld4l_cache.hierarchy",
+                group_label_default: "Hierarchy"
               }
             },
             properties: [
@@ -153,6 +157,26 @@ describe Qa::Authorities::LinkedData::Config do
                 ldpath: "madsrdf:identifiesRWO/madsrdf:birthDate/schema:label",
                 selectable: false,
                 drillable: false
+              },
+              {
+                group_id: "hierarchy",
+                property_label_i18n: "qa.linked_data.authority.locgenres_ld4l_cache.narrower",
+                property_label_default: "Narrower",
+                ldpath: "skos:narrower :: xsd:string",
+                selectable: true,
+                drillable: true,
+                expansion_label_ldpath: "skos:prefLabel ::xsd:string",
+                expansion_id_ldpath: "loc:lccn ::xsd:string"
+              },
+              {
+                group_id: "hierarchy",
+                property_label_i18n: "qa.linked_data.authority.locgenres_ld4l_cache.broader",
+                property_label_default: "Broader",
+                ldpath: "skos:broader :: xsd:string",
+                selectable: true,
+                drillable: true,
+                expansion_label_ldpath: "skos:prefLabel ::xsd:string",
+                expansion_id_ldpath: "loc:lccn ::xsd:string"
               }
             ]
           },

@@ -38,17 +38,31 @@ module Qa
             graph.subjects.each do |subject|
               next if subject.anonymous? # skip blank nodes
               values = graph_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject) do |value_map|
-                next value_map if context_map.blank?
-                context = {}
-                context = context_mapper_service.map_context(graph: graph, context_map: context_map, subject_uri: subject) if context_map.present?
-                value_map[:context] = context
-                value_map
+                map_context(graph, sort_key, context_map, value_map, subject)
               end
-              search_matches << values unless sort_key.present? && values[sort_key].blank?
+              search_matches << values if result_subject? values, sort_key
             end
             search_matches = deep_sort_service.new(search_matches, sort_key, preferred_language).sort
             search_matches
           end
+
+          private
+
+            # The graph mapper creates the basic value_map for all subject URIs, but we only want the ones that represent search results.
+            def result_subject?(value_map, sort_key)
+              return true unless sort_key.present?        # if sort_key is not defined, then all subjects are considered matches
+              return false unless value_map.key? sort_key # otherwise, sort_key must be in the basic value_map
+              value_map[sort_key].present?                # AND have a value for this to be a search result
+            end
+
+            def map_context(graph, sort_key, context_map, value_map, subject)
+              return value_map if context_map.blank?
+              return value_map unless result_subject? value_map, sort_key
+              context = {}
+              context = context_mapper_service.map_context(graph: graph, context_map: context_map, subject_uri: subject) if context_map.present?
+              value_map[:context] = context
+              value_map
+            end
         end
       end
     end
