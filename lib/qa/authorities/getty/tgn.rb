@@ -44,7 +44,7 @@ module Qa::Authorities
     end
 
     def find_url(id)
-      "http://vocab.getty.edu/tgn/#{id}.json"
+      "http://vocab.getty.edu/download/json?uri=http://vocab.getty.edu/tgn/#{id}.json"
     end
 
     def request_options

@@ -10,7 +10,7 @@ describe Qa::Authorities::Getty::Ulan do
 
   describe "#find_url" do
     subject { authority.find_url("500026846") }
-    it { is_expected.to eq "http://vocab.getty.edu/ulan/500026846.json" }
+    it { is_expected.to eq "http://vocab.getty.edu/download/json?uri=http://vocab.getty.edu/ulan/500026846.json" }
   end
 
   describe "#search" do
@@ -47,7 +47,7 @@ describe Qa::Authorities::Getty::Ulan do
   describe "#find" do
     context "using a subject id" do
       before do
-        stub_request(:get, "http://vocab.getty.edu/ulan/500026846.json")
+        stub_request(:get, "http://vocab.getty.edu/download/json?uri=http://vocab.getty.edu/ulan/500026846.json")
           .to_return(status: 200, body: webmock_fixture("getty-ulan-find-response.json"))
       end
       subject { authority.find("500026846") }
