@@ -10,7 +10,7 @@ describe Qa::Authorities::Getty::TGN do
 
   describe "#find_url" do
     subject { authority.find_url("1028772") }
-    it { is_expected.to eq "http://vocab.getty.edu/tgn/1028772.json" }
+    it { is_expected.to eq "http://vocab.getty.edu/download/json?uri=http://vocab.getty.edu/tgn/1028772.json" }
   end
 
   describe "#search" do
@@ -47,7 +47,7 @@ describe Qa::Authorities::Getty::TGN do
   describe "#find" do
     context "using a subject id" do
       before do
-        stub_request(:get, "http://vocab.getty.edu/tgn/1028772.json")
+        stub_request(:get, "http://vocab.getty.edu/download/json?uri=http://vocab.getty.edu/tgn/1028772.json")
           .to_return(status: 200, body: webmock_fixture("getty-tgn-find-response.json"))
       end
       subject { authority.find("1028772") }
