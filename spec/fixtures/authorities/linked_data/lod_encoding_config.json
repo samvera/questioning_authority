@@ -1,4 +1,5 @@
 {
+  "QA_CONFIG_VERSION": "2.0",
   "term": {
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
@@ -48,7 +49,7 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://localhost/test_default/search?query={?query}&{?encode_true}&{?encode_false}&{?encode_not_specified}",
+      "template": "http://localhost/test_default/search?{?query}&{?encode_true}&{?encode_false}&{?encode_not_specified}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {

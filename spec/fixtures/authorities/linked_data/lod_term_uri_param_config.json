@@ -1,9 +1,10 @@
 {
+  "QA_CONFIG_VERSION": "2.0",
   "term": {
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://localhost/test_default/term?uri={?term_uri}",
+      "template": "http://localhost/test_default/term?uri={term_uri}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {

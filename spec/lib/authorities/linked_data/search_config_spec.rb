@@ -12,7 +12,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
         url: {
           :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
           :@type => 'IriTemplate',
-          template: 'http://localhost/test_default/search?subauth={?subauth}&query={?query}&param1={?param1}&param2={?param2}',
+          template: 'http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}',
           variableRepresentation: 'BasicRepresentation',
           mapping: [
             {

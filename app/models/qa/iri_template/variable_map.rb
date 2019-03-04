@@ -24,8 +24,7 @@ module Qa
         @property = Qa::LinkedData::Config::Helper.fetch(variable_map, :property, 'hydra:freetextQuery')
       end
 
-      # TODO: When implementing more complex query substitution, simple_value is used when template url specifies variable as {var_name}.
-      # Value to use in substitution, using default if one isn't passed in
+      # Value to use in substitution, using default if one isn't passed in.  Use when template url specifies variable as {var_name}.
       # @param [Object] value to use if it exists
       # @return the value to use (e.g. 'fr')
       def simple_value(sub_value = nil)
@@ -36,15 +35,14 @@ module Qa
         sub_value
       end
 
-      # TODO: When implementing more complex query substitution, parameter_value is used when template url specifies variable as {?var_name}.
-      # # Parameter and value to use in substitution, using default is one isn't passed in
-      # # @param [Object] value to use if it exists
-      # # @return the parameter and value to use (e.g. 'language=fr')
-      # def parameter_value(sub_value = nil)
-      #   simple_value = simple_value(sub_value)
-      #   return '' if simple_value.blank?
-      #   param_value = "#{variable}=#{simple_value}"
-      # end
+      # Parameter and value to use in substitution, using default is one isn't passed in. Use when template url specifies variable as {?var_name}.
+      # @param [Object] value to use if it exists
+      # @return the parameter and value to use (e.g. 'language=fr')
+      def parameter_value(sub_value = nil)
+        simple_value = simple_value(sub_value)
+        return '' if simple_value.blank?
+        "#{variable}=#{simple_value}"
+      end
 
       private
 
