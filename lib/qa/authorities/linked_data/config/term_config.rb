@@ -6,8 +6,9 @@ module Qa::Authorities
   module LinkedData
     class TermConfig
       # @param [Hash] config the term portion of the config
-      def initialize(config)
+      def initialize(config, prefixes = {})
         @term_config = config
+        @prefixes = prefixes
       end
 
       attr_reader :term_config
@@ -19,25 +20,10 @@ module Qa::Authorities
         term_config.present?
       end
 
-      # Return term url encoding defined in the configuration for this authority.
-      # @return [Hash] the configured term url
-      def term_url
-        Config.config_value(term_config, :url)
-      end
-
       # Return term url template defined in the configuration for this authority.
-      # @return [String] the configured term url template
-      def term_url_template
-        Config.config_value(term_url, :template)
-      end
-
-      # Return term url parameter mapping defined in the configuration for this authority.
-      # @return [Hash] the configured term url parameter mappings with variable name as key
-      def term_url_mappings
-        return @term_url_mappings unless @term_url_mappings.nil?
-        mappings = Config.config_value(term_url, :mapping)
-        return {} if mappings.nil?
-        Hash[*mappings.collect { |m| [m[:variable].to_sym, m] }.flatten]
+      # @return [Qa::IriTemplate::UrlConfig] the configured term url template
+      def url_config
+        @url_config ||= Qa::IriTemplate::UrlConfig.new(term_config[:url]) if supports_term?
       end
 
       # Is the term_id substitution expected to be a URI?
@@ -111,27 +97,7 @@ module Qa::Authorities
       def term_qa_replacement_patterns
         Config.config_value(term_config, :qa_replacement_patterns)
       end
-
-      # Are there replacement parameters configured for term fetch?
-      # @return [Boolean] true if there are replacement parameters configured for term fetch; otherwise, false
-      def term_replacements?
-        term_replacement_count.positive?
-      end
-
-      # Return the number of possible replacement values to make in the term URL
-      # @return [Integer] the configured number of possible replacements in the term url
-      def term_replacement_count
-        term_replacements.size
-      end
-
-      # Return the replacement configurations
-      # @return [Hash] the configurations for term url replacements
-      def term_replacements
-        return @term_replacements unless @term_replacements.nil?
-        @term_replacements = {}
-        @term_replacements = term_url_mappings.select { |k, _v| !term_qa_replacement_patterns.value?(k.to_s) } unless term_config.nil? || term_url_mappings.nil?
-        @term_replacements
-      end
+      alias qa_replacement_patterns term_qa_replacement_patterns
 
       # Are there subauthorities configured for term fetch?
       # @return [True|False] true if there are subauthorities configured term fetch; otherwise, false
@@ -158,15 +124,7 @@ module Qa::Authorities
         @term_subauthorities ||= {} if term_config.nil? || !(term_config.key? :subauthorities)
         @term_subauthorities ||= term_config[:subauthorities]
       end
-
-      # Return the replacement configurations
-      # @return [Hash] the configurations for term url replacements
-      def term_subauthority_replacement_pattern
-        return {} unless term_subauthorities?
-        @term_subauthority_replacement_pattern ||= {} if term_config.nil? || !term_subauthorities?
-        pattern = term_qa_replacement_patterns[:subauth]
-        @term_subauthority_replacement_pattern ||= { pattern: pattern, default: term_url_mappings[pattern.to_sym][:default] }
-      end
+      alias subauthorities term_subauthorities
     end
   end
 end

@@ -35,7 +35,7 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # get "/search/linked_data/:vocab(/:subauthority)"
   # @see Qa::Authorities::LinkedData::SearchQuery#search
   def search
-    terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params)
+    terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params, context: context?)
     cors_allow_origin_header(response)
     render json: terms
   rescue Qa::ServiceUnavailable
@@ -176,7 +176,7 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     end
 
     def subauth_warn_msg
-      subauthority.nil? ? "" : " sub-authority #{subauthority} in"
+      subauthority.blank? ? "" : " sub-authority #{subauthority} in"
     end
 
     def format
@@ -186,7 +186,12 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     end
 
     def jsonld?
-      format == 'jsonld'
+      format.casecmp('jsonld').zero?
+    end
+
+    def context?
+      context = params.fetch(:context, 'false')
+      context.casecmp('true').zero?
     end
 
     def validate_auth_reload_token

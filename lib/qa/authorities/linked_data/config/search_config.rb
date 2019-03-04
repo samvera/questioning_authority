@@ -5,9 +5,12 @@
 module Qa::Authorities
   module LinkedData
     class SearchConfig
+      attr_reader :prefixes
+
       # @param [Hash] config the search portion of the config
-      def initialize(config)
+      def initialize(config, prefixes = {})
         @search_config = config
+        @prefixes = prefixes
       end
 
       attr_reader :search_config
@@ -19,26 +22,10 @@ module Qa::Authorities
         search_config.present?
       end
 
-      # Return search url encoding defined in the configuration for this authority
-      # if it was provided
-      # @return [Hash,NilClass] the configured search url
-      def url
-        search_config[:url]
-      end
-
       # Return search url template defined in the configuration for this authority.
-      # @return [String] the configured search url template
-      def url_template
-        url.fetch(:template)
-      end
-
-      # Return search url parameter mapping defined in the configuration for this authority.
-      # @return [Hash] the configured search url parameter mappings with variable name as key
-      def url_mappings
-        return @url_mappings unless @url_mappings.nil?
-        mappings = Config.config_value(url, :mapping)
-        return {} if mappings.nil?
-        Hash[*mappings.collect { |m| [m[:variable].to_sym, m] }.flatten]
+      # @return [Qa::IriTemplate::UrlConfig] the configured search url template
+      def url_config
+        @url_config ||= Qa::IriTemplate::UrlConfig.new(search_config[:url]) if supports_search?
       end
 
       # Return the preferred language for literal value selection for search query.
@@ -89,31 +76,24 @@ module Qa::Authorities
         Config.predicate_uri(results, :sort_predicate)
       end
 
+      # Does this authority configuration support additional context in search results?
+      # @return [True|False] true if additional context in search results is supported; otherwise, false
+      def supports_context?
+        return true if context_map.present?
+        false
+      end
+
+      # Return the context map if it is defined
+      # @return [Qa::LinkedData::Config::ContextMap] the context map
+      def context_map
+        return nil unless search_config.key?(:context)
+        @context_map ||= Qa::LinkedData::Config::ContextMap.new(search_config.fetch(:context), prefixes)
+      end
+
       # Return parameters that are required for QA api
       # @return [Hash] the configured search url parameter mappings
       def qa_replacement_patterns
         search_config.fetch(:qa_replacement_patterns)
-      end
-
-      # Are there replacement parameters configured for search query?
-      # @return [True|False] true if there are replacement parameters configured for search query; otherwise, false
-      def replacements?
-        replacement_count.positive?
-      end
-
-      # Return the number of possible replacement values to make in the search URL
-      # @return [Integer] the configured number of possible replacements in the search url
-      def replacement_count
-        replacements.size
-      end
-
-      # Return the replacement configurations
-      # @return [Hash] the configurations for search url replacements
-      def replacements
-        return @replacements unless @replacements.nil?
-        @replacements = {}
-        @replacements = url_mappings.select { |k, _v| !qa_replacement_patterns.include?(k) } unless search_config.nil? || url_mappings.nil?
-        @replacements
       end
 
       # Are there subauthorities configured for search query?
@@ -140,16 +120,6 @@ module Qa::Authorities
       def subauthorities
         @subauthorities ||= {} if search_config.nil? || !(search_config.key? :subauthorities)
         @subauthorities ||= search_config.fetch(:subauthorities)
-      end
-
-      # Return the replacement configurations
-      # @return [Hash] the configurations for search url replacements
-      def subauthority_replacement_pattern
-        return {} unless subauthorities?
-        @subauthority_replacement_pattern ||= {} if search_config.nil? || !subauthorities?
-        pattern = qa_replacement_patterns[:subauth]
-        default = url_mappings[pattern.to_sym][:default]
-        @subauthority_replacement_pattern ||= { pattern: pattern, default: default }
       end
     end
   end

@@ -231,6 +231,29 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
       end
     end
+
+    context 'when processing context' do
+      before do
+        Qa.config.disable_cors_headers
+        stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage')
+          .to_return(status: 200, body: webmock_fixture('lod_oclc_all_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      it "returns basic data + context when context='true'" do
+        get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', maximumRecords: '3', context: 'true' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results.size).to eq 3
+        expect(results.first.key?('context')).to be true
+      end
+
+      it "returns basic data only when context='false'" do
+        get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', maximumRecords: '3', context: 'false' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results.size).to eq 3
+        expect(results.first.key?('context')).to be false
+      end
+    end
   end
 
   describe '#show' do

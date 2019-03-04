@@ -211,4 +211,22 @@ RSpec.describe Qa::LinkedData::GraphService do
       expect(subject.map(&:to_s)).to match_array ['http://id.loc.gov/authorities/names/n79021621', 'https://viaf.org/viaf/126293486']
     end
   end
+
+  describe '.deep_copy' do
+    subject { described_class.object_values(graph: graph, subject: subject_uri, predicate: predicate_uri) }
+
+    let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
+    let(:graph) { described_class.load_graph(url: url) }
+    let(:copied_graph) { described_class.deep_copy(graph: graph) }
+
+    before do
+      stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage')
+        .to_return(status: 200, body: webmock_fixture('lod_oclc_all_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+    end
+
+    it 'returns a copy of the graph' do
+      expect(copied_graph).to be_kind_of RDF::Graph
+      expect(copied_graph.statements.count).to eq graph.statements.count
+    end
+  end
 end

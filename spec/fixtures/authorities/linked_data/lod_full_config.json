@@ -1,4 +1,8 @@
 {
+  "prefixes": {
+    "schema": "http://www.w3.org/2000/01/rdf-schema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
   "term": {
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
@@ -101,6 +105,55 @@
       "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",
       "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
       "sort_predicate":     "http://www.w3.org/2004/02/skos/core#prefLabel"
+    },
+    "context": {
+      "groups": {
+        "dates": {
+          "group_label_i18n": "qa.linked_data.authority.locnames_ld4l_cache.dates",
+          "group_label_default": "Dates"
+        },
+        "hierarchy": {
+          "group_label_i18n": "qa.linked_data.authority.locgenres_ld4l_cache.hierarchy",
+          "group_label_default": "Hierarchy"
+        }
+      },
+      "properties": [
+        {
+          "property_label_i18n": "qa.linked_data.authority.locgenres_ld4l_cache.authoritative_label",
+          "property_label_default": "Authoritative Label",
+          "ldpath": "madsrdf:authoritativeLabel",
+          "selectable": true,
+          "drillable": false
+        },
+        {
+          "group_id": "dates",
+          "property_label_i18n": "qa.linked_data.authority.locnames_ld4l_cache.birth_date",
+          "property_label_default": "Birth",
+          "ldpath": "madsrdf:identifiesRWO/madsrdf:birthDate/schema:label",
+          "selectable": false,
+          "drillable": false
+        },
+        {
+          "group_id": "hierarchy",
+          "property_label_i18n": "qa.linked_data.authority.locgenres_ld4l_cache.narrower",
+          "property_label_default": "Narrower",
+          "ldpath": "skos:narrower :: xsd:string",
+          "selectable": true,
+          "drillable": true,
+          "expansion_label_ldpath": "skos:prefLabel ::xsd:string",
+          "expansion_id_ldpath": "loc:lccn ::xsd:string"
+        },
+        {
+          "group_id": "hierarchy",
+          "property_label_i18n": "qa.linked_data.authority.locgenres_ld4l_cache.broader",
+          "property_label_default": "Broader",
+          "ldpath": "skos:broader :: xsd:string",
+          "selectable": true,
+          "drillable": true,
+          "expansion_label_ldpath": "skos:prefLabel ::xsd:string",
+          "expansion_id_ldpath": "loc:lccn ::xsd:string"
+        }
+      ]
     },
     "subauthorities": {
       "search_sub1_key": "search_sub1_name",
