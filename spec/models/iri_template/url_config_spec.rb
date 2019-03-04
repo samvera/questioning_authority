@@ -5,7 +5,7 @@ RSpec.describe Qa::IriTemplate::UrlConfig do
     {
       :"@context" => "http://www.w3.org/ns/hydra/context.jsonld",
       :"@type" => "IriTemplate",
-      template: "http://localhost/test_default/search?subauth={?subauth}&query={?query}&param1={?param1}&param2={?param2}",
+      template: "http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}",
       variableRepresentation: "BasicRepresentation",
       mapping: [
         {
@@ -60,7 +60,7 @@ RSpec.describe Qa::IriTemplate::UrlConfig do
 
     context 'when missing mapping' do
       before do
-        allow(url_template).to receive(:fetch).with(:template, nil).and_return("http://localhost/test_default/search?subauth={?subauth}&query={?query}&param1={?param1}&param2={?param2}")
+        allow(url_template).to receive(:fetch).with(:template, nil).and_return("http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}")
         allow(url_template).to receive(:fetch).with(:mapping, nil).and_return(nil)
       end
 
@@ -71,7 +71,7 @@ RSpec.describe Qa::IriTemplate::UrlConfig do
 
     context 'when no maps defined' do
       before do
-        allow(url_template).to receive(:fetch).with(:template, nil).and_return("http://localhost/test_default/search?subauth={?subauth}&query={?query}&param1={?param1}&param2={?param2}")
+        allow(url_template).to receive(:fetch).with(:template, nil).and_return("http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}")
         allow(url_template).to receive(:fetch).with(:mapping, nil).and_return([])
       end
 
@@ -85,7 +85,7 @@ RSpec.describe Qa::IriTemplate::UrlConfig do
     subject { described_class.new(url_template) }
 
     it 'returns the configured url template' do
-      expect(subject.template).to eq 'http://localhost/test_default/search?subauth={?subauth}&query={?query}&param1={?param1}&param2={?param2}'
+      expect(subject.template).to eq 'http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}'
     end
   end
 

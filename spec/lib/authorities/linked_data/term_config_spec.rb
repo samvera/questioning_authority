@@ -12,7 +12,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
         url: {
           :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
           :@type => 'IriTemplate',
-          template: 'http://localhost/test_default/term/{?subauth}/{?term_id}?param1={?param1}&param2={?param2}',
+          template: 'http://localhost/test_default/term/{subauth}/{term_id}?{?param1}&{?param2}',
           variableRepresentation: 'BasicRepresentation',
           mapping: [
             {
@@ -88,7 +88,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
       {
         :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
         :@type => 'IriTemplate',
-        template: 'http://localhost/test_default/term/{?subauth}/{?term_id}?param1={?param1}&param2={?param2}',
+        template: 'http://localhost/test_default/term/{subauth}/{term_id}?{?param1}&{?param2}',
         variableRepresentation: 'BasicRepresentation',
         mapping: [
           {

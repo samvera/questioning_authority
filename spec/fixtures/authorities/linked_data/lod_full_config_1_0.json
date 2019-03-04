@@ -1,5 +1,4 @@
 {
-  "QA_CONFIG_VERSION": "2.0",
   "prefixes": {
     "schema": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#"
@@ -8,7 +7,7 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://localhost/test_default/term/{subauth}/{term_id}?{?param1}&{?param2}",
+      "template": "http://localhost/test_default/term/{?subauth}/{?term_id}?param1={?param1}&param2={?param2}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
@@ -64,7 +63,7 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type": "IriTemplate",
-      "template": "http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}",
+      "template": "http://localhost/test_default/search?subauth={?subauth}&query={?query}&param1={?param1}&param2={?param2}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
