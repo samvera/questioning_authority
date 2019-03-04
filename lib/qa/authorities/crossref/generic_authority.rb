@@ -23,7 +23,7 @@ module Qa::Authorities
     end
 
     def build_query_url(q)
-      query = URI.escape(untaint(q))
+      query = ERB::Util.url_encode(untaint(q))
       "http://api.crossref.org/#{subauthority}?query=#{query}"
     end
 

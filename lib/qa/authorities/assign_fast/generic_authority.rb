@@ -53,7 +53,7 @@ module Qa::Authorities
       #   See oclc sample code at
       #   http://experimental.worldcat.org/fast/assignfast/js/assignFASTComplete.js
       def clean_query_string(q)
-        URI.escape(q.gsub(/-|\(|\)|:/, ""))
+        ERB::Util.url_encode(q.gsub(/-|\(|\)|:/, ""))
       end
 
       def parse_authority_response(raw_response)

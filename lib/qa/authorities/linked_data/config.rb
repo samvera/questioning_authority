@@ -1,7 +1,6 @@
 require 'qa/authorities/linked_data/config/term_config'.freeze
 require 'qa/authorities/linked_data/config/search_config'.freeze
 require 'json'
-require 'erb'
 
 # Provide attr_reader methods for linked data authority configurations.  Some default configurations are provided for several
 # linked data authorities and can be found at /config/authorities/linked_data.  You can add configurations for new authorities by
@@ -18,10 +17,6 @@ require 'erb'
 module Qa::Authorities
   module LinkedData
     class Config
-      class << self
-        include ERB::Util
-      end
-
       attr_reader :authority_name
 
       # Initialize to hold the configuration for the specifed authority.  Configurations are defined in config/authorities/linked_data.  See README for more information.

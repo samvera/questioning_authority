@@ -17,7 +17,7 @@ module Qa::Authorities
     end
 
     def build_query_url(q)
-      query = URI.escape(untaint(q))
+      query = ERB::Util.url_encode(untaint(q))
       "http://api.geonames.org/searchJSON?q=#{query}&username=#{username}&maxRows=10"
     end
 
