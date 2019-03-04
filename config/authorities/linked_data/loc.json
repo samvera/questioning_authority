@@ -1,9 +1,10 @@
 {
+  "QA_CONFIG_VERSION": "2.0",
   "term": {
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type": "IriTemplate",
-      "template": "http://id.loc.gov/authorities/{?subauth}/{?term_id}",
+      "template": "http://id.loc.gov/authorities/{subauth}/{term_id}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {

@@ -1,9 +1,10 @@
 {
+  "QA_CONFIG_VERSION": "2.0",
   "term": {
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://id.worldcat.org/fast/{?term_id}",
+      "template": "http://id.worldcat.org/fast/{term_id}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
@@ -29,7 +30,7 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type": "IriTemplate",
-      "template": "http://experimental.worldcat.org/fast/search?query={?subauth}+all+%22{?query}%22&sortKeys=usage&maximumRecords={?maximumRecords}",
+      "template": "http://experimental.worldcat.org/fast/search?query={subauth}+all+%22{query}%22&sortKeys=usage&{?maximumRecords}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
