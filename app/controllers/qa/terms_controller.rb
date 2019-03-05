@@ -34,15 +34,19 @@ class Qa::TermsController < ::ApplicationController
   end
 
   def check_vocab_param
-    head :not_found unless params[:vocab].present?
+    return if params[:vocab].present?
+    msg = "Required param 'vocab' is missing or empty"
+    logger.warn msg
+    render json: { errors: msg }, status: :bad_request
   end
 
   def init_authority # rubocop:disable Metrics/MethodLength
     begin
       mod = authority_class.camelize.constantize
     rescue NameError
-      logger.warn "Unable to initialize authority #{authority_class}"
-      head :not_found
+      msg = "Unable to initialize authority #{authority_class}"
+      logger.warn msg
+      render json: { errors: msg }, status: :bad_request
       return
     end
     begin
@@ -53,13 +57,17 @@ class Qa::TermsController < ::ApplicationController
                      mod.subauthority_for(params[:subauthority])
                    end
     rescue Qa::InvalidSubAuthority, Qa::MissingSubAuthority => e
-      logger.warn e.message
-      head :not_found
+      msg = e.message
+      logger.warn msg
+      render json: { errors: msg }, status: :bad_request
     end
   end
 
   def check_query_param
-    head :not_found unless params[:q].present?
+    return if params[:q].present?
+    msg = "Required param 'q' is missing or empty"
+    logger.warn msg
+    render json: { errors: msg }, status: :bad_request
   end
 
   private
