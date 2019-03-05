@@ -57,6 +57,11 @@ module Qa::Authorities
         response['results']['bindings'].map do |result|
           { 'id' => result['s']['value'], 'label' => result['name']['value'] + ' (' + result['bio']['value'] + ')' }
         end
+      rescue StandardError => e
+        cause = response.fetch('error', {}).fetch('cause', 'UNKNOWN')
+        cause = cause.present? ? cause : 'UNKNOWN'
+        Rails.logger.warn "  ERROR fetching Getty response: #{e.message}; cause: #{cause}"
+        {}
       end
   end
 end
