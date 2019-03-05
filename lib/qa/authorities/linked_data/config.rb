@@ -40,7 +40,7 @@ module Qa::Authorities
       end
 
       def config_version
-        @config_version ||= authority_config.fetch(:QaConfigVersion, '1.0')
+        @config_version ||= authority_config.fetch(:QA_CONFIG_VERSION, '1.0')
       end
 
       def config_version?(version)
