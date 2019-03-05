@@ -48,6 +48,7 @@ describe Qa::Authorities::AssignFast do
           .to_return(status: 200, body: "", headers: {})
       end
       it "logs an info and returns an empty array" do
+        expect(Rails.logger).to receive(:info).with('Retrieving json for url: http://fast.oclc.org/searchfast/fastsuggest?&query=word%20ling&queryIndex=suggestall&queryReturn=suggestall%2Cidroot%2Cauth%2Ctype&suggest=autoSubject&rows=20')
         msg = "Could not parse response as JSON. Request url: " \
               "http://fast.oclc.org/searchfast/fastsuggest?&query=word%20ling&queryIndex=suggestall&queryReturn=suggestall%2Cidroot%2Cauth%2Ctype&suggest=autoSubject&rows=20"
         expect(Rails.logger).to receive(:info).with(msg)

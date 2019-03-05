@@ -14,6 +14,7 @@ module Qa::Authorities
     # @param url [String]
     # @return [Hash] a parsed JSON response
     def json(url)
+      Rails.logger.info "Retrieving json for url: #{url}"
       r = response(url).body
       JSON.parse(r)
     end
