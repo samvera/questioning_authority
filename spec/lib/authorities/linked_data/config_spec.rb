@@ -395,4 +395,28 @@ describe Qa::Authorities::LinkedData::Config do
       expect(full_config.prefixes).to eq expected_results
     end
   end
+
+  describe '#config_version' do
+    context 'when version is NOT in the config file' do
+      it 'returns default as 1.0' do
+        expect(full_config_1_0.config_version).to eq '1.0'
+      end
+    end
+
+    context 'when version is specified in the config file' do
+      it 'returns the version from the config file' do
+        expect(full_config.config_version).to eq '2.0'
+      end
+    end
+  end
+
+  describe '#config_version?' do
+    it "returns true if the passed in version matches the authority's version" do
+      expect(full_config.config_version?('2.0')).to eq true
+    end
+
+    it "returns false if the passed in version does NOT match the authority's version" do
+      expect(full_config_1_0.config_version?('2.0')).to eq false
+    end
+  end
 end
