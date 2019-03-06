@@ -8,8 +8,16 @@ require 'byebug' unless ENV['TRAVIS']
 ENV["RAILS_ENV"] ||= "test"
 
 SimpleCov.formatter = Coveralls::SimpleCov::Formatter
-SimpleCov.start "rails"
-SimpleCov.command_name "spec"
+SimpleCov.start('rails') do
+  add_filter '/.internal_test_app'
+  add_filter '/lib/generators'
+  add_filter '/spec'
+  add_filter '/tasks'
+  add_filter '/lib/qa/version.rb'
+  add_filter '/lib/qa/engine.rb'
+end
+SimpleCov.command_name 'spec'
+
 EngineCart.load_application!
 Coveralls.wear!
 

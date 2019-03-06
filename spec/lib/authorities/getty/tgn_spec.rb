@@ -27,6 +27,18 @@ describe Qa::Authorities::Getty::TGN do
         expect(subject.last).to eq("id" => 'http://vocab.getty.edu/tgn/7022503', "label" => "Cawood Branch (Kentucky, United States)")
         expect(subject.size).to eq(6)
       end
+
+      context 'when Getty returns an error,' do
+        before do
+          stub_request(:get, /vocab\.getty\.edu.*/)
+            .to_return(body: webmock_fixture("getty-error-response.txt"), status: 500)
+        end
+
+        it 'logs error and returns empty results' do
+          expect(Rails.logger).to receive(:warn).with("  ERROR fetching Getty response: undefined method `[]' for nil:NilClass; cause: UNKNOWN")
+          expect(subject).to be {}
+        end
+      end
     end
   end
 
