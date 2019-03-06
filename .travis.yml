@@ -1,4 +1,8 @@
 language: ruby
+cache:
+  bundler: true
+  directories:
+    - dep_cache
 sudo: false
 rvm:
   - 2.4.5
@@ -6,10 +10,13 @@ rvm:
 env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+    - CC_TEST_REPORTER_ID=4196ab9d387c491ce378ba8eafda92d92049cddf940a371553fe685203b25125
   matrix:
-    - "RAILS_VERSION=5.0.7"
-    - "RAILS_VERSION=5.1.6"
-    - "RAILS_VERSION=5.2.2"
-
+    - RAILS_VERSION=5.0.7
+    - RAILS_VERSION=5.1.6
+    - RAILS_VERSION=5.2.2
 before_install:
   - gem update --system
+jobs:
+  include:
+    - script: "./travis/test.sh"
