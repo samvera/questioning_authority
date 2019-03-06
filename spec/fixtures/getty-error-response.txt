@@ -1,0 +1,10 @@
+{
+  "error" : {
+    "cause" : null,
+    "stackTrace" : [],
+    "message" : "/sparql.json?+%28regex%28%3Fname%2C+%22amphorae%22%2C+%22i%22%29%29%29+.+%7D+ORDER+BY+%3Fname&_equivalent=false&_form=%2Fsparql&_implicit=false&implicit=true&query=SELECT+%3Fs+%3Fname+%7B+%3Fs+a+skos%3AConcept%3B+luc%3Aterm+%22Panathenaic+amphorae%22%3B+skos%3AinScheme+%3Chttp%3A%2F%2Fvocab.getty.edu%2Faat%2F%3E+%3B+gvp%3AprefLabelGVP+%5Bskosxl%3AliteralForm+%3Fname%5D.+FILTER+%28%28regex%28%3Fname%2C+%22Panathenaic%22%2C+%22i%22%29%29+",
+    "localizedMessage" : "/sparql.json?+%28regex%28%3Fname%2C+%22amphorae%22%2C+%22i%22%29%29%29+.+%7D+ORDER+BY+%3Fname&_equivalent=false&_form=%2Fsparql&_implicit=false&implicit=true&query=SELECT+%3Fs+%3Fname+%7B+%3Fs+a+skos%3AConcept%3B+luc%3Aterm+%22Panathenaic+amphorae%22%3B+skos%3AinScheme+%3Chttp%3A%2F%2Fvocab.getty.edu%2Faat%2F%3E+%3B+gvp%3AprefLabelGVP+%5Bskosxl%3AliteralForm+%3Fname%5D.+FILTER+%28%28regex%28%3Fname%2C+%22Panathenaic%22%2C+%22i%22%29%29+",
+    "suppressed" : []
+  },
+  "stackTrace" : ""
+}
