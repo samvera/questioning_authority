@@ -1,9 +1,10 @@
 {
+  "QA_CONFIG_VERSION": "2.0",
   "term": {
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://localhost/test_replacement/term/{?term_id}?lang={?lang}",
+      "template": "http://localhost/test_replacement/term/{term_id}?{?lang}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
@@ -35,7 +36,7 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://localhost/test_replacement/search?query={?query}&lang={?lang}",
+      "template": "http://localhost/test_replacement/search?{?query}&{?lang}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {

@@ -5,7 +5,7 @@ RSpec.describe Qa::IriTemplateService do
     {
       :'@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
       :'@type' => 'IriTemplate',
-      template: 'http://localhost/test_default/search?subauth={?subauth}&query={?query}&max_records={?max_records}&language={?language}',
+      template: 'http://localhost/test_default/search?{?subauth}&{?query}&{?max_records}&{?language}',
       variableRepresentation: 'BasicRepresentation',
       mapping: [
         {

@@ -5,6 +5,7 @@ describe Qa::LinkedData::AuthorityService do
     [:LOC,
      :LOD_ENCODING_CONFIG,
      :LOD_FULL_CONFIG,
+     :LOD_FULL_CONFIG_1_0,
      :LOD_LANG_DEFAULTS,
      :LOD_LANG_MULTI_DEFAULTS,
      :LOD_LANG_NO_DEFAULTS,

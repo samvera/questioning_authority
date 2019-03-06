@@ -1,10 +1,11 @@
 {
+  "QA_CONFIG_VERSION": "2.0",
   "term": {},
   "search": {
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://localhost/test_sort/search?query={?query}",
+      "template": "http://localhost/test_sort/search?{?query}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {

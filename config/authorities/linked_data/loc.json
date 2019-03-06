@@ -1,9 +1,10 @@
 {
+  "QA_CONFIG_VERSION": "2.0",
   "term": {
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type": "IriTemplate",
-      "template": "http://id.loc.gov/authorities/{?subauth}/{?term_id}",
+      "template": "http://id.loc.gov/authorities/{subauth}/{term_id}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
@@ -31,7 +32,9 @@
       "id_predicate": "http://id.loc.gov/vocabulary/identifiers/lccn",
       "label_predicate": "http://www.w3.org/2004/02/skos/core#prefLabel",
       "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
-      "sameas_predicate": "http://www.w3.org/2004/02/skos/core#exactMatch"
+      "sameas_predicate": "http://www.w3.org/2004/02/skos/core#exactMatch",
+      "narrower_predicate": "http://www.loc.gov/mads/rdf/v1#hasNarrowerAuthority",
+      "broader_predicate": "http://www.loc.gov/mads/rdf/v1#hasBroaderAuthority"
     },
     "subauthorities": {
       "subjects": "subjects",

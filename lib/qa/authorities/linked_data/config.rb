@@ -44,11 +44,20 @@ module Qa::Authorities
         @prefixes ||= authority_config.fetch(:prefixes, {})
       end
 
+      def config_version
+        @config_version ||= authority_config.fetch(:QA_CONFIG_VERSION, '1.0')
+      end
+
+      def config_version?(version)
+        config_version == version
+      end
+
       # Return the full configuration for an authority
       # @return [String] the authority configuration
       def authority_config
         @authority_config ||= Qa::LinkedData::AuthorityService.authority_config(@authority_name)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data authority '#{@authority_name}'" if @authority_config.nil?
+        convert_1_0_to_2_0 if @authority_config.fetch(:QA_CONFIG_VERSION, '1.0') == '1.0'
         @authority_config
       end
 
@@ -63,6 +72,21 @@ module Qa::Authorities
         pred_uri = RDF::URI(pred) unless pred.nil? || pred.length <= 0
         pred_uri
       end
+
+      private
+
+        def convert_1_0_to_2_0
+          convert_1_0_url_to_2_0_url(:search)
+          convert_1_0_url_to_2_0_url(:term)
+        end
+
+        # @deprecated Update to linked data config version 2.0 instead
+        def convert_1_0_url_to_2_0_url(action_key)
+          url_template = @authority_config.fetch(action_key, {}).fetch(:url, {}).fetch(:template, "")
+          return if url_template.blank?
+          warn "[DEPRECATED] #Linked data configuration #{authority_name} has 1.0 version format which is deprecated; update to version 2.0 configuration."
+          @authority_config[action_key][:url][:template] = url_template.gsub("{?", "{")
+        end
     end
   end
 end
