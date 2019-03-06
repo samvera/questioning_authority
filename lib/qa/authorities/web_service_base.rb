@@ -19,14 +19,6 @@ module Qa::Authorities
     end
 
     ##
-    # @deprecated Use #json instead
-    def get_json(url)
-      warn '[DEPRECATED] #get_json is deprecated; use #json instead.' \
-           "Called from #{Gem.location_of_caller.join(':')}."
-      json(url)
-    end
-
-    ##
     # Make a web request and retrieve the response.
     #
     # @param url [String]
