@@ -7,7 +7,7 @@ module Qa::Authorities
     end
 
     def build_query_url(q)
-      "http://vocab.getty.edu/sparql.json?query=#{URI.escape(sparql(q))}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"
+      "http://vocab.getty.edu/sparql.json?query=#{ERB::Util.url_encode(sparql(q))}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"
     end
 
     def sparql(q) # rubocop:disable Metrics/MethodLength

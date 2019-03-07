@@ -7,7 +7,7 @@ module Qa::Authorities
     end
 
     def build_query_url(q)
-      query = URI.escape(sparql(untaint(q)))
+      query = ERB::Util.url_encode(sparql(untaint(q)))
       # Replace ampersands, otherwise the query will fail
       # Gsub hack to convert the encoded regex in the REPLACE into a form Getty understands
       "http://vocab.getty.edu/sparql.json?query=#{query.gsub('&', '%26').gsub(',[%5E,]+,[%5E,]+$', '%2C[^%2C]%2B%2C[^%2C]%2B%24')}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"

@@ -1,13 +1,10 @@
 # Provide access to iri template variable map configuration.
 # See https://www.hydra-cg.com/spec/latest/core/#templated-links for information on IRI Templated Links - Variable Mapping.
 # TODO: It would be good to find a more complete resource describing templated links.
-require 'erb'
 
 module Qa
   module IriTemplate
     class VariableMap
-      include ERB::Util
-
       TYPE = "IriTemplateMapping".freeze
       attr_reader :variable
       attr_reader :default
@@ -34,7 +31,7 @@ module Qa
         raise Qa::IriTemplate::MissingParameter, "#{variable} is required, but missing" if sub_value.blank? && required?
         return default if sub_value.blank?
         sub_value = sub_value.to_s
-        sub_value = url_encode(sub_value).gsub(".", "%2E") if encode?
+        sub_value = ERB::Util.url_encode(sub_value).gsub(".", "%2E") if encode?
         sub_value
       end
 
