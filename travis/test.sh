@@ -16,7 +16,7 @@ export PATH=$PATH:$(pwd)/dep_cache
 
 echo -e "\n\n\033[1;33mRunning RSpec test suite with code coverage\033[0m"
 cc-test-reporter before-build
-# bundle exec rake qa:travis:rspec
+bundle exec rake qa:travis:rspec
 RSPEC_EXIT_CODE=$?
 cc-test-reporter after-build --exit-code $RSPEC_EXIT_CODE
 
