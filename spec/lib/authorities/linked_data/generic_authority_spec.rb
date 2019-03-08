@@ -58,6 +58,21 @@ RSpec.describe Qa::Authorities::LinkedData::GenericAuthority do
       end
     end
 
+    context 'when id predicate is not specified' do
+      let(:min_authority) { described_class.new(:LOD_MIN_CONFIG) }
+      let :results do
+        stub_request(:get, 'http://localhost/test_default/search?query=peanuts')
+          .to_return(status: 200, body: webmock_fixture('lod_oclc_personalName_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        min_authority.search('peanuts')
+      end
+      it 'uses subject uri for id' do
+        expect(results.count).to eq(3)
+        expect(results.first).to eq(uri: 'http://id.worldcat.org/fast/409667', id: 'http://id.worldcat.org/fast/409667', label: 'Cornell, Ezra, 1807-1874')
+        expect(results.second).to eq(uri: 'http://id.worldcat.org/fast/5140', id: 'http://id.worldcat.org/fast/5140', label: 'Cornell, Joseph')
+        expect(results.third).to eq(uri: 'http://id.worldcat.org/fast/72456', id: 'http://id.worldcat.org/fast/72456', label: 'Cornell, Sarah Maria, 1802-1832')
+      end
+    end
+
     # context 'in LOC authority' do
     #   ###################################
     #   ### SEARCH NOT SUPPORTED BY LOC ###

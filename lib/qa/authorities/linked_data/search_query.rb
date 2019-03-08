@@ -68,9 +68,13 @@ module Qa::Authorities
           preds = { label: label_pred_uri }
           preds[:uri] = :subject_uri
           preds[:altlabel] = search_config.results_altlabel_predicate unless search_config.results_altlabel_predicate.nil?
-          preds[:id] = search_config.results_id_predicate unless search_config.results_id_predicate.nil?
+          preds[:id] = id_predicate.present? ? id_predicate : :subject_uri
           preds[:sort] = sort_predicate.present? ? sort_predicate : preds[:label]
           preds
+        end
+
+        def id_predicate
+          @id_predicate ||= search_config.results_id_predicate
         end
 
         def sort_predicate
@@ -86,7 +90,7 @@ module Qa::Authorities
         def convert_result_to_json(result)
           json_result = {}
           json_result[:uri] = result[:uri].first.to_s
-          json_result[:id] = result[:id].first.to_s
+          json_result[:id] = result[:id].any? ? result[:id].first.to_s : ""
           json_result[:label] = full_label(result[:label], result[:altlabel])
           json_result[:context] = result[:context] if context?
           json_result
