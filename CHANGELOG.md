@@ -1,3 +1,20 @@
+### 4.0.0 (2019-03-08)
+
+* refactor much of the structure of the linked data module
+* refactor language processing of linked data results
+* add extended context to linked data search results
+* fix processing of IriTemplate mapping expansion
+* add versioning to linked data configurations
+* deprecate linked data config version 1.0
+* update LOC and OCLCFAST linked data configs to config version 2.0
+* update URL for fetching a single term from Getty through the non-linked data module
+* catch and log Getty response errors
+* provide better error messages with json error returned instead of empty results
+* replace deprecated URI.escape with ERB::Util.url_encode
+* put mesh task in the qa namespace
+* remove older deprecated code
+* move documentation from the README to the wiki
+
 ### 3.0.0 (2018-11-19)
 
 * remove agrovoc linked data configuration
