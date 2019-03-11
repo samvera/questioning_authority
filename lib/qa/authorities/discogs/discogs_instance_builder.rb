@@ -11,13 +11,12 @@ module Qa::Authorities
         # and release information. Process the "name" field first, then the "descriptions"
         # In unusual cases, there can be multiple playing speeds. Need to distinguish among them.
         count = 1
-        if response["formats"].present?
-          response["formats"].each do |format|
-            stmts.concat(build_format_name_stmts(format["name"])) if format["name"].present?
-            # Now process playing speed, playback channel and release info
-            stmts.concat(build_format_desc_stmts(format["descriptions"], count)) if format["descriptions"].present?
-            count += 1
-          end
+        return stmts unless response["formats"].present?
+        response["formats"].each do |format|
+          stmts.concat(build_format_name_stmts(format["name"])) if format["name"].present?
+          # Now process playing speed, playback channel and release info
+          stmts.concat(build_format_desc_stmts(format["descriptions"], count)) if format["descriptions"].present?
+          count += 1
         end
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
@@ -37,13 +36,12 @@ module Qa::Authorities
         stmts = []
         # The Discogs data includes identifiers such as side label codes and rights society codes.
         count = 1
-        if response["identifiers"].present?
-          response["identifiers"].each do |activity|
-            stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/identifiedBy", "Identifier#{count}")
-            stmts << contruct_stmt_uri_object("Identifier#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Identifier")
-            stmts << contruct_stmt_literal_object("Identifier#{count}", rdfs_label_predicate, activity["value"])
-            count += 1
-          end
+        return stmts unless response["identifiers"].present?
+        response["identifiers"].each do |activity|
+          stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/identifiedBy", "Identifier#{count}")
+          stmts << contruct_stmt_uri_object("Identifier#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Identifier")
+          stmts << contruct_stmt_literal_object("Identifier#{count}", rdfs_label_predicate, activity["value"])
+          count += 1
         end
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end

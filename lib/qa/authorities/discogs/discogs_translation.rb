@@ -23,7 +23,7 @@ module Qa::Authorities
         # The necessary statements depend on the subauthority. If the subauthority is master,
         # all we need is a work and not an instance. If there's no subauthority, we can determine
         # if the discogs record is a master because it will have a main_release field.
-        if subauthority == "master" || response["main_release"].present?
+        if master_only(response, subauthority)
           complete_rdf_stmts.concat(build_master_statements(response))
         else
           # If the subauthority is not "master," we need to define an instance as well as a
@@ -34,6 +34,12 @@ module Qa::Authorities
           # Now do the statements for the instance.
           complete_rdf_stmts.concat(build_instance_statements(response))
         end
+      end
+
+      def master_only(response, subauthority)
+        return true if subauthority == "master"
+        return true if response["main_release"].present?
+        false
       end
 
       def build_master_statements(response)
@@ -61,13 +67,13 @@ module Qa::Authorities
         stmts << contruct_stmt_uri_object("Work1", "http://id.loc.gov/ontologies/bibframe/title", "Work1Title")
         stmts << contruct_stmt_literal_object("Work1Title", bf_main_title_predicate, response["title"])
         stmts << contruct_stmt_uri_object("Work1", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Audio")
-        stmts << contruct_stmt_uri_object("Work1", "http://id.loc.gov/ontologies/bibframe/hasInstance", "Instance1")
         stmts.concat(build_year_statements(response, "Work"))
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
       def get_primary_instance_definition(response)
         stmts = []
+        stmts << contruct_stmt_uri_object("Work1", "http://id.loc.gov/ontologies/bibframe/hasInstance", "Instance1")
         stmts << contruct_stmt_uri_object("Instance1", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Instance")
         stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/title", "Instance1Title")
         stmts << contruct_stmt_literal_object("Instance1Title", bf_main_title_predicate, response["title"])

@@ -112,11 +112,16 @@ module Qa::Authorities
       end
 
       def assemble_search_context(result)
-        { "Image URL" => [result["cover_image"].present? ? result['cover_image'].to_s : ""],
-          "Year" => [result["year"].present? ? result['year'].to_s : ""],
-          "Record Labels" => result["label"].present? ? result['label'] : [""],
-          "Formats" => result["format"].present? ? result['format'] : [""],
-          "Type" =>  [result["type"].present? ? result['type'].to_s : ""] }
+        { "Image URL" => set_context_item(result['cover_image'], "string"),
+          "Year" =>  set_context_item(result['year'], "string"),
+          "Record Labels" => set_context_item(result['label'], "array"),
+          "Formats" => set_context_item(result['format'], "array"),
+          "Type" => set_context_item(result['type'], "string") }
+      end
+
+      def set_context_item(item, type)
+        return [item.present? ? item.to_s : ""] if type == "string"
+        return item.present? ? item : [""] if type == "array"
       end
   end
 end
