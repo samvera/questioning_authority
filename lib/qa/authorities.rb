@@ -21,4 +21,5 @@ module Qa::Authorities
   autoload :AssignFastSubauthority
   autoload :Crossref
   autoload :LinkedData
+  autoload :Discogs
 end

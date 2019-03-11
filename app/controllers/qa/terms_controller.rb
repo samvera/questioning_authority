@@ -28,9 +28,10 @@ class Qa::TermsController < ::ApplicationController
 
   # If the subauthority supports it, return all the information for a given term
   def show
-    term = @authority.find(params[:id])
+    term = @authority.method(:find).arity == 2 ? @authority.find(params[:id], self) : @authority.find(params[:id])
     cors_allow_origin_header(response)
-    render json: term
+    content_type = params["format"] == "jsonld" ? 'application/ld+json' : 'application/json'
+    render json: term, content_type: content_type
   end
 
   def check_vocab_param
