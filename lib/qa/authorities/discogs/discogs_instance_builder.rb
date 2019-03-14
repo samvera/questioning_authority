@@ -1,9 +1,11 @@
 require 'rdf'
 module Qa::Authorities
-  class Discogs
+  module Discogs
     module DiscogsInstanceBuilder
-      include DiscogsUtils
+      include Discogs::DiscogsUtils
 
+      # @param [Hash] the http response from discogs
+      # @return [Array] rdf statements
       def get_format_stmts(response)
         stmts = []
         # The Discogs formats array contains several types of information: the "name" field defines the type of
@@ -13,14 +15,16 @@ module Qa::Authorities
         count = 1
         return stmts unless response["formats"].present?
         response["formats"].each do |format|
-          stmts.concat(build_format_name_stmts(format["name"])) if format["name"].present?
+          stmts.concat(build_format_name_stmts(format["name"]))
           # Now process playing speed, playback channel and release info
-          stmts.concat(build_format_desc_stmts(format["descriptions"], count)) if format["descriptions"].present?
+          stmts.concat(build_format_desc_stmts(format["descriptions"], count))
           count += 1
         end
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
+      # @param [Hash] the http response from discogs
+      # @return [Array] rdf statements
       def get_labels_stmts(response)
         stmts = []
         # Various roles are defined as provision activities, such as the record company (or label),
@@ -32,6 +36,8 @@ module Qa::Authorities
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
+      # @param [Hash] the http response from discogs
+      # @return [Array] rdf statements
       def get_identifiers_stmts(response)
         stmts = []
         # The Discogs data includes identifiers such as side label codes and rights society codes.
@@ -46,8 +52,12 @@ module Qa::Authorities
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
+      # @param [Array] format descriptions discogs
+      # @param [Integer] incremented on the call from get_format_stmts
+      # @return [Array] rdf statements
       def build_format_desc_stmts(descs, count)
         stmts = []
+        return stmts unless descs.present?
         descs.each do |desc|
           # map discogs description field to the corresponding LOC type
           df = discogs_formats[desc.gsub(/\s+/, "")]
@@ -57,9 +67,12 @@ module Qa::Authorities
             stmts << contruct_stmt_literal_object("Instance1", "http://id.loc.gov/ontologies/bibframe/editionStatement", desc)
           end
         end
-        stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
+        stmts
       end
 
+      # @param [Hash] discogs format descriptions "translated" to BIBFRAME terms
+      # @param [Integer] incremented on the call from build_format_desc_stmts
+      # @return [Array] rdf statements
       def build_format_characteristics(df, count)
         stmts = []
         case df["type"]
@@ -77,15 +90,18 @@ module Qa::Authorities
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
+      # map discogs name field to the corresponding LOC carrier
+      # @param [String] format name
+      # @return [Array] rdf statements
       def build_format_name_stmts(name)
         stmts = []
-        # map discogs name field to the corresponding LOC carrier
+        return stmts unless name.present?
         dc = discogs_formats[name.gsub(/\s+/, "")]
         if dc.present?
           stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/carrier", dc["uri"])
           stmts << contruct_stmt_uri_object(dc["uri"], rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Carrier")
           stmts << contruct_stmt_literal_object(dc["uri"], rdfs_label_predicate, dc["label"])
-          stmts.concat(build_base_materials(name)) if name == "Vinyl" || name == "Shellac"
+          stmts.concat(build_base_materials(name))
         else
           # if it's not a carrier, it's an edition statement
           stmts << contruct_stmt_literal_object("Instance1", "http://id.loc.gov/ontologies/bibframe/editionStatement", name)
@@ -93,8 +109,11 @@ module Qa::Authorities
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
+      # @param [String] format name
+      # @return [Array] rdf statements
       def build_base_materials(name)
         stmts = []
+        return stmts unless name == "Vinyl" || name == "Shellac"
         id = name == "Vinyl" ? "300014502" : "300014918"
 
         stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/baseMaterial", "http://vocab.getty.edu/aat/" + id)
@@ -103,6 +122,8 @@ module Qa::Authorities
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
+      # @param [Array] discogs roles "translated" into BIBFRAME provisional activities
+      # @return [Array] rdf statements
       def build_provision_activity_stmts(activities)
         stmts = []
         # need to distinguish among different provision activities and roles

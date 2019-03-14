@@ -22,4 +22,5 @@ module Qa::Authorities
   autoload :Crossref
   autoload :LinkedData
   autoload :Discogs
+  autoload :DiscogsSubauthority
 end
