@@ -2,7 +2,7 @@
 
 Code:
 [![Gem Version](https://badge.fury.io/rb/qa.png)](http://badge.fury.io/rb/qa)
-[![Build Status](https://travis-ci.org/samvera/questioning_authority.png?branch=master)](https://travis-ci.org/samvera/questioning_authority)
+[![Build Status](https://circleci.com/gh/samvera/questioning_authority.svg?style=svg)](https://circleci.com/gh/samvera/questioning_authority)
 [![Coverage Status](https://coveralls.io/repos/github/samvera/questioning_authority/badge.svg?branch=master)](https://coveralls.io/github/samvera/questioning_authority?branch=master)
 
 Docs:
