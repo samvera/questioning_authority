@@ -1,0 +1,54 @@
+version: 2.1
+orbs:
+  samvera: samvera/circleci-orb@0
+jobs:
+  bundle_and_test:
+    parameters:
+      ruby_version:
+        type: string
+        default: 2.5.5
+      bundler_version:
+        type: string
+        default: 1.17.3
+      rails_version:
+        type: string
+        default: '5.2.2'
+    executor:
+      name: 'samvera/ruby'
+      ruby_version: << parameters.ruby_version >>
+    working_directory: ~/project
+    environment:
+      ENGINE_CART_RAILS_OPTIONS: --skip-git --skip-bundle --skip-listen --skip-spring --skip-yarn --skip-keeps --skip-coffee --skip-puma --skip-test
+      RAILS_VERSION: << parameters.rails_version >>
+    steps:
+      - samvera/cached_checkout
+
+      - samvera/bundle_for_gem:
+          ruby_version: << parameters.ruby_version >>
+          bundler_version: << parameters.bundler_version >>
+          project: qa
+
+      - samvera/engine_cart_generate:
+          cache_key: v1-internal-test-app-{{ checksum "qa.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "lib/generators/qa/install/install_generator.rb" }}-<< parameters.rails_version >>
+
+      - samvera/bundle_for_gem:
+          ruby_version: << parameters.ruby_version >>
+          bundler_version: << parameters.bundler_version >>
+          project: qa
+
+      - samvera/rubocop
+
+      - samvera/parallel_rspec
+
+workflows:
+  ci:
+    jobs:
+      - bundle_and_test:
+          name: "ruby2-5-5"
+          ruby_version: "2.5.5"
+      - bundle_and_test:
+          name: "ruby2-4-5"
+          ruby_version: "2.4.5"
+      - bundle_and_test:
+          name: "ruby2-6-2"
+          ruby_version: "2.6.2"
