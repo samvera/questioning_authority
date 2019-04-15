@@ -29,6 +29,7 @@ module Qa::Authorities
       end
 
       # Return the preferred language for literal value selection for search query.
+      # This is the default used for this authority if the user does not pass in a language.
       # Only applies if the authority provides language encoded literals.
       # @return [String] the configured language for search query
       def language
@@ -90,10 +91,20 @@ module Qa::Authorities
         @context_map ||= Qa::LinkedData::Config::ContextMap.new(search_config.fetch(:context), prefixes)
       end
 
-      # Return parameters that are required for QA api
+      # Return parameters that are supported directly by QA api (e.g. q, subauth, lang)
       # @return [Hash] the configured search url parameter mappings
       def qa_replacement_patterns
-        search_config.fetch(:qa_replacement_patterns)
+        search_config.fetch(:qa_replacement_patterns, {})
+      end
+
+      # @return [Boolean] true if supports language parameter; otherwise, false
+      def supports_subauthorities?
+        qa_replacement_patterns.key?(:subauth) && subauthorities?
+      end
+
+      # @return [Boolean] true if supports language parameter; otherwise, false
+      def supports_language_parameter?
+        qa_replacement_patterns.key? :lang
       end
 
       # Are there subauthorities configured for search query?

@@ -41,6 +41,8 @@ module Qa::Authorities
       end
 
       # Return the preferred language for literal value selection for term fetch.  Only applies if the authority provides language encoded literals.
+      # This is the default used for this authority if the user does not pass in a language.
+      # Only applies if the authority provides language encoded literals.
       # @return [Symbol] the configured language for term fetch (default - :en)
       def term_language
         return @term_language unless @term_language.nil?
@@ -95,15 +97,26 @@ module Qa::Authorities
       # Return parameters that are required for QA api
       # @return [Hash] the configured term url parameter mappings
       def term_qa_replacement_patterns
-        Config.config_value(term_config, :qa_replacement_patterns)
+        term_config.fetch(:qa_replacement_patterns, {})
       end
       alias qa_replacement_patterns term_qa_replacement_patterns
+
+      # @return [Boolean] true if supports language parameter; otherwise, false
+      def supports_subauthorities?
+        qa_replacement_patterns.key?(:subauth) && subauthorities?
+      end
+
+      # @return [Boolean] true if supports language parameter; otherwise, false
+      def supports_language_parameter?
+        qa_replacement_patterns.key? :lang
+      end
 
       # Are there subauthorities configured for term fetch?
       # @return [True|False] true if there are subauthorities configured term fetch; otherwise, false
       def term_subauthorities?
         term_subauthority_count.positive?
       end
+      alias subauthorities? term_subauthorities?
 
       # Is a specific subauthority configured for term fetch?
       # @return [True|False] true if the specified subauthority is configured for term fetch; otherwise, false

@@ -1,0 +1,42 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:coord="http://whatever/java/ORG.oclc.util.CoordToDecimal" xmlns:naco="http://whatever/java/ORG.oclc.util.NacoNormalize" xmlns:norm="http://whatever/java/ORG.oclc.util.NormalFormC" xmlns:schema="http://schema.org/" xmlns:madsrdf="http://www.loc.gov/mads/rdf/v1#" xmlns:skosxl="http://www.w3.org/2008/05/skos-xl#" xmlns:dct="http://purl.org/dc/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:void="http://rdfs.org/ns/void#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:mx="http://www.loc.gov/MARC21/slim" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://id.worldcat.org/fast/">
+  <rdf:Description rdf:about="530369">
+    <dct:identifier>530369</dct:identifier>
+    <skos:prefLabel xml:lang="en">kärnmjölk</skos:prefLabel>
+    <skos:altLabel xml:lang="en">smaskigt</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="fst00530369">
+    <rdfs:comment>This identifier is deprecated. See the rdfs:seeAlso link for the new identifier.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="530369"/>
+  </rdf:Description>
+  <foaf:Document rdf:about="530369/rdf.xml">
+    <foaf:primaryTopic rdf:resource="530369"/>
+    <dc:format>application/rdf+xml</dc:format>
+    <dct:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2005-05-13T00:00:00.0</dct:created>
+    <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-07-06T14:07:21.0</dct:modified>
+    <dct:language rdf:resource="http://lexvo.org/id/iso639-3/eng"/>
+  </foaf:Document>
+  <rdf:Description rdf:about="5140">
+    <dct:identifier>5140</dct:identifier>
+    <skos:prefLabel xml:lang="en">mjölkpulver</skos:prefLabel>
+    <skos:altLabel xml:lang="en">pulver-</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="fst00005140">
+    <rdfs:comment>This identifier is deprecated. See the rdfs:seeAlso link for the new identifier.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="5140"/>
+  </rdf:Description>
+  <foaf:Document rdf:about="5140/rdf.xml">
+    <foaf:primaryTopic rdf:resource="5140"/>
+    <dc:format>application/rdf+xml</dc:format>
+    <dct:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2004-09-24T00:00:00.0</dct:created>
+    <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2012-07-06T14:07:21.0</dct:modified>
+  </foaf:Document>
+  <rdf:Description rdf:about="557490">
+    <dct:identifier>557490</dct:identifier>
+    <skos:prefLabel xml:lang="en">kondenserad mjölk</skos:prefLabel>
+    <skos:altLabel xml:lang="en">krämig</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="fst00557490">
+    <rdfs:comment>This identifier is deprecated. See the rdfs:seeAlso link for the new identifier.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="557490"/>
+  </rdf:Description>
+</rdf:RDF>

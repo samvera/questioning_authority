@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'qa/authorities/linked_data/config/term_config'
 
 describe Qa::Authorities::LinkedData::TermConfig do
   let(:full_config) { Qa::Authorities::LinkedData::Config.new(:LOD_FULL_CONFIG).term }
@@ -12,7 +13,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
         url: {
           :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
           :@type => 'IriTemplate',
-          template: 'http://localhost/test_default/term/{subauth}/{term_id}?{?param1}&{?param2}',
+          template: 'http://localhost/test_default/term/{subauth}/{term_id}?{?param1}&{?param2}&{?lang}',
           variableRepresentation: 'BasicRepresentation',
           mapping: [
             {
@@ -41,15 +42,23 @@ describe Qa::Authorities::LinkedData::TermConfig do
               property: 'hydra:freetextQuery',
               required: false,
               default: 'beta'
+            },
+            {
+              :@type => 'IriTemplateMapping',
+              variable: 'lang',
+              property: 'hydra:freetextQuery',
+              required: false,
+              default: 'de'
             }
           ]
         },
         qa_replacement_patterns: {
           term_id: 'term_id',
-          subauth: 'subauth'
+          subauth: 'subauth',
+          lang: 'lang'
         },
         term_id: 'ID',
-        language: ['en'],
+        language: ['es'],
         results: {
           id_predicate: 'http://purl.org/dc/terms/identifier',
           label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
@@ -88,7 +97,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
       {
         :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
         :@type => 'IriTemplate',
-        template: 'http://localhost/test_default/term/{subauth}/{term_id}?{?param1}&{?param2}',
+        template: 'http://localhost/test_default/term/{subauth}/{term_id}?{?param1}&{?param2}&{?lang}',
         variableRepresentation: 'BasicRepresentation',
         mapping: [
           {
@@ -117,6 +126,13 @@ describe Qa::Authorities::LinkedData::TermConfig do
             property: 'hydra:freetextQuery',
             required: false,
             default: 'beta'
+          },
+          {
+            :@type => 'IriTemplateMapping',
+            variable: 'lang',
+            property: 'hydra:freetextQuery',
+            required: false,
+            default: 'de'
           }
         ]
       }
@@ -156,7 +172,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
       expect(min_config.term_language).to eq nil
     end
     it 'returns the preferred language for selecting literal values if configured for term' do
-      expect(full_config.term_language).to eq [:en]
+      expect(full_config.term_language).to eq [:es]
     end
   end
 
@@ -242,6 +258,30 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
     it 'returns the predicate that holds any sameas terms in term results' do
       expect(full_config.term_results_sameas_predicate).to eq RDF::URI('http://www.w3.org/2004/02/skos/core#exactMatch')
+    end
+  end
+
+  describe '#supports_language_parameter?' do
+    it 'returns false if only search configuration is defined' do
+      expect(search_only_config.supports_language_parameter?).to eq false
+    end
+    it 'returns false if the configuration does NOT define the lang replacement' do
+      expect(min_config.supports_language_parameter?).to eq false
+    end
+    it 'returns true if the configuration defines the lang replacement' do
+      expect(full_config.supports_language_parameter?).to eq true
+    end
+  end
+
+  describe '#supports_subauthorities?' do
+    it 'returns false if only search configuration is defined' do
+      expect(search_only_config.supports_subauthorities?).to eq false
+    end
+    it 'returns false if the configuration does NOT define the subauth replacement' do
+      expect(min_config.supports_subauthorities?).to eq false
+    end
+    it 'returns true if the configuration defines the subauth replacement' do
+      expect(full_config.supports_subauthorities?).to eq true
     end
   end
 
