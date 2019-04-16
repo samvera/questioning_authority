@@ -58,7 +58,7 @@ module Qa
           end
 
           def language_value(language)
-            return nil if language.blank? || !language.is_a?(Array)
+            return nil if language.blank?
             language.first
           end
       end
