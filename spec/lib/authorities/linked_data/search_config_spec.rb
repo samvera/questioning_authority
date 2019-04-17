@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'qa/authorities/linked_data/config/search_config'
 
 RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
   let(:full_config) { Qa::Authorities::LinkedData::Config.new(:LOD_FULL_CONFIG).search }
@@ -12,7 +13,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
         url: {
           :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
           :@type => 'IriTemplate',
-          template: 'http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}',
+          template: 'http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}&{?lang}',
           variableRepresentation: 'BasicRepresentation',
           mapping: [
             {
@@ -41,12 +42,20 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
               property: 'hydra:freetextQuery',
               required: false,
               default: 'echo'
+            },
+            {
+              :@type => 'IriTemplateMapping',
+              variable: 'lang',
+              property: 'hydra:freetextQuery',
+              required: false,
+              default: 'fr'
             }
           ]
         },
         qa_replacement_patterns: {
           query: 'query',
-          subauth: 'subauth'
+          subauth: 'subauth',
+          lang: 'lang'
         },
         language: ['en', 'fr', 'de'],
         results: {
@@ -243,6 +252,30 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
     end
     it 'returns the context map if defined in the configuration' do
       expect(full_config.context_map).to be_kind_of Qa::LinkedData::Config::ContextMap
+    end
+  end
+
+  describe '#supports_language_parameter?' do
+    it 'returns false if only term configuration is defined' do
+      expect(term_only_config.supports_language_parameter?).to eq false
+    end
+    it 'returns false if the configuration does NOT define the lang replacement' do
+      expect(min_config.supports_language_parameter?).to eq false
+    end
+    it 'returns true if the configuration defines the lang replacement' do
+      expect(full_config.supports_language_parameter?).to eq true
+    end
+  end
+
+  describe '#supports_subauthorities?' do
+    it 'returns false if only term configuration is defined' do
+      expect(term_only_config.supports_subauthorities?).to eq false
+    end
+    it 'returns false if the configuration does NOT define the subauth replacement' do
+      expect(min_config.supports_subauthorities?).to eq false
+    end
+    it 'returns true if the configuration defines the subauth replacement' do
+      expect(full_config.supports_subauthorities?).to eq true
     end
   end
 

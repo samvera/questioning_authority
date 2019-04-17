@@ -180,7 +180,9 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     end
 
     def language
-      params[:lang]
+      request_language = request.env['HTTP_ACCEPT_LANGUAGE']
+      request_language = request_language.scan(/^[a-z]{2}/).first if request_language.present?
+      params[:lang] || request_language
     end
 
     def subauthority
@@ -188,7 +190,7 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     end
 
     def replacement_params
-      params.reject { |k, _v| ['q', 'vocab', 'controller', 'action', 'subauthority', 'language', 'id'].include?(k) }
+      params.reject { |k, _v| ['q', 'vocab', 'controller', 'action', 'subauthority', 'lang', 'id'].include?(k) }
     end
 
     def subauth_warn_msg

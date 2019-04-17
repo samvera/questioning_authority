@@ -8,33 +8,74 @@ RSpec.describe Qa::LinkedData::LanguageService do
     let(:authority_language) { nil }
 
     context 'when neither user nor authority language are passed in' do
-      it 'returns default language from Qa configuration' do
-        expect(subject).to match_array [:en]
+      context 'and site wide default language is set' do
+        before do
+          allow(Qa.config).to receive(:default_language).and_return(:en)
+        end
+        it 'returns default language from Qa configuration' do
+          expect(subject).to match_array [:en]
+        end
+      end
+
+      context 'and site wide default language is WILDCARD' do
+        before do
+          allow(Qa.config).to receive(:default_language).and_return(Qa::LinkedData::LanguageService::WILDCARD)
+        end
+        it 'returns default language from Qa configuration' do
+          expect(subject).to eq nil
+        end
+      end
+
+      context 'and site wide default language is not specified' do
+        before do
+          allow(Qa.config).to receive(:default_language).and_return(nil)
+        end
+        it 'returns default language from Qa configuration' do
+          expect(subject).to eq nil
+        end
       end
     end
 
     context 'when authority language is passed in and user language is NOT passed in' do
-      let(:authority_language) { :fr }
+      context 'and site wide default language is set' do
+        let(:authority_language) { :fr }
 
-      it 'returns authority language' do
-        expect(subject).to match_array [:fr]
+        it 'returns authority language' do
+          expect(subject).to match_array [:fr]
+        end
+      end
+
+      context 'and authority default language is WILDCARD' do
+        let(:authority_language) { '*' }
+
+        it 'returns default language from Qa configuration' do
+          expect(subject).to eq nil
+        end
       end
     end
 
     context 'when user and authority language are passed in' do
-      let(:user_language) { :de }
       let(:authority_language) { :fr }
+      let(:user_language) { :de }
 
       it 'returns user language' do
         expect(subject).to match_array [:de]
       end
-    end
 
-    context 'when multiple languages' do
-      let(:user_language) { [:de, :fr] }
+      context 'and there are multiple user languages' do
+        let(:user_language) { [:de, :fr] }
 
-      it 'returns multiple languages' do
-        expect(subject).to match_array [:de, :fr]
+        it 'returns multiple languages' do
+          expect(subject).to match_array [:de, :fr]
+        end
+      end
+
+      context 'and user language is wildcard' do
+        let(:user_language) { '*' }
+
+        it 'returns user language' do
+          expect(subject).to eq nil
+        end
       end
     end
   end

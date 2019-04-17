@@ -34,7 +34,7 @@ describe Qa::Authorities::LinkedData::Config do
           url: {
             :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
             :@type => 'IriTemplate',
-            template: 'http://localhost/test_default/term/{subauth}/{term_id}?{?param1}&{?param2}',
+            template: 'http://localhost/test_default/term/{subauth}/{term_id}?{?param1}&{?param2}&{?lang}',
             variableRepresentation: 'BasicRepresentation',
             mapping: [
               {
@@ -63,15 +63,23 @@ describe Qa::Authorities::LinkedData::Config do
                 property: 'hydra:freetextQuery',
                 required: false,
                 default: 'beta'
+              },
+              {
+                :@type => 'IriTemplateMapping',
+                variable: 'lang',
+                property: 'hydra:freetextQuery',
+                required: false,
+                default: 'de'
               }
             ]
           },
           qa_replacement_patterns: {
             term_id: 'term_id',
-            subauth: 'subauth'
+            subauth: 'subauth',
+            lang: 'lang'
           },
           term_id: 'ID',
-          language: ['en'],
+          language: ['es'],
           results: {
             id_predicate: 'http://purl.org/dc/terms/identifier',
             label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
@@ -90,7 +98,7 @@ describe Qa::Authorities::LinkedData::Config do
           url: {
             :@context => 'http://www.w3.org/ns/hydra/context.jsonld',
             :@type => 'IriTemplate',
-            template: 'http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}',
+            template: 'http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}&{?lang}',
             variableRepresentation: 'BasicRepresentation',
             mapping: [
               {
@@ -119,12 +127,20 @@ describe Qa::Authorities::LinkedData::Config do
                 property: 'hydra:freetextQuery',
                 required: false,
                 default: 'echo'
+              },
+              {
+                :@type => 'IriTemplateMapping',
+                variable: 'lang',
+                property: 'hydra:freetextQuery',
+                required: false,
+                default: 'fr'
               }
             ]
           },
           qa_replacement_patterns: {
             query: 'query',
-            subauth: 'subauth'
+            subauth: 'subauth',
+            lang: 'lang'
           },
           language: ['en', 'fr', 'de'],
           results: {

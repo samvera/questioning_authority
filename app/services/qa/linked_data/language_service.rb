@@ -2,6 +2,8 @@
 module Qa
   module LinkedData
     class LanguageService
+      WILDCARD = '*'.freeze
+
       class << self
         def preferred_language(user_language: nil, authority_language: nil)
           return normalize_language(user_language) if user_language.present?
@@ -22,6 +24,7 @@ module Qa
           def normalize_language(language)
             return language if language.blank?
             language = [language] unless language.is_a? Array
+            return nil if language.include?(WILDCARD)
             language.map(&:to_sym)
           end
       end
