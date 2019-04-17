@@ -37,5 +37,13 @@ module Qa
     def default_language
       @default_language ||= :en
     end
+
+    # When true, prevents ldpath requests from making additional network calls.  All values will come from the context graph
+    # passed to the ldpath request.
+    attr_writer :limit_ldpath_to_context
+    def limit_ldpath_to_context?
+      return true if @limit_ldpath_to_context.nil?
+      @limit_ldpath_to_context
+    end
   end
 end

@@ -209,34 +209,6 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
     it 'returns the values selected from the graph' do
       expect(subject.values(graph, subject_uri)).to match_array coordinates
     end
-
-    context 'when ldpath_program gets parse error' do
-      let(:ldpath) { property_map[:ldpath] }
-      let(:cause) { "undefined method `ascii_tree' for nil:NilClass" }
-      let(:warning) { I18n.t('qa.linked_data.ldpath.parse_logger_error') }
-      let(:log_message) { "WARNING: #{warning} (ldpath='#{ldpath}')\n    cause: #{cause}" }
-
-      before { allow(Ldpath::Program).to receive(:parse).with(anything).and_raise(cause) }
-
-      it 'logs error and returns PARSE ERROR as the value' do
-        expect(Rails.logger).to receive(:warn).with(log_message)
-        expect { subject.values(graph, subject_uri) }.to raise_error StandardError, I18n.t('qa.linked_data.ldpath.parse_error')
-      end
-    end
-
-    context 'when ldpath_evaluate gets parse error' do
-      let(:ldpath) { property_map[:ldpath] }
-      let(:cause) { "unknown cause" }
-      let(:warning) { I18n.t('qa.linked_data.ldpath.evaluate_logger_error') }
-      let(:log_message) { "WARNING: #{warning} (ldpath='#{ldpath}')\n    cause: #{cause}" }
-
-      before { allow(program).to receive(:evaluate).with(subject_uri, graph).and_raise(cause) }
-
-      it 'logs error and returns PARSE ERROR as the value' do
-        expect(Rails.logger).to receive(:warn).with(log_message)
-        expect { subject.values(graph, subject_uri) }.to raise_error StandardError, I18n.t('qa.linked_data.ldpath.evaluate_error')
-      end
-    end
   end
 
   describe '#expand_uri?' do
@@ -271,9 +243,9 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
       allow(Ldpath::Program).to receive(:parse).with('property = madsrdf:identifiesRWO/madsrdf:birthDate/schema:label ;').and_return(basic_program)
       allow(Ldpath::Program).to receive(:parse).with('property = skos:prefLabel ::xsd:string ;').and_return(expanded_label_program)
       allow(Ldpath::Program).to receive(:parse).with('property = loc:lccn ::xsd:string ;').and_return(expanded_id_program)
-      allow(basic_program).to receive(:evaluate).with(subject_uri, graph).and_return('property' => [expanded_uri])
-      allow(expanded_label_program).to receive(:evaluate).with(RDF::URI.new(subject_uri), graph).and_return('property' => [expanded_label])
-      allow(expanded_id_program).to receive(:evaluate).with(RDF::URI.new(subject_uri), graph).and_return('property' => [expanded_id])
+      allow(basic_program).to receive(:evaluate).with(subject_uri, context: graph, limit_to_context: true).and_return('property' => [expanded_uri])
+      allow(expanded_label_program).to receive(:evaluate).with(RDF::URI.new(subject_uri), context: graph, limit_to_context: true).and_return('property' => [expanded_label])
+      allow(expanded_id_program).to receive(:evaluate).with(RDF::URI.new(subject_uri), context: graph, limit_to_context: true).and_return('property' => [expanded_id])
     end
     it 'returns the uri, id, label for the expanded uri value' do
       expanded_values = subject.expanded_values(graph, subject_uri).first
