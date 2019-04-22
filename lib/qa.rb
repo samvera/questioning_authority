@@ -24,6 +24,12 @@ module Qa
     @config
   end
 
+  def self.deprecation_warning(in_msg: nil, msg:)
+    return if Rails.env == 'test'
+    in_msg = in_msg.present? ? "In #{in_msg}, " : ''
+    warn "[DEPRECATED] #{in_msg}#{msg}  It will be removed in the next major release."
+  end
+
   # Raised when the configuration directory for local authorities doesn't exist
   class ConfigDirectoryNotFound < StandardError; end
 

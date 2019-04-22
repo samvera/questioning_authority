@@ -68,4 +68,22 @@ RSpec.describe Qa::Configuration do
       end
     end
   end
+
+  describe '#limit_ldpath_to_context' do
+    context 'when NOT configured' do
+      it 'returns true' do
+        expect(subject.limit_ldpath_to_context?).to be true
+      end
+    end
+
+    context 'when configured' do
+      before do
+        subject.limit_ldpath_to_context = false
+      end
+
+      it 'returns the configured value' do
+        expect(subject.limit_ldpath_to_context?).to be false
+      end
+    end
+  end
 end

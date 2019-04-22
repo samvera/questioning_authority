@@ -1,0 +1,10 @@
+Description:
+  This generator adds three discogs config files for that authority.
+
+Example:
+  rails generate qa:discogs
+
+  This will create:
+    config/discogs-formats.yml
+    config/discogs-genres.yml
+

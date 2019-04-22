@@ -67,7 +67,7 @@ module Qa
         # Values of this property for a specfic subject URI
         # @return [Array<String>] values for this property
         def values(graph, subject_uri)
-          ldpath_evaluate(basic_program, graph, subject_uri)
+          Qa::LinkedData::LdpathService.ldpath_evaluate(program: basic_program, graph: graph, subject_uri: subject_uri)
         end
 
         # Values of this property for a specfic subject URI with URI values expanded to include id and label.
@@ -98,44 +98,25 @@ module Qa
           end
 
           def basic_program
-            @basic_program ||= ldpath_program(ldpath)
+            @basic_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: ldpath, prefixes: prefixes)
           end
 
           def expansion_label_program
-            @expansion_label_program ||= ldpath_program(expansion_label_ldpath)
+            @expansion_label_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: expansion_label_ldpath, prefixes: prefixes)
           end
 
           def expansion_id_program
-            @expansion_id_program ||= ldpath_program(expansion_id_ldpath)
-          end
-
-          def ldpath_program(ldpath)
-            program_code = ""
-            prefixes.each { |key, url| program_code << "@prefix #{key} : <#{url}> \;\n" }
-            program_code << "property = #{ldpath} \;"
-            Ldpath::Program.parse program_code
-          rescue => e
-            Rails.logger.warn("WARNING: #{I18n.t('qa.linked_data.ldpath.parse_logger_error')} (ldpath='#{ldpath}')\n    cause: #{e.message}")
-            raise StandardError, I18n.t('qa.linked_data.ldpath.parse_error')
-          end
-
-          def ldpath_evaluate(program, graph, subject_uri)
-            return VALUE_ON_ERROR if program.blank?
-            output = program.evaluate subject_uri, graph
-            output.present? ? output['property'].uniq : nil
-          rescue => e
-            Rails.logger.warn("WARNING: #{I18n.t('qa.linked_data.ldpath.evaluate_logger_error')} (ldpath='#{ldpath}')\n    cause: #{e.message}")
-            raise StandardError, I18n.t('qa.linked_data.ldpath.evaluate_error')
+            @expansion_id_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: expansion_id_ldpath, prefixes: prefixes)
           end
 
           def expansion_label(graph, uri)
-            label = ldpath_evaluate(expansion_label_program, graph, RDF::URI(uri))
+            label = Qa::LinkedData::LdpathService.ldpath_evaluate(program: expansion_label_program, graph: graph, subject_uri: RDF::URI(uri))
             label.size == 1 ? label.first : label
           end
 
           def expansion_id(graph, uri)
             return uri if expansion_id_ldpath.blank?
-            id = ldpath_evaluate(expansion_id_program, graph, RDF::URI(uri))
+            id = Qa::LinkedData::LdpathService.ldpath_evaluate(program: expansion_id_program, graph: graph, subject_uri: RDF::URI(uri))
             id.size == 1 ? id.first : id
           end
       end
