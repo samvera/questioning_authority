@@ -46,16 +46,34 @@ module Qa::Authorities
         search_config[:results]
       end
 
+      # Return results id_ldpath
+      # @return [String] the configured predicate to use to extract the id from the results
+      def results_id_ldpath
+        Config.config_value(results, :id_ldpath)
+      end
+
       # Return results id_predicate
       # @return [String] the configured predicate to use to extract the id from the results
       def results_id_predicate
         Config.predicate_uri(results, :id_predicate)
       end
 
+      # Return results label_ldpath
+      # @return [String] the configured predicate to use to extract label values from the results
+      def results_label_ldpath
+        Config.config_value(results, :label_ldpath)
+      end
+
       # Return results label_predicate
       # @return [String] the configured predicate to use to extract label values from the results
       def results_label_predicate
         Config.predicate_uri(results, :label_predicate)
+      end
+
+      # Return results altlabel_ldpath
+      # @return [String] the configured predicate to use to extract altlabel values from the results
+      def results_altlabel_ldpath
+        Config.config_value(results, :altlabel_ldpath)
       end
 
       # Return results altlabel_predicate
@@ -69,6 +87,12 @@ module Qa::Authorities
       def supports_sort?
         return true unless results_sort_predicate.nil? || !results_sort_predicate.size.positive?
         false
+      end
+
+      # Return results sort_predicate
+      # @return [String] the configured predicate to use for sorting results from the query search
+      def results_sort_ldpath
+        Config.config_value(results, :sort_ldpath)
       end
 
       # Return results sort_predicate

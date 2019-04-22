@@ -5,6 +5,8 @@
 module Qa::Authorities
   module LinkedData
     class TermConfig
+      attr_reader :prefixes
+
       # @param [Hash] config the term portion of the config
       def initialize(config, prefixes = {})
         @term_config = config
@@ -58,10 +60,22 @@ module Qa::Authorities
         Config.config_value(term_config, :results)
       end
 
+      # Return results id_ldpath
+      # @return [String] the configured predicate to use to extract the id from the results
+      def term_results_id_ldpath
+        Config.config_value(term_results, :id_ldpath)
+      end
+
       # Return results id_predicate
       # @return [String] the configured predicate to use to extract the id from the results
       def term_results_id_predicate
         Config.predicate_uri(term_results, :id_predicate)
+      end
+
+      # Return results label_ldpath
+      # @return [String] the configured predicate to use to extract label values from the results
+      def term_results_label_ldpath
+        Config.config_value(term_results, :label_ldpath)
       end
 
       # Return results label_predicate
@@ -70,10 +84,22 @@ module Qa::Authorities
         Config.predicate_uri(term_results, :label_predicate)
       end
 
+      # Return results altlabel_ldpath
+      # @return [String] the configured predicate to use to extract altlabel values from the results
+      def term_results_altlabel_ldpath
+        Config.config_value(term_results, :altlabel_ldpath)
+      end
+
       # Return results altlabel_predicate
       # @return [String] the configured predicate to use to extract altlabel values from the results
       def term_results_altlabel_predicate
         Config.predicate_uri(term_results, :altlabel_predicate)
+      end
+
+      # Return results broader_ldpath
+      # @return [String] the configured predicate to use to extract URIs for broader terms from the results
+      def term_results_broader_ldpath
+        Config.config_value(term_results, :broader_ldpath)
       end
 
       # Return results broader_predicate
@@ -82,10 +108,22 @@ module Qa::Authorities
         Config.predicate_uri(term_results, :broader_predicate)
       end
 
+      # Return results narrower_ldpath
+      # @return [String] the configured predicate to use to extract URIs for narrower terms from the results
+      def term_results_narrower_ldpath
+        Config.config_value(term_results, :narrower_ldpath)
+      end
+
       # Return results narrower_predicate
       # @return [String] the configured predicate to use to extract URIs for narrower terms from the results
       def term_results_narrower_predicate
         Config.predicate_uri(term_results, :narrower_predicate)
+      end
+
+      # Return results sameas_ldpath
+      # @return [String] the configured predicate to use to extract URIs for sameas terms from the results
+      def term_results_sameas_ldpath
+        Config.config_value(term_results, :sameas_ldpath)
       end
 
       # Return results sameas_predicate
