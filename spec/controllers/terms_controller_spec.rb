@@ -52,6 +52,10 @@ describe Qa::TermsController, type: :controller do
         get :search, params: { q: "a query", vocab: "oclcts" }
         expect(response.code).to eq("400")
       end
+      it "returns 400 for discogs" do
+        get :search, params: { q: "a query", vocab: "discogs" }
+        expect(response.code).to eq("400")
+      end
     end
   end
 

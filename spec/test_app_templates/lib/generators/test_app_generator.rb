@@ -22,6 +22,10 @@ class TestAppGenerator < Rails::Generators::Base
     directory "../spec/fixtures/authorities", "config/authorities"
   end
 
+  def run_discogs_installer
+    generate "qa:discogs"
+  end
+
   def run_migrations
     rake "qa:install:migrations"
     rake "db:migrate"
