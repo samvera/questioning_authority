@@ -28,7 +28,7 @@ module Qa::Authorities
       end
 
       def search
-        @search ||= Qa::Authorities::LinkedData::SearchConfig.new(authority_config.fetch(:search), prefixes)
+        @search ||= Qa::Authorities::LinkedData::SearchConfig.new(authority_config.fetch(:search), prefixes, self)
       end
 
       def term

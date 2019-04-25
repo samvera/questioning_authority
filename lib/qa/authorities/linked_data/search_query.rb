@@ -18,7 +18,7 @@ module Qa::Authorities
       attr_reader :search_config, :graph, :language
       private :graph, :language
 
-      delegate :subauthority?, :supports_sort?, to: :search_config
+      delegate :subauthority?, :supports_sort?, :prefixes, :authority_name, to: :search_config
 
       # Search a linked data authority
       # @praram [String] the query
@@ -49,7 +49,21 @@ module Qa::Authorities
         end
 
         def parse_search_authority_response
-          results = results_mapper_service.map_values(graph: @graph, predicate_map: preds_for_search, sort_key: :sort,
+          predicate_map = preds_for_search
+          ldpath_map = ldpaths_for_search
+
+          raise Qa::InvalidConfiguration, "do not specify results using both predicates and ldpath in search configuration for LOD authority #{authority_name} (ldpath is preferred)" if predicate_map.present? && ldpath_map.present? # rubocop:disable Metrics/LineLength
+          raise Qa::InvalidConfiguration, "must specify label_ldpath or label_predicate in search configuration for LOD authority #{authority_name} (label_ldpath is preferred)" unless ldpath_map.key?(:label) || predicate_map.key?(:label) # rubocop:disable Metrics/LineLength
+
+          if predicate_map.present?
+            Qa.deprecation_warning(
+              in_msg: 'Qa::Authorities::LinkedData::SearchQuery',
+              msg: 'defining results using predicates in search config is deprecated; update to define using ldpaths'
+            )
+          end
+
+          results = results_mapper_service.map_values(graph: @graph, prefixes: prefixes, ldpath_map: ldpath_map,
+                                                      predicate_map: predicate_map, sort_key: :sort,
                                                       preferred_language: @language, context_map: context_map)
           convert_results_to_json(results)
         end
@@ -62,11 +76,28 @@ module Qa::Authorities
           @context == true
         end
 
+        def ldpaths_for_search
+          label_ldpath = search_config.results_label_ldpath
+          return {} if label_ldpath.blank?
+          ldpaths = { label: label_ldpath, uri: :subject_uri }
+          ldpaths[:altlabel] = search_config.results_altlabel_ldpath unless search_config.results_altlabel_ldpath.nil?
+          ldpaths[:id] = id_ldpath.present? ? id_ldpath : :subject_uri
+          ldpaths[:sort] = sort_ldpath.present? ? sort_ldpath : ldpaths[:label]
+          ldpaths
+        end
+
+        def id_ldpath
+          @id_ldpath ||= search_config.results_id_ldpath
+        end
+
+        def sort_ldpath
+          @sort_ldpath ||= search_config.results_sort_ldpath
+        end
+
         def preds_for_search
           label_pred_uri = search_config.results_label_predicate
-          raise Qa::InvalidConfiguration, "required label_predicate is missing in search configuration for LOD authority #{auth_name}" if label_pred_uri.nil?
-          preds = { label: label_pred_uri }
-          preds[:uri] = :subject_uri
+          return {} if label_pred_uri.blank?
+          preds = { label: label_pred_uri, uri: :subject_uri }
           preds[:altlabel] = search_config.results_altlabel_predicate unless search_config.results_altlabel_predicate.nil?
           preds[:id] = id_predicate.present? ? id_predicate : :subject_uri
           preds[:sort] = sort_predicate.present? ? sort_predicate : preds[:label]
