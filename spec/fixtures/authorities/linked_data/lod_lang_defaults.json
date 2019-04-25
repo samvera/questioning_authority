@@ -4,21 +4,21 @@
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
       "@type":    "IriTemplate",
-      "template": "http://localhost/test_default/term/{term_id}",
+      "template": "{term_uri}",
       "variableRepresentation": "BasicRepresentation",
       "mapping": [
         {
           "@type":    "IriTemplateMapping",
-          "variable": "term_id",
+          "variable": "term_uri",
           "property": "hydra:freetextQuery",
           "required": true
         }
       ]
     },
     "qa_replacement_patterns": {
-      "term_id": "term_id"
+      "term_id": "term_uri"
     },
-    "term_id": "ID",
+    "term_id": "URI",
     "language": [ "fr" ],
     "results": {
       "id_predicate":       "http://id.loc.gov/vocabulary/identifiers/lccn",

@@ -13,7 +13,7 @@ module Qa::Authorities
       attr_reader :term_config, :full_graph, :filtered_graph, :language
       private :full_graph, :filtered_graph, :language
 
-      delegate :term_subauthority?, to: :term_config
+      delegate :term_subauthority?, :prefixes, :authority_name, to: :term_config
 
       # Find a single term in a linked data authority
       # @param [String] the id of the term to fetch
@@ -37,7 +37,8 @@ module Qa::Authorities
       def find(id, language: nil, replacements: {}, subauth: nil, jsonld: false)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
         @language = Qa::LinkedData::LanguageService.preferred_language(user_language: language, authority_language: term_config.term_language)
-        url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: term_config, action: :term, action_request: id, substitutions: replacements, subauthority: subauth, language: @language)
+        url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: term_config, action: :term, action_request: normalize_id(id),
+                                                            substitutions: replacements, subauthority: subauth, language: @language)
         Rails.logger.info "QA Linked Data term url: #{url}"
         load_graph(url: url)
         return "{}" unless full_graph.size.positive?
@@ -59,10 +60,19 @@ module Qa::Authorities
           results = extract_preds(filtered_graph, preds_for_term)
           consolidated_results = consolidate_term_results(results)
           json_results = convert_term_to_json(consolidated_results)
-          termhash = select_json_result_for_id(json_results, id)
+          termhash = select_json_result_for_id(json_results, normalize_id(id))
           predicates_hash = predicates_with_subject_uri(termhash[:uri])
           termhash['predicates'] = predicates_hash unless predicates_hash.length <= 0
           termhash
+        end
+
+        def normalize_id(id)
+          return id if expects_uri?
+          authority_name.to_s.casecmp('loc').zero? ? id.delete(' ') : id
+        end
+
+        def expects_uri?
+          term_config.term_id_expects_uri?
         end
 
         def preds_for_term

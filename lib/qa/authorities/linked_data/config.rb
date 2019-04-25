@@ -32,7 +32,7 @@ module Qa::Authorities
       end
 
       def term
-        @term ||= Qa::Authorities::LinkedData::TermConfig.new(authority_config.fetch(:term), prefixes)
+        @term ||= Qa::Authorities::LinkedData::TermConfig.new(authority_config.fetch(:term), prefixes, self)
       end
 
       def prefixes
