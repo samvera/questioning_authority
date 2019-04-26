@@ -5,13 +5,19 @@ module Qa::Authorities
     class FindTerm
       include Qa::Authorities::LinkedData::RdfHelper
 
+      class_attribute :authority_service, :graph_service, :language_service, :language_sort_service
+      self.authority_service = Qa::LinkedData::AuthorityUrlService
+      self.graph_service = Qa::LinkedData::GraphService
+      self.language_service = Qa::LinkedData::LanguageService
+      self.language_sort_service = Qa::LinkedData::LanguageSortService
+
       # @param [TermConfig] term_config The term portion of the config
       def initialize(term_config)
         @term_config = term_config
       end
 
-      attr_reader :term_config, :full_graph, :filtered_graph, :language
-      private :full_graph, :filtered_graph, :language
+      attr_reader :term_config, :full_graph, :filtered_graph, :language, :uri
+      private :full_graph, :filtered_graph, :language, :uri
 
       delegate :term_subauthority?, :prefixes, :authority_name, to: :term_config
 
@@ -36,9 +42,8 @@ module Qa::Authorities
       #     "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"] } }
       def find(id, language: nil, replacements: {}, subauth: nil, jsonld: false)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
-        @language = Qa::LinkedData::LanguageService.preferred_language(user_language: language, authority_language: term_config.term_language)
-        url = Qa::LinkedData::AuthorityUrlService.build_url(action_config: term_config, action: :term, action_request: normalize_id(id),
-                                                            substitutions: replacements, subauthority: subauth, language: @language)
+        @language = language_service.preferred_language(user_language: language, authority_language: term_config.term_language)
+        url = authority_service.build_url(action_config: term_config, action: :term, action_request: normalize_id(id), substitutions: replacements, subauthority: subauth, language: @language)
         Rails.logger.info "QA Linked Data term url: #{url}"
         load_graph(url: url)
         return "{}" unless full_graph.size.positive?
@@ -49,11 +54,10 @@ module Qa::Authorities
       private
 
         def load_graph(url:)
-          # @graph = Qa::LinkedData::GraphService.load_graph(url: url)
-          @full_graph = Qa::LinkedData::GraphService.load_graph(url: url)
+          @full_graph = graph_service.load_graph(url: url)
           return unless @full_graph.size.positive?
-          @filtered_graph = Qa::LinkedData::GraphService.deep_copy(graph: @full_graph)
-          @filtered_graph = Qa::LinkedData::GraphService.filter(graph: @filtered_graph, language: language) unless language.blank?
+          @filtered_graph = graph_service.deep_copy(graph: @full_graph)
+          @filtered_graph = graph_service.filter(graph: @filtered_graph, language: language) unless language.blank?
         end
 
         def parse_term_authority_response(id)
@@ -75,13 +79,18 @@ module Qa::Authorities
           term_config.term_id_expects_uri?
         end
 
+        def extract_uri_from_id(id)
+          return @uri = id if expects_uri?
+          @uri = graph_service.subjects_for_object_value(graph: @filtered_graph, predicate: RDF::URI.new(term_config.term_results_id_predicate), object_value: id.gsub('%20', ' ')).first
+        end
+
         def preds_for_term
           { required: required_term_preds, optional: optional_term_preds }
         end
 
         def required_term_preds
           label_pred_uri = term_config.term_results_label_predicate
-          raise Qa::InvalidConfiguration, "required label_predicate is missing in configuration for LOD authority #{auth_name}" if label_pred_uri.nil?
+          raise Qa::InvalidConfiguration, "required label_predicate is missing in configuration for LOD authority #{authority_name}" if label_pred_uri.nil?
           { label: label_pred_uri }
         end
 
@@ -95,7 +104,7 @@ module Qa::Authorities
           preds
         end
 
-        def consolidate_term_results(results) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize # TODO: Explore a way to simplify
+        def consolidate_term_results(results) # rubocop:disable Metrics/MethodLength # TODO: Explore a way to simplify
           consolidated_results = {}
           results.each do |statement|
             stmt_hash = statement.to_h
@@ -116,11 +125,17 @@ module Qa::Authorities
           end
           consolidated_results.each do |res|
             consolidated_hash = res[1]
-            consolidated_hash[:label] = sort_string_by_language consolidated_hash[:label]
-            consolidated_hash[:altlabel] = sort_string_by_language consolidated_hash[:altlabel]
-            consolidated_hash[:sort] = sort_string_by_language consolidated_hash[:sort]
+            consolidated_hash[:label] = sort_literals(consolidated_hash, :label)
+            consolidated_hash[:altlabel] = sort_literals(consolidated_hash, :altlabel)
+            consolidated_hash[:sort] = sort_literals(consolidated_hash, :sort)
           end
           consolidated_results
+        end
+
+        def sort_literals(consolidated_hash, key)
+          return nil unless consolidated_hash.key? key
+          return [] if consolidated_hash[key].blank?
+          language_sort_service.new(consolidated_hash[key], language).uniq_sorted_strings
         end
 
         def convert_term_to_json(consolidated_results)

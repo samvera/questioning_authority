@@ -39,16 +39,28 @@ module Qa
           #     sort: 'http://vivoweb.org/ontology/core#rank'
           #   }
           # @param sort_key [Symbol] the key in the predicate map for the value on which to sort
+          # @param preferred_language [Array<Symbol>] limit results to the preferred_language(s)
           # @param context_map [Qa::LinkedData::Config::ContextMap] map of additional context to include in the results
           # @return [Array<Hash<Symbol><Array<Object>>>] mapped result values with each result as an element in the array
           #    with hash of map key = array of object values for predicates identified in map parameter.
           # @example value map for a single result
           #   [
-          #     {:uri=>[#<RDF::URI:0x3fcff54a829c URI:http://id.loc.gov/authorities/names/n2010043281>],
-          #      :id=>[#<RDF::Literal:0x3fcff4a367b4("n 2010043281")>],
-          #      :label=>[#<RDF::Literal:0x3fcff54a9a98("Valli, Sabrina"@en)>],
-          #      :altlabel=>[],
-          #      :sort=>[#<RDF::Literal:0x3fcff54b4c18("2")>]}
+          #     { "uri":"http://id.loc.gov/authorities/genreForms/gf2011026181","id":"gf2011026181","label":"Stop-motion animation films",
+          #       "context":[
+          #         { "property":"Authoritative Label","values":["Stop-motion animation films"],"selectable":true,"drillable":false },
+          #         { "property":"Variant Label","values":["Object animation films, Frame-by-frame animation films"],"selectable":false,"drillable":false },
+          #         { "group":"Hierarchy","property":"Narrower: ",
+          #           "values":[
+          #             { "uri":"http://id.loc.gov/authorities/genreForms/gf2011026140","id":"gf2011026140","label":"Clay animation films"}
+          #           ],
+          #           "selectable":true,"drillable":true },
+          #         { "group":"Hierarchy","property":"Broader: ",
+          #           "values":[
+          #             { "uri":"http://id.loc.gov/authorities/genreForms/gf2011026049","id":"gf2011026049","label":"Animated films"}
+          #           ],
+          #           "selectable":true,"drillable":true }
+          #       ]
+          #     }
           #   ]
           def map_values(graph:, prefixes: {}, ldpath_map: nil, predicate_map: nil, sort_key:, preferred_language: nil, context_map: nil) # rubocop:disable Metrics/ParameterLists
             search_matches = []

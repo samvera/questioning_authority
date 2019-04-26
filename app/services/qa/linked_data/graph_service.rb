@@ -41,6 +41,19 @@ module Qa
           values
         end
 
+        # Get subjects that have the object value for the predicate in the graph.
+        # @param graph [RDF::Graph] the graph to search
+        # @param predicate [RDF::URI] the URI of the predicate
+        # @param object_value [String] the object value
+        # @return [Array] all subjects for the predicate-object_value pair
+        def subjects_for_object_value(graph:, predicate:, object_value:)
+          subjects = []
+          graph.query([:subject, predicate, object_value]) do |statement|
+            subjects << statement.subject
+          end
+          subjects
+        end
+
         def deep_copy(graph:)
           new_graph = RDF::Graph.new
           graph.statements.each do |st|
