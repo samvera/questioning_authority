@@ -7,7 +7,6 @@ module Qa
       attr_reader :literals, :preferred_language
       attr_reader :languages, :bins
       private :literals, :preferred_language, :languages, :bins
-      # private :literals, :preferred_language, :languages, :languages=, :bins, :bins=
 
       # @param [Array<RDF::Literals>] string literals to sort
       # @param [Symbol] preferred language to appear first in the list; defaults to no preference
@@ -20,7 +19,7 @@ module Qa
       end
 
       # Sort the literals stored in this instance of the service
-      # @return sorted version of literals
+      # @return [Array<RDF::Literals] sorted version of literals
       def sort
         return literals unless literals.present?
         return @sorted_literals if @sorted_literals.present?
@@ -28,6 +27,12 @@ module Qa
         sort_languages
         sort_language_bins
         @sorted_literals = construct_sorted_literals
+      end
+
+      # Sort the literals and return as an array of strings with only unique literals and empty strings removed
+      # @return [Array<String>] sorted version of literals as strings
+      def uniq_sorted_strings
+        sort.map(&:to_s).uniq.delete_if(&:blank?)
       end
 
       private

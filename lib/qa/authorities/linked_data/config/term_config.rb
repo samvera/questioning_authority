@@ -57,14 +57,14 @@ module Qa::Authorities
         @term_language = lang.collect(&:to_sym)
       end
 
-      # Return results predicates
-      # @return [Hash] all the configured predicates to pull out of the results
+      # Return results ldpaths or predicates
+      # @return [Hash] all the configured ldpaths or predicates to pull out of the results
       def term_results
         Config.config_value(term_config, :results)
       end
 
       # Return results id_ldpath
-      # @return [String] the configured predicate to use to extract the id from the results
+      # @return [String] the configured ldpath to use to extract the id from the results
       def term_results_id_ldpath
         Config.config_value(term_results, :id_ldpath)
       end
@@ -76,7 +76,7 @@ module Qa::Authorities
       end
 
       # Return results label_ldpath
-      # @return [String] the configured predicate to use to extract label values from the results
+      # @return [String] the configured ldpath to use to extract label values from the results
       def term_results_label_ldpath
         Config.config_value(term_results, :label_ldpath)
       end
@@ -88,7 +88,7 @@ module Qa::Authorities
       end
 
       # Return results altlabel_ldpath
-      # @return [String] the configured predicate to use to extract altlabel values from the results
+      # @return [String] the configured ldpath to use to extract altlabel values from the results
       def term_results_altlabel_ldpath
         Config.config_value(term_results, :altlabel_ldpath)
       end
@@ -100,7 +100,7 @@ module Qa::Authorities
       end
 
       # Return results broader_ldpath
-      # @return [String] the configured predicate to use to extract URIs for broader terms from the results
+      # @return [String] the configured ldpath to use to extract URIs for broader terms from the results
       def term_results_broader_ldpath
         Config.config_value(term_results, :broader_ldpath)
       end
@@ -112,7 +112,7 @@ module Qa::Authorities
       end
 
       # Return results narrower_ldpath
-      # @return [String] the configured predicate to use to extract URIs for narrower terms from the results
+      # @return [String] the configured ldpath to use to extract URIs for narrower terms from the results
       def term_results_narrower_ldpath
         Config.config_value(term_results, :narrower_ldpath)
       end
@@ -124,7 +124,7 @@ module Qa::Authorities
       end
 
       # Return results sameas_ldpath
-      # @return [String] the configured predicate to use to extract URIs for sameas terms from the results
+      # @return [String] the configured ldpath to use to extract URIs for sameas terms from the results
       def term_results_sameas_ldpath
         Config.config_value(term_results, :sameas_ldpath)
       end

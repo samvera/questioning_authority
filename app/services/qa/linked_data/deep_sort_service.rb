@@ -2,8 +2,9 @@
 module Qa
   module LinkedData
     class DeepSortService
-      # @params [Array<Hash<Symbol,Array<RDF::Literal>>>] the array of hashes to sort
-      # @params [sort_key] the key in the hash on whose value the array will be sorted
+      # @param [Array<Hash<Symbol,Array<RDF::Literal>>>] the array of hashes to sort
+      # @param [sort_key] the key in the hash on whose value the array will be sorted
+      # @param [Symbol] preferred language to appear first in the list; defaults to no preference
       # @return instance of this class
       # @example the_array parameter
       #   [

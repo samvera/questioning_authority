@@ -38,7 +38,8 @@ module Qa::Authorities
         url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth, language: @language)
         Rails.logger.info "QA Linked Data search url: #{url}"
         load_graph(url: url)
-        parse_search_authority_response
+        results = process_results
+        convert_results_to_json(results)
       end
 
       private
@@ -48,7 +49,7 @@ module Qa::Authorities
           @graph = graph_service.filter(graph: @graph, language: language, remove_blanknode_subjects: true)
         end
 
-        def parse_search_authority_response
+        def process_results
           predicate_map = preds_for_search
           ldpath_map = ldpaths_for_search
 
@@ -62,10 +63,9 @@ module Qa::Authorities
             )
           end
 
-          results = results_mapper_service.map_values(graph: @graph, prefixes: prefixes, ldpath_map: ldpath_map,
-                                                      predicate_map: predicate_map, sort_key: :sort,
-                                                      preferred_language: @language, context_map: context_map)
-          convert_results_to_json(results)
+          results_mapper_service.map_values(graph: @graph, prefixes: prefixes, ldpath_map: ldpath_map,
+                                            predicate_map: predicate_map, sort_key: :sort,
+                                            preferred_language: @language, context_map: context_map)
         end
 
         def context_map
