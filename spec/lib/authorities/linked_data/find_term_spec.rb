@@ -62,7 +62,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
         let :results do
           stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh85118553')
             .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
-          lod_loc.find('sh85118553', subauth: 'subjects')
+          lod_loc.find('sh 85118553', subauth: 'subjects')
         end
         it 'has correct primary predicate values' do
           expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
@@ -128,9 +128,9 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
             context "and NO language defined in Qa config" do
               let(:lod_lang_no_defaults) { described_class.new(term_config(:LOD_LANG_NO_DEFAULTS)) }
               let :results do
-                stub_request(:get, "http://localhost/test_no_default/term/c_9513")
+                stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513")
                   .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-                lod_lang_no_defaults.find('c_9513')
+                lod_lang_no_defaults.find('http://aims.fao.org/aos/agrovoc/c_9513')
               end
 
               before do
@@ -151,9 +151,9 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
             context "and default_language is defined in Qa config" do
               let(:lod_lang_no_defaults) { described_class.new(term_config(:LOD_LANG_NO_DEFAULTS)) }
               let :results do
-                stub_request(:get, "http://localhost/test_no_default/term/c_9513")
+                stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513")
                   .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-                lod_lang_no_defaults.find('c_9513')
+                lod_lang_no_defaults.find('http://aims.fao.org/aos/agrovoc/c_9513')
               end
               it "filters using Qa configured default for summary but not for predicates list" do
                 expect(results[:label]).to eq ['buttermilk']
@@ -166,9 +166,9 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
           context "and language IS defined in authority config" do
             let(:lod_lang_defaults) { described_class.new(term_config(:LOD_LANG_DEFAULTS)) }
             let :results do
-              stub_request(:get, "http://localhost/test_default/term/c_9513")
+              stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513")
                 .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-              lod_lang_defaults.find('c_9513')
+              lod_lang_defaults.find('http://aims.fao.org/aos/agrovoc/c_9513')
             end
             it "filters using authority configured language for summary but not for predicates list" do
               expect(results[:label]).to eq ['Babeurre']
@@ -180,9 +180,9 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
           context "and multiple languages ARE defined in authority config" do
             let(:lod_lang_multi_defaults) { described_class.new(term_config(:LOD_LANG_MULTI_DEFAULTS)) }
             let :results do
-              stub_request(:get, "http://localhost/test_default/term/c_9513")
+              stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513")
                 .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfrde.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-              lod_lang_multi_defaults.find('c_9513')
+              lod_lang_multi_defaults.find('http://aims.fao.org/aos/agrovoc/c_9513')
             end
             it "filters using authority configured languages for summary but not for predicates list" do
               expect(results[:label]).to eq ['buttermilk', 'Babeurre']
@@ -196,9 +196,9 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
         context "and lang IS passed in" do
           let(:lod_lang_defaults) { described_class.new(term_config(:LOD_LANG_DEFAULTS)) }
           let :results do
-            stub_request(:get, "http://localhost/test_default/term/c_9513")
+            stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513")
               .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-            lod_lang_defaults.find('c_9513', language: 'fr')
+            lod_lang_defaults.find('http://aims.fao.org/aos/agrovoc/c_9513', language: 'fr')
           end
           it "is filtered to specified language" do
             expect(results[:label]).to eq ['Babeurre']
@@ -211,9 +211,9 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
         context "and result does not have altlabel" do
           let(:lod_lang_defaults) { described_class.new(term_config(:LOD_LANG_DEFAULTS)) }
           let :results do
-            stub_request(:get, "http://localhost/test_default/term/c_9513")
+            stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513")
               .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr_noalt.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-            lod_lang_defaults.find('c_9513', language: 'fr')
+            lod_lang_defaults.find('http://aims.fao.org/aos/agrovoc/c_9513', language: 'fr')
           end
           it "is filtered to specified language" do
             expect(results[:label]).to eq ['Babeurre']
@@ -225,9 +225,9 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
           context "and using default" do
             let(:lod_lang_param) { described_class.new(term_config(:LOD_LANG_PARAM)) }
             let :results do
-              stub_request(:get, "http://localhost/test_replacement/term/c_9513?lang=en")
+              stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513?lang=en")
                 .to_return(status: 200, body: webmock_fixture("lod_lang_term_en.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-              lod_lang_param.find("c_9513")
+              lod_lang_param.find('http://aims.fao.org/aos/agrovoc/c_9513')
             end
             it "is correctly parsed" do
               expect(results[:label]).to eq ['buttermilk']
@@ -240,9 +240,9 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
           context "and lang specified" do
             let(:lod_lang_param) { described_class.new(term_config(:LOD_LANG_PARAM)) }
             let :results do
-              stub_request(:get, "http://localhost/test_replacement/term/c_9513?lang=fr")
+              stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513?lang=fr")
                 .to_return(status: 200, body: webmock_fixture("lod_lang_term_fr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-              lod_lang_param.find("c_9513", replacements: { 'lang' => 'fr' })
+              lod_lang_param.find('http://aims.fao.org/aos/agrovoc/c_9513', replacements: { 'lang' => 'fr' })
             end
             it "is correctly parsed" do
               expect(results[:label]).to eq ['Babeurre']

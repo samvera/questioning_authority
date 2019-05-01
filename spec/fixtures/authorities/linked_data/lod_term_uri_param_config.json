@@ -20,7 +20,7 @@
     },
     "term_id": "URI",
     "results": {
-      "id_predicate":       "http://id.loc.gov/vocabulary/identifiers/lccn",
+      "id_predicate":       "http://purl.org/dc/terms/identifier",
       "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel"
     }
   },

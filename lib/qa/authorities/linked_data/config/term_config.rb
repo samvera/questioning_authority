@@ -5,16 +5,19 @@
 module Qa::Authorities
   module LinkedData
     class TermConfig
-      attr_reader :prefixes
+      attr_reader :prefixes, :full_config, :term_config
+      private :full_config, :term_config
+
+      delegate :authority_name, to: :full_config
 
       # @param [Hash] config the term portion of the config
-      def initialize(config, prefixes = {})
+      # @param [Hash<Symbol><String>] prefixes URL map of prefixes to use with ldpaths
+      # @param [Qa::Authorities::LinkedData::Config] full_config the full linked data configuration that the passed in search config is part of
+      def initialize(config, prefixes = {}, full_config = nil)
         @term_config = config
         @prefixes = prefixes
+        @full_config = full_config
       end
-
-      attr_reader :term_config
-      private :term_config
 
       # Does this authority configuration have term defined?
       # @return [True|False] true if term fetching is configured; otherwise, false

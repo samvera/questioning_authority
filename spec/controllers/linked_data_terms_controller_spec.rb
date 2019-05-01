@@ -378,7 +378,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
             .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
         end
         it 'succeeds and defaults to json content type' do
-          get :show, params: { id: 'sh85118553', vocab: 'LOC', subauthority: 'subjects' }
+          get :show, params: { id: 'sh 85118553', vocab: 'LOC', subauthority: 'subjects' }
           expect(response).to be_successful
           expect(response.content_type).to eq 'application/json'
         end
@@ -390,36 +390,36 @@ describe Qa::LinkedDataTermsController, type: :controller do
     context 'producing internal server error' do
       context 'when server returns 500' do
         before do
-          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369').to_return(status: 500)
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369').to_return(status: 500)
         end
         it 'returns 500' do
-          expect(Rails.logger).to receive(:warn).with("Internal Server Error - Fetch term http://test.org/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
-          get :fetch, params: { vocab: 'LOD_TERM_URI_PARAM_CONFIG', uri: 'http://test.org/530369' }
+          expect(Rails.logger).to receive(:warn).with("Internal Server Error - Fetch term http://id.worldcat.org/fast/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
+          get :fetch, params: { vocab: 'LOD_TERM_URI_PARAM_CONFIG', uri: 'http://id.worldcat.org/fast/530369' }
           expect(response.code).to eq('500')
         end
       end
 
       context 'when rdf format error' do
         before do
-          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369').to_return(status: 200)
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369').to_return(status: 200)
           allow(RDF::Graph).to receive(:load).and_raise(RDF::FormatError)
         end
         it 'returns 500' do
-          msg = "RDF Format Error - Results from fetch term http://test.org/530369 for authority LOD_TERM_URI_PARAM_CONFIG was not identified as a valid RDF format.  " \
+          msg = "RDF Format Error - Results from fetch term http://id.worldcat.org/fast/530369 for authority LOD_TERM_URI_PARAM_CONFIG was not identified as a valid RDF format.  " \
                 "You may need to include the linkeddata gem."
           expect(Rails.logger).to receive(:warn).with(msg)
-          get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+          get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
           expect(response.code).to eq('500')
         end
       end
 
       context "when error isn't specifically handled" do
         before do
-          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369').to_return(status: 501)
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369').to_return(status: 501)
         end
         it 'returns 500' do
-          expect(Rails.logger).to receive(:warn).with("Internal Server Error - Fetch term http://test.org/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
-          get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+          expect(Rails.logger).to receive(:warn).with("Internal Server Error - Fetch term http://id.worldcat.org/fast/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
+          get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
           expect(response.code).to eq('500')
         end
       end
@@ -427,11 +427,11 @@ describe Qa::LinkedDataTermsController, type: :controller do
 
     context 'when service unavailable' do
       before do
-        stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369').to_return(status: 503)
+        stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369').to_return(status: 503)
       end
       it 'returns 503' do
-        expect(Rails.logger).to receive(:warn).with("Service Unavailable - Fetch term http://test.org/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
-        get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+        expect(Rails.logger).to receive(:warn).with("Service Unavailable - Fetch term http://id.worldcat.org/fast/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
+        get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
         expect(response.code).to eq('503')
       end
     end
@@ -450,19 +450,19 @@ describe Qa::LinkedDataTermsController, type: :controller do
     context 'in LOD_TERM_URI_PARAM_CONFIG authority' do
       context 'term found' do
         before do
-          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369')
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
         end
 
         it 'succeeds and defaults to json content type' do
-          get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+          get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
           expect(response).to be_successful
           expect(response.content_type).to eq 'application/json'
         end
 
         context 'and it was requested as json' do
           it 'succeeds and returns term data as json content type' do
-            get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'json' }
+            get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'json' }
             expect(response).to be_successful
             expect(response.content_type).to eq 'application/json'
           end
@@ -470,7 +470,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
 
         context 'and it was requested as jsonld' do
           it 'succeeds and returns term data as jsonld content type' do
-            get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'jsonld' }
+            get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'jsonld' }
             expect(response).to be_successful
             expect(response.content_type).to eq 'application/ld+json'
             expect(JSON.parse(response.body).keys).to match_array ["@context", "@graph"]
@@ -479,11 +479,11 @@ describe Qa::LinkedDataTermsController, type: :controller do
 
         context 'blank nodes not included in predicates list' do
           before do
-            stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369wbn')
+            stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369wbn')
               .to_return(status: 200, body: webmock_fixture('lod_term_with_blanknode_objects.nt'), headers: { 'Content-Type' => 'application/n-triples' })
           end
           it 'succeeds' do
-            get :fetch, params: { uri: 'http://test.org/530369wbn', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+            get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369wbn', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
             expect(response).to be_successful
           end
         end
@@ -492,11 +492,11 @@ describe Qa::LinkedDataTermsController, type: :controller do
       context 'when cors headers are enabled' do
         before do
           Qa.config.enable_cors_headers
-          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369')
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
         end
         it 'Access-Control-Allow-Origin is *' do
-          get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+          get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
           expect(response.headers['Access-Control-Allow-Origin']).to eq '*'
         end
       end
@@ -504,11 +504,11 @@ describe Qa::LinkedDataTermsController, type: :controller do
       context 'when cors headers are disabled' do
         before do
           Qa.config.disable_cors_headers
-          stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/530369')
+          stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
         end
         it 'Access-Control-Allow-Origin is not present' do
-          get :fetch, params: { uri: 'http://test.org/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
+          get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
           expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
         end
       end
