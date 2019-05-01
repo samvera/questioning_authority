@@ -407,4 +407,51 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
       expect(full_config.subauthorities).to eq expected_hash
     end
   end
+
+  describe '#info' do
+    let(:term_details) do
+      {
+        "label" => "oclc_fast term (QA)",
+        "uri" => "urn:qa:term:oclc_fast",
+        "authority" => "oclc_fast",
+        "action" => "term",
+        "language" => ["en"]
+      }
+    end
+
+    let(:search_details) do
+      {
+        "label" => "oclc_fast search (QA)",
+        "uri" => "urn:qa:search:oclc_fast",
+        "authority" => "oclc_fast",
+        "action" => "search",
+        "language" => ["en"]
+      }
+    end
+
+    let(:search_details_with_subauth) do
+      {
+        "label" => "oclc_fast search topic (QA)",
+        "uri" => "urn:qa:search:oclc_fast:topic",
+        "authority" => "oclc_fast",
+        "subauthority" => "topic",
+        "action" => "search",
+        "language" => ["en"]
+      }
+    end
+
+    let(:details) { Qa::Authorities::LinkedData::Config.new(:OCLC_FAST).search.info }
+
+    it "does not return a list with details for term" do
+      expect(details).not_to include_hash(term_details)
+    end
+
+    it "returns a list with details for search without subauthorities" do
+      expect(details).to include_hash(search_details)
+    end
+
+    it "returns a list with details for search with a subauthority" do
+      expect(details).to include_hash(search_details_with_subauth)
+    end
+  end
 end

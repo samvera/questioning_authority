@@ -16,11 +16,12 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     head :not_found
   end
 
-  # Return a list of supported authority names
-  # get "/list/linked_data/authorities"
+  # Return a list of supported authority names optionally with details about the authority
+  # get "/list/linked_data/authorities?details=true|false" (default details=false)
   # @see Qa::LinkedData::AuthorityService#authority_names
+  # @see Qa::LinkedData::AuthorityService#authority_details
   def list
-    render json: Qa::LinkedData::AuthorityService.authority_names.to_json
+    details? ? render_detail_list : render_simple_list
   end
 
   # Reload authority configurations
@@ -109,6 +110,14 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   end
 
   private
+
+    def render_simple_list
+      render json: Qa::LinkedData::AuthorityService.authority_names.to_json
+    end
+
+    def render_detail_list
+      render json: Qa::LinkedData::AuthorityService.authority_details.to_json
+    end
 
     def check_authority
       if params[:vocab].nil? || !params[:vocab].size.positive? # rubocop:disable Style/GuardClause
@@ -210,6 +219,11 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     def context?
       context = params.fetch(:context, 'false')
       context.casecmp('true').zero?
+    end
+
+    def details?
+      details = params.fetch(:details, 'false')
+      details.casecmp('true').zero?
     end
 
     def validate_auth_reload_token

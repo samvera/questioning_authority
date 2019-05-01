@@ -81,14 +81,54 @@ describe Qa::LinkedDataTermsController, type: :controller do
   end
 
   describe '#list' do
-    let(:expected_results) { ['Auth1', 'Auth2', 'Auth3'] }
-    before do
-      allow(Qa::LinkedData::AuthorityService).to receive(:authority_names).and_return(expected_results)
+    context 'when details=false' do
+      let(:expected_results) { ['Auth1', 'Auth2', 'Auth3'] }
+      before do
+        allow(Qa::LinkedData::AuthorityService).to receive(:authority_names).and_return(expected_results)
+      end
+      it 'returns list of authorities' do
+        get :list
+        expect(response).to be_successful
+        expect(response.body).to eq expected_results.to_json
+      end
     end
-    it 'returns list of authorities' do
-      get :list
-      expect(response).to be_successful
-      expect(response.body).to eq expected_results.to_json
+
+    context 'when details=true' do
+      let(:expected_results) do
+        [
+          {
+            "label" => "oclc_fast term (QA)",
+            "uri" => "urn:qa:term:oclc_fast",
+            "authority" => "oclc_fast",
+            "action" => "term",
+            "language" => ["en"]
+          },
+          {
+            "label" => "oclc_fast search (QA)",
+            "uri" => "urn:qa:search:oclc_fast",
+            "authority" => "oclc_fast",
+            "action" => "search",
+            "language" => ["en"]
+          },
+          {
+            "label" => "oclc_fast search topic (QA)",
+            "uri" => "urn:qa:search:oclc_fast:topic",
+            "authority" => "oclc_fast",
+            "subauthority" => "topic",
+            "action" => "search",
+            "language" => ["en"]
+          }
+        ]
+      end
+
+      before do
+        allow(Qa::LinkedData::AuthorityService).to receive(:authority_details).and_return(expected_results)
+      end
+      it 'returns list of authorities' do
+        get :list, params: { details: 'true' }
+        expect(response).to be_successful
+        expect(response.body).to eq expected_results.to_json
+      end
     end
   end
 

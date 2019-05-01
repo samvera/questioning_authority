@@ -47,6 +47,10 @@ module Qa::Authorities
         config_version == version
       end
 
+      def authority_info
+        search.info + term.info
+      end
+
       # Return the full configuration for an authority
       # @return [String] the authority configuration
       def authority_config
