@@ -119,6 +119,11 @@
     <identifiers:lccn xmlns:identifiers="http://id.loc.gov/vocabulary/identifiers/">sh 85118553</identifiers:lccn>
     <owl:sameAs rdf:resource="info:lc/authorities/sh85118553" xmlns:owl="http://www.w3.org/2002/07/owl#"/>
     <owl:sameAs rdf:resource="http://id.loc.gov/authorities/sh85118553#concept" xmlns:owl="http://www.w3.org/2002/07/owl#"/>
+    <madsrdf:hasNarrowerAuthority>
+      <madsrdf:Authority rdf:about="http://id.loc.gov/authorities/subjects/sh92004048">
+        <madsrdf:authoritativeLabel xml:lang="en">Environmental sciences</madsrdf:authoritativeLabel>
+      </madsrdf:Authority>
+    </madsrdf:hasNarrowerAuthority>
     <madsrdf:adminMetadata>
       <ri:RecordInfo xmlns:ri="http://id.loc.gov/ontologies/RecordInfo#">
 	<ri:recordChangeDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2000-06-20T00:00:00</ri:recordChangeDate>

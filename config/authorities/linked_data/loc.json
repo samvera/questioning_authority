@@ -38,7 +38,7 @@
       "id_ldpath": "loc:lccn",
       "label_ldpath": "skos:prefLabel :: xsd:string",
       "altlabel_ldpath": "skos:altLabel :: xsd:string",
-      "sameas_ldpath": "owl:sameAs :: xsd:anyURI",
+      "sameas_ldpath": "skos:exactMatch | owl:sameAs :: xsd:anyURI",
       "narrower_ldpath": "madsrdf:hasNarrowerAuthority :: xsd:anyURI",
       "broader_ldpath": "madsrdf:hasBroaderAuthority :: xsd:anyURI"
     },
