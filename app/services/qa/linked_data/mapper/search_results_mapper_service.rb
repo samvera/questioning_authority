@@ -39,7 +39,7 @@ module Qa
           #     sort: 'http://vivoweb.org/ontology/core#rank'
           #   }
           # @param sort_key [Symbol] the key in the predicate map for the value on which to sort
-          # @param preferred_language [Array<Symbol>] limit results to the preferred_language(s)
+          # @param preferred_language [Array<Symbol>] sort multiple literals for a value with preferred language first
           # @param context_map [Qa::LinkedData::Config::ContextMap] map of additional context to include in the results
           # @return [Array<Hash<Symbol><Array<Object>>>] mapped result values with each result as an element in the array
           #    with hash of map key = array of object values for predicates identified in map parameter.
