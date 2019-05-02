@@ -1,5 +1,11 @@
 {
-  "QA_CONFIG_VERSION": "2.0",
+  "QA_CONFIG_VERSION": "2.1",
+  "prefixes": {
+    "loc": "http://id.loc.gov/vocabulary/identifiers/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "madsrdf": "http://www.loc.gov/mads/rdf/v1#",
+    "owl": "http://www.w3.org/2002/07/owl#"
+  },
   "term": {
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
@@ -29,12 +35,12 @@
     "term_id": "ID",
     "language": ["en"],
     "results": {
-      "id_predicate": "http://id.loc.gov/vocabulary/identifiers/lccn",
-      "label_predicate": "http://www.w3.org/2004/02/skos/core#prefLabel",
-      "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
-      "sameas_predicate": "http://www.w3.org/2004/02/skos/core#exactMatch",
-      "narrower_predicate": "http://www.loc.gov/mads/rdf/v1#hasNarrowerAuthority",
-      "broader_predicate": "http://www.loc.gov/mads/rdf/v1#hasBroaderAuthority"
+      "id_ldpath": "loc:lccn",
+      "label_ldpath": "skos:prefLabel :: xsd:string",
+      "altlabel_ldpath": "skos:altLabel :: xsd:string",
+      "sameas_ldpath": "owl:sameAs :: xsd:anyURI",
+      "narrower_ldpath": "madsrdf:hasNarrowerAuthority :: xsd:anyURI",
+      "broader_ldpath": "madsrdf:hasBroaderAuthority :: xsd:anyURI"
     },
     "subauthorities": {
       "subjects": "subjects",

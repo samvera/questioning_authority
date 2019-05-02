@@ -66,9 +66,21 @@ module Qa::Authorities
         end
 
         def map_results
-          results_mapper_service.map_values(graph: @filtered_graph,
-                                            subject_uri: uri,
-                                            predicate_map: preds_for_term)
+          predicate_map = preds_for_term
+          ldpath_map = ldpaths_for_term
+
+          raise Qa::InvalidConfiguration, "do not specify results using both predicates and ldpath in term configuration for LOD authority #{authority_name} (ldpath is preferred)" if predicate_map.present? && ldpath_map.present? # rubocop:disable Metrics/LineLength
+          raise Qa::InvalidConfiguration, "must specify label_ldpath or label_predicate in term configuration for LOD authority #{authority_name} (label_ldpath is preferred)" unless ldpath_map.key?(:label) || predicate_map.key?(:label) # rubocop:disable Metrics/LineLength
+
+          if predicate_map.present?
+            Qa.deprecation_warning(
+              in_msg: 'Qa::Authorities::LinkedData::FindTerm',
+              msg: 'defining results using predicates in term config is deprecated; update to define using ldpaths'
+            )
+          end
+
+          results_mapper_service.map_values(graph: @filtered_graph, subject_uri: uri, prefixes: prefixes,
+                                            ldpath_map: ldpaths_for_term, predicate_map: preds_for_term)
         end
 
         def normalize_id
@@ -86,9 +98,26 @@ module Qa::Authorities
           @uri = graph_service.subjects_for_object_value(graph: @filtered_graph, predicate: RDF::URI.new(term_config.term_results_id_predicate), object_value: id.gsub('%20', ' ')).first
         end
 
+        def ldpaths_for_term
+          label_ldpath = term_config.term_results_label_ldpath
+          return {} if label_ldpath.blank?
+          ldpaths = { label: label_ldpath }
+          ldpaths.merge(optional_ldpaths)
+        end
+
+        def optional_ldpaths
+          opt_ldpaths = {}
+          opt_ldpaths[:altlabel] = term_config.term_results_altlabel_ldpath
+          opt_ldpaths[:id] = term_config.term_results_id_ldpath
+          opt_ldpaths[:narrower] = term_config.term_results_narrower_ldpath
+          opt_ldpaths[:broader] = term_config.term_results_broader_ldpath
+          opt_ldpaths[:sameas] = term_config.term_results_sameas_ldpath
+          opt_ldpaths.delete_if { |_k, v| v.blank? }
+        end
+
         def preds_for_term
           label_pred_uri = term_config.term_results_label_predicate
-          raise Qa::InvalidConfiguration, "required label_predicate is missing in configuration for LOD authority #{authority_name}" if label_pred_uri.nil?
+          return {} if label_pred_uri.blank?
           preds = { label: label_pred_uri }
           preds.merge(optional_preds)
         end

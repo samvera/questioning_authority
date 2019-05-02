@@ -72,7 +72,10 @@ module Qa::Authorities
       # Return results id_predicate
       # @return [String] the configured predicate to use to extract the id from the results
       def term_results_id_predicate
-        Config.predicate_uri(term_results, :id_predicate)
+        return @pred_id unless @pred_id.blank?
+        @pred_id = Config.predicate_uri(term_results, :id_predicate)
+        return @pred_id unless @pred_id.blank?
+        @pred_id = pred_id_from_ldpath
       end
 
       # Return results label_ldpath
@@ -179,6 +182,20 @@ module Qa::Authorities
         @term_subauthorities ||= term_config[:subauthorities]
       end
       alias subauthorities term_subauthorities
+
+      private
+
+        def pred_id_from_ldpath
+          # prefix example: { skos: 'http://www.w3.org/2004/02/skos/core#' }
+          # ldpath example: 'skos:id :: xsd:string'
+          id_ldpath = term_results_id_ldpath
+          return nil if id_ldpath.blank?
+          tokens = id_ldpath.split(':')
+          return nil if tokens.size < 2
+          prefix = tokens.first.to_sym
+          prefix_path = prefixes[prefix]
+          prefix_path + tokens.second.strip
+        end
     end
   end
 end
