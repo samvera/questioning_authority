@@ -25,7 +25,7 @@ module Qa::Authorities
       # @param [Symbol] (optional) language: language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
       # @param [Hash] (optional) replacements: replacement values with { pattern_name (defined in YAML config) => value }
       # @param [String] subauth: the subauthority from which to fetch the term
-      # @return [String] json results
+      # @return [Hash] json results
       # @example Json Results for Linked Data Term
       #   { "uri":"http://id.worldcat.org/fast/530369",
       #     "id":"530369","label":"Cornell University",
@@ -133,8 +133,8 @@ module Qa::Authorities
         end
 
         def convert_results_to_json(results)
-          json_hash = { uri: uri }
-          json_hash[:id] = results.key?(:id) && results[:id].present? ? results[:id].first.to_s : uri
+          json_hash = { uri: uri.to_s }
+          json_hash[:id] = results.key?(:id) && results[:id].present? ? results[:id].first.to_s : uri.to_s
           json_hash[:label] = sort_literals(results, :label)
           json_hash.merge!(optional_results_to_json(results))
           predicates_hash = predicates_with_subject_uri(uri)
@@ -152,8 +152,8 @@ module Qa::Authorities
         end
 
         def extract_result(results, key)
-          return nil unless results.key?(key) || results[key].blank?
-          results[key]
+          return nil unless results.key?(key) && results[key].present?
+          results[key].map(&:to_s)
         end
 
         def sort_literals(results, key)

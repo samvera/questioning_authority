@@ -66,13 +66,16 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
         end
         it 'has correct primary predicate values' do
           expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
+          expect(results[:uri]).to be_kind_of String
           expect(results[:id]).to eq 'sh 85118553'
           expect(results[:label]).to eq ['Science']
           expect(results[:altlabel]).to include('Natural science', 'Science of science', 'Sciences')
+          expect(results[:narrower]).to include('http://id.loc.gov/authorities/subjects/sh92004048')
+          expect(results[:narrower].first).to be_kind_of String
         end
 
         it 'has correct number of predicates in pred-obj list' do
-          expect(results['predicates'].count).to eq 14
+          expect(results['predicates'].count).to eq 15
         end
 
         it 'has primary predicates in pred-obj list' do
