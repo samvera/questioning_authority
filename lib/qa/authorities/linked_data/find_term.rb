@@ -15,8 +15,8 @@ module Qa::Authorities
         @term_config = term_config
       end
 
-      attr_reader :term_config, :full_graph, :filtered_graph, :language, :id
-      private :full_graph, :filtered_graph, :language, :id
+      attr_reader :term_config, :full_graph, :filtered_graph, :language, :id, :access_time_s, :normalize_time_s
+      private :full_graph, :filtered_graph, :language, :id, :access_time_s, :normalize_time_s
 
       delegate :term_subauthority?, :prefixes, :authority_name, to: :term_config
 
@@ -39,25 +39,49 @@ module Qa::Authorities
       #     "http://schema.org/name":["Cornell University","Ithaca (N.Y.). Cornell University"],
       #     "http://www.w3.org/2004/02/skos/core#altLabel":["Ithaca (N.Y.). Cornell University"],
       #     "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"] } }
-      def find(id, language: nil, replacements: {}, subauth: nil, jsonld: false)
+      def find(id, language: nil, replacements: {}, subauth: nil, jsonld: false, performance_data: false) # rubocop:disable Metrics/ParameterLists
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
         @language = language_service.preferred_language(user_language: language, authority_language: term_config.term_language)
         @id = id
+        @performance_data = performance_data
+        @jsonld = jsonld
         url = authority_service.build_url(action_config: term_config, action: :term, action_request: normalize_id, substitutions: replacements, subauthority: subauth, language: @language)
         Rails.logger.info "QA Linked Data term url: #{url}"
         load_graph(url: url)
-        return "{}" unless full_graph.size.positive?
-        return full_graph.dump(:jsonld, standard_prefixes: true) if jsonld
-        filter_graph
-        results = map_results
-        convert_results_to_json(results)
+        normalize_results
       end
 
       private
 
         def load_graph(url:)
+          access_start_dt = Time.now.utc
+
           @full_graph = graph_service.load_graph(url: url)
-          return unless @full_graph.size.positive?
+
+          access_end_dt = Time.now.utc
+          @access_time_s = access_end_dt - access_start_dt
+          Rails.logger.info("Time to receive data from authority: #{access_time_s}s")
+        end
+
+        def normalize_results
+          normalize_start_dt = Time.now.utc
+          normalize_end_dt = Time.now.utc
+
+          json = perform_normalization
+
+          @normalize_time_s = normalize_end_dt - normalize_start_dt
+          Rails.logger.info("Time to convert data to json: #{normalize_time_s}s")
+          json = append_performance_data(json) if performance_data? && !jsonld?
+          json
+        end
+
+        def perform_normalization
+          return "{}" unless full_graph.size.positive?
+          return full_graph.dump(:jsonld, standard_prefixes: true) if jsonld?
+
+          filter_graph
+          results = map_results
+          convert_results_to_json(results)
         end
 
         def filter_graph
@@ -113,6 +137,14 @@ module Qa::Authorities
           opt_ldpaths[:broader] = term_config.term_results_broader_ldpath
           opt_ldpaths[:sameas] = term_config.term_results_sameas_ldpath
           opt_ldpaths.delete_if { |_k, v| v.blank? }
+        end
+
+        def jsonld?
+          @jsonld == true
+        end
+
+        def performance_data?
+          @performance_data == true
         end
 
         def preds_for_term
@@ -181,6 +213,14 @@ module Qa::Authorities
             end
           end
           predicates_hash
+        end
+
+        def append_performance_data(results)
+          performance = { predicate_count: results['predicates'].size,
+                          fetch_time_s: access_time_s,
+                          normalization_time_s: normalize_time_s,
+                          total_time_s: (access_time_s + normalize_time_s) }
+          { performance: performance, results: results }
         end
     end
   end

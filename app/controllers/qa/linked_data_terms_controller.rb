@@ -35,8 +35,8 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # Return a list of terms based on a query
   # get "/search/linked_data/:vocab(/:subauthority)"
   # @see Qa::Authorities::LinkedData::SearchQuery#search
-  def search # rubocop:disable Metrics/MethodLength
-    terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params, context: context?)
+  def search # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params, context: context?, performance_data: performance_data?)
     cors_allow_origin_header(response)
     render json: terms
   rescue Qa::ServiceUnavailable
@@ -59,7 +59,7 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # get "/show/linked_data/:vocab/:subauthority/:id
   # @see Qa::Authorities::LinkedData::FindTerm#find
   def show # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params, jsonld: jsonld?)
+    term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params, jsonld: jsonld?, performance_data: performance_data?)
     cors_allow_origin_header(response)
     content_type = jsonld? ? 'application/ld+json' : 'application/json'
     render json: term, content_type: content_type
@@ -86,7 +86,7 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # get "/fetch/linked_data/:vocab"
   # @see Qa::Authorities::LinkedData::FindTerm#find
   def fetch # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    term = @authority.find(uri, subauth: subauthority, language: language, replacements: replacement_params, jsonld: jsonld?)
+    term = @authority.find(uri, subauth: subauthority, language: language, replacements: replacement_params, jsonld: jsonld?, performance_data: performance_data?)
     cors_allow_origin_header(response)
     content_type = jsonld? ? 'application/ld+json' : 'application/json'
     render json: term, content_type: content_type
@@ -224,6 +224,11 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     def details?
       details = params.fetch(:details, 'false')
       details.casecmp('true').zero?
+    end
+
+    def performance_data?
+      performance_data = params.fetch(:performance_data, 'false')
+      performance_data.casecmp('true').zero?
     end
 
     def validate_auth_reload_token

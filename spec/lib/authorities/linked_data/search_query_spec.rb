@@ -4,6 +4,44 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
   describe '#search' do
     let(:lod_oclc) { described_class.new(search_config(:OCLC_FAST)) }
 
+    context 'performance stats' do
+      before do
+        stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=oclc.personalName%20all%20%22cornell%22&sortKeys=usage')
+          .to_return(status: 200, body: webmock_fixture('lod_oclc_personalName_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      context 'when set to true' do
+        let :results do
+          lod_oclc.search('cornell', subauth: 'personal_name', replacements: { 'maximumRecords' => '3' }, performance_data: true)
+        end
+        it 'includes performance in return hash' do
+          expect(results).to be_kind_of Hash
+          expect(results.keys).to match_array [:performance, :results]
+          expect(results[:performance].keys).to match_array [:result_count, :fetch_time_s, :normalization_time_s, :total_time_s]
+          expect(results[:performance][:total_time_s]).to eq results[:performance][:fetch_time_s] + results[:performance][:normalization_time_s]
+          expect(results[:performance][:result_count]).to eq 3
+          expect(results[:results].count).to eq 3
+        end
+      end
+
+      context 'when set to false' do
+        let :results do
+          lod_oclc.search('cornell', subauth: 'personal_name', replacements: { 'maximumRecords' => '3' }, performance_data: false)
+        end
+        it 'does NOT include performance in return hash' do
+          expect(results).to be_kind_of Array
+        end
+      end
+
+      context 'when using default setting' do
+        let :results do
+          lod_oclc.search('cornell', subauth: 'personal_name', replacements: { 'maximumRecords' => '3' })
+        end
+        it 'does NOT include performance in return hash' do
+          expect(results).to be_kind_of Array
+        end
+      end
+    end
+
     context 'in OCLC_FAST authority' do
       context '0 search results' do
         let :results do

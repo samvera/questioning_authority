@@ -294,6 +294,33 @@ describe Qa::LinkedDataTermsController, type: :controller do
         expect(results.first.key?('context')).to be false
       end
     end
+
+    context 'when requesting performance data' do
+      before do
+        Qa.config.disable_cors_headers
+        stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage')
+          .to_return(status: 200, body: webmock_fixture('lod_oclc_all_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      it "returns basic data + performance data when performance_data='true'" do
+        get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', maximumRecords: '3', performance_data: 'true' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Hash
+        expect(results.keys).to match_array ['performance', 'results']
+        expect(results['performance'].keys).to match_array ['result_count', 'fetch_time_s', 'normalization_time_s', 'total_time_s']
+        expect(results['performance']['total_time_s']).to eq results['performance']['fetch_time_s'] + results['performance']['normalization_time_s']
+        expect(results['performance']['result_count']).to eq 3
+        expect(results['results'].count).to eq 3
+      end
+
+      it "returns basic data only when performance_data='false'" do
+        get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', maximumRecords: '3', performance_data: 'false' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Array
+        expect(results.size).to eq 3
+      end
+    end
   end
 
   describe '#show' do
@@ -424,6 +451,33 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
       end
     end
+
+    context 'when requesting performance data' do
+      before do
+        stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh85118553')
+          .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      it "returns basic data + performance data when performance_data='true'" do
+        get :show, params: { id: 'sh 85118553', vocab: 'LOC', subauthority: 'subjects', performance_data: 'true' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Hash
+        expect(results.keys).to match_array ['performance', 'results']
+        expect(results['performance'].keys).to match_array ['predicate_count', 'fetch_time_s', 'normalization_time_s', 'total_time_s']
+        expect(results['performance']['total_time_s']).to eq results['performance']['fetch_time_s'] + results['performance']['normalization_time_s']
+        expect(results['performance']['predicate_count']).to eq 15
+        expect(results['results']['predicates'].count).to eq 15
+      end
+
+      it "returns basic data only when performance_data='false'" do
+        get :show, params: { id: 'sh 85118553', vocab: 'LOC', subauthority: 'subjects', performance_data: 'false' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Hash
+        expect(results.keys).not_to include('performance')
+        expect(results['predicates'].size).to eq 15
+      end
+    end
   end
 
   describe '#fetch' do
@@ -551,6 +605,33 @@ describe Qa::LinkedDataTermsController, type: :controller do
           get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
           expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
         end
+      end
+    end
+
+    context 'when requesting performance data' do
+      before do
+        stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369')
+          .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      it "returns basic data + performance data when performance_data='true'" do
+        get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', performance_data: 'true' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Hash
+        expect(results.keys).to match_array ['performance', 'results']
+        expect(results['performance'].keys).to match_array ['predicate_count', 'fetch_time_s', 'normalization_time_s', 'total_time_s']
+        expect(results['performance']['total_time_s']).to eq results['performance']['fetch_time_s'] + results['performance']['normalization_time_s']
+        expect(results['performance']['predicate_count']).to eq 7
+        expect(results['results']['predicates'].count).to eq 7
+      end
+
+      it "returns basic data only when performance_data='false'" do
+        get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', performance_data: 'false' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Hash
+        expect(results.keys).not_to include('performance')
+        expect(results['predicates'].size).to eq 7
       end
     end
   end
