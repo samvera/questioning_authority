@@ -56,6 +56,7 @@ module Qa::Authorities
         lang = [lang] if lang.is_a? String
         @term_language = lang.collect(&:to_sym)
       end
+      alias language term_language
 
       # Return results ldpaths or predicates
       # @return [Hash] all the configured ldpaths or predicates to pull out of the results
@@ -183,6 +184,15 @@ module Qa::Authorities
       end
       alias subauthorities term_subauthorities
 
+      def info
+        return [] unless supports_term?
+        auth_name = authority_name.downcase.to_s
+        language = Qa::LinkedData::LanguageService.preferred_language(authority_language: language).map(&:to_s)
+        details = summary_without_subauthority(auth_name, language)
+        subauthorities.keys { |subauth_name| details << summary_with_subauthority(auth_name, subauth_name.downcase.to_s, language) }
+        details
+      end
+
       private
 
         def pred_id_from_ldpath
@@ -195,6 +205,29 @@ module Qa::Authorities
           prefix = tokens.first.to_sym
           prefix_path = prefixes[prefix]
           prefix_path + tokens.second.strip
+        end
+
+        def summary_without_subauthority(auth_name, language)
+          [
+            {
+              "label" => "#{auth_name} term (QA)",
+              "uri" => "urn:qa:term:#{auth_name}",
+              "authority" => auth_name,
+              "action" => "term",
+              "language" => language
+            }
+          ]
+        end
+
+        def summary_with_subauthority(auth_name, subauth_name, language)
+          {
+            "label" => "#{auth_name} term #{subauth_name} (QA)",
+            "uri" => "urn:qa:term:#{auth_name}:#{subauth_name}",
+            "authority" => auth_name,
+            "subauthority" => subauth_name,
+            "action" => "term",
+            "language" => language
+          }
         end
     end
   end

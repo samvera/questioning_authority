@@ -41,6 +41,14 @@ module Qa
       def self.authority_names
         authority_configs.keys.sort
       end
+
+      # Get the list of names and details of the loaded authorities
+      # @return [Array<String>] names of the authority config files that are currently loaded
+      def self.authority_details
+        details = []
+        authority_names.each { |auth_name| details << Qa::Authorities::LinkedData::Config.new(auth_name).authority_info }
+        details.flatten
+      end
     end
   end
 end

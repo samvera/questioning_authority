@@ -4,7 +4,7 @@
 # @see Qa::Authorities::LinkedData::TermConfig
 module Qa::Authorities
   module LinkedData
-    class SearchConfig
+    class SearchConfig # rubocop:disable Metrics/ClassLength
       attr_reader :prefixes, :full_config, :search_config
       private :full_config, :search_config
 
@@ -175,6 +175,40 @@ module Qa::Authorities
         @subauthorities ||= {} if search_config.nil? || !(search_config.key? :subauthorities)
         @subauthorities ||= search_config.fetch(:subauthorities)
       end
+
+      def info
+        return [] unless supports_search?
+        auth_name = authority_name.downcase.to_s
+        language = Qa::LinkedData::LanguageService.preferred_language(authority_language: language).map(&:to_s)
+        details = summary_without_subauthority(auth_name, language)
+        subauthorities.each_key { |subauth_name| details << summary_with_subauthority(auth_name, subauth_name.downcase.to_s, language) }
+        details
+      end
+
+      private
+
+        def summary_without_subauthority(auth_name, language)
+          [
+            {
+              "label" => "#{auth_name} search (QA)",
+              "uri" => "urn:qa:search:#{auth_name}",
+              "authority" => auth_name,
+              "action" => "search",
+              "language" => language
+            }
+          ]
+        end
+
+        def summary_with_subauthority(auth_name, subauth_name, language)
+          {
+            "label" => "#{auth_name} search #{subauth_name} (QA)",
+            "uri" => "urn:qa:search:#{auth_name}:#{subauth_name}",
+            "authority" => auth_name,
+            "subauthority" => subauth_name,
+            "action" => "search",
+            "language" => language
+          }
+        end
     end
   end
 end

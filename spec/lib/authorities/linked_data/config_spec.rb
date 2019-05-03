@@ -412,6 +412,53 @@ describe Qa::Authorities::LinkedData::Config do
     end
   end
 
+  describe '#authority_info' do
+    let(:term_details) do
+      {
+        "label" => "oclc_fast term (QA)",
+        "uri" => "urn:qa:term:oclc_fast",
+        "authority" => "oclc_fast",
+        "action" => "term",
+        "language" => ["en"]
+      }
+    end
+
+    let(:search_details) do
+      {
+        "label" => "oclc_fast search (QA)",
+        "uri" => "urn:qa:search:oclc_fast",
+        "authority" => "oclc_fast",
+        "action" => "search",
+        "language" => ["en"]
+      }
+    end
+
+    let(:search_details_with_subauth) do
+      {
+        "label" => "oclc_fast search topic (QA)",
+        "uri" => "urn:qa:search:oclc_fast:topic",
+        "authority" => "oclc_fast",
+        "subauthority" => "topic",
+        "action" => "search",
+        "language" => ["en"]
+      }
+    end
+
+    let(:details) { described_class.new(:OCLC_FAST).authority_info }
+
+    it "returns a list with details for term without subauthorities" do
+      expect(details).to include_hash(term_details)
+    end
+
+    it "returns a list with details for search without subauthorities" do
+      expect(details).to include_hash(search_details)
+    end
+
+    it "returns a list with details for search with a subauthority" do
+      expect(details).to include_hash(search_details_with_subauth)
+    end
+  end
+
   describe '#config_version' do
     context 'when version is NOT in the config file' do
       it 'returns default as 1.0' do
