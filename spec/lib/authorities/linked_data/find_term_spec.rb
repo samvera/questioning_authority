@@ -17,6 +17,42 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
       end
     end
 
+    context 'performance stats' do
+      before do
+        stub_request(:get, 'http://id.worldcat.org/fast/530369')
+          .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      context 'when set to true' do
+        let :results do
+          lod_oclc.find('530369', performance_data: true)
+        end
+        it 'includes performance in return hash' do
+          expect(results.keys).to match_array [:performance, :results]
+          expect(results[:performance].keys).to match_array [:predicate_count, :fetch_time_s, :normalization_time_s, :total_time_s]
+          expect(results[:performance][:predicate_count]).to eq 7
+          expect(results[:performance][:total_time_s]).to eq results[:performance][:fetch_time_s] + results[:performance][:normalization_time_s]
+        end
+      end
+
+      context 'when set to false' do
+        let :results do
+          lod_oclc.find('530369', performance_data: false)
+        end
+        it 'does NOT include performance in return hash' do
+          expect(results.keys).not_to include(:performance)
+        end
+      end
+
+      context 'when using default setting' do
+        let :results do
+          lod_oclc.find('530369')
+        end
+        it 'does NOT include performance in return hash' do
+          expect(results.keys).not_to include(:performance)
+        end
+      end
+    end
+
     context 'in OCLC_FAST authority' do
       context 'term found' do
         let :results do

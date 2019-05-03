@@ -15,8 +15,8 @@ module Qa::Authorities
         @search_config = search_config
       end
 
-      attr_reader :search_config, :graph, :language
-      private :graph, :language
+      attr_reader :search_config, :graph, :language, :access_time_s, :normalize_time_s
+      private :graph, :language, :access_time_s, :normalize_time_s
 
       delegate :subauthority?, :supports_sort?, :prefixes, :authority_name, to: :search_config
 
@@ -26,27 +26,47 @@ module Qa::Authorities
       # @param replacements [Hash] (optional) replacement values with { pattern_name (defined in YAML config) => value }
       # @param subauth [String] (optional) the subauthority to query
       # @param context [Boolean] (optional) true if context should be returned with the results; otherwise, false (default: false)
+      # @param performance_data [Boolean] (optional) true if include_performance_data should be returned with the results; otherwise, false (default: false)
       # @return [String] json results
       # @example Json Results for Linked Data Search
       #   [ {"uri":"http://id.worldcat.org/fast/5140","id":"5140","label":"Cornell, Joseph"},
       #     {"uri":"http://id.worldcat.org/fast/72456","id":"72456","label":"Cornell, Sarah Maria, 1802-1832"},
       #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
-      def search(query, language: nil, replacements: {}, subauth: nil, context: false)
+      def search(query, language: nil, replacements: {}, subauth: nil, context: false, performance_data: false) # rubocop:disable Metrics/ParameterLists
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
         @context = context
+        @performance_data = performance_data
         @language = language_service.preferred_language(user_language: language, authority_language: search_config.language)
         url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth, language: @language)
         Rails.logger.info "QA Linked Data search url: #{url}"
         load_graph(url: url)
-        results = map_results
-        convert_results_to_json(results)
+        normalize_results
       end
 
       private
 
         def load_graph(url:)
+          access_start_dt = Time.now.utc
+
           @graph = graph_service.load_graph(url: url)
+
+          access_end_dt = Time.now.utc
+          @access_time_s = access_end_dt - access_start_dt
+          Rails.logger.info("Time to receive data from authority: #{access_time_s}s")
+        end
+
+        def normalize_results
+          normalize_start_dt = Time.now.utc
+
           @graph = graph_service.filter(graph: @graph, language: language, remove_blanknode_subjects: true)
+          results = map_results
+          json = convert_results_to_json(results)
+
+          normalize_end_dt = Time.now.utc
+          @normalize_time_s = normalize_end_dt - normalize_start_dt
+          Rails.logger.info("Time to convert data to json: #{normalize_time_s}s")
+          json = append_performance_data(json) if performance_data?
+          json
         end
 
         def map_results
@@ -74,6 +94,10 @@ module Qa::Authorities
 
         def context?
           @context == true
+        end
+
+        def performance_data?
+          @performance_data == true
         end
 
         def ldpaths_for_search
@@ -141,6 +165,14 @@ module Qa::Authorities
           lbl = labels.join(', ') if labels.size.positive?
           lbl = '[' + lbl + ']' if labels.size > 1
           lbl
+        end
+
+        def append_performance_data(results)
+          performance = { result_count: results.size,
+                          fetch_time_s: access_time_s,
+                          normalization_time_s: normalize_time_s,
+                          total_time_s: (access_time_s + normalize_time_s) }
+          { performance: performance, results: results }
         end
     end
   end
