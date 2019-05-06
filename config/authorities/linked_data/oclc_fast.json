@@ -25,10 +25,10 @@
     },
     "term_id": "ID",
     "results": {
-      "id_predicate":       "http://purl.org/dc/terms/identifier",
-      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",
-      "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
-      "sameas_predicate":   "http://schema.org/sameAs"
+      "id_ldpath":       "dcterms:identifier",
+      "label_ldpath":    "skos:prefLabel",
+      "altlabel_ldpath": "skos:altLabel",
+      "sameas_ldpath":   "schema:sameAs"
     }
   },
   "search": {
