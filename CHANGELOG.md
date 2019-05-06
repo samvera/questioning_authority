@@ -1,3 +1,13 @@
+### 4.1.0 (2019-05-03)
+
+* add option to include performance statistics in the returned result for linked data search query and term fetch
+* add option to include authority details when getting list of linked data authorities
+* add support for main results to be specified as ldpath or predicate (one or the other, not mixed)
+* add Discogs authority
+* allow language for linked data processing to be specified in the http accept_language header
+* Remove support of Rails 5.0
+* Add CircleCI Support
+
 ### 4.0.0 (2019-03-08)
 
 * refactor much of the structure of the linked data module
