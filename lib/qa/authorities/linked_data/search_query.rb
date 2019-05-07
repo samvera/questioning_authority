@@ -15,8 +15,8 @@ module Qa::Authorities
         @search_config = search_config
       end
 
-      attr_reader :search_config, :graph, :language, :access_time_s, :normalize_time_s
-      private :graph, :language, :access_time_s, :normalize_time_s
+      attr_reader :search_config, :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s
+      private :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s
 
       delegate :subauthority?, :supports_sort?, :prefixes, :authority_name, to: :search_config
 
@@ -48,7 +48,7 @@ module Qa::Authorities
         def load_graph(url:)
           access_start_dt = Time.now.utc
 
-          @graph = graph_service.load_graph(url: url)
+          @full_graph = graph_service.load_graph(url: url)
 
           access_end_dt = Time.now.utc
           @access_time_s = access_end_dt - access_start_dt
@@ -58,7 +58,7 @@ module Qa::Authorities
         def normalize_results
           normalize_start_dt = Time.now.utc
 
-          @graph = graph_service.filter(graph: @graph, language: language, remove_blanknode_subjects: true)
+          @filtered_graph = graph_service.filter(graph: @full_graph, language: language)
           results = map_results
           json = convert_results_to_json(results)
 
@@ -83,7 +83,7 @@ module Qa::Authorities
             )
           end
 
-          results_mapper_service.map_values(graph: @graph, prefixes: prefixes, ldpath_map: ldpath_map,
+          results_mapper_service.map_values(graph: filtered_graph, prefixes: prefixes, ldpath_map: ldpath_map,
                                             predicate_map: predicate_map, sort_key: :sort,
                                             preferred_language: @language, context_map: context_map)
         end
