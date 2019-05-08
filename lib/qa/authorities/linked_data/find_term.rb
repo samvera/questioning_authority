@@ -108,9 +108,23 @@ module Qa::Authorities
                                             ldpath_map: ldpaths_for_term, predicate_map: preds_for_term)
         end
 
+        # special processing for loc ids for backward compatibility
         def normalize_id
           return id if expects_uri?
-          authority_name.to_s.casecmp('loc').zero? ? id.delete(' ') : id
+          loc? ? id.delete(' ') : id
+        end
+
+        # special processing for loc ids for backward compatibility
+        def loc_id
+          loc_id = URI.unescape(id)
+          digit_idx = loc_id.index(/\d/)
+          loc_id.insert(digit_idx, ' ') if loc? && loc_id.index(' ').blank? && digit_idx > 0
+          loc_id
+        end
+
+        # determine if the current authority is LOC which may require special processing of its ids for backward compatibility
+        def loc?
+          authority_name.to_s.casecmp('loc').zero?
         end
 
         def expects_uri?
@@ -119,7 +133,17 @@ module Qa::Authorities
 
         def extract_uri
           return @uri = RDF::URI.new(id) if expects_uri?
-          @uri = graph_service.subjects_for_object_value(graph: @filtered_graph, predicate: RDF::URI.new(term_config.term_results_id_predicate), object_value: id.gsub('%20', ' ')).first
+          @uri = graph_service.subjects_for_object_value(graph: @filtered_graph, predicate: RDF::URI.new(term_config.term_results_id_predicate), object_value: URI.unescape(id)).first
+          return @uri unless loc? && @uri.blank?
+          # for backward compatibility, if an loc id as passed in fails to extract the URI, try to adding a blank to the id
+          @uri = graph_service.subjects_for_object_value(graph: @filtered_graph, predicate: RDF::URI.new(term_config.term_results_id_predicate), object_value: loc_id).first
+          if @uri.present?
+            Qa.deprecation_warning(
+              in_msg: 'Qa::Authorities::LinkedData::FindTerm',
+              msg: 'Special processing of LOC ids is deprecated; id should be an exact match of the id in the graph'
+            )
+          end
+          @uri
         end
 
         def ldpaths_for_term
