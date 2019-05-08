@@ -73,13 +73,13 @@ module Qa::Authorities
           predicate_map = preds_for_search
           ldpath_map = ldpaths_for_search
 
-          raise Qa::InvalidConfiguration, "do not specify results using both predicates and ldpath in search configuration for LOD authority #{authority_name} (ldpath is preferred)" if predicate_map.present? && ldpath_map.present? # rubocop:disable Metrics/LineLength
-          raise Qa::InvalidConfiguration, "must specify label_ldpath or label_predicate in search configuration for LOD authority #{authority_name} (label_ldpath is preferred)" unless ldpath_map.key?(:label) || predicate_map.key?(:label) # rubocop:disable Metrics/LineLength
+          raise Qa::InvalidConfiguration, "do not specify results using both predicates and ldpath in search configuration for linked data authority #{authority_name} (ldpath is preferred)" if predicate_map.present? && ldpath_map.present? # rubocop:disable Metrics/LineLength
+          raise Qa::InvalidConfiguration, "must specify label_ldpath or label_predicate in search configuration for linked data authority #{authority_name} (label_ldpath is preferred)" unless ldpath_map.key?(:label) || predicate_map.key?(:label) # rubocop:disable Metrics/LineLength
 
           if predicate_map.present?
             Qa.deprecation_warning(
               in_msg: 'Qa::Authorities::LinkedData::SearchQuery',
-              msg: 'defining results using predicates in search config is deprecated; update to define using ldpaths'
+              msg: "defining results using predicates in search config is deprecated; update to define using ldpaths (authority: #{authority_name})"
             )
           end
 
@@ -119,7 +119,7 @@ module Qa::Authorities
         end
 
         def preds_for_search
-          label_pred_uri = search_config.results_label_predicate
+          label_pred_uri = search_config.results_label_predicate(suppress_deprecation_warning: true)
           return {} if label_pred_uri.blank?
           preds = { label: label_pred_uri, uri: :subject_uri }
           preds[:altlabel] = search_config.results_altlabel_predicate unless search_config.results_altlabel_predicate.nil?
