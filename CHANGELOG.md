@@ -1,3 +1,10 @@
+### 4.1.1 (2019-05-08)
+
+* special processing for LOC IDs
+* reset uri with every call to find
+* do not discard blank nodes when filtering graph (ignored during mapping)
+* improve deprecation warnings
+
 ### 4.1.0 (2019-05-03)
 
 * add option to include performance statistics in the returned result for linked data search query and term fetch
