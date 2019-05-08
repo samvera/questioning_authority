@@ -1,0 +1,68 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <madsrdf:Topic rdf:about="http://id.loc.gov/authorities/subjects/sh1234" xmlns:madsrdf="http://www.loc.gov/mads/rdf/v1#">
+    <rdf:type rdf:resource="http://www.loc.gov/mads/rdf/v1#Authority"/>
+    <madsrdf:authoritativeLabel xml:lang="en">More Science</madsrdf:authoritativeLabel>
+    <madsrdf:elementList rdf:parseType="Collection">
+      <madsrdf:TopicElement>
+	<madsrdf:elementValue xml:lang="en">More Science</madsrdf:elementValue>
+      </madsrdf:TopicElement>
+    </madsrdf:elementList>
+    <madsrdf:hasVariant>
+      <madsrdf:Topic>
+	<rdf:type rdf:resource="http://www.loc.gov/mads/rdf/v1#Variant"/>
+	<madsrdf:variantLabel xml:lang="en">More Natural science</madsrdf:variantLabel>
+	<madsrdf:elementList rdf:parseType="Collection">
+	  <madsrdf:TopicElement>
+	    <madsrdf:elementValue xml:lang="en">More Natural science</madsrdf:elementValue>
+	  </madsrdf:TopicElement>
+	</madsrdf:elementList>
+      </madsrdf:Topic>
+    </madsrdf:hasVariant>
+    <madsrdf:hasVariant>
+      <madsrdf:Topic>
+	<rdf:type rdf:resource="http://www.loc.gov/mads/rdf/v1#Variant"/>
+	<madsrdf:variantLabel xml:lang="en">More Science of science</madsrdf:variantLabel>
+	<madsrdf:elementList rdf:parseType="Collection">
+	  <madsrdf:TopicElement>
+	    <madsrdf:elementValue xml:lang="en">More Science of science</madsrdf:elementValue>
+	  </madsrdf:TopicElement>
+	</madsrdf:elementList>
+      </madsrdf:Topic>
+    </madsrdf:hasVariant>
+    <madsrdf:hasVariant>
+      <madsrdf:Topic>
+	<rdf:type rdf:resource="http://www.loc.gov/mads/rdf/v1#Variant"/>
+	<madsrdf:variantLabel xml:lang="en">More Sciences</madsrdf:variantLabel>
+	<madsrdf:elementList rdf:parseType="Collection">
+	  <madsrdf:TopicElement>
+	    <madsrdf:elementValue xml:lang="en">More Sciences</madsrdf:elementValue>
+	  </madsrdf:TopicElement>
+	</madsrdf:elementList>
+      </madsrdf:Topic>
+    </madsrdf:hasVariant>
+    <identifiers:lccn xmlns:identifiers="http://id.loc.gov/vocabulary/identifiers/">sh 1234</identifiers:lccn>
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel xml:lang="en" xmlns:skos="http://www.w3.org/2004/02/skos/core#">More Science</skos:prefLabel>
+    <skosxl:altLabel xmlns:skosxl="http://www.w3.org/2008/05/skos-xl#">
+      <rdf:Description>
+	<rdf:type rdf:resource="http://www.w3.org/2008/05/skos-xl#Label"/>
+	<skosxl:literalForm xml:lang="en">More Natural science</skosxl:literalForm>
+      </rdf:Description>
+    </skosxl:altLabel>
+    <skosxl:altLabel xmlns:skosxl="http://www.w3.org/2008/05/skos-xl#">
+      <rdf:Description>
+	<rdf:type rdf:resource="http://www.w3.org/2008/05/skos-xl#Label"/>
+	<skosxl:literalForm xml:lang="en">More Science of science</skosxl:literalForm>
+      </rdf:Description>
+    </skosxl:altLabel>
+    <skosxl:altLabel xmlns:skosxl="http://www.w3.org/2008/05/skos-xl#">
+      <rdf:Description>
+	<rdf:type rdf:resource="http://www.w3.org/2008/05/skos-xl#Label"/>
+	<skosxl:literalForm xml:lang="en">More Sciences</skosxl:literalForm>
+      </rdf:Description>
+    </skosxl:altLabel>
+    <skos:altLabel xml:lang="en" xmlns:skos="http://www.w3.org/2004/02/skos/core#">More Natural science</skos:altLabel>
+    <skos:altLabel xml:lang="en" xmlns:skos="http://www.w3.org/2004/02/skos/core#">More Science of science</skos:altLabel>
+    <skos:altLabel xml:lang="en" xmlns:skos="http://www.w3.org/2004/02/skos/core#">More Sciences</skos:altLabel>
+  </madsrdf:Topic>
+</rdf:RDF>

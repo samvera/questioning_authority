@@ -15,8 +15,8 @@ module Qa::Authorities
         @term_config = term_config
       end
 
-      attr_reader :term_config, :full_graph, :filtered_graph, :language, :id, :access_time_s, :normalize_time_s
-      private :full_graph, :filtered_graph, :language, :id, :access_time_s, :normalize_time_s
+      attr_reader :term_config, :full_graph, :filtered_graph, :language, :id, :uri, :access_time_s, :normalize_time_s
+      private :full_graph, :filtered_graph, :language, :id, :uri, :access_time_s, :normalize_time_s
 
       delegate :term_subauthority?, :prefixes, :authority_name, to: :term_config
 
@@ -80,6 +80,7 @@ module Qa::Authorities
           return full_graph.dump(:jsonld, standard_prefixes: true) if jsonld?
 
           filter_graph
+          extract_uri
           results = map_results
           convert_results_to_json(results)
         end
@@ -116,8 +117,7 @@ module Qa::Authorities
           term_config.term_id_expects_uri?
         end
 
-        def uri
-          return @uri if @uri.present?
+        def extract_uri
           return @uri = RDF::URI.new(id) if expects_uri?
           @uri = graph_service.subjects_for_object_value(graph: @filtered_graph, predicate: RDF::URI.new(term_config.term_results_id_predicate), object_value: id.gsub('%20', ' ')).first
         end

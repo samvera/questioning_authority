@@ -100,6 +100,11 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
             .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
           lod_loc.find('sh 85118553', subauth: 'subjects')
         end
+        let :second_results do
+          stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh1234')
+            .to_return(status: 200, body: webmock_fixture('lod_loc_second_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+          lod_loc.find('sh 1234', subauth: 'subjects')
+        end
         it 'has correct primary predicate values' do
           expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
           expect(results[:uri]).to be_kind_of String
@@ -155,6 +160,15 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
           expect(results['predicates']['http://www.w3.org/2004/02/skos/core#editorial'])
             .to eq ['headings beginning with the word [Scientific;] and subdivision [Science] under ethnic groups and individual wars, e.g. [World War, 1939-1945--Science]']
           expect(results['predicates']['http://www.w3.org/2004/02/skos/core#inScheme']).to eq ['http://id.loc.gov/authorities/subjects']
+        end
+
+        it 'has correct primary predicate values for second request' do
+          expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
+          expect(second_results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh1234'
+          expect(second_results[:uri]).to be_kind_of String
+          expect(second_results[:id]).to eq 'sh 1234'
+          expect(second_results[:label]).to eq ['More Science']
+          expect(second_results[:altlabel]).to include('More Natural science', 'More Science of science', 'More Sciences')
         end
       end
     end
