@@ -16,7 +16,9 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
         it 'includes performance in return hash' do
           expect(results).to be_kind_of Hash
           expect(results.keys).to match_array [:performance, :results]
-          expect(results[:performance].keys).to match_array [:result_count, :fetch_time_s, :normalization_time_s, :total_time_s]
+          expect(results[:performance].keys).to match_array [:result_count, :fetch_time_s, :normalization_time_s,
+                                                             :fetched_bytes, :normalized_bytes, :fetch_bytes_per_s,
+                                                             :normalization_bytes_per_s, :total_time_s]
           expect(results[:performance][:total_time_s]).to eq results[:performance][:fetch_time_s] + results[:performance][:normalization_time_s]
           expect(results[:performance][:result_count]).to eq 3
           expect(results[:results].count).to eq 3

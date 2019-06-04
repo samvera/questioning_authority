@@ -15,8 +15,8 @@ module Qa::Authorities
         @search_config = search_config
       end
 
-      attr_reader :search_config, :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s
-      private :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s
+      attr_reader :search_config, :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size
+      private :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size
 
       delegate :subauthority?, :supports_sort?, :prefixes, :authority_name, to: :search_config
 
@@ -52,6 +52,7 @@ module Qa::Authorities
 
           access_end_dt = Time.now.utc
           @access_time_s = access_end_dt - access_start_dt
+          @fetched_size = full_graph.triples.to_s.size if performance_data?
           Rails.logger.info("Time to receive data from authority: #{access_time_s}s")
         end
 
@@ -64,6 +65,7 @@ module Qa::Authorities
 
           normalize_end_dt = Time.now.utc
           @normalize_time_s = normalize_end_dt - normalize_start_dt
+          @normalized_size = json.to_s.size if performance_data?
           Rails.logger.info("Time to convert data to json: #{normalize_time_s}s")
           json = append_performance_data(json) if performance_data?
           json
@@ -171,6 +173,10 @@ module Qa::Authorities
           performance = { result_count: results.size,
                           fetch_time_s: access_time_s,
                           normalization_time_s: normalize_time_s,
+                          fetched_bytes: fetched_size,
+                          normalized_bytes: normalized_size,
+                          fetch_bytes_per_s: fetched_size / access_time_s,
+                          normalization_bytes_per_s: normalized_size / normalize_time_s,
                           total_time_s: (access_time_s + normalize_time_s) }
           { performance: performance, results: results }
         end
