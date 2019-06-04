@@ -64,4 +64,7 @@ module Qa
   module IriTemplate
     class MissingParameter < StandardError; end
   end
+
+  # Raised when data is returned but cannot be normalized
+  class DataNormalizationError < StandardError; end
 end

@@ -336,6 +336,18 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
       end
 
+      context 'when data normalization error' do
+        before do
+          stub_request(:get, 'http://id.worldcat.org/fast/530369')
+            .to_return(status: 200, body: webmock_fixture('lod_oclc_term_bad_id.nt'), headers: { 'Content-Type' => 'application/ntriples' })
+        end
+        it 'returns 500' do
+          expect(Rails.logger).to receive(:warn).with("Data Normalization Error - Unable to extract URI based on ID: 530369")
+          get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
+          expect(response.code).to eq('500')
+        end
+      end
+
       context 'when rdf format error' do
         before do
           stub_request(:get, 'http://id.worldcat.org/fast/530369').to_return(status: 200)
