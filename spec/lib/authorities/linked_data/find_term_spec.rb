@@ -90,90 +90,131 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
             .to include('Cornell University', 'Ithaca (N.Y.). Cornell University', "Kornel\\xCA\\xB9skii universitet",
                         "K\\xCA\\xBBang-nai-erh ta hs\\xC3\\xBCeh")
         end
+
+        context "ID in graph doesn't match ID in request URI" do
+          before do
+            stub_request(:get, 'http://id.worldcat.org/fast/530369')
+              .to_return(status: 200, body: webmock_fixture('lod_oclc_term_bad_id.nt'), headers: { 'Content-Type' => 'application/ntriples' })
+          end
+
+          it 'raises DataNormalizationError' do
+            expect { lod_oclc.find('530369') }.to raise_error Qa::DataNormalizationError, "Unable to extract URI based on ID: 530369"
+          end
+        end
       end
     end
 
     context 'in LOC authority' do
       context 'term found' do
-        before do
-          stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh85118553')
-            .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
-          stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh1234')
-            .to_return(status: 200, body: webmock_fixture('lod_loc_second_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+        context 'when id requires special processing for <blank> in id' do
+          before do
+            stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh85118553')
+              .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+          end
+
+          let(:results) { lod_loc.find('sh 85118553', subauth: 'subjects') }
+
+          it 'has correct primary predicate values' do
+            expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
+            expect(results[:uri]).to be_kind_of String
+            expect(results[:id]).to eq 'sh 85118553'
+            expect(results[:label]).to eq ['Science']
+            expect(results[:altlabel]).to include('Natural science', 'Science of science', 'Sciences')
+            expect(results[:narrower]).to include('http://id.loc.gov/authorities/subjects/sh92004048')
+            expect(results[:narrower].first).to be_kind_of String
+          end
+
+          it 'has correct number of predicates in pred-obj list' do
+            expect(results['predicates'].count).to eq 15
+          end
+
+          it 'has primary predicates in pred-obj list' do
+            expect(results['predicates']['http://id.loc.gov/vocabulary/identifiers/lccn']).to eq ['sh 85118553']
+            expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#authoritativeLabel']).to eq ['Science']
+            expect(results['predicates']['http://www.w3.org/2004/02/skos/core#prefLabel']).to eq ['Science']
+            expect(results['predicates']['http://www.w3.org/2004/02/skos/core#altLabel']).to include('Natural science', 'Science of science', 'Sciences')
+          end
+
+          it 'has loc mads predicate values' do
+            expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#classification']).to eq ['Q']
+            expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#isMemberOfMADSCollection'])
+              .to include('http://id.loc.gov/authorities/subjects/collection_LCSHAuthorizedHeadings',
+                          'http://id.loc.gov/authorities/subjects/collection_LCSH_General',
+                          'http://id.loc.gov/authorities/subjects/collection_SubdivideGeographically')
+            expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#hasCloseExternalAuthority'])
+              .to include('http://data.bnf.fr/ark:/12148/cb12321484k', 'http://data.bnf.fr/ark:/12148/cb119673416',
+                          'http://data.bnf.fr/ark:/12148/cb119934236', 'http://data.bnf.fr/ark:/12148/cb12062047t',
+                          'http://data.bnf.fr/ark:/12148/cb119469567', 'http://data.bnf.fr/ark:/12148/cb11933232c',
+                          'http://data.bnf.fr/ark:/12148/cb122890536', 'http://data.bnf.fr/ark:/12148/cb121155321',
+                          'http://data.bnf.fr/ark:/12148/cb15556043g', 'http://data.bnf.fr/ark:/12148/cb123662513',
+                          'http://d-nb.info/gnd/4066562-8', 'http://data.bnf.fr/ark:/12148/cb120745812',
+                          'http://data.bnf.fr/ark:/12148/cb11973101n', 'http://data.bnf.fr/ark:/12148/cb13328497r')
+            expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#isMemberOfMADSScheme'])
+              .to eq ['http://id.loc.gov/authorities/subjects']
+            expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#editorialNote'])
+              .to eq ['headings beginning with the word [Scientific;] and subdivision [Science] under ethnic groups and individual wars, e.g. [World War, 1939-1945--Science]']
+          end
+
+          it 'has more unspecified predicate values' do
+            expect(results['predicates']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type']).to include('http://www.loc.gov/mads/rdf/v1#Topic', 'http://www.loc.gov/mads/rdf/v1#Authority', 'http://www.w3.org/2004/02/skos/core#Concept')
+            expect(results['predicates']['http://www.w3.org/2002/07/owl#sameAs']).to include('info:lc/authorities/sh85118553', 'http://id.loc.gov/authorities/sh85118553#concept')
+            expect(results['predicates']['http://www.w3.org/2004/02/skos/core#closeMatch'])
+              .to include('http://data.bnf.fr/ark:/12148/cb12321484k', 'http://data.bnf.fr/ark:/12148/cb119673416',
+                          'http://data.bnf.fr/ark:/12148/cb119934236', 'http://data.bnf.fr/ark:/12148/cb12062047t',
+                          'http://data.bnf.fr/ark:/12148/cb119469567', 'http://data.bnf.fr/ark:/12148/cb11933232c',
+                          'http://data.bnf.fr/ark:/12148/cb122890536', 'http://data.bnf.fr/ark:/12148/cb121155321',
+                          'http://data.bnf.fr/ark:/12148/cb15556043g', 'http://data.bnf.fr/ark:/12148/cb123662513',
+                          'http://d-nb.info/gnd/4066562-8', 'http://data.bnf.fr/ark:/12148/cb120745812',
+                          'http://data.bnf.fr/ark:/12148/cb11973101n', 'http://data.bnf.fr/ark:/12148/cb13328497r')
+            expect(results['predicates']['http://www.w3.org/2004/02/skos/core#editorial'])
+              .to eq ['headings beginning with the word [Scientific;] and subdivision [Science] under ethnic groups and individual wars, e.g. [World War, 1939-1945--Science]']
+            expect(results['predicates']['http://www.w3.org/2004/02/skos/core#inScheme']).to eq ['http://id.loc.gov/authorities/subjects']
+          end
         end
 
-        let(:results) { lod_loc.find('sh 85118553', subauth: 'subjects') }
-        let(:second_results) { lod_loc.find('sh 1234', subauth: 'subjects') }
-        let(:results_without_blank) { lod_loc.find('sh85118553', subauth: 'subjects') }
+        context 'when multiple requests are made' do
+          before do
+            stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh85118553')
+              .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+            stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh1234')
+              .to_return(status: 200, body: webmock_fixture('lod_loc_second_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+          end
 
-        it 'has correct primary predicate values' do
-          expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
-          expect(results[:uri]).to be_kind_of String
-          expect(results[:id]).to eq 'sh 85118553'
-          expect(results[:label]).to eq ['Science']
-          expect(results[:altlabel]).to include('Natural science', 'Science of science', 'Sciences')
-          expect(results[:narrower]).to include('http://id.loc.gov/authorities/subjects/sh92004048')
-          expect(results[:narrower].first).to be_kind_of String
+          let(:results) { lod_loc.find('sh 85118553', subauth: 'subjects') }
+          let(:second_results) { lod_loc.find('sh 1234', subauth: 'subjects') }
+
+          it 'has correct primary predicate values for second request' do
+            expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
+            expect(second_results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh1234'
+            expect(second_results[:uri]).to be_kind_of String
+            expect(second_results[:id]).to eq 'sh 1234'
+            expect(second_results[:label]).to eq ['More Science']
+            expect(second_results[:altlabel]).to include('More Natural science', 'More Science of science', 'More Sciences')
+          end
         end
 
-        it 'has correct number of predicates in pred-obj list' do
-          expect(results['predicates'].count).to eq 15
+        context 'when id does not have a <blank>' do
+          before do
+            stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh85118553')
+              .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+          end
+
+          let(:results_without_blank) { lod_loc.find('sh85118553', subauth: 'subjects') }
+
+          it 'extracts correct uri' do
+            expect(results_without_blank[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
+          end
         end
 
-        it 'has primary predicates in pred-obj list' do
-          expect(results['predicates']['http://id.loc.gov/vocabulary/identifiers/lccn']).to eq ['sh 85118553']
-          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#authoritativeLabel']).to eq ['Science']
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#prefLabel']).to eq ['Science']
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#altLabel']).to include('Natural science', 'Science of science', 'Sciences')
-        end
+        context "ID in graph doesn't match ID in request URI" do
+          before do
+            stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh85118553')
+              .to_return(status: 200, body: webmock_fixture('lod_loc_term_bad_id.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+          end
 
-        it 'has loc mads predicate values' do
-          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#classification']).to eq ['Q']
-          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#isMemberOfMADSCollection'])
-            .to include('http://id.loc.gov/authorities/subjects/collection_LCSHAuthorizedHeadings',
-                        'http://id.loc.gov/authorities/subjects/collection_LCSH_General',
-                        'http://id.loc.gov/authorities/subjects/collection_SubdivideGeographically')
-          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#hasCloseExternalAuthority'])
-            .to include('http://data.bnf.fr/ark:/12148/cb12321484k', 'http://data.bnf.fr/ark:/12148/cb119673416',
-                        'http://data.bnf.fr/ark:/12148/cb119934236', 'http://data.bnf.fr/ark:/12148/cb12062047t',
-                        'http://data.bnf.fr/ark:/12148/cb119469567', 'http://data.bnf.fr/ark:/12148/cb11933232c',
-                        'http://data.bnf.fr/ark:/12148/cb122890536', 'http://data.bnf.fr/ark:/12148/cb121155321',
-                        'http://data.bnf.fr/ark:/12148/cb15556043g', 'http://data.bnf.fr/ark:/12148/cb123662513',
-                        'http://d-nb.info/gnd/4066562-8', 'http://data.bnf.fr/ark:/12148/cb120745812',
-                        'http://data.bnf.fr/ark:/12148/cb11973101n', 'http://data.bnf.fr/ark:/12148/cb13328497r')
-          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#isMemberOfMADSScheme'])
-            .to eq ['http://id.loc.gov/authorities/subjects']
-          expect(results['predicates']['http://www.loc.gov/mads/rdf/v1#editorialNote'])
-            .to eq ['headings beginning with the word [Scientific;] and subdivision [Science] under ethnic groups and individual wars, e.g. [World War, 1939-1945--Science]']
-        end
-
-        it 'has more unspecified predicate values' do
-          expect(results['predicates']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type']).to include('http://www.loc.gov/mads/rdf/v1#Topic', 'http://www.loc.gov/mads/rdf/v1#Authority', 'http://www.w3.org/2004/02/skos/core#Concept')
-          expect(results['predicates']['http://www.w3.org/2002/07/owl#sameAs']).to include('info:lc/authorities/sh85118553', 'http://id.loc.gov/authorities/sh85118553#concept')
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#closeMatch'])
-            .to include('http://data.bnf.fr/ark:/12148/cb12321484k', 'http://data.bnf.fr/ark:/12148/cb119673416',
-                        'http://data.bnf.fr/ark:/12148/cb119934236', 'http://data.bnf.fr/ark:/12148/cb12062047t',
-                        'http://data.bnf.fr/ark:/12148/cb119469567', 'http://data.bnf.fr/ark:/12148/cb11933232c',
-                        'http://data.bnf.fr/ark:/12148/cb122890536', 'http://data.bnf.fr/ark:/12148/cb121155321',
-                        'http://data.bnf.fr/ark:/12148/cb15556043g', 'http://data.bnf.fr/ark:/12148/cb123662513',
-                        'http://d-nb.info/gnd/4066562-8', 'http://data.bnf.fr/ark:/12148/cb120745812',
-                        'http://data.bnf.fr/ark:/12148/cb11973101n', 'http://data.bnf.fr/ark:/12148/cb13328497r')
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#editorial'])
-            .to eq ['headings beginning with the word [Scientific;] and subdivision [Science] under ethnic groups and individual wars, e.g. [World War, 1939-1945--Science]']
-          expect(results['predicates']['http://www.w3.org/2004/02/skos/core#inScheme']).to eq ['http://id.loc.gov/authorities/subjects']
-        end
-
-        it 'has correct primary predicate values for second request' do
-          expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
-          expect(second_results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh1234'
-          expect(second_results[:uri]).to be_kind_of String
-          expect(second_results[:id]).to eq 'sh 1234'
-          expect(second_results[:label]).to eq ['More Science']
-          expect(second_results[:altlabel]).to include('More Natural science', 'More Science of science', 'More Sciences')
-        end
-
-        it 'extracts correct uri when loc id does not have blank' do
-          expect(results_without_blank[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
+          it 'raises DataNormalizationError' do
+            expect { lod_loc.find('sh85118553', subauth: 'subjects') }.to raise_error Qa::DataNormalizationError, "Unable to extract URI based on ID: sh85118553"
+          end
         end
 
         context 'when alternate authority name is used to access loc' do

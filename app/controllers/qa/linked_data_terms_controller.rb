@@ -80,6 +80,10 @@ class Qa::LinkedDataTermsController < ::ApplicationController
                 "was not identified as a valid RDF format.  You may need to include the linkeddata gem."
     logger.warn msg
     render json: { errors: msg }, status: :internal_server_error
+  rescue Qa::DataNormalizationError => e
+    msg = "Data Normalization Error - #{e.message}"
+    logger.warn msg
+    render json: { errors: msg }, status: :internal_server_error
   end
 
   # Return all the information for a given term given a URI

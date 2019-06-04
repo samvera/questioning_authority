@@ -133,16 +133,26 @@ module Qa::Authorities
 
         def extract_uri
           return @uri = RDF::URI.new(id) if expects_uri?
-          @uri = graph_service.subjects_for_object_value(graph: @filtered_graph, predicate: RDF::URI.new(term_config.term_results_id_predicate), object_value: URI.unescape(id)).first
-          return @uri unless loc? && @uri.blank?
-          # for backward compatibility, if an loc id as passed in fails to extract the URI, try to adding a blank to the id
-          @uri = graph_service.subjects_for_object_value(graph: @filtered_graph, predicate: RDF::URI.new(term_config.term_results_id_predicate), object_value: loc_id).first
-          if @uri.present?
-            Qa.deprecation_warning(
-              in_msg: 'Qa::Authorities::LinkedData::FindTerm',
-              msg: 'Special processing of LOC ids is deprecated; id should be an exact match of the id in the graph'
-            )
-          end
+          extract_uri_by_id
+        end
+
+        def extract_uri_by_id
+          @uri = get_uri_from_graph_by_id(id)
+        rescue Qa::DataNormalizationError
+          raise unless loc?
+          @uri = get_uri_from_graph_by_id(loc_id)
+          Qa.deprecation_warning(
+            in_msg: 'Qa::Authorities::LinkedData::FindTerm',
+            msg: 'Special processing of LOC ids is deprecated; id should be an exact match of the id in the graph'
+          )
+          @uri
+        end
+
+        def get_uri_from_graph_by_id(gid)
+          @uri = graph_service.subjects_for_object_value(graph: @filtered_graph,
+                                                         predicate: RDF::URI.new(term_config.term_results_id_predicate),
+                                                         object_value: URI.unescape(gid)).first
+          raise Qa::DataNormalizationError, "Unable to extract URI based on ID: #{id}" if @uri.blank?
           @uri
         end
 
@@ -240,7 +250,8 @@ module Qa::Authorities
         end
 
         def append_performance_data(results)
-          performance = { predicate_count: results['predicates'].size,
+          pred_count = results['predicates'].present? ? results['predicates'].size : 0
+          performance = { predicate_count: pred_count,
                           fetch_time_s: access_time_s,
                           normalization_time_s: normalize_time_s,
                           total_time_s: (access_time_s + normalize_time_s) }

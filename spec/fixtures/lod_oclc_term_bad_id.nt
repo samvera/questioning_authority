@@ -1,0 +1,4 @@
+<http://id.worldcat.org/fast/530369> <http://purl.org/dc/terms/identifier> "BAD_ID 530369" .
+<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cornell University" .
+<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#altLabel> "Ithaca (N.Y.). Cornell University" .
+<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#sameAs> <http://id.loc.gov/authorities/names/n79021621> .
