@@ -124,7 +124,7 @@ module Qa::Authorities
 
         # determine if the current authority is LOC which may require special processing of its ids for backward compatibility
         def loc?
-          authority_name.to_s.casecmp('loc').zero?
+          term_config.url_config.template.starts_with? 'http://id.loc.gov/authorities/'
         end
 
         def expects_uri?
