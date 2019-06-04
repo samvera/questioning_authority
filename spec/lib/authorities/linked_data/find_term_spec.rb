@@ -175,6 +175,16 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
         it 'extracts correct uri when loc id does not have blank' do
           expect(results_without_blank[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
         end
+
+        context 'when alternate authority name is used to access loc' do
+          let(:results) { lod_loc.find('sh 85118553', subauth: 'subjects') }
+
+          before { allow(lod_loc.term_config).to receive(:authority_name).and_return('ALT_LOC_AUTHORITY') }
+
+          it 'does special processing to remove blank from id' do
+            expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
+          end
+        end
       end
     end
 
