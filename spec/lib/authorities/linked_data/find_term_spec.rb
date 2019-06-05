@@ -218,9 +218,13 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
         end
 
         context 'when alternate authority name is used to access loc' do
-          let(:results) { lod_loc.find('sh 85118553', subauth: 'subjects') }
+          before do
+            stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh85118553')
+              .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+            allow(lod_loc.term_config).to receive(:authority_name).and_return('ALT_LOC_AUTHORITY')
+          end
 
-          before { allow(lod_loc.term_config).to receive(:authority_name).and_return('ALT_LOC_AUTHORITY') }
+          let(:results) { lod_loc.find('sh 85118553', subauth: 'subjects') }
 
           it 'does special processing to remove blank from id' do
             expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
