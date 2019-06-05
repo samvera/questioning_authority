@@ -135,26 +135,27 @@ module Qa::Authorities
 
         def extract_uri
           return @uri = RDF::URI.new(id) if expects_uri?
-          extract_uri_by_id
+          term_config.term_results_id_predicates.each do |id_predicate|
+            extract_uri_by_id(id_predicate)
+            break if @uri.present?
+          end
+          raise Qa::DataNormalizationError, "Unable to extract URI based on ID: #{id}" if @uri.blank?
+          @uri
         end
 
-        def extract_uri_by_id
-          @uri = get_uri_from_graph_by_id(id)
-        rescue Qa::DataNormalizationError
-          raise unless loc?
-          @uri = get_uri_from_graph_by_id(loc_id)
+        def extract_uri_by_id(id_predicate)
+          @uri = graph_service.subjects_for_object_value(graph: @filtered_graph,
+                                                         predicate: id_predicate,
+                                                         object_value: URI.unescape(id)).first
+          return if @uri.present? || !loc?
+          @uri = graph_service.subjects_for_object_value(graph: @filtered_graph,
+                                                         predicate: id_predicate,
+                                                         object_value: URI.unescape(loc_id)).first
+          return if @uri.blank? # only show the depercation warning if the loc_id was used
           Qa.deprecation_warning(
             in_msg: 'Qa::Authorities::LinkedData::FindTerm',
             msg: 'Special processing of LOC ids is deprecated; id should be an exact match of the id in the graph'
           )
-          @uri
-        end
-
-        def get_uri_from_graph_by_id(gid)
-          @uri = graph_service.subjects_for_object_value(graph: @filtered_graph,
-                                                         predicate: RDF::URI.new(term_config.term_results_id_predicate),
-                                                         object_value: URI.unescape(gid)).first
-          raise Qa::DataNormalizationError, "Unable to extract URI based on ID: #{id}" if @uri.blank?
           @uri
         end
 
@@ -193,7 +194,7 @@ module Qa::Authorities
         def optional_preds
           opt_preds = {}
           opt_preds[:altlabel] = term_config.term_results_altlabel_predicate
-          opt_preds[:id] = term_config.term_results_id_predicate
+          opt_preds[:id] = term_config.term_results_id_predicates
           opt_preds[:narrower] = term_config.term_results_narrower_predicate
           opt_preds[:broader] = term_config.term_results_broader_predicate
           opt_preds[:sameas] = term_config.term_results_sameas_predicate

@@ -58,4 +58,13 @@ RSpec.describe Qa::LinkedData::LdpathService do
       end
     end
   end
+
+  describe '.predefined_prefixes' do
+    subject { described_class.predefined_prefixes }
+    it 'includes prefixes defined by ldpath' do
+      # only checking for a few prefixes as opposed to the entire list since the gem may expand the list
+      expect(subject.keys).to include("rdf", "rdfs", "owl", "skos", "dc")
+      expect(subject[:rdf]).to be_present
+    end
+  end
 end

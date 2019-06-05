@@ -6,6 +6,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
   let(:min_config) { Qa::Authorities::LinkedData::Config.new(:LOD_MIN_CONFIG).term }
   let(:search_only_config) { Qa::Authorities::LinkedData::Config.new(:LOD_SEARCH_ONLY_CONFIG).term }
   let(:encoding_config) { Qa::Authorities::LinkedData::Config.new(:LOD_ENCODING_CONFIG).term }
+  let(:loc_config) { Qa::Authorities::LinkedData::Config.new(:LOC).term }
 
   let(:ldpath_results_config) do
     {
@@ -201,17 +202,30 @@ describe Qa::Authorities::LinkedData::TermConfig do
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results).to eq nil
     end
-    it 'returns hash of predicates' do
+    it 'returns hash of predicates or ldpaths' do
       expect(full_config.term_results).to eq results_config
     end
   end
 
-  describe '#term_results_id_predicate' do
+  describe '#term_results_id_predicates' do
     it 'returns nil if only search configuration is defined' do
-      expect(search_only_config.term_results_id_predicate).to eq nil
+      expect(search_only_config.term_results_id_predicates).to eq []
     end
-    it 'returns the predicate that holds the ID in term results' do
-      expect(full_config.term_results_id_predicate).to eq RDF::URI('http://purl.org/dc/terms/identifier')
+    it 'returns array of one predicates when only one defined' do
+      expect(full_config.term_results_id_predicates).to eq [RDF::URI('http://purl.org/dc/terms/identifier')]
+    end
+    it 'returns array of multiple predicates when ldpath specifies more than one path' do
+      expect(loc_config.term_results_id_predicates).to match_array [RDF::URI('http://id.loc.gov/vocabulary/identifiers/lccn'),
+                                                                    RDF::URI('http://www.loc.gov/mads/rdf/v1#code')]
+    end
+    it 'returns array of predicates when prefix is one of the ldpath gem predefined prefixes' do
+      allow(full_config).to receive(:prefixes).and_return({})
+      allow(full_config).to receive(:term_results).and_return(id_ldpath: 'dc:identifier')
+      expect(full_config.term_results_id_predicates).to eq [RDF::URI('http://purl.org/dc/elements/1.1/identifier')]
+    end
+    it 'raises an error if predicate prefix is not defined' do
+      allow(loc_config).to receive(:prefixes).and_return({})
+      expect { loc_config.term_results_id_predicates }.to raise_error Qa::InvalidConfiguration, "Prefix 'loc' is not defined in term configuration for authority LOC"
     end
   end
 
@@ -266,7 +280,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results_altlabel_ldpath).to eq nil
     end
-    it 'return nil if altlabel predicate is not defined' do
+    it 'return nil if altlabel ldpath is not defined' do
       expect(min_config.term_results_altlabel_ldpath).to eq nil
     end
 
@@ -294,7 +308,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results_broader_ldpath).to eq nil
     end
-    it 'return nil if broader predicate is not defined' do
+    it 'return nil if broader ldpath is not defined' do
       expect(min_config.term_results_broader_ldpath).to eq nil
     end
 
@@ -322,7 +336,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results_narrower_ldpath).to eq nil
     end
-    it 'return nil if narrower predicate is not defined' do
+    it 'return nil if narrower ldpath is not defined' do
       expect(min_config.term_results_narrower_ldpath).to eq nil
     end
 
@@ -350,7 +364,7 @@ describe Qa::Authorities::LinkedData::TermConfig do
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results_sameas_ldpath).to eq nil
     end
-    it 'return nil if sameas predicate is not defined' do
+    it 'return nil if sameas ldpath is not defined' do
       expect(min_config.term_results_sameas_ldpath).to eq nil
     end
 

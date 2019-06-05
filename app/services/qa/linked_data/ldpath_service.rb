@@ -6,6 +6,9 @@ module Qa
     class LdpathService
       VALUE_ON_ERROR = [].freeze
 
+      class_attribute :predefined_prefixes
+      self.predefined_prefixes = Ldpath::Transform.default_prefixes.with_indifferent_access
+
       # Create the ldpath program for a given ldpath.
       # @param ldpath [String] ldpath to follow to get a value from a graph (documation: http://marmotta.apache.org/ldpath/language.html)
       # @param prefixes [Hash] shortcut names for URI prefixes with key = part of predicate that is the same for all terms (e.g. { "madsrdf": "http://www.loc.gov/mads/rdf/v1#" })
