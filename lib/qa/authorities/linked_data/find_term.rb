@@ -110,13 +110,15 @@ module Qa::Authorities
                                             ldpath_map: ldpaths_for_term, predicate_map: preds_for_term)
         end
 
-        # special processing for loc ids for backward compatibility
+        # Special processing for loc ids for backward compatibility.  IDs may be in the form 'n123' or 'n 123'.  URIs do not
+        # have a blank.  This removes the <blank> from the ID.
         def normalize_id
           return id if expects_uri?
           loc? ? id.delete(' ') : id
         end
 
-        # special processing for loc ids for backward compatibility
+        # Special processing for loc ids for backward compatibility.  IDs may be in the form 'n123' or 'n 123'.  This adds
+        # the <blank> into the ID to allow it to be found as the object of a triple in the graph.
         def loc_id
           loc_id = URI.unescape(id)
           digit_idx = loc_id.index(/\d/)
@@ -148,6 +150,10 @@ module Qa::Authorities
                                                          predicate: id_predicate,
                                                          object_value: URI.unescape(id)).first
           return if @uri.present? || !loc?
+
+          # NOTE: Second call to try and extract using the loc_id allows for special processing on the id for LOC authorities.
+          #       LOC URIs do not include a blank (e.g. ends with 'n123'), but the ID in the data might (e.g. 'n 123').  If
+          #       the ID is provided without the <blank>, this tries a second time to find it with the <blank>.
           @uri = graph_service.subjects_for_object_value(graph: @filtered_graph,
                                                          predicate: id_predicate,
                                                          object_value: URI.unescape(loc_id)).first
