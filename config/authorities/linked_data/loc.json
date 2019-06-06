@@ -41,12 +41,13 @@
       "broader_ldpath":  "madsrdf:hasBroaderAuthority :: xsd:anyURI"
     },
     "subauthorities": {
-      "subjects":       "subjects",
-      "names":          "names",
-      "classification": "classification",
-      "child_subject":  "childrensSubjects",
-      "genre":          "genreForms",
-      "demographic":    "demographicTerms"
+      "subjects":          "subjects",
+      "names":             "names",
+      "classification":    "classification",
+      "child_subject":     "childrensSubjects",
+      "genre":             "genreForms",
+      "demographic":       "demographicTerms",
+      "music_performance": "performanceMediums"
     }
   },
   "search": {}

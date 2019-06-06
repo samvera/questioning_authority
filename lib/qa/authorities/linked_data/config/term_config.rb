@@ -73,11 +73,11 @@ module Qa::Authorities
       # Return results id_predicates
       # @return [Array<String>] the configured predicate to use to extract the id from the results
       def term_results_id_predicates
-        return @pred_ids unless @pred_ids.blank?
-        pred = Config.predicate_uri(term_results, :id_predicate)
-        @pred_ids = [pred] unless pred.blank?
-        return @pred_ids unless @pred_ids.blank?
-        @pred_ids = id_predicates_from_ldpath
+        @pred_ids ||=
+          begin
+            pred = Config.predicate_uri(term_results, :id_predicate)
+            pred ? [pred] : id_predicates_from_ldpath
+          end
       end
 
       # Return results id_predicate
@@ -93,7 +93,6 @@ module Qa::Authorities
           )
         end
         id_predicates = term_results_id_predicates
-        return nil if id_predicates.blank?
         id_predicates.first
       end
 
@@ -240,20 +239,22 @@ module Qa::Authorities
 
       private
 
+        # Parse ldpath into an array of predicates.
+        # Gets ldpath (e.g. 'loc:lccn | madsrdf:code :: xsd:string') using config accessor for results id ldpath.
+        # Multiple paths are delineated by | which is used to split the ldpath into an array of paths.
+        # @return [Array<String>] the predicate for each path in the ldpath
         def id_predicates_from_ldpath
-          # prefix example: { skos: 'http://www.w3.org/2004/02/skos/core#' }
-          # ldpath example: 'skos:id :: xsd:string'
-          predicates = []
           id_ldpath = term_results_id_ldpath
-          return predicates if id_ldpath.blank?
-          multi_paths = id_ldpath.split('|').map(&:strip)
-          multi_paths.each do |path|
+          return [] if id_ldpath.blank?
+          id_ldpath.split('|').map(&:strip).map do |path|
             predicate = parse_predicate_from_single_path(path)
-            predicates << RDF::URI.new(predicate) if predicate.present?
-          end
-          predicates
+            predicate.present? ? RDF::URI.new(predicate) : nil
+          end.compact
         end
 
+        # Parse a single path (e.g. 'loc:lccn' where 'loc' is the ontology prefix and 'lccn' is the property name)
+        # Gets prefixes (e.g. { "loc": "http://id.loc.gov/vocabulary/identifiers/", "madsrdf": "http://www.loc.gov/mads/rdf/v1#" }) from authority config
+        # @return [String] the predicate constructed by combining the expanded prefix with the property name
         def parse_predicate_from_single_path(path)
           tokens = path.split(':')
           return nil if tokens.size < 2
