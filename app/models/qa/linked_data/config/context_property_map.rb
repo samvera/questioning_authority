@@ -37,7 +37,7 @@ module Qa
           @ldpath = Qa::LinkedData::Config::Helper.fetch_required(property_map, :ldpath, false)
           @selectable = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :selectable, false)
           @drillable = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :drillable, false)
-          @optional = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :optional, false)
+          @optional = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :optional, Qa.config.property_map_default_for_optional)
           @expansion_label_ldpath = Qa::LinkedData::Config::Helper.fetch(property_map, :expansion_label_ldpath, nil)
           @expansion_id_ldpath = Qa::LinkedData::Config::Helper.fetch(property_map, :expansion_id_ldpath, nil)
           @prefixes = prefixes

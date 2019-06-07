@@ -109,6 +109,43 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
     end
   end
 
+  describe '#optional?' do
+    context 'when map has optional: true' do
+      before { property_map[:optional] = true }
+
+      it 'returns true' do
+        expect(subject.optional?).to be true
+      end
+    end
+
+    context 'when map has optional: false' do
+      before { property_map[:optional] = false }
+
+      it 'returns false' do
+        expect(subject.optional?).to be false
+      end
+    end
+
+    context 'when optional: is not defined in the map' do
+      before { property_map.delete(:optional) }
+
+      context 'and property_map_default_for_optional is true' do
+        before { allow(Qa.config).to receive(:property_map_default_for_optional).and_return(true) }
+        it 'returns true' do
+          Qa.config.property_map_default_for_optional = true
+          expect(subject.optional?).to be true
+        end
+      end
+
+      context 'and property_map_default_for_optional is false' do
+        before { allow(Qa.config).to receive(:property_map_default_for_optional).and_return(false) }
+        it 'returns false' do
+          expect(subject.optional?).to be false
+        end
+      end
+    end
+  end
+
   describe '#label' do
     context 'when map defines property_label_i18n key' do
       context 'and i18n translation is defined in locales' do
