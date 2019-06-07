@@ -37,6 +37,7 @@ module Qa
           @ldpath = Qa::LinkedData::Config::Helper.fetch_required(property_map, :ldpath, false)
           @selectable = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :selectable, false)
           @drillable = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :drillable, false)
+          @optional = Qa::LinkedData::Config::Helper.fetch_boolean(property_map, :optional, false)
           @expansion_label_ldpath = Qa::LinkedData::Config::Helper.fetch(property_map, :expansion_label_ldpath, nil)
           @expansion_id_ldpath = Qa::LinkedData::Config::Helper.fetch(property_map, :expansion_id_ldpath, nil)
           @prefixes = prefixes
@@ -52,6 +53,12 @@ module Qa
         # @return [Boolean] true if this property's value can be used to drill up/down to another level; otherwise, false
         def drillable?
           @drillable
+        end
+
+        # Should this property always be included in the extended context or is it optional (i.e. only shown if it has a value)
+        # @return [Boolean] true if this property is optional and will only be included in extended context if it has a value; otherwise, false
+        def optional?
+          @optional
         end
 
         def group?

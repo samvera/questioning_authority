@@ -37,7 +37,11 @@ module Qa
                 values = Qa::LinkedData::Config::ContextPropertyMap::VALUE_ON_ERROR
                 error = e.message
               end
+              return {} if values.blank? && property_map.optional?
+              property_info(values, error, context_map, property_map)
+            end
 
+            def property_info(values, error, context_map, property_map)
               property_info = {}
               property_info["group"] = context_map.group_label(property_map.group_id) if property_map.group?
               property_info["property"] = property_map.label
