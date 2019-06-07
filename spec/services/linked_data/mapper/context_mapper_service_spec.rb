@@ -7,17 +7,19 @@ RSpec.describe Qa::LinkedData::Mapper::ContextMapperService do
   let(:context_map) { instance_double(Qa::LinkedData::Config::ContextMap) }
   let(:subject_uri) { instance_double(RDF::URI) }
 
-  let(:context_properties) { [birth_date_property_map, death_date_property_map, occupation_property_map] }
+  let(:context_properties) { [birth_date_property_map, death_date_property_map, occupation_property_map, missing_property_map] }
 
   let(:birth_date_property_map) { instance_double(Qa::LinkedData::Config::ContextPropertyMap) }
   let(:death_date_property_map) { instance_double(Qa::LinkedData::Config::ContextPropertyMap) }
   let(:occupation_property_map) { instance_double(Qa::LinkedData::Config::ContextPropertyMap) }
+  let(:missing_property_map)    { instance_double(Qa::LinkedData::Config::ContextPropertyMap) }
 
   let(:group_id) { 'dates' }
 
   let(:birth_date_values) { ['10/15/1943'] }
   let(:death_date_values) { ['12/17/2018'] }
   let(:occupation_values) { ['Actress', 'Director', 'Producer'] }
+  let(:missing_values) { [] }
 
   before do
     allow(context_map).to receive(:properties).and_return(context_properties)
@@ -29,6 +31,7 @@ RSpec.describe Qa::LinkedData::Mapper::ContextMapperService do
     allow(birth_date_property_map).to receive(:selectable?).and_return(false)
     allow(birth_date_property_map).to receive(:drillable?).and_return(false)
     allow(birth_date_property_map).to receive(:expand_uri?).and_return(false)
+    allow(birth_date_property_map).to receive(:optional?).and_return(false)
 
     allow(death_date_property_map).to receive(:label).and_return('Death')
     allow(death_date_property_map).to receive(:values).with(graph, subject_uri).and_return(death_date_values)
@@ -36,6 +39,7 @@ RSpec.describe Qa::LinkedData::Mapper::ContextMapperService do
     allow(death_date_property_map).to receive(:selectable?).and_return(false)
     allow(death_date_property_map).to receive(:drillable?).and_return(false)
     allow(death_date_property_map).to receive(:expand_uri?).and_return(false)
+    allow(death_date_property_map).to receive(:optional?).and_return(false)
 
     allow(occupation_property_map).to receive(:label).and_return('Occupation')
     allow(occupation_property_map).to receive(:values).with(graph, subject_uri).and_return(occupation_values)
@@ -43,6 +47,15 @@ RSpec.describe Qa::LinkedData::Mapper::ContextMapperService do
     allow(occupation_property_map).to receive(:selectable?).and_return(false)
     allow(occupation_property_map).to receive(:drillable?).and_return(false)
     allow(occupation_property_map).to receive(:expand_uri?).and_return(false)
+    allow(occupation_property_map).to receive(:optional?).and_return(false)
+
+    allow(missing_property_map).to receive(:label).and_return('Property with NO values')
+    allow(missing_property_map).to receive(:values).with(graph, subject_uri).and_return(missing_values)
+    allow(missing_property_map).to receive(:group?).and_return(false)
+    allow(missing_property_map).to receive(:selectable?).and_return(false)
+    allow(missing_property_map).to receive(:drillable?).and_return(false)
+    allow(missing_property_map).to receive(:expand_uri?).and_return(false)
+    allow(missing_property_map).to receive(:optional?).and_return(true)
   end
 
   describe '.map_context' do
@@ -115,6 +128,21 @@ RSpec.describe Qa::LinkedData::Mapper::ContextMapperService do
       end
     end
 
+    context 'when optional? is false' do
+      before { allow(missing_property_map).to receive(:optional?).and_return(false) }
+      it 'includes property with blank values' do
+        result = find_property_to_test(subject, 'Property with NO values')
+        expect(result['values']).to eq []
+      end
+    end
+
+    context 'when optional? is true' do
+      before { allow(missing_property_map).to receive(:optional?).and_return(true) }
+      it 'property with blank values is not added to results' do
+        expect { find_property_to_test(subject, 'Property with NO values') }.to raise_error StandardError, "property 'Property with NO values' not found"
+      end
+    end
+
     context 'when error occurs' do
       let(:cause) { I18n.t('qa.linked_data.ldpath.parse_error') }
       before { allow(occupation_property_map).to receive(:values).with(graph, subject_uri).and_raise(cause) }
@@ -132,6 +160,6 @@ RSpec.describe Qa::LinkedData::Mapper::ContextMapperService do
       next unless r['property'] == label
       return r
     end
-    raise "property (#{label}) to test not found"
+    raise StandardError, "property '#{label}' not found"
   end
 end
