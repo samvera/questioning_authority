@@ -76,13 +76,51 @@ RSpec.describe Qa::Configuration do
       end
     end
 
-    context 'when configured' do
+    context 'when configured as true' do
+      before do
+        subject.limit_ldpath_to_context = true
+      end
+
+      it 'returns true' do
+        expect(subject.limit_ldpath_to_context?).to be true
+      end
+    end
+
+    context 'when configured as false' do
       before do
         subject.limit_ldpath_to_context = false
       end
 
-      it 'returns the configured value' do
+      it 'returns false' do
         expect(subject.limit_ldpath_to_context?).to be false
+      end
+    end
+  end
+
+  describe '#property_map_default_for_optional' do
+    context 'when NOT configured' do
+      it 'returns false' do
+        expect(subject.property_map_default_for_optional).to be false
+      end
+    end
+
+    context 'when configured as true' do
+      before do
+        subject.property_map_default_for_optional = true
+      end
+
+      it 'returns the true' do
+        expect(subject.property_map_default_for_optional).to be true
+      end
+    end
+
+    context 'when configured as false' do
+      before do
+        subject.property_map_default_for_optional = false
+      end
+
+      it 'returns false' do
+        expect(subject.property_map_default_for_optional).to be false
       end
     end
   end

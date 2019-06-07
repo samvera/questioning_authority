@@ -42,8 +42,17 @@ module Qa
     # passed to the ldpath request.
     attr_writer :limit_ldpath_to_context
     def limit_ldpath_to_context?
-      return true if @limit_ldpath_to_context.nil?
+      @limit_ldpath_to_context = true if @limit_ldpath_to_context.nil?
       @limit_ldpath_to_context
+    end
+
+    # Define default behavior for property_map.optional? when it is not defined in the configuration for a property.
+    # When false, properties that do not override default optional behavior will be shown whether or not the property has a value in the graph.
+    # When true, properties that do not override default optional behavior will not be shown whn the property does not have a value in the graph.
+    attr_writer :property_map_default_for_optional
+    def property_map_default_for_optional
+      @property_map_default_for_optional = false if @property_map_default_for_optional.nil?
+      @property_map_default_for_optional
     end
   end
 end

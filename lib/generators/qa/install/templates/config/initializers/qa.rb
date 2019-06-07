@@ -18,4 +18,9 @@ Qa.config do |config|
   # When true, prevents ldpath requests from making additional network calls.  All values will come from the context graph
   # passed to the ldpath request.
   # config.limit_ldpath_to_context = true
+
+  # Define default behavior for property_map.optional? when it is not defined in the configuration for a property.
+  # When false, properties that do not override default optional behavior will be shown whether or not the property has a value in the graph.
+  # When true, properties that do not override default optional behavior will not be shown whn the property does not have a value in the graph.
+  # config.property_map_default_for_optional = false
 end
