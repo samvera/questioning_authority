@@ -70,13 +70,30 @@ module Qa::Authorities
         Config.config_value(term_results, :id_ldpath)
       end
 
+      # Return results id_predicates
+      # @return [Array<String>] the configured predicate to use to extract the id from the results
+      def term_results_id_predicates
+        @pred_ids ||=
+          begin
+            pred = Config.predicate_uri(term_results, :id_predicate)
+            pred ? [pred] : id_predicates_from_ldpath
+          end
+      end
+
       # Return results id_predicate
       # @return [String] the configured predicate to use to extract the id from the results
-      def term_results_id_predicate
-        return @pred_id unless @pred_id.blank?
-        @pred_id = Config.predicate_uri(term_results, :id_predicate)
-        return @pred_id unless @pred_id.blank?
-        @pred_id = pred_id_from_ldpath
+      # NOTE: Customizations using this method should be updated to use `term_results_id_predicates` which returns [Array<String>] of
+      #       id predicates.  This method remains for backward compatibility only but may cause issues if used in places expecting an Array
+      def term_results_id_predicate(suppress_deprecation_warning: false)
+        unless suppress_deprecation_warning
+          Qa.deprecation_warning(
+            in_msg: 'Qa::Authorities::LinkedData::TermConfig',
+            msg: "`term_results_id_predicate` is deprecated; use `term_results_id_ldpath` by updating linked data " \
+                 "term config results in authority #{authority_name} to specify as `id_ldpath`"
+          )
+        end
+        id_predicates = term_results_id_predicates
+        id_predicates.first
       end
 
       # Return results label_ldpath
@@ -222,16 +239,30 @@ module Qa::Authorities
 
       private
 
-        def pred_id_from_ldpath
-          # prefix example: { skos: 'http://www.w3.org/2004/02/skos/core#' }
-          # ldpath example: 'skos:id :: xsd:string'
+        # Parse ldpath into an array of predicates.
+        # Gets ldpath (e.g. 'loc:lccn | madsrdf:code :: xsd:string') using config accessor for results id ldpath.
+        # Multiple paths are delineated by | which is used to split the ldpath into an array of paths.
+        # @return [Array<String>] the predicate for each path in the ldpath
+        def id_predicates_from_ldpath
           id_ldpath = term_results_id_ldpath
-          return nil if id_ldpath.blank?
-          tokens = id_ldpath.split(':')
+          return [] if id_ldpath.blank?
+          id_ldpath.split('|').map(&:strip).map do |path|
+            predicate = parse_predicate_from_single_path(path)
+            predicate.present? ? RDF::URI.new(predicate) : nil
+          end.compact
+        end
+
+        # Parse a single path (e.g. 'loc:lccn' where 'loc' is the ontology prefix and 'lccn' is the property name)
+        # Gets prefixes (e.g. { "loc": "http://id.loc.gov/vocabulary/identifiers/", "madsrdf": "http://www.loc.gov/mads/rdf/v1#" }) from authority config
+        # @return [String] the predicate constructed by combining the expanded prefix with the property name
+        def parse_predicate_from_single_path(path)
+          tokens = path.split(':')
           return nil if tokens.size < 2
           prefix = tokens.first.to_sym
           prefix_path = prefixes[prefix]
-          prefix_path + tokens.second.strip
+          prefix_path = Qa::LinkedData::LdpathService.predefined_prefixes[prefix] if prefix_path.blank?
+          raise Qa::InvalidConfiguration, "Prefix '#{prefix}' is not defined in term configuration for authority #{authority_name}" if prefix_path.blank?
+          "#{prefix_path}#{tokens.second.strip}"
         end
 
         def summary_without_subauthority(auth_name, language)
