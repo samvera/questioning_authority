@@ -1,3 +1,17 @@
+### 4.2.0 (2019-06-07)
+
+* allow property_map.optional? default value to be configurable
+* make it optional whether to include blank values in linked data extended context
+* allow id to be identified by multiple predicates/paths
+* add music performance to loc linked data config
+* improve comments about LOC special processing
+* add bytes and bytes/s to performance data
+* raise an exception if data can’t be normalized
+* determine if loc special processing is needed based on template uri instead of authority name
+* removing the test configuration for using Rails 5.0.x releases
+* updates the CircleCI configuration to test against Rails releases 5.2.3, 5.1.7, and 5.0.7.2
+* updates the CircleCI configuration to test against Ruby releases 2.6.3, 2.5.5, and 2.4.6
+
 ### 4.1.1 (2019-05-08)
 
 * special processing for LOC IDs
