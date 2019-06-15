@@ -23,4 +23,5 @@ module Qa::Authorities
   autoload :LinkedData
   autoload :Discogs
   autoload :DiscogsSubauthority
+  autoload :Wikidata
 end
