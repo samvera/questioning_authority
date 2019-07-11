@@ -28,7 +28,7 @@ module Qa::Authorities
       end
       %(SELECT DISTINCT ?s ?name ?par {
         ?s a skos:Concept; luc:term "#{search}";
-            skos:inScheme <http://vocab.getty.edu/ulan/> ;
+            skos:inScheme <http://vocab.getty.edu/tgn/> ;
             gvp:prefLabelGVP [skosxl:literalForm ?name] ;
                   gvp:parentString ?par .
         FILTER #{ex} .
