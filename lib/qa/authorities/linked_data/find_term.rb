@@ -39,12 +39,20 @@ module Qa::Authorities
       #     "http://schema.org/name":["Cornell University","Ithaca (N.Y.). Cornell University"],
       #     "http://www.w3.org/2004/02/skos/core#altLabel":["Ithaca (N.Y.). Cornell University"],
       #     "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"] } }
-      def find(id, language: nil, replacements: {}, subauth: nil, jsonld: false, performance_data: false) # rubocop:disable Metrics/ParameterLists
+      def find(id, language: nil, replacements: {}, subauth: nil, format: nil, jsonld: false, performance_data: false) # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
+        # TODO: When jsonld parameter is removed, the format parameter should default to 'json'.  Not making this change now for backward compatibility of the default for jsonld parameter.
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
         @language = language_service.preferred_language(user_language: language, authority_language: term_config.term_language)
         @id = id
         @performance_data = performance_data
-        @jsonld = jsonld
+        @format = format
+        @jsonld = jsonld if @format.blank?
+        if jsonld
+          Qa.deprecation_warning(
+            in_msg: 'Qa::Authorities::LinkedData::FindTerm',
+            msg: "jsonld parameter to find method is deprecated; use `format: 'jsonld'` instead"
+          )
+        end
         url = authority_service.build_url(action_config: term_config, action: :term, action_request: normalize_id, substitutions: replacements, subauthority: subauth, language: @language)
         Rails.logger.info "QA Linked Data term url: #{url}"
         load_graph(url: url)
@@ -80,6 +88,7 @@ module Qa::Authorities
         def perform_normalization
           return "{}" unless full_graph.size.positive?
           return full_graph.dump(:jsonld, standard_prefixes: true) if jsonld?
+          return full_graph.dump(:n3, standard_prefixes: true) if n3?
 
           filter_graph
           extract_uri
@@ -182,8 +191,14 @@ module Qa::Authorities
           opt_ldpaths.delete_if { |_k, v| v.blank? }
         end
 
+        # Give precedent to format parameter over jsonld parameter.  NOTE: jsonld parameter for find method is deprecated.
         def jsonld?
+          return @format.casecmp?('jsonld') if @format
           @jsonld == true
+        end
+
+        def n3?
+          @format && @format.casecmp?('n3')
         end
 
         def performance_data?
