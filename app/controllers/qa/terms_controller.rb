@@ -30,8 +30,7 @@ class Qa::TermsController < ::ApplicationController
   def show
     term = @authority.method(:find).arity == 2 ? @authority.find(params[:id], self) : @authority.find(params[:id])
     cors_allow_origin_header(response)
-    content_type = params["format"] == "jsonld" ? 'application/ld+json' : 'application/json'
-    render json: term, content_type: content_type
+    render json: term, content_type: content_type_for_format
   end
 
   def check_vocab_param
@@ -80,5 +79,25 @@ class Qa::TermsController < ::ApplicationController
     # converts wildcards into URL-encoded characters
     def url_search
       params[:q].gsub("*", "%2A")
+    end
+
+    def format
+      return 'json' unless params.key?(:format)
+      return 'json' if params[:format].blank?
+      params[:format]
+    end
+
+    def jsonld?
+      format.casecmp?('jsonld')
+    end
+
+    def n3?
+      format.casecmp?('n3')
+    end
+
+    def content_type_for_format
+      return 'application/ld+json' if jsonld?
+      return 'text/n3' if n3?
+      'application/json'
     end
 end
