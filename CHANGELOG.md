@@ -1,3 +1,10 @@
+### 4.2.1 (2019-08-08)
+
+* add ability to return a single term as n3 format for linked data
+* allow error from RDF::Graph to be parsed with or without parentheses around
+* remove CircleCI ruby/rails version defaults (maintenance)
+* adjust queries for TGN to use TGN scheme and not ULAN
+
 ### 4.2.0 (2019-06-07)
 
 * allow property_map.optional? default value to be configurable
