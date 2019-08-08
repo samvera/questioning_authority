@@ -425,6 +425,15 @@ describe Qa::LinkedDataTermsController, type: :controller do
             expect(JSON.parse(response.body).keys).to match_array ["@context", "@graph"]
           end
         end
+
+        context 'and it was requested as n3' do
+          it 'succeeds and returns term data as n3 content type' do
+            get :show, params: { id: '530369', vocab: 'OCLC_FAST', format: 'n3' }
+            expect(response).to be_successful
+            expect(response.content_type).to eq 'text/n3'
+            expect(response.body).to start_with "@prefix"
+          end
+        end
       end
 
       context 'when cors headers are enabled' do
@@ -584,6 +593,15 @@ describe Qa::LinkedDataTermsController, type: :controller do
             expect(response).to be_successful
             expect(response.content_type).to eq 'application/ld+json'
             expect(JSON.parse(response.body).keys).to match_array ["@context", "@graph"]
+          end
+        end
+
+        context 'and it was requested as n3' do
+          it 'succeeds and returns term data as n3 content type' do
+            get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'n3' }
+            expect(response).to be_successful
+            expect(response.content_type).to eq 'text/n3'
+            expect(response.body).to start_with "@prefix"
           end
         end
 

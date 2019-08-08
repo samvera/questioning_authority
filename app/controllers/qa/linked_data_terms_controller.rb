@@ -59,10 +59,9 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # get "/show/linked_data/:vocab/:subauthority/:id
   # @see Qa::Authorities::LinkedData::FindTerm#find
   def show # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params, jsonld: jsonld?, performance_data: performance_data?)
+    term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params, format: format, performance_data: performance_data?)
     cors_allow_origin_header(response)
-    content_type = jsonld? ? 'application/ld+json' : 'application/json'
-    render json: term, content_type: content_type
+    render json: term, content_type: content_type_for_format
   rescue Qa::TermNotFound
     msg = "Term Not Found - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
     logger.warn msg
@@ -90,10 +89,9 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # get "/fetch/linked_data/:vocab"
   # @see Qa::Authorities::LinkedData::FindTerm#find
   def fetch # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    term = @authority.find(uri, subauth: subauthority, language: language, replacements: replacement_params, jsonld: jsonld?, performance_data: performance_data?)
+    term = @authority.find(uri, subauth: subauthority, language: language, replacements: replacement_params, format: format, performance_data: performance_data?)
     cors_allow_origin_header(response)
-    content_type = jsonld? ? 'application/ld+json' : 'application/json'
-    render json: term, content_type: content_type
+    render json: term, content_type: content_type_for_format
   rescue Qa::TermNotFound
     msg = "Term Not Found - Fetch term #{uri} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
     logger.warn msg
@@ -217,22 +215,32 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     end
 
     def jsonld?
-      format.casecmp('jsonld').zero?
+      format.casecmp?('jsonld')
+    end
+
+    def n3?
+      format.casecmp?('n3')
+    end
+
+    def content_type_for_format
+      return 'application/ld+json' if jsonld?
+      return 'text/n3' if n3?
+      'application/json'
     end
 
     def context?
       context = params.fetch(:context, 'false')
-      context.casecmp('true').zero?
+      context.casecmp?('true')
     end
 
     def details?
       details = params.fetch(:details, 'false')
-      details.casecmp('true').zero?
+      details.casecmp?('true')
     end
 
     def performance_data?
       performance_data = params.fetch(:performance_data, 'false')
-      performance_data.casecmp('true').zero?
+      performance_data.casecmp?('true')
     end
 
     def validate_auth_reload_token

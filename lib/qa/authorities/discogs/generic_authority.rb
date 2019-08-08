@@ -35,10 +35,12 @@ module Qa::Authorities
     #
     # @param [String] the Discogs id of the selected item
     # @param [Class] QA::TermsController
-    # @return either json results or jsonld
+    # @return results in requested format (supports: json, jsonld, n3)
     def find(id, tc)
       response = tc.params["subauthority"].include?("all") ? fetch_discogs_results(id) : json(find_url(id, tc.params["subauthority"]))
-      return build_graph(response) unless tc.params["format"] != "jsonld" || response["message"].present?
+      return response if response["message"].present?
+      return build_graph(response, format: :jsonld) if jsonld?(tc)
+      return build_graph(response, format: :n3) if n3?(tc)
       response
     end
 
@@ -146,6 +148,24 @@ module Qa::Authorities
       # @param [Array] returns an empty array if item is not presentr
       def get_context_for_array(item)
         item.present? ? item : [""]
+      end
+
+      def format(tc)
+        return 'json' unless tc.params.key?('format')
+        return 'json' if tc.params['format'].blank?
+        tc.params['format']
+      end
+
+      def jsonld?(tc)
+        format(tc).casecmp?('jsonld')
+      end
+
+      def n3?(tc)
+        format(tc).casecmp?('n3')
+      end
+
+      def graph_format?(tc)
+        jsonld?(tc) || n3?(tc)
       end
   end
 end

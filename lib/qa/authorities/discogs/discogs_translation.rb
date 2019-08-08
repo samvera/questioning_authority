@@ -11,14 +11,14 @@ module Qa::Authorities
       # to the URIs of corresponding objects in the Library of Congress vocabulary.
       # @param [Hash] the http response from discogs
       # @param [String] the subauthority
-      # @return [Array] jsonld
-      def build_graph(response, subauthority = "")
+      # @return [Array, String] requested RDF serialzation (supports: jsonld Array, n3 String)
+      def build_graph(response, subauthority = "", format: :jsonld)
         graph = RDF::Graph.new
 
         rdf_statements = compile_rdf_statements(response, subauthority)
         graph.insert_statements(rdf_statements)
 
-        graph.dump(:jsonld, standard_prefixes: true)
+        graph.dump(format, standard_prefixes: true)
       end
 
       # @param [Hash] the http response from discogs
