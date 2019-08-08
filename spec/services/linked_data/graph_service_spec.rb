@@ -66,6 +66,7 @@ RSpec.describe Qa::LinkedData::GraphService do
       subject { described_class.load_graph(url: url) }
 
       let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
+      let(:regurl) { 'http:\/\/experimental.worldcat.org\/fast\/search\?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
       let(:uri) { URI(url) }
 
       before do
@@ -74,7 +75,7 @@ RSpec.describe Qa::LinkedData::GraphService do
       end
 
       it 'raises error' do
-        expect { subject }.to raise_error(Qa::ServiceError, "Unknown error for #{uri.hostname} on port #{uri.port}.  Try again later. (Cause - <#{url}>: (504))")
+        expect { subject }.to raise_error(Qa::ServiceError, /Unknown error for #{uri.hostname} on port #{uri.port}.  Try again later. \(Cause - <#{regurl}>: \(?504\)?\)/)
       end
     end
   end

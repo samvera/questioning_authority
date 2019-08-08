@@ -106,12 +106,10 @@ module Qa
             end
           end
 
+          # process ioerror_code from RDF::Graph.load whether the code is in parentheses (i.e. "... (404)"), or not (i.e. "... 404")
           def ioerror_code(e)
             msg = e.message
-            return 'format' if msg.start_with? "Unknown RDF format"
-            a = msg.size - 4
-            z = msg.size - 2
-            msg[a..z]
+            msg[/(\(?)(\d\d\d)(\)?)$/, 2]
           end
       end
     end
