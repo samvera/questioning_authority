@@ -228,5 +228,17 @@ describe Qa::TermsController, type: :controller do
         end
       end
     end
+    context "with request for n3" do
+      before do
+        stub_request(:get, "https://api.discogs.com/releases/3380671")
+          .to_return(status: 200, body: webmock_fixture("discogs-find-response-json.json"))
+      end
+      it 'Access-Control-Allow-Origin is not present' do
+        get :show, params: { vocab: "discogs", subauthority: "release", id: "3380671", format: 'n3' }
+        expect(response).to be_successful
+        expect(response.content_type).to eq 'text/n3'
+        expect(response.body).to start_with "@prefix"
+      end
+    end
   end
 end
