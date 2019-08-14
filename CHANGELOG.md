@@ -1,3 +1,7 @@
+### 4.2.2 (2019-08-12)
+ 
+* bug fix to correctly set header content-type to text/n3 for discogs authority
+
 ### 4.2.1 (2019-08-08)
 
 * add ability to return a single term as n3 format for linked data
