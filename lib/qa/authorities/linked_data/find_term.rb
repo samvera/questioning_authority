@@ -89,6 +89,7 @@ module Qa::Authorities
           return "{}" unless full_graph.size.positive?
           return full_graph.dump(:jsonld, standard_prefixes: true) if jsonld?
           return full_graph.dump(:n3, standard_prefixes: true) if n3?
+          return full_graph.dump(:ntriples, standard_prefixes: true) if ntriples?
 
           filter_graph
           extract_uri
@@ -199,6 +200,10 @@ module Qa::Authorities
 
         def n3?
           @format && @format.casecmp?('n3')
+        end
+
+        def ntriples?
+          @format && @format.casecmp?('ntriples')
         end
 
         def performance_data?
