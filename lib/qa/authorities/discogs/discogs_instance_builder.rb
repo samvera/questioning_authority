@@ -49,6 +49,7 @@ module Qa::Authorities
           stmts << contruct_stmt_literal_object("iidn#{count}", rdfs_label_predicate, activity["value"])
           count += 1
         end
+        stmts.concat(build_year_statements(response)) if response["released"].present?
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
@@ -83,9 +84,7 @@ module Qa::Authorities
         when "dimension"
           stmts << contruct_stmt_literal_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/dimensions", df["label"])
         when "playingSpeed"
-          stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/soundCharacteristic", "speed#{count}")
-          stmts << contruct_stmt_uri_object("speed#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/PlayingSpeed")
-          stmts << contruct_stmt_literal_object("speed#{count}", rdfs_label_predicate, df["label"])
+          stmts.concat(build_playing_speed_stmts(df["label"], count))
         end
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end

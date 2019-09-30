@@ -13,7 +13,6 @@ module Qa::Authorities
       # @param [String] the subauthority
       # @return [Array, String] requested RDF serialzation (supports: jsonld Array, n3 String, n-triples String)
       def build_graph(response, subauthority = "", format: :jsonld)
-        
         graph = RDF::Graph.new
 
         rdf_statements = compile_rdf_statements(response, subauthority)
@@ -38,7 +37,7 @@ module Qa::Authorities
           # work. If the discogs record has a master_id, fetch that and use the results to
           # build the statements for the work.
           master_resp = response["master_id"].present? ? json("https://api.discogs.com/masters/#{response['master_id']}") : response
-          self.work_uri = master_resp["uri"] if master_resp["uri"].include?("master")
+          self.work_uri = master_resp["uri"] if master_resp["uri"].present? && master_resp["uri"].include?("master")
           complete_rdf_stmts.concat(build_master_statements(master_resp))
           # Now do the statements for the instance.
           self.instance_uri = response["uri"] if response["uri"].present?
@@ -102,7 +101,6 @@ module Qa::Authorities
         stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/identifiedBy", "widn1")
         stmts << contruct_stmt_uri_object("widn1", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Identifier")
         stmts << contruct_stmt_literal_object("widn1", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value", response["id"])
-        stmts.concat(build_year_statements(response))
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 

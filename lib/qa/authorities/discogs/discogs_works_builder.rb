@@ -1,7 +1,7 @@
 require 'rdf'
 module Qa::Authorities
   module Discogs
-    module DiscogsWorksBuilder # rubocop:disable Metrics/ModuleLength
+    module DiscogsWorksBuilder
       include Discogs::DiscogsUtils
 
       # @param [Hash] the http response from discogs

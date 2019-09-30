@@ -11,9 +11,9 @@ module Qa::Authorities
       # @param [String] or [Class] strings can be a label or BIBFRAME class uri; class is always RDF::URI
       # @return [Class] RDF::Statement with either a uri or a bnode as the object
       def contruct_stmt_uri_object(subject, predicate, object)
-          s = subject.include?("http") ? RDF::URI.new(subject) : subject.to_sym
-          o = object.to_s.include?("http") ? RDF::URI.new(object) : object.to_sym
-          RDF::Statement(s, RDF::URI(predicate), o) 
+        s = subject.include?("http") ? RDF::URI.new(subject) : subject.to_sym
+        o = object.to_s.include?("http") ? RDF::URI.new(object) : object.to_sym
+        RDF::Statement(s, RDF::URI(predicate), o)
       end
 
       # Constructs an RDF statement where the subject and predicate are URIs and the object is a literal
@@ -22,8 +22,8 @@ module Qa::Authorities
       # @param [String] or [Class] strings can be a label or BIBFRAME class uri; class is always RDF::URI
       # @return [Class] RDF::Statement with a literal as the object
       def contruct_stmt_literal_object(subject, predicate, object)
-          s = subject.include?("http") ? RDF::URI.new(subject) : subject.to_sym
-          RDF::Statement(s, RDF::URI(predicate), RDF::Literal.new(object)) 
+        s = subject.include?("http") ? RDF::URI.new(subject) : subject.to_sym
+        RDF::Statement(s, RDF::URI(predicate), RDF::Literal.new(object))
       end
 
       # frequently used predicates and objects
@@ -67,7 +67,7 @@ module Qa::Authorities
       # @param [Hash] the http response from discogs
       # @return [Array] rdf statements
       def build_year_statements(response)
-        year_stmts = []        
+        year_stmts = []
         year_stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/provisionActivity", "daten1")
         year_stmts << contruct_stmt_uri_object("daten1", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Publication")
         year_stmts << contruct_stmt_literal_object("daten1", RDF::URI("http://id.loc.gov/ontologies/bibframe/date"), response["released"].to_s)
@@ -76,12 +76,24 @@ module Qa::Authorities
 
       # @param [Hash] the extraartists defined at the release level, not the track level
       # @param [Integer] gives the role a unique uri
+      # @param [String] the entity type name
       # @return [Array] rdf statements
       def build_role_stmts(subject_node, role_node, label)
         stmts = []
         stmts << contruct_stmt_uri_object(subject_node, bf_role_predicate, role_node)
         stmts << contruct_stmt_uri_object(role_node, rdf_type_predicate, bf_role_type_object)
         stmts << contruct_stmt_literal_object(role_node, rdfs_label_predicate, label)
+        stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
+      end
+
+      # @param [String] the playing speed in string format
+      # @param [Integer] gives the playing speed a unique uri
+      # @return [Array] rdf statements
+      def build_playing_speed_stmts(label, count)
+        stmts = []
+        stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/soundCharacteristic", "speed#{count}")
+        stmts << contruct_stmt_uri_object("speed#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/PlayingSpeed")
+        stmts << contruct_stmt_literal_object("speed#{count}", rdfs_label_predicate, label)
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
     end
