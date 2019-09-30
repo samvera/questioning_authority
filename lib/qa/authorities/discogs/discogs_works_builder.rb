@@ -12,24 +12,14 @@ module Qa::Authorities
         count = 1
         return stmts unless response["extraartists"].present?
         response["extraartists"].each do |artist|
-          stmts << contruct_stmt_uri_object("Work1", "http://id.loc.gov/ontologies/bibframe/contribution", "Work1SecondaryContribution#{count}")
-          stmts << contruct_stmt_uri_object("Work1SecondaryContribution#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Contribution")
-          stmts << contruct_stmt_uri_object("Work1SecondaryContribution#{count}", bf_agent_predicate, artist["name"])
-          stmts << contruct_stmt_uri_object(artist["name"], rdf_type_predicate, bf_agent_type_object)
-          stmts += build_artist_role_stmts(artist, count)
+          stmts << contruct_stmt_uri_object(work_uri, "http://id.loc.gov/ontologies/bibframe/contribution", "contrbn1#{count}")
+          stmts << contruct_stmt_uri_object("contrbn1#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Contribution")
+          stmts << contruct_stmt_uri_object("contrbn1#{count}", bf_agent_predicate, "agentn1#{count}")
+          stmts << contruct_stmt_uri_object("agentn1#{count}", rdf_type_predicate, bf_agent_type_object)
+          stmts << contruct_stmt_literal_object("agentn1#{count}", rdfs_label_predicate, artist["name"])
+          stmts += build_role_stmts("agentn1#{count}", "rolen1#{count}", artist["role"])
           count += 1
         end
-        stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
-      end
-
-      # @param [Hash] the extraartists defined at the release level, not the track level
-      # @param [Integer] gives the role a unique uri
-      # @return [Array] rdf statements
-      def build_artist_role_stmts(artist, count)
-        stmts = []
-        stmts << contruct_stmt_uri_object(artist["name"], bf_role_predicate, "Work1SecondaryContributor_Role#{count}")
-        stmts << contruct_stmt_uri_object("Work1SecondaryContributor_Role#{count}", rdf_type_predicate, bf_role_type_object)
-        stmts << contruct_stmt_literal_object("Work1SecondaryContributor_Role#{count}", rdfs_label_predicate, artist["role"])
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
@@ -54,21 +44,10 @@ module Qa::Authorities
         stmts = []
         dg = discogs_genres[genre.gsub(/\s+/, "")]
         if dg.present?
-          stmts << contruct_stmt_uri_object("Work1", "http://id.loc.gov/ontologies/bibframe/genreForm", dg["uri"])
+          stmts << contruct_stmt_uri_object(work_uri, "http://id.loc.gov/ontologies/bibframe/genreForm", dg["uri"])
           stmts << contruct_stmt_uri_object(dg["uri"], rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/GenreForm")
           stmts << contruct_stmt_literal_object(dg["uri"], rdfs_label_predicate, dg["label"])
         end
-        stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
-      end
-
-      # @param [String] the uri of the genreForm
-      # @param [String] the genreForm label
-      # @return [Array] rdf statements
-      def build_genres_and_styles(uri, dg_label)
-        stmts = []
-        stmts << contruct_stmt_uri_object("Work1", "http://id.loc.gov/ontologies/bibframe/genreForm", uri)
-        stmts << contruct_stmt_uri_object(uri, rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/GenreForm")
-        stmts << contruct_stmt_literal_object(uri, rdfs_label_predicate, dg_label)
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
@@ -103,13 +82,13 @@ module Qa::Authorities
       # @return [Array] rdf statements
       def build_secondary_works(track, w_count)
         stmts = []
-        stmts << contruct_stmt_uri_object("Work1", "http://id.loc.gov/ontologies/bibframe/hasPart", "Work#{w_count}")
-        stmts << contruct_stmt_uri_object("Work#{w_count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Work")
-        stmts << contruct_stmt_uri_object("Work#{w_count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Audio")
-        stmts << contruct_stmt_uri_object("Work#{w_count}", "http://id.loc.gov/ontologies/bibframe/title", "Work#{w_count}Title")
-        stmts << contruct_stmt_uri_object("Work#{w_count}Title", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Title")
-        stmts << contruct_stmt_literal_object("Work#{w_count}Title", bf_main_title_predicate, track["title"])
-        stmts << contruct_stmt_literal_object("Work#{w_count}", "http://id.loc.gov/ontologies/bibframe/duration", track["duration"]) if track["duration"].present?
+        stmts << contruct_stmt_uri_object(work_uri, "http://id.loc.gov/ontologies/bibframe/hasPart", "workn#{w_count}")
+        stmts << contruct_stmt_uri_object("workn#{w_count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Work")
+        stmts << contruct_stmt_uri_object("workn#{w_count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Audio")
+        stmts << contruct_stmt_uri_object("workn#{w_count}", "http://id.loc.gov/ontologies/bibframe/title", "titlen3#{w_count}")
+        stmts << contruct_stmt_uri_object("titlen3#{w_count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Title")
+        stmts << contruct_stmt_literal_object("titlen3#{w_count}", bf_main_title_predicate, track["title"])
+        stmts << contruct_stmt_literal_object("workn#{w_count}", "http://id.loc.gov/ontologies/bibframe/duration", track["duration"]) if track["duration"].present?
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
@@ -120,10 +99,11 @@ module Qa::Authorities
         stmts = []
         count = 1
         artists.each do |artist|
-          stmts << contruct_stmt_uri_object("Work#{w_count}", "http://id.loc.gov/ontologies/bibframe/contribution", "Work#{w_count}PrimaryContribution#{count}")
-          stmts << contruct_stmt_uri_object("Work#{w_count}PrimaryContribution#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bflc/PrimaryContribution")
-          stmts << contruct_stmt_uri_object("Work#{w_count}PrimaryContribution#{count}", bf_agent_predicate, artist["name"])
-          stmts << contruct_stmt_uri_object(artist["name"], rdf_type_predicate, bf_agent_type_object)
+          stmts << contruct_stmt_uri_object("workn#{w_count}", "http://id.loc.gov/ontologies/bibframe/contribution", "contrbn#{w_count}#{count}")
+          stmts << contruct_stmt_uri_object("contrbn#{w_count}#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bflc/PrimaryContribution")
+          stmts << contruct_stmt_uri_object("contrbn#{w_count}#{count}", bf_agent_predicate, "agentn#{w_count}#{count}")
+          stmts << contruct_stmt_uri_object("agentn#{w_count}#{count}", rdf_type_predicate, bf_agent_type_object)
+          stmts << contruct_stmt_literal_object("agentn#{w_count}#{count}", rdfs_label_predicate, artist["name"])
           count += 1
         end
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
@@ -137,13 +117,12 @@ module Qa::Authorities
         # to distinguish among contributors to a track/work and their roles
         count = 1
         extraartists.each do |artist|
-          stmts << contruct_stmt_uri_object("Work#{w_count}", "http://id.loc.gov/ontologies/bibframe/contribution", "Work#{w_count}Contribution#{count}")
-          stmts << contruct_stmt_uri_object("Work#{w_count}Contribution#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Contribution")
-          stmts << contruct_stmt_uri_object("Work#{w_count}Contribution#{count}", bf_agent_predicate, artist["name"])
-          stmts << contruct_stmt_uri_object(artist["name"], rdf_type_predicate, bf_agent_type_object)
-          stmts << contruct_stmt_uri_object(artist["name"], bf_role_predicate, "Work#{w_count}ContributorRole#{count}")
-          stmts << contruct_stmt_uri_object("Work#{w_count}ContributorRole#{count}", rdf_type_predicate, bf_role_type_object)
-          stmts << contruct_stmt_literal_object("Work#{w_count}ContributorRole#{count}", rdfs_label_predicate, artist["role"])
+          stmts << contruct_stmt_uri_object("workn#{w_count}", "http://id.loc.gov/ontologies/bibframe/contribution", "contrbn#{w_count}2#{count}")
+          stmts << contruct_stmt_uri_object("contrbn#{w_count}2#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Contribution")
+          stmts << contruct_stmt_uri_object("contrbn#{w_count}2#{count}", bf_agent_predicate, "agentn#{w_count}2#{count}")
+          stmts << contruct_stmt_uri_object("agentn#{w_count}2#{count}", rdf_type_predicate, bf_agent_type_object)
+          stmts << contruct_stmt_literal_object("agentn#{w_count}2#{count}", rdfs_label_predicate, artist["name"])
+          stmts += build_role_stmts("agentn#{w_count}2#{count}", "role2#{w_count}#{count}", artist["role"])
           count += 1
         end
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error

@@ -44,9 +44,9 @@ module Qa::Authorities
         count = 1
         return stmts unless response["identifiers"].present?
         response["identifiers"].each do |activity|
-          stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/identifiedBy", "Identifier#{count}")
-          stmts << contruct_stmt_uri_object("Identifier#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Identifier")
-          stmts << contruct_stmt_literal_object("Identifier#{count}", rdfs_label_predicate, activity["value"])
+          stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/identifiedBy", "iidn#{count}")
+          stmts << contruct_stmt_uri_object("iidn#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Identifier")
+          stmts << contruct_stmt_literal_object("iidn#{count}", rdfs_label_predicate, activity["value"])
           count += 1
         end
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
@@ -64,7 +64,7 @@ module Qa::Authorities
           if df.present?
             stmts += build_format_characteristics(df, count)
           else
-            stmts << contruct_stmt_literal_object("Instance1", "http://id.loc.gov/ontologies/bibframe/editionStatement", desc)
+            stmts << contruct_stmt_literal_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/editionStatement", desc)
           end
         end
         stmts
@@ -77,15 +77,15 @@ module Qa::Authorities
         stmts = []
         case df["type"]
         when "playbackChannel"
-          stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/soundCharacteristic", df["uri"])
+          stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/soundCharacteristic", df["uri"])
           stmts << contruct_stmt_uri_object(df["uri"], rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/PlaybackChannel")
           stmts << contruct_stmt_literal_object(df["uri"], rdfs_label_predicate, df["label"])
         when "dimension"
-          stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/dimensions", df["label"])
+          stmts << contruct_stmt_literal_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/dimensions", df["label"])
         when "playingSpeed"
-          stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/soundCharacteristic", "PlayingSpeed#{count}")
-          stmts << contruct_stmt_uri_object("PlayingSpeed#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/PlayingSpeed")
-          stmts << contruct_stmt_literal_object("PlayingSpeed#{count}", rdfs_label_predicate, df["label"])
+          stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/soundCharacteristic", "speed#{count}")
+          stmts << contruct_stmt_uri_object("speed#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/PlayingSpeed")
+          stmts << contruct_stmt_literal_object("speed#{count}", rdfs_label_predicate, df["label"])
         end
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
@@ -98,13 +98,13 @@ module Qa::Authorities
         return stmts unless name.present?
         dc = discogs_formats[name.gsub(/\s+/, "")]
         if dc.present?
-          stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/carrier", dc["uri"])
+          stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/carrier", dc["uri"])
           stmts << contruct_stmt_uri_object(dc["uri"], rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Carrier")
           stmts << contruct_stmt_literal_object(dc["uri"], rdfs_label_predicate, dc["label"])
           stmts.concat(build_base_materials(name))
         else
           # if it's not a carrier, it's an edition statement
-          stmts << contruct_stmt_literal_object("Instance1", "http://id.loc.gov/ontologies/bibframe/editionStatement", name)
+          stmts << contruct_stmt_literal_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/editionStatement", name)
         end
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
@@ -116,7 +116,7 @@ module Qa::Authorities
         return stmts unless name == "Vinyl" || name == "Shellac"
         id = name == "Vinyl" ? "300014502" : "300014918"
 
-        stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/baseMaterial", "http://vocab.getty.edu/aat/" + id)
+        stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/baseMaterial", "http://vocab.getty.edu/aat/" + id)
         stmts << contruct_stmt_uri_object("http://vocab.getty.edu/aat/" + id, rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/BaseMaterial")
         stmts << contruct_stmt_literal_object("http://vocab.getty.edu/aat/" + id, rdfs_label_predicate, name)
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
@@ -129,13 +129,12 @@ module Qa::Authorities
         # need to distinguish among different provision activities and roles
         count = 1
         activities.each do |activity|
-          stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/provisionActivity", "ProvisionActivity#{count}")
-          stmts << contruct_stmt_uri_object("ProvisionActivity#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/ProvisionActivity")
-          stmts << contruct_stmt_uri_object("ProvisionActivity#{count}", bf_agent_predicate, activity["name"])
-          stmts << contruct_stmt_uri_object(activity["name"], rdf_type_predicate, bf_agent_type_object)
-          stmts << contruct_stmt_uri_object(activity["name"], bf_role_predicate, "PA_Role#{count}")
-          stmts << contruct_stmt_uri_object("PA_Role#{count}", rdf_type_predicate, bf_role_type_object)
-          stmts << contruct_stmt_literal_object("PA_Role#{count}", rdfs_label_predicate, activity["entity_type_name"])
+          stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/provisionActivity", "proact#{count}")
+          stmts << contruct_stmt_uri_object("proact#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/ProvisionActivity")
+          stmts << contruct_stmt_uri_object("proact#{count}", bf_agent_predicate, "agentn3#{count}")
+          stmts << contruct_stmt_uri_object("agentn3#{count}", rdf_type_predicate, bf_agent_type_object)
+          stmts << contruct_stmt_literal_object("agentn3#{count}", rdfs_label_predicate, activity["name"])
+          stmts += build_role_stmts("agentn3#{count}", "role3#{count}", activity["entity_type_name"])
           count += 1
         end
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
