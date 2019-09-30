@@ -158,6 +158,28 @@ describe Qa::Authorities::Discogs::GenericAuthority do
         end
       end
 
+      context "ntriples format and subauthority master" do
+        let(:tc) { instance_double(Qa::TermsController) }
+        let :results do
+          authority.find("950011", tc)
+        end
+        before do
+          allow(Qa::TermsController).to receive(:new).and_return(tc)
+          allow(tc).to receive(:params).and_return('format' => "ntriples", 'subauthority' => "master")
+        end
+
+        it "returns the Discogs data converted to ntriples for a given id" do
+          expect(results).to include("https://www.discogs.com/Billie-Holiday-And-Her-Orchestra-Blue-Moon-You-Go-To-My-Head/master/950011")
+          expect(results).to include("Blue Moon / You Go To My Head")
+          expect(results).to include("Billie Holiday And Her Orchestra")
+          expect(results).to include("Haven Gillespie")
+          expect(results).to include("1952")
+          expect(results).to include("Jazz")
+          expect(results).to include("Barney Kessel")
+          expect(results).to include("Guitar")
+        end
+      end
+
       context "json-ld format and subauthority all" do
         let(:tc) { instance_double(Qa::TermsController) }
         let :results do
@@ -196,6 +218,31 @@ describe Qa::Authorities::Discogs::GenericAuthority do
 
         it "returns the Discogs data converted to n3 for a given id" do
           expect(results).to start_with "@prefix"
+          expect(results).to include("You Go To My Head")
+          expect(results).to include("Rodgers & Hart")
+          expect(results).to include("Ray Brown")
+          expect(results).to include("1952")
+          expect(results).to include("Single")
+          expect(results).to include("mono")
+          expect(results).to include("45 RPM")
+          expect(results).to include("Vinyl")
+          expect(results).to include("http://id.loc.gov/vocabulary/carriers/sd")
+          expect(results).to include("1952")
+        end
+      end
+
+      context "ntriples format and subauthority all" do
+        let(:tc) { instance_double(Qa::TermsController) }
+        let :results do
+          authority.find("7143179", tc)
+        end
+        before do
+          allow(Qa::TermsController).to receive(:new).and_return(tc)
+          allow(tc).to receive(:params).and_return('format' => "ntriples", 'subauthority' => "all")
+        end
+
+        it "returns the Discogs data converted to ntriples for a given id" do
+          expect(results).to include("https://www.discogs.com/Billie-Holiday-And-Her-Orchestra-Blue-Moon-You-Go-To-My-Head/release/7143179")
           expect(results).to include("You Go To My Head")
           expect(results).to include("Rodgers & Hart")
           expect(results).to include("Ray Brown")
