@@ -249,7 +249,7 @@ describe Qa::TermsController, type: :controller do
         get :show, params: { vocab: "discogs", subauthority: "release", id: "3380671", format: 'ntriples' }
         expect(response).to be_successful
         expect(response.content_type).to eq 'application/n-triples'
-        expect(response.body).to include("Dexter Gordon")
+        expect(response.body).to include('_:agentn1 <http://www.w3.org/2000/01/rdf-schema#label> "Dexter Gordon"')
       end
     end
   end

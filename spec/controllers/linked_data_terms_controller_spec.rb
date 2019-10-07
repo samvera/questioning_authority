@@ -440,7 +440,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
             get :show, params: { id: '530369', vocab: 'OCLC_FAST', format: 'ntriples' }
             expect(response).to be_successful
             expect(response.content_type).to eq 'application/n-triples'
-            expect(response.body).to include("<http://id.worldcat.org/fast/fst00530369>")
+            expect(response.body).to include('<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cornell University"')
           end
         end
       end
@@ -619,7 +619,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
             get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'ntriples' }
             expect(response).to be_successful
             expect(response.content_type).to eq 'application/n-triples'
-            expect(response.body).to include("http://id.worldcat.org/fast/fst00530369")
+            expect(response.body).to include('<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cornell University"')
           end
         end
 
