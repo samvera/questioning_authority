@@ -240,5 +240,17 @@ describe Qa::TermsController, type: :controller do
         expect(response.body).to start_with "@prefix"
       end
     end
+    context "with request for ntriples" do
+      before do
+        stub_request(:get, "https://api.discogs.com/releases/3380671")
+          .to_return(status: 200, body: webmock_fixture("discogs-find-response-json.json"))
+      end
+      it 'Access-Control-Allow-Origin is not present' do
+        get :show, params: { vocab: "discogs", subauthority: "release", id: "3380671", format: 'ntriples' }
+        expect(response).to be_successful
+        expect(response.content_type).to eq 'application/n-triples'
+        expect(response.body).to include('_:agentn1 <http://www.w3.org/2000/01/rdf-schema#label> "Dexter Gordon"')
+      end
+    end
   end
 end

@@ -1,16 +1,19 @@
 require 'rdf'
+require 'rdf/ntriples'
 module Qa::Authorities
   class Discogs::GenericAuthority < Base
     include WebServiceBase
     include Discogs::DiscogsTranslation
 
     class_attribute :discogs_secret, :discogs_key
-    attr_accessor :primary_artists
+    attr_accessor :primary_artists, :selected_format, :work_uri, :instance_uri
 
     # @param [String] subauthority to use
     def initialize(subauthority)
       @subauthority = subauthority
       self.primary_artists = []
+      self.work_uri = "http://generic.uri/workn1"
+      self.instance_uri = "http://generic.uri/instn1"
     end
 
     # @param [String] the query
@@ -35,12 +38,14 @@ module Qa::Authorities
     #
     # @param [String] the Discogs id of the selected item
     # @param [Class] QA::TermsController
-    # @return results in requested format (supports: json, jsonld, n3)
+    # @return results in requested format (supports: json, jsonld, n3, ntriples)
     def find(id, tc)
       response = tc.params["subauthority"].include?("all") ? fetch_discogs_results(id) : json(find_url(id, tc.params["subauthority"]))
+      self.selected_format = tc.params["format"]
       return response if response["message"].present?
       return build_graph(response, format: :jsonld) if jsonld?(tc)
       return build_graph(response, format: :n3) if n3?(tc)
+      return build_graph(response, format: :ntriples) if ntriples?(tc)
       response
     end
 
@@ -164,8 +169,12 @@ module Qa::Authorities
         format(tc).casecmp?('n3')
       end
 
+      def ntriples?(tc)
+        format(tc).casecmp?('ntriples')
+      end
+
       def graph_format?(tc)
-        jsonld?(tc) || n3?(tc)
+        jsonld?(tc) || n3?(tc) || ntriples?(tc)
       end
   end
 end

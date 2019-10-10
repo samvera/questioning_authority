@@ -95,9 +95,14 @@ class Qa::TermsController < ::ApplicationController
       format.casecmp?('n3')
     end
 
+    def ntriples?
+      format.casecmp?('ntriples')
+    end
+
     def content_type_for_format
       return 'application/ld+json' if jsonld?
       return 'text/n3' if n3?
+      return 'application/n-triples' if ntriples?
       'application/json'
     end
 end

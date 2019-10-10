@@ -11,7 +11,7 @@ module Qa::Authorities
       # to the URIs of corresponding objects in the Library of Congress vocabulary.
       # @param [Hash] the http response from discogs
       # @param [String] the subauthority
-      # @return [Array, String] requested RDF serialzation (supports: jsonld Array, n3 String)
+      # @return [Array, String] requested RDF serialzation (supports: jsonld Array, n3 String, n-triples String)
       def build_graph(response, subauthority = "", format: :jsonld)
         graph = RDF::Graph.new
 
@@ -30,14 +30,17 @@ module Qa::Authorities
         # all we need is a work and not an instance. If there's no subauthority, we can determine
         # if the discogs record is a master because it will have a main_release field.
         if master_only(response, subauthority)
+          self.work_uri = response["uri"]
           complete_rdf_stmts.concat(build_master_statements(response))
         else
           # If the subauthority is not "master," we need to define an instance as well as a
           # work. If the discogs record has a master_id, fetch that and use the results to
           # build the statements for the work.
           master_resp = response["master_id"].present? ? json("https://api.discogs.com/masters/#{response['master_id']}") : response
+          self.work_uri = master_resp["uri"] if master_resp["uri"].present? && master_resp["uri"].include?("master")
           complete_rdf_stmts.concat(build_master_statements(master_resp))
           # Now do the statements for the instance.
+          self.instance_uri = response["uri"] if response["uri"].present?
           complete_rdf_stmts.concat(build_instance_statements(response))
         end
       end
@@ -77,11 +80,12 @@ module Qa::Authorities
       # @return [Array] rdf statements
       def get_primary_work_definition(response)
         stmts = []
-        stmts << contruct_stmt_uri_object("Work1", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Work")
-        stmts << contruct_stmt_uri_object("Work1", "http://id.loc.gov/ontologies/bibframe/title", "Work1Title")
-        stmts << contruct_stmt_literal_object("Work1Title", bf_main_title_predicate, response["title"])
-        stmts << contruct_stmt_uri_object("Work1", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Audio")
-        stmts.concat(build_year_statements(response, "Work"))
+        stmts << contruct_stmt_uri_object(work_uri, rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Work")
+        stmts << contruct_stmt_uri_object(work_uri, "http://id.loc.gov/ontologies/bibframe/title", "titlen1")
+        stmts << contruct_stmt_literal_object("titlen1", bf_main_title_predicate, response["title"])
+        stmts << contruct_stmt_uri_object("titlen1", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Title")
+        stmts << contruct_stmt_uri_object(work_uri, rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Audio")
+        stmts << contruct_stmt_literal_object(work_uri, "http://id.loc.gov/ontologies/bibframe/originDate", response["year"].to_s) if response["year"].present?
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
@@ -89,14 +93,14 @@ module Qa::Authorities
       # @return [Array] rdf statements
       def get_primary_instance_definition(response)
         stmts = []
-        stmts << contruct_stmt_uri_object("Work1", "http://id.loc.gov/ontologies/bibframe/hasInstance", "Instance1")
-        stmts << contruct_stmt_uri_object("Instance1", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Instance")
-        stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/title", "Instance1Title")
-        stmts << contruct_stmt_literal_object("Instance1Title", bf_main_title_predicate, response["title"])
-        stmts << contruct_stmt_uri_object("Instance1", "http://id.loc.gov/ontologies/bibframe/identifiedBy", "IdentifierPrimary")
-        stmts << contruct_stmt_uri_object("IdentifierPrimary", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Identifier")
-        stmts << contruct_stmt_literal_object("IdentifierPrimary", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value", response["id"])
-        stmts.concat(build_year_statements(response, "Instance"))
+        stmts << contruct_stmt_uri_object(work_uri, "http://id.loc.gov/ontologies/bibframe/hasInstance", instance_uri)
+        stmts << contruct_stmt_uri_object(instance_uri, rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Instance")
+        stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/title", "titlen2")
+        stmts << contruct_stmt_literal_object("titlen2", bf_main_title_predicate, response["title"])
+        stmts << contruct_stmt_uri_object("titlen2", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Title")
+        stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/identifiedBy", "widn1")
+        stmts << contruct_stmt_uri_object("widn1", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Identifier")
+        stmts << contruct_stmt_literal_object("widn1", "http://www.w3.org/1999/02/22-rdf-syntax-ns#value", response["id"])
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
 
@@ -112,10 +116,11 @@ module Qa::Authorities
             # we need the primary artists later when we loop through the track list, so build this array
             primary_artists << artist
 
-            stmts << contruct_stmt_uri_object("Work1", "http://id.loc.gov/ontologies/bibframe/contribution", "Work1PrimaryContribution#{count}")
-            stmts << contruct_stmt_uri_object("Work1PrimaryContribution#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bflc/PrimaryContribution")
-            stmts << contruct_stmt_uri_object("Work1PrimaryContribution#{count}", bf_agent_predicate, artist["name"])
-            stmts << contruct_stmt_uri_object(artist["name"], rdf_type_predicate, bf_agent_type_object)
+            stmts << contruct_stmt_uri_object(work_uri, "http://id.loc.gov/ontologies/bibframe/contribution", "contrbn#{count}")
+            stmts << contruct_stmt_uri_object("contrbn#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bflc/PrimaryContribution")
+            stmts << contruct_stmt_uri_object("contrbn#{count}", bf_agent_predicate, "agentn#{count}")
+            stmts << contruct_stmt_uri_object("agentn#{count}", rdf_type_predicate, bf_agent_type_object)
+            stmts << contruct_stmt_literal_object("agentn#{count}", rdfs_label_predicate, artist["name"])
             count += 1
           end
         end
