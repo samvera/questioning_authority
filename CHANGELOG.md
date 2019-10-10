@@ -1,3 +1,8 @@
+### 4.2.3 (2019-10-10)
+
+* bug fix for performance stat reported for fetch normalization
+* adds support for `format=nt` for linked data module and discogs module
+
 ### 4.2.2 (2019-08-12)
  
 * bug fix to correctly set header content-type to text/n3 for discogs authority
