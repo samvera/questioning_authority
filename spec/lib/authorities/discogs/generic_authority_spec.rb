@@ -273,7 +273,7 @@ describe Qa::Authorities::Discogs::GenericAuthority do
         end
 
         it "has id and label keys" do
-          expect(results.first["uri"]).to eq("https://api.discogs.com/releases/1750352")
+          expect(results.first["uri"]).to eq("https://www.discogs.com/Melody-Gardot-Who-Will-Comfort-Me-Over-The-Rainbow/release/1750352")
           expect(results.first["id"]).to eq "1750352"
           expect(results.first["label"]).to eq "Melody Gardot - Who Will Comfort Me / Over The Rainbow"
           expect(results.first["context"]["Year"]).to eq ['2009']
@@ -296,7 +296,7 @@ describe Qa::Authorities::Discogs::GenericAuthority do
         end
 
         it "has id and label keys" do
-          expect(results.first['uri']).to eq "https://api.discogs.com/masters/606116"
+          expect(results.first['uri']).to eq "https://www.discogs.com/Wes-Montgomery-Bumpin-On-Sunset-Tequila/master/606116"
           expect(results.first['id']).to eq "606116"
           expect(results.first['label']).to eq "Wes Montgomery - Bumpin' On Sunset / Tequila"
           expect(results.first['context']["Year"]).to eq ['1966']
