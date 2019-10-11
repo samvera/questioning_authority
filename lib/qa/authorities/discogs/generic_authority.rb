@@ -127,11 +127,16 @@ module Qa::Authorities
       #   }
       def parse_authority_response(response)
         response['results'].map do |result|
-          { 'uri' => result['resource_url'].to_s,
+          { 'uri' => build_uri(result),
             'id' => result['id'].to_s,
             'label' => result['title'].to_s,
             'context' => assemble_search_context(result) }
         end
+      end
+
+      # @param [Hash] the results hash from the JSON returned by Discogs
+      def build_uri(result)
+        result['uri'].present? ? "https://www.discogs.com" + result['uri'].to_s : result['resource_url'].to_s
       end
 
       # @param [Hash] the results hash from the JSON returned by Discogs
