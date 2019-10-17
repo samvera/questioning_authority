@@ -30,17 +30,16 @@ module Qa::Authorities
         # all we need is a work and not an instance. If there's no subauthority, we can determine
         # if the discogs record is a master because it will have a main_release field.
         if master_only(response, subauthority)
-          self.work_uri = response["uri"]
+          self.work_uri = response["uri"].present? ? response["uri"] : response["resource_url"]
           complete_rdf_stmts.concat(build_master_statements(response))
         else
-          # If the subauthority is not "master," we need to define an instance as well as a
+          # If the subauthority is "release," we need to define an instance as well as a
           # work. If the discogs record has a master_id, fetch that and use the results to
           # build the statements for the work.
           master_resp = response["master_id"].present? ? json("https://api.discogs.com/masters/#{response['master_id']}") : response
-          self.work_uri = master_resp["uri"] if master_resp["uri"].present? && master_resp["uri"].include?("master")
           complete_rdf_stmts.concat(build_master_statements(master_resp))
-          # Now do the statements for the instance.
-          self.instance_uri = response["uri"] if response["uri"].present?
+          # Now do the statements for the release/instance.
+          self.instance_uri = response["uri"].present? ? response["uri"] : response["resource_url"]
           complete_rdf_stmts.concat(build_instance_statements(response))
         end
       end
@@ -93,7 +92,7 @@ module Qa::Authorities
       # @return [Array] rdf statements
       def get_primary_instance_definition(response)
         stmts = []
-        stmts << contruct_stmt_uri_object(work_uri, "http://id.loc.gov/ontologies/bibframe/hasInstance", instance_uri)
+        stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/instanceOf", work_uri)
         stmts << contruct_stmt_uri_object(instance_uri, rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Instance")
         stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/title", "titlen2")
         stmts << contruct_stmt_literal_object("titlen2", bf_main_title_predicate, response["title"])

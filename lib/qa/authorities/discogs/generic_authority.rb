@@ -12,8 +12,8 @@ module Qa::Authorities
     def initialize(subauthority)
       @subauthority = subauthority
       self.primary_artists = []
-      self.work_uri = "http://generic.uri/workn1"
-      self.instance_uri = "http://generic.uri/instn1"
+      self.work_uri = "workn1"
+      self.instance_uri = "instn1"
     end
 
     # @param [String] the query
