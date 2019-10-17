@@ -1,3 +1,7 @@
+### 4.2.4 (2019-10-17)
+
+* use real discogs uri whenever available and discogs url when not
+
 ### 4.2.3 (2019-10-10)
 
 * bug fix for performance stat reported for fetch normalization
