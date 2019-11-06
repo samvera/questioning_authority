@@ -15,8 +15,8 @@ module Qa::Authorities
         @search_config = search_config
       end
 
-      attr_reader :search_config, :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size
-      private :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size
+      attr_reader :search_config, :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size, :subauthority
+      private :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size, :subauthority
 
       delegate :subauthority?, :supports_sort?, :prefixes, :authority_name, to: :search_config
 
@@ -36,11 +36,8 @@ module Qa::Authorities
       #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
       def search(query, request_header: {}, language: nil, replacements: {}, subauth: nil, context: false, performance_data: false) # rubocop:disable Metrics/ParameterLists
         request_header = build_request_header(language: language, replacements: replacements, subauth: subauth, context: context, performance_data: performance_data) if request_header.empty?
-        subauth = request_header.fetch(:subauthority, nil)
-        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
-        @context = request_header.fetch(:context, false)
-        @performance_data = request_header.fetch(:performance_data, false)
-        @language = language_service.preferred_language(user_language: request_header.fetch(:language, nil), authority_language: search_config.language)
+        unpack_request_header(request_header)
+        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauthority}" unless subauthority.nil? || subauthority?(subauthority)
         url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, request_header: request_header)
         Rails.logger.info "QA Linked Data search url: #{url}"
         load_graph(url: url)
@@ -91,7 +88,16 @@ module Qa::Authorities
 
           results_mapper_service.map_values(graph: filtered_graph, prefixes: prefixes, ldpath_map: ldpath_map,
                                             predicate_map: predicate_map, sort_key: :sort,
-                                            preferred_language: @language, context_map: context_map)
+                                            preferred_language: language, context_map: context_map)
+        end
+
+        def unpack_request_header(request_header)
+          @subauthority = request_header.fetch(:subauthority, nil)
+          @context = request_header.fetch(:context, false)
+          @performance_data = request_header.fetch(:performance_data, false)
+          @language = language_service.preferred_language(user_language: request_header.fetch(:user_language, nil),
+                                                          authority_language: search_config.language)
+          request_header[:language] = Array(@language)
         end
 
         def context_map
@@ -185,6 +191,8 @@ module Qa::Authorities
           { performance: performance, results: results }
         end
 
+        # This is providing support for calling build_url with individual parameters instead of the request_header.
+        # This is deprecated and will be removed in the next major release.
         def build_request_header(language:, replacements:, subauth:, context:, performance_data:) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
           unless language.blank? && replacements.blank? && subauth.blank? && !context && !performance_data
             Qa.deprecation_warning(

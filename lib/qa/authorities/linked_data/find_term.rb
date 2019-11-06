@@ -15,8 +15,8 @@ module Qa::Authorities
         @term_config = term_config
       end
 
-      attr_reader :term_config, :full_graph, :filtered_graph, :language, :id, :uri, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size
-      private :full_graph, :filtered_graph, :language, :id, :uri, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size
+      attr_reader :term_config, :full_graph, :filtered_graph, :language, :id, :uri, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size, :subauthority
+      private :full_graph, :filtered_graph, :language, :id, :uri, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size, :subauthority
 
       delegate :term_subauthority?, :prefixes, :authority_name, to: :term_config
 
@@ -45,12 +45,9 @@ module Qa::Authorities
       #     "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"] } }
       def find(id, request_header: {}, language: nil, replacements: {}, subauth: nil, format: 'json', performance_data: false) # rubocop:disable Metrics/ParameterLists
         request_header = build_request_header(language: language, replacements: replacements, subauth: subauth, format: format, performance_data: performance_data) if request_header.empty?
-        subauth = request_header.fetch(:subauthority, nil)
-        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
-        @language = language_service.preferred_language(user_language: request_header.fetch(:language, nil), authority_language: term_config.term_language)
+        unpack_request_header(request_header)
+        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauthority}" unless subauthority.nil? || term_subauthority?(subauthority)
         @id = id
-        @performance_data = request_header.fetch(:performance_data, false)
-        @format = request_header.fetch(:format, 'json')
         url = authority_service.build_url(action_config: term_config, action: :term, action_request: normalize_id, request_header: request_header)
         Rails.logger.info "QA Linked Data term url: #{url}"
         load_graph(url: url)
@@ -93,6 +90,15 @@ module Qa::Authorities
           extract_uri
           results = map_results
           convert_results_to_json(results)
+        end
+
+        def unpack_request_header(request_header)
+          @subauthority = request_header.fetch(:subauthority, nil)
+          @format = request_header.fetch(:format, 'json')
+          @performance_data = request_header.fetch(:performance_data, false)
+          @language = language_service.preferred_language(user_language: request_header.fetch(:user_language, nil),
+                                                          authority_language: term_config.term_language)
+          request_header[:language] = Array(@language)
         end
 
         def filter_graph
@@ -289,6 +295,8 @@ module Qa::Authorities
           { performance: performance, results: results }
         end
 
+        # This is providing support for calling build_url with individual parameters instead of the request_header.
+        # This is deprecated and will be removed in the next major release.
         def build_request_header(language:, replacements:, subauth:, format:, performance_data:) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
           unless language.blank? && replacements.blank? && subauth.blank? && format == 'json' && !performance_data
             Qa.deprecation_warning(

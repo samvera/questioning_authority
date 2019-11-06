@@ -8,9 +8,9 @@ module Qa
         # @param action [Symbol] action with valid values :search or :term
         # @param action_request [String] the request the user is making of the authority (e.g. query text or term id/uri)
         # @param request_header [Hash] optional attributes that can be appended to the generated URL
-        # @option replacements [Hash] variable-value pairs to substitute into the URL template (optional)
-        # @option subauthority [String] name of a subauthority (optional)
-        # @option language [Array<Symbol>] languages for filtering returned literals (optional)
+        # @option replacements [Hash] variable-value pairs to substitute into the URL template
+        # @option subauthority [String] name of a subauthority
+        # @option language [Array<Symbol>] languages for filtering returned literals
         # @return a valid URL that submits the action request to the external authority
         # @note All parameters after request_header are deprecated and will be removed in the next major release.
         def build_url(action_config:, action:, action_request:, request_header: {}, substitutions: {}, subauthority: nil, language: nil) # rubocop:disable Metrics/ParameterLists
@@ -61,6 +61,8 @@ module Qa
             request_header.fetch(:language, []).first
           end
 
+          # This is providing support for calling build_url with individual parameters instead of the request_header.
+          # This is deprecated and will be removed in the next major release.
           def build_request_header(substitutions, subauthority, language) # rubocop:disable Metrics/CyclomaticComplexity
             return {} if substitutions.blank? && subauthority.blank? && language.blank?
             Qa.deprecation_warning(

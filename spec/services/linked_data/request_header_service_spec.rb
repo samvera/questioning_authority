@@ -19,11 +19,11 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
       it 'uses passed in params' do
         expected_results =
           {
-            subauthority: 'person',
-            language: ['sp'],
             context: true,
             performance_data: true,
-            replacements: { 'maxRecords' => '4' }
+            replacements: { 'maxRecords' => '4' },
+            subauthority: 'person',
+            user_language: ['sp']
           }
         expect(described_class.new(request, search_params).search_header).to eq expected_results
       end
@@ -35,11 +35,11 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults' do
           expected_results =
             {
-              subauthority: nil,
-              language: nil,
               context: false,
               performance_data: false,
-              replacements: {}
+              replacements: {},
+              subauthority: nil,
+              user_language: nil
             }
           expect(described_class.new(request, {}).search_header).to eq expected_results
         end
@@ -50,11 +50,11 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults with language set to request language' do
           expected_results =
             {
-              subauthority: nil,
-              language: ['de'],
               context: false,
               performance_data: false,
-              replacements: {}
+              replacements: {},
+              subauthority: nil,
+              user_language: ['de']
             }
           expect(described_class.new(request, {}).search_header).to eq expected_results
         end
@@ -79,11 +79,11 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
       it 'uses passed in params' do
         expected_results =
           {
-            subauthority: 'person',
-            language: ['sp'],
             format: 'n3',
             performance_data: true,
-            replacements: { 'extra' => 'data', 'even' => 'more data' }
+            replacements: { 'extra' => 'data', 'even' => 'more data' },
+            subauthority: 'person',
+            user_language: ['sp']
           }
         expect(described_class.new(request, fetch_params).fetch_header).to eq expected_results
       end
@@ -95,11 +95,11 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults' do
           expected_results =
             {
-              subauthority: nil,
-              language: nil,
               format: 'json',
               performance_data: false,
-              replacements: {}
+              replacements: {},
+              subauthority: nil,
+              user_language: nil
             }
           expect(described_class.new(request, {}).fetch_header).to eq expected_results
         end
@@ -110,11 +110,11 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults with language set to request language' do
           expected_results =
             {
-              subauthority: nil,
-              language: ['de'],
               format: 'json',
               performance_data: false,
-              replacements: {}
+              replacements: {},
+              subauthority: nil,
+              user_language: ['de']
             }
           expect(described_class.new(request, {}).fetch_header).to eq expected_results
         end
