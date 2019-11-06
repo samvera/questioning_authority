@@ -14,13 +14,19 @@ RSpec.describe Qa::LinkedData::AuthorityUrlService do
   end
 
   describe '.build_url' do
+    let(:request_header) do
+      {
+        subauthority: subauthority,
+        replacements: substitutions
+      }
+    end
     context 'when authority is not registered' do
       let(:authority) { :BAD_AUTHORITY }
 
       it 'raises error' do
         expected_error = Qa::InvalidLinkedDataAuthority
         expected_error_message = "Unable to initialize linked data authority 'BAD_AUTHORITY'"
-        expect { described_class.build_url(action_config: action_config, subauthority: subauthority, action: action, action_request: action_request, substitutions: substitutions) }
+        expect { described_class.build_url(action_config: action_config, action: action, action_request: action_request, request_header: request_header) }
           .to raise_error(expected_error, expected_error_message)
       end
     end
@@ -33,7 +39,7 @@ RSpec.describe Qa::LinkedData::AuthorityUrlService do
         skip "Pending better handling of unsupported subauthorities"
         expected_error = Qa::InvalidLinkedDataAuthority
         expected_error_message = "Unable to initialize linked data sub-authority BAD_SUBAUTHORITY"
-        expect { described_class.build_url(action_config: action_config, subauthority: subauthority, action: action, action_request: action_request, substitutions: substitutions) }
+        expect { described_class.build_url(action_config: action_config, action: action, action_request: action_request, request_header: request_header) }
           .to raise_error(expected_error, expected_error_message)
       end
     end
@@ -44,7 +50,7 @@ RSpec.describe Qa::LinkedData::AuthorityUrlService do
       it 'raises error' do
         expected_error = Qa::UnsupportedAction
         expected_error_message = "BAD_ACTION Not Supported - Action must be one of the supported actions (e.g. :term, :search)"
-        expect { described_class.build_url(action_config: action_config, subauthority: subauthority, action: action, action_request: action_request, substitutions: substitutions) }
+        expect { described_class.build_url(action_config: action_config, action: action, action_request: action_request, request_header: request_header) }
           .to raise_error(expected_error, expected_error_message)
       end
     end
@@ -55,16 +61,16 @@ RSpec.describe Qa::LinkedData::AuthorityUrlService do
       it 'raises error' do
         expected_error = Qa::IriTemplate::MissingParameter
         expected_error_message = "query is required, but missing"
-        expect { described_class.build_url(action_config: action_config, subauthority: subauthority, action: action, action_request: action_request, substitutions: substitutions) }
+        expect { described_class.build_url(action_config: action_config, action: action, action_request: action_request, request_header: request_header) }
           .to raise_error(expected_error, expected_error_message)
       end
     end
 
-    subject do
-      described_class.build_url(action_config: action_config, subauthority: subauthority, action: action, action_request: action_request, substitutions: substitutions)
-    end
-
     context 'when no errors' do
+      subject do
+        described_class.build_url(action_config: action_config, action: action, action_request: action_request, request_header: request_header)
+      end
+
       context 'and performing search action' do
         context 'and all substitutions specified' do
           let(:substitutions) do

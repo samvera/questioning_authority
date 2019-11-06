@@ -22,10 +22,14 @@ module Qa::Authorities
 
       # Find a single term in a linked data authority
       # @param [String] the id of the term to fetch
-      # @param [Symbol] (optional) language: language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
-      # @param [Hash] (optional) replacements: replacement values with { pattern_name (defined in YAML config) => value }
-      # @param [String] subauth: the subauthority from which to fetch the term
-      # @return [Hash] json results
+      # @param request_header [Hash] optional attributes that can be appended to the generated URL
+      # @option language [Symbol] language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
+      # @option replacements [Hash] replacement values with { pattern_name (defined in YAML config) => value }
+      # @option subauthority [String] the subauthority from which to fetch the term
+      # @option format [String] return data in this format
+      # @option performance_data [Boolean] true if include_performance_data should be returned with the results; otherwise, false (default: false)
+      # @note All parameters after request_header are deprecated and will be removed in the next major release.
+      # @return [Hash, String] normalized json results when format='json'; otherwise, serialized RDF in the requested format
       # @example Json Results for Linked Data Term
       #   { "uri":"http://id.worldcat.org/fast/530369",
       #     "id":"530369","label":"Cornell University",
@@ -39,21 +43,15 @@ module Qa::Authorities
       #     "http://schema.org/name":["Cornell University","Ithaca (N.Y.). Cornell University"],
       #     "http://www.w3.org/2004/02/skos/core#altLabel":["Ithaca (N.Y.). Cornell University"],
       #     "http://schema.org/sameAs":["http://id.loc.gov/authorities/names/n79021621","https://viaf.org/viaf/126293486"] } }
-      def find(id, language: nil, replacements: {}, subauth: nil, format: nil, jsonld: false, performance_data: false) # rubocop:disable Metrics/ParameterLists, Metrics/MethodLength
-        # TODO: When jsonld parameter is removed, the format parameter should default to 'json'.  Not making this change now for backward compatibility of the default for jsonld parameter.
+      def find(id, request_header: {}, language: nil, replacements: {}, subauth: nil, format: 'json', performance_data: false) # rubocop:disable Metrics/ParameterLists
+        request_header = build_request_header(language: language, replacements: replacements, subauth: subauth, format: format, performance_data: performance_data) if request_header.empty?
+        subauth = request_header.fetch(:subauthority, nil)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauth}" unless subauth.nil? || term_subauthority?(subauth)
-        @language = language_service.preferred_language(user_language: language, authority_language: term_config.term_language)
+        @language = language_service.preferred_language(user_language: request_header.fetch(:language, nil), authority_language: term_config.term_language)
         @id = id
-        @performance_data = performance_data
-        @format = format
-        @jsonld = jsonld if @format.blank?
-        if jsonld
-          Qa.deprecation_warning(
-            in_msg: 'Qa::Authorities::LinkedData::FindTerm',
-            msg: "jsonld parameter to find method is deprecated; use `format: 'jsonld'` instead"
-          )
-        end
-        url = authority_service.build_url(action_config: term_config, action: :term, action_request: normalize_id, substitutions: replacements, subauthority: subauth, language: @language)
+        @performance_data = request_header.fetch(:performance_data, false)
+        @format = request_header.fetch(:format, 'json')
+        url = authority_service.build_url(action_config: term_config, action: :term, action_request: normalize_id, request_header: request_header)
         Rails.logger.info "QA Linked Data term url: #{url}"
         load_graph(url: url)
         normalize_results
@@ -75,14 +73,14 @@ module Qa::Authorities
         def normalize_results
           normalize_start_dt = Time.now.utc
 
-          json = perform_normalization
+          results = perform_normalization
 
           normalize_end_dt = Time.now.utc
           @normalize_time_s = normalize_end_dt - normalize_start_dt
-          @normalized_size = json.to_s.size if performance_data?
-          Rails.logger.info("Time to convert data to json: #{normalize_time_s}s")
-          json = append_performance_data(json) if performance_data?
-          json
+          @normalized_size = results.to_s.size if performance_data?
+          Rails.logger.info("Time to normalize data: #{normalize_time_s}s")
+          results = append_performance_data(results) if performance_data?
+          results
         end
 
         def perform_normalization
@@ -289,6 +287,22 @@ module Qa::Authorities
                           normalization_bytes_per_s: normalized_size / normalize_time_s,
                           total_time_s: (access_time_s + normalize_time_s) }
           { performance: performance, results: results }
+        end
+
+        def build_request_header(language:, replacements:, subauth:, format:, performance_data:) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+          unless language.blank? && replacements.blank? && subauth.blank? && format == 'json' && !performance_data
+            Qa.deprecation_warning(
+              in_msg: 'Qa::Authorities::LinkedData::FindTerm',
+              msg: "individual attributes for options (e.g. replacements, subauth, language) are deprecated; use request_header instead"
+            )
+          end
+          request_header = {}
+          request_header[:replacements] = replacements || {}
+          request_header[:subauthority] = subauth || nil
+          request_header[:language] = language || nil
+          request_header[:format] = format || 'json'
+          request_header[:performance_data] = performance_data
+          request_header
         end
     end
   end

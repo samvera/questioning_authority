@@ -11,7 +11,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
       end
       context 'when set to true' do
         let :results do
-          lod_oclc.search('cornell', subauth: 'personal_name', replacements: { 'maximumRecords' => '3' }, performance_data: true)
+          lod_oclc.search('cornell', request_header: { subauthority: 'personal_name', replacements: { 'maximumRecords' => '3' }, performance_data: true })
         end
         it 'includes performance in return hash' do
           expect(results).to be_kind_of Hash
@@ -27,7 +27,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
 
       context 'when set to false' do
         let :results do
-          lod_oclc.search('cornell', subauth: 'personal_name', replacements: { 'maximumRecords' => '3' }, performance_data: false)
+          lod_oclc.search('cornell', request_header: { subauthority: 'personal_name', replacements: { 'maximumRecords' => '3' }, performance_data: false })
         end
         it 'does NOT include performance in return hash' do
           expect(results).to be_kind_of Array
@@ -36,7 +36,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
 
       context 'when using default setting' do
         let :results do
-          lod_oclc.search('cornell', subauth: 'personal_name', replacements: { 'maximumRecords' => '3' })
+          lod_oclc.search('cornell', request_header: { subauthority: 'personal_name', replacements: { 'maximumRecords' => '3' } })
         end
         it 'does NOT include performance in return hash' do
           expect(results).to be_kind_of Array
@@ -49,7 +49,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
         let :results do
           stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22supercalifragilisticexpialidocious%22&sortKeys=usage')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_query_no_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
-          lod_oclc.search('supercalifragilisticexpialidocious', replacements: { 'maximumRecords' => '3' })
+          lod_oclc.search('supercalifragilisticexpialidocious', request_header: { replacements: { 'maximumRecords' => '3' } })
         end
         it 'returns an empty array' do
           expect(results).to eq([])
@@ -60,7 +60,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
         let :results do
           stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_all_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
-          lod_oclc.search('cornell', replacements: { 'maximumRecords' => '3' })
+          lod_oclc.search('cornell', request_header: { replacements: { 'maximumRecords' => '3' } })
         end
         it 'is correctly parsed' do
           expect(results.count).to eq(3)
@@ -76,7 +76,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
         let :results do
           stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=oclc.personalName%20all%20%22supercalifragilisticexpialidocious%22&sortKeys=usage')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_query_no_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
-          lod_oclc.search('supercalifragilisticexpialidocious', subauth: 'personal_name', replacements: { 'maximumRecords' => '3' })
+          lod_oclc.search('supercalifragilisticexpialidocious', request_header: { subauthority: 'personal_name', replacements: { 'maximumRecords' => '3' } })
         end
         it 'returns an empty array' do
           expect(results).to eq([])
@@ -87,7 +87,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
         let :results do
           stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=oclc.personalName%20all%20%22cornell%22&sortKeys=usage')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_personalName_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
-          lod_oclc.search('cornell', subauth: 'personal_name', replacements: { 'maximumRecords' => '3' })
+          lod_oclc.search('cornell', request_header: { subauthority: 'personal_name', replacements: { 'maximumRecords' => '3' } })
         end
         it 'is correctly parsed' do
           expect(results.count).to eq(3)
@@ -197,7 +197,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
           let :results do
             stub_request(:get, "http://localhost/test_default/search?query=milk")
               .to_return(status: 200, body: webmock_fixture("lod_lang_search_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-            lod_lang_defaults.search('milk', language: :fr)
+            lod_lang_defaults.search('milk', request_header: { language: :fr })
           end
           it "is filtered to specified language" do
             expect(results.first[:label]).to eq('Babeurre (délicieux)')
@@ -226,7 +226,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
             let :results do
               stub_request(:get, "http://localhost/test_replacement/search?query=milk&lang=fr")
                 .to_return(status: 200, body: webmock_fixture("lod_lang_search_fr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-              lod_lang_param.search("milk", replacements: { 'lang' => 'fr' })
+              lod_lang_param.search("milk", request_header: { replacements: { 'lang' => 'fr' } })
             end
             it "is correctly parsed" do
               expect(results.first[:label]).to eq('Babeurre (délicieux)')

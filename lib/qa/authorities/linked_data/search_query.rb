@@ -22,22 +22,26 @@ module Qa::Authorities
 
       # Search a linked data authority
       # @praram [String] the query
-      # @param language [Symbol] (optional) language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
-      # @param replacements [Hash] (optional) replacement values with { pattern_name (defined in YAML config) => value }
-      # @param subauth [String] (optional) the subauthority to query
-      # @param context [Boolean] (optional) true if context should be returned with the results; otherwise, false (default: false)
-      # @param performance_data [Boolean] (optional) true if include_performance_data should be returned with the results; otherwise, false (default: false)
+      # @param request_header [Hash] optional attributes that can be appended to the generated URL
+      # @option language [Symbol] language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
+      # @option replacements [Hash] replacement values with { pattern_name (defined in YAML config) => value }
+      # @option subauthority [String] the subauthority to query
+      # @option context [Boolean] true if context should be returned with the results; otherwise, false (default: false)
+      # @option performance_data [Boolean] true if include_performance_data should be returned with the results; otherwise, false (default: false)
       # @return [String] json results
+      # @note All parameters after request_header are deprecated and will be removed in the next major release.
       # @example Json Results for Linked Data Search
       #   [ {"uri":"http://id.worldcat.org/fast/5140","id":"5140","label":"Cornell, Joseph"},
       #     {"uri":"http://id.worldcat.org/fast/72456","id":"72456","label":"Cornell, Sarah Maria, 1802-1832"},
       #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
-      def search(query, language: nil, replacements: {}, subauth: nil, context: false, performance_data: false) # rubocop:disable Metrics/ParameterLists
+      def search(query, request_header: {}, language: nil, replacements: {}, subauth: nil, context: false, performance_data: false) # rubocop:disable Metrics/ParameterLists
+        request_header = build_request_header(language: language, replacements: replacements, subauth: subauth, context: context, performance_data: performance_data) if request_header.empty?
+        subauth = request_header.fetch(:subauthority, nil)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauth}" unless subauth.nil? || subauthority?(subauth)
-        @context = context
-        @performance_data = performance_data
-        @language = language_service.preferred_language(user_language: language, authority_language: search_config.language)
-        url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, substitutions: replacements, subauthority: subauth, language: @language)
+        @context = request_header.fetch(:context, false)
+        @performance_data = request_header.fetch(:performance_data, false)
+        @language = language_service.preferred_language(user_language: request_header.fetch(:language, nil), authority_language: search_config.language)
+        url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, request_header: request_header)
         Rails.logger.info "QA Linked Data search url: #{url}"
         load_graph(url: url)
         normalize_results
@@ -66,7 +70,7 @@ module Qa::Authorities
           normalize_end_dt = Time.now.utc
           @normalize_time_s = normalize_end_dt - normalize_start_dt
           @normalized_size = json.to_s.size if performance_data?
-          Rails.logger.info("Time to convert data to json: #{normalize_time_s}s")
+          Rails.logger.info("Time to normalize data: #{normalize_time_s}s")
           json = append_performance_data(json) if performance_data?
           json
         end
@@ -179,6 +183,22 @@ module Qa::Authorities
                           normalization_bytes_per_s: normalized_size / normalize_time_s,
                           total_time_s: (access_time_s + normalize_time_s) }
           { performance: performance, results: results }
+        end
+
+        def build_request_header(language:, replacements:, subauth:, context:, performance_data:) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+          unless language.blank? && replacements.blank? && subauth.blank? && !context && !performance_data
+            Qa.deprecation_warning(
+              in_msg: 'Qa::Authorities::LinkedData::SearchQuery',
+              msg: "individual attributes for options (e.g. replacements, subauth, language) are deprecated; use request_header instead"
+            )
+          end
+          request_header = {}
+          request_header[:replacements] = replacements || {}
+          request_header[:subauthority] = subauth || nil
+          request_header[:language] = language || nil
+          request_header[:context] = context
+          request_header[:performance_data] = performance_data
+          request_header
         end
     end
   end
