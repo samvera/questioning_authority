@@ -101,30 +101,22 @@ module Qa::Authorities
 
       # @param [Hash] the http response from discogs
       # @example returns parsed discogs data with context
-      # {
+      # [{
       #   "uri": "https://api.discogs.com/releases/4212473",
       #   "id": "4212473",
       #   "label": "Frank Sinatra And The Modernaires - Sorry / Why Remind Me",
-      # }
-      #   "context": {
-      #     "Image URL": [
-      #       "https://img.discogs.com/2e-YoNr0dvmMgbzEN0hjHD6X0sU=/fit-in/600x580/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-4212473-1358693671-5430.jpeg.jpg"
-      #     ],
-      #     "Year": [
-      #       "1950"
-      #     ],
-      #     "Record Labels": [
-      #       "Columbia"
-      #     ],
-      #     "Formats": [
-      #       "Shellac",
-      #       "10\"",
-      #       "78 RPM"
-      #     ],
-      #     "Type": [
-      #       "release"
-      #     ]
-      #   }
+      #   "context": [{
+      #     "Image URL": ["https://img.discogs.com/2e-YoNr0d=/fit-in/600x580/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-4212473.jpg"]
+      #   }, {
+      #     "Year": ["1950"]
+      #   }, {
+      #     "Record Labels": ["Columbia"]
+      #   }, {
+      #     "Formats": ["Shellac", "10\"", "78 RPM"]
+      #   }, {
+      #     "Type": ["release"]
+      #   }]
+      # }]
       def parse_authority_response(response)
         response['results'].map do |result|
           { 'uri' => build_uri(result),
@@ -141,11 +133,11 @@ module Qa::Authorities
 
       # @param [Hash] the results hash from the JSON returned by Discogs
       def assemble_search_context(result)
-        { "Image URL" => get_context_for_string(result['cover_image']),
-          "Year" =>  get_context_for_string(result['year']),
-          "Record Labels" => get_context_for_array(result['label']),
-          "Formats" => get_context_for_array(result['format']),
-          "Type" => get_context_for_string(result['type']) }
+        [{ "Image URL" => get_context_for_string(result['cover_image']) },
+         { "Year" => get_context_for_string(result['year']) },
+         { "Record Labels" => get_context_for_array(result['label']) },
+         { "Formats" => get_context_for_array(result['format']) },
+         { "Type" => get_context_for_string(result['type']) }]
       end
 
       # checks if the param is null, returns appropriate value
