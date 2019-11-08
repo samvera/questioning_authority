@@ -7,8 +7,14 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   before_action :check_show_subauthority, :check_id_param, only: :show
   before_action :check_uri_param, only: :fetch
   before_action :validate_auth_reload_token, only: :reload
+  before_action :create_request_header_service, only: [:search, :show, :fetch]
 
   delegate :cors_allow_origin_header, to: Qa::ApplicationController
+
+  class_attribute :request_header_service_class
+  self.request_header_service_class = Qa::LinkedData::RequestHeaderService
+
+  attr_reader :request_header_service
 
   # Provide a warning if there is a request for all terms.
   def index
@@ -35,8 +41,8 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # Return a list of terms based on a query
   # get "/search/linked_data/:vocab(/:subauthority)"
   # @see Qa::Authorities::LinkedData::SearchQuery#search
-  def search # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    terms = @authority.search(query, subauth: subauthority, language: language, replacements: replacement_params, context: context?, performance_data: performance_data?)
+  def search # rubocop:disable Metrics/MethodLength
+    terms = @authority.search(query, request_header: request_header_service.search_header)
     cors_allow_origin_header(response)
     render json: terms
   rescue Qa::ServiceUnavailable
@@ -59,9 +65,9 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # get "/show/linked_data/:vocab/:subauthority/:id
   # @see Qa::Authorities::LinkedData::FindTerm#find
   def show # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    term = @authority.find(id, subauth: subauthority, language: language, replacements: replacement_params, format: format, performance_data: performance_data?)
+    term = @authority.find(id, request_header: request_header_service.fetch_header)
     cors_allow_origin_header(response)
-    render json: term, content_type: content_type_for_format
+    render json: term, content_type: request_header_service.content_type_for_format
   rescue Qa::TermNotFound
     msg = "Term Not Found - Fetch term #{id} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
     logger.warn msg
@@ -89,9 +95,9 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # get "/fetch/linked_data/:vocab"
   # @see Qa::Authorities::LinkedData::FindTerm#find
   def fetch # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    term = @authority.find(uri, subauth: subauthority, language: language, replacements: replacement_params, format: format, performance_data: performance_data?)
+    term = @authority.find(uri, request_header: request_header_service.fetch_header)
     cors_allow_origin_header(response)
-    render json: term, content_type: content_type_for_format
+    render json: term, content_type: request_header_service.content_type_for_format
   rescue Qa::TermNotFound
     msg = "Term Not Found - Fetch term #{uri} unsuccessful for#{subauth_warn_msg} authority #{vocab_param}"
     logger.warn msg
@@ -147,6 +153,10 @@ class Qa::LinkedDataTermsController < ::ApplicationController
       end
     end
 
+    def create_request_header_service
+      @request_header_service = request_header_service_class.new(request, params)
+    end
+
     def init_authority
       @authority = Qa::Authorities::LinkedData::GenericAuthority.new(vocab_param)
     rescue Qa::InvalidLinkedDataAuthority => e
@@ -190,62 +200,17 @@ class Qa::LinkedDataTermsController < ::ApplicationController
       params[:id]
     end
 
-    def language
-      request_language = request.env['HTTP_ACCEPT_LANGUAGE']
-      request_language = request_language.scan(/^[a-z]{2}/).first if request_language.present?
-      params[:lang] || request_language
-    end
-
     def subauthority
       params[:subauthority]
-    end
-
-    def replacement_params
-      params.reject { |k, _v| ['q', 'vocab', 'controller', 'action', 'subauthority', 'lang', 'id'].include?(k) }
     end
 
     def subauth_warn_msg
       subauthority.blank? ? "" : " sub-authority #{subauthority} in"
     end
 
-    def format
-      return 'json' unless params.key?(:format)
-      return 'json' if params[:format].blank?
-      params[:format]
-    end
-
-    def jsonld?
-      format.casecmp?('jsonld')
-    end
-
-    def n3?
-      format.casecmp?('n3')
-    end
-
-    def ntriples?
-      format.casecmp?('ntriples')
-    end
-
-    def content_type_for_format
-      return 'application/ld+json' if jsonld?
-      return 'text/n3' if n3?
-      return 'application/n-triples' if ntriples?
-      'application/json'
-    end
-
-    def context?
-      context = params.fetch(:context, 'false')
-      context.casecmp?('true')
-    end
-
     def details?
       details = params.fetch(:details, 'false')
       details.casecmp?('true')
-    end
-
-    def performance_data?
-      performance_data = params.fetch(:performance_data, 'false')
-      performance_data.casecmp?('true')
     end
 
     def validate_auth_reload_token

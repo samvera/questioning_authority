@@ -24,7 +24,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
       end
       context 'when set to true' do
         let :results do
-          lod_oclc.find('530369', performance_data: true)
+          lod_oclc.find('530369', request_header: { performance_data: true })
         end
         it 'includes performance in return hash' do
           expect(results.keys).to match_array [:performance, :results]
@@ -38,7 +38,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
 
       context 'when set to false' do
         let :results do
-          lod_oclc.find('530369', performance_data: false)
+          lod_oclc.find('530369', request_header: { performance_data: false })
         end
         it 'does NOT include performance in return hash' do
           expect(results.keys).not_to include(:performance)
@@ -114,7 +114,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
               .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
           end
 
-          let(:results) { lod_loc.find('sh 85118553', subauth: 'subjects') }
+          let(:results) { lod_loc.find('sh 85118553', request_header: { subauthority: 'subjects' }) }
 
           it 'has correct primary predicate values' do
             expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
@@ -182,8 +182,8 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
               .to_return(status: 200, body: webmock_fixture('lod_loc_second_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
           end
 
-          let(:results) { lod_loc.find('sh 85118553', subauth: 'subjects') }
-          let(:second_results) { lod_loc.find('sh 1234', subauth: 'subjects') }
+          let(:results) { lod_loc.find('sh 85118553', request_header: { subauthority: 'subjects' }) }
+          let(:second_results) { lod_loc.find('sh 1234', request_header: { subauthority: 'subjects' }) }
 
           it 'has correct primary predicate values for second request' do
             expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
@@ -201,7 +201,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
               .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
           end
 
-          let(:results_without_blank) { lod_loc.find('sh85118553', subauth: 'subjects') }
+          let(:results_without_blank) { lod_loc.find('sh85118553', request_header: { subauthority: 'subjects' }) }
 
           it 'extracts correct uri' do
             expect(results_without_blank[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
@@ -215,7 +215,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
           end
 
           it 'raises DataNormalizationError' do
-            expect { lod_loc.find('sh85118553', subauth: 'subjects') }.to raise_error Qa::DataNormalizationError, "Unable to extract URI based on ID: sh85118553"
+            expect { lod_loc.find('sh85118553', request_header: { subauthority: 'subjects' }) }.to raise_error Qa::DataNormalizationError, "Unable to extract URI based on ID: sh85118553"
           end
         end
 
@@ -226,7 +226,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
             allow(lod_loc.term_config).to receive(:authority_name).and_return('ALT_LOC_AUTHORITY')
           end
 
-          let(:results) { lod_loc.find('sh 85118553', subauth: 'subjects') }
+          let(:results) { lod_loc.find('sh 85118553', request_header: { subauthority: 'subjects' }) }
 
           it 'does special processing to remove blank from id' do
             expect(results[:uri]).to eq 'http://id.loc.gov/authorities/subjects/sh85118553'
@@ -313,7 +313,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
           let :results do
             stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513")
               .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-            lod_lang_defaults.find('http://aims.fao.org/aos/agrovoc/c_9513', language: 'fr')
+            lod_lang_defaults.find('http://aims.fao.org/aos/agrovoc/c_9513', request_header: { language: 'fr' })
           end
           it "is filtered to specified language" do
             expect(results[:label]).to eq ['Babeurre']
@@ -328,7 +328,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
           let :results do
             stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513")
               .to_return(status: 200, body: webmock_fixture("lod_lang_term_enfr_noalt.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-            lod_lang_defaults.find('http://aims.fao.org/aos/agrovoc/c_9513', language: 'fr')
+            lod_lang_defaults.find('http://aims.fao.org/aos/agrovoc/c_9513', request_header: { language: 'fr' })
           end
           it "is filtered to specified language" do
             expect(results[:label]).to eq ['Babeurre']
@@ -357,7 +357,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
             let :results do
               stub_request(:get, "http://aims.fao.org/aos/agrovoc/c_9513?lang=fr")
                 .to_return(status: 200, body: webmock_fixture("lod_lang_term_fr.rdf.xml"), headers: { 'Content-Type' => 'application/rdf+xml' })
-              lod_lang_param.find('http://aims.fao.org/aos/agrovoc/c_9513', replacements: { 'lang' => 'fr' })
+              lod_lang_param.find('http://aims.fao.org/aos/agrovoc/c_9513', request_header: { replacements: { 'lang' => 'fr' } })
             end
             it "is correctly parsed" do
               expect(results[:label]).to eq ['Babeurre']
