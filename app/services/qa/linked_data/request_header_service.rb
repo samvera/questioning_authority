@@ -12,7 +12,7 @@ module Qa
       # @option context [Boolean] true if context should be returned with the results; otherwise, false (default: false) (search only)
       # @option format [String] return data in this format (fetch only)
       # @note params may have additional attribute-value pairs that are passed through via replacements (only configured replacements are used)
-      def initialize(request, params)
+      def initialize(request:, params:)
         @request = request
         @params = params
       end

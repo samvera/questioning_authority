@@ -25,7 +25,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
             subauthority: 'person',
             user_language: ['sp']
           }
-        expect(described_class.new(request, search_params).search_header).to eq expected_results
+        expect(described_class.new(request: request, params: search_params).search_header).to eq expected_results
       end
     end
 
@@ -41,7 +41,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               subauthority: nil,
               user_language: nil
             }
-          expect(described_class.new(request, {}).search_header).to eq expected_results
+          expect(described_class.new(request: request, params: {}).search_header).to eq expected_results
         end
       end
 
@@ -56,7 +56,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               subauthority: nil,
               user_language: ['de']
             }
-          expect(described_class.new(request, {}).search_header).to eq expected_results
+          expect(described_class.new(request: request, params: {}).search_header).to eq expected_results
         end
       end
     end
@@ -85,7 +85,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
             subauthority: 'person',
             user_language: ['sp']
           }
-        expect(described_class.new(request, fetch_params).fetch_header).to eq expected_results
+        expect(described_class.new(request: request, params: fetch_params).fetch_header).to eq expected_results
       end
     end
 
@@ -101,7 +101,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               subauthority: nil,
               user_language: nil
             }
-          expect(described_class.new(request, {}).fetch_header).to eq expected_results
+          expect(described_class.new(request: request, params: {}).fetch_header).to eq expected_results
         end
       end
 
@@ -116,7 +116,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               subauthority: nil,
               user_language: ['de']
             }
-          expect(described_class.new(request, {}).fetch_header).to eq expected_results
+          expect(described_class.new(request: request, params: {}).fetch_header).to eq expected_results
         end
       end
     end

@@ -28,10 +28,8 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
         end
         it 'includes performance in return hash' do
           expect(results.keys).to match_array [:performance, :results]
-          expect(results[:performance].keys).to match_array [:predicate_count, :fetch_time_s, :normalization_time_s,
-                                                             :fetched_bytes, :normalized_bytes, :fetch_bytes_per_s,
-                                                             :normalization_bytes_per_s, :total_time_s]
-          expect(results[:performance][:predicate_count]).to eq 7
+          expect(results[:performance].keys).to match_array [:fetch_time_s, :normalization_time_s, :fetched_bytes, :normalized_bytes,
+                                                             :fetch_bytes_per_s, :normalization_bytes_per_s, :total_time_s]
           expect(results[:performance][:total_time_s]).to eq results[:performance][:fetch_time_s] + results[:performance][:normalization_time_s]
         end
       end
