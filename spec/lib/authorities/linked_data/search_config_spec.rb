@@ -68,9 +68,12 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
         qa_replacement_patterns: {
           query: 'query',
           subauth: 'subauth',
-          lang: 'lang'
+          lang: 'lang',
+          start_record: 'startRecord',
+          requested_records: 'maxRecords'
         },
         language: ['en', 'fr', 'de'],
+        total_count_ldpath: "vivo:count",
         results: {
           id_predicate: 'http://purl.org/dc/terms/identifier',
           label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
@@ -405,6 +408,42 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
         search_sub3_key: 'search_sub3_name'
       }
       expect(full_config.subauthorities).to eq expected_hash
+    end
+  end
+
+  describe '#start_record_parameter' do
+    it 'returns nil if only term configuration is defined' do
+      expect(term_only_config.start_record_parameter).to eq nil
+    end
+    it 'returns nil if not defined' do
+      expect(min_config.start_record_parameter).to eq nil
+    end
+    it 'returns parameter name if defined' do
+      expect(full_config.start_record_parameter).to eq 'startRecord'
+    end
+  end
+
+  describe '#requested_records_parameter' do
+    it 'returns nil if only term configuration is defined' do
+      expect(term_only_config.requested_records_parameter).to eq nil
+    end
+    it 'returns nil if not defined' do
+      expect(min_config.requested_records_parameter).to eq nil
+    end
+    it 'returns parameter name if defined' do
+      expect(full_config.requested_records_parameter).to eq 'maxRecords'
+    end
+  end
+
+  describe '#total_count_ldpath' do
+    it 'returns nil if only term configuration is defined' do
+      expect(term_only_config.total_count_ldpath).to eq nil
+    end
+    it 'returns nil if not defined' do
+      expect(min_config.total_count_ldpath).to eq nil
+    end
+    it 'returns parameter name if defined' do
+      expect(full_config.total_count_ldpath).to eq 'vivo:count'
     end
   end
 

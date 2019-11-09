@@ -1,5 +1,6 @@
 {
-  "QA_CONFIG_VERSION": "2.0",
+  "QA_CONFIG_VERSION": "2.2",
+  "service_uri": "http://ld4l.org/ld4l_services/cache",
   "prefixes": {
     "schema": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#"
@@ -114,9 +115,12 @@
     "qa_replacement_patterns": {
       "query": "query",
       "subauth": "subauth",
-      "lang": "lang"
+      "lang": "lang",
+      "start_record": "startRecord",
+      "requested_records": "maxRecords"
     },
     "language": [ "en", "fr", "de" ],
+    "total_count_ldpath": "vivo:count",
     "results": {
       "id_predicate":       "http://purl.org/dc/terms/identifier",
       "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",

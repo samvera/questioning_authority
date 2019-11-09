@@ -39,6 +39,10 @@ module Qa::Authorities
         @prefixes ||= authority_config.fetch(:prefixes, {})
       end
 
+      def service_uri
+        @service_uri ||= authority_config.fetch(:service_uri, nil)
+      end
+
       def config_version
         @config_version ||= authority_config.fetch(:QA_CONFIG_VERSION, '1.0')
       end
