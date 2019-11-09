@@ -17,10 +17,8 @@ RSpec.describe Qa::LinkedData::ResponseHeaderService do
     let(:graph) { instance_double(RDF::Graph) }
     let(:results) { instance_double(Array) }
     let(:ldpath_program) { instance_double(Ldpath::Program) }
-    let(:service_uri) { instance_double(RDF::URI) }
-    let(:ldpath_map) do
-      { total_count: search_config.total_count_ldpath }
-    end
+    let(:service_uri) { instance_double(String) }
+    let(:ldpath) { search_config.total_count_ldpath }
     let(:prefixes) do
       { "vivo" => "http://vivoweb.org/ontology/core#" }
     end
@@ -34,9 +32,9 @@ RSpec.describe Qa::LinkedData::ResponseHeaderService do
         allow(search_config).to receive(:service_uri).and_return(service_uri)
         allow(results).to receive(:count).and_return(10)
         allow(Qa::LinkedData::LdpathService).to receive(:ldpath_program)
-          .with(ldpath: ldpath_map, prefixes: search_config.prefixes).and_return(ldpath_program)
+          .with(ldpath: ldpath, prefixes: search_config.prefixes).and_return(ldpath_program)
         allow(Qa::LinkedData::LdpathService).to receive(:ldpath_evaluate)
-          .with(program: ldpath_program, graph: graph, subject_uri: service_uri).and_return(['134'])
+          .with(program: ldpath_program, graph: graph, subject_uri: anything).and_return(['134'])
       end
 
       it 'gets pagination data from request header' do

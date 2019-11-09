@@ -60,11 +60,10 @@ module Qa
         # determine the full number of records matching the search query
         def total_record_count
           ldpath = config.total_count_ldpath
-          service_uri = config.service_uri
+          service_uri = RDF::URI.new(config.service_uri)
           return I18n.t("qa.linked_data.search.total_not_reported") unless ldpath && service_uri
           prefixes = config.prefixes
-          ldpath_map = { total_count: ldpath }
-          ldpath_program = ldpath_service.ldpath_program(ldpath: ldpath_map, prefixes: prefixes)
+          ldpath_program = ldpath_service.ldpath_program(ldpath: ldpath, prefixes: prefixes)
           values = ldpath_service.ldpath_evaluate(program: ldpath_program, graph: graph, subject_uri: service_uri)
           values.map!(&:to_i)
           values.first || I18n.t("qa.linked_data.search.total_not_reported")

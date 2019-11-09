@@ -11,7 +11,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
           'lang' => 'sp',
           'maxRecords' => '4',
           'context' => 'true',
-          'performance_data' => 'true'
+          'performance_data' => 'true',
+          'response_header' => 'true'
         }.with_indifferent_access
       end
       before { allow(request).to receive(:env).and_return('HTTP_ACCEPT_LANGUAGE' => 'de') }
@@ -22,6 +23,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
             context: true,
             performance_data: true,
             replacements: { 'maxRecords' => '4' },
+            response_header: true,
             subauthority: 'person',
             user_language: ['sp']
           }
@@ -38,6 +40,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               context: false,
               performance_data: false,
               replacements: {},
+              response_header: false,
               subauthority: nil,
               user_language: nil
             }
@@ -53,6 +56,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               context: false,
               performance_data: false,
               replacements: {},
+              response_header: false,
               subauthority: nil,
               user_language: ['de']
             }
@@ -71,7 +75,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
           'extra' => 'data',
           'even' => 'more data',
           'format' => 'n3',
-          'performance_data' => 'true'
+          'performance_data' => 'true',
+          'response_header' => 'true'
         }.with_indifferent_access
       end
       before { allow(request).to receive(:env).and_return('HTTP_ACCEPT_LANGUAGE' => 'de') }
@@ -82,6 +87,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
             format: 'n3',
             performance_data: true,
             replacements: { 'extra' => 'data', 'even' => 'more data' },
+            response_header: true,
             subauthority: 'person',
             user_language: ['sp']
           }
@@ -98,6 +104,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               format: 'json',
               performance_data: false,
               replacements: {},
+              response_header: false,
               subauthority: nil,
               user_language: nil
             }
@@ -113,6 +120,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               format: 'json',
               performance_data: false,
               replacements: {},
+              response_header: false,
               subauthority: nil,
               user_language: ['de']
             }

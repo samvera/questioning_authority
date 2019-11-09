@@ -95,6 +95,7 @@ module Qa::Authorities
           @subauthority = request_header.fetch(:subauthority, nil)
           @format = request_header.fetch(:format, 'json')
           @performance_data = request_header.fetch(:performance_data, false)
+          @response_header = request_header.fetch(:response_header, false)
           @language = language_service.preferred_language(user_language: request_header.fetch(:user_language, nil),
                                                           authority_language: term_config.term_language)
           request_header[:language] = Array(@language)
@@ -213,6 +214,10 @@ module Qa::Authorities
           @performance_data == true && !jsonld?
         end
 
+        def response_header?
+          @response_header == true
+        end
+
         def preds_for_term
           label_pred_uri = term_config.term_results_label_predicate(suppress_deprecation_warning: true)
           return {} if label_pred_uri.blank?
@@ -282,10 +287,11 @@ module Qa::Authorities
         end
 
         def append_data_outside_results(results)
-          return results unless performance_data?
+          return results unless performance_data? || response_header?
           full_results = {}
           full_results[:results] = results
-          full_results[:performance] = performance(results)
+          full_results[:performance] = performance(results) if performance_data?
+          full_results[:response_header] = response_header(results) if response_header?
           full_results
         end
 
@@ -295,6 +301,10 @@ module Qa::Authorities
           perf_data = Qa::LinkedData::PerformanceDataService.performance_data(access_time_s: access_time_s, normalize_time_s: normalize_time_s,
                                                                               fetched_size: fetched_size, normalized_size: normalized_size)
           perf_data
+        end
+
+        def response_header(results)
+          Qa::LinkedData::ResponseHeaderService.new(results: results, request_header: request_header, config: term_config, graph: full_graph).fetch_header
         end
 
         # This is providing support for calling build_url with individual parameters instead of the request_header.
