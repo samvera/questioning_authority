@@ -277,9 +277,9 @@ RSpec.describe Qa::LinkedData::Config::ContextPropertyMap do
     let(:expanded_id) { '123' }
 
     before do
-      allow(Ldpath::Program).to receive(:parse).with('property = madsrdf:identifiesRWO/madsrdf:birthDate/schema:label ;').and_return(basic_program)
-      allow(Ldpath::Program).to receive(:parse).with('property = skos:prefLabel ::xsd:string ;').and_return(expanded_label_program)
-      allow(Ldpath::Program).to receive(:parse).with('property = loc:lccn ::xsd:string ;').and_return(expanded_id_program)
+      allow(Ldpath::Program).to receive(:parse).with("property = madsrdf:identifiesRWO/madsrdf:birthDate/schema:label ;\n").and_return(basic_program)
+      allow(Ldpath::Program).to receive(:parse).with("property = skos:prefLabel ::xsd:string ;\n").and_return(expanded_label_program)
+      allow(Ldpath::Program).to receive(:parse).with("property = loc:lccn ::xsd:string ;\n").and_return(expanded_id_program)
       allow(basic_program).to receive(:evaluate).with(subject_uri, context: graph, limit_to_context: true).and_return('property' => [expanded_uri])
       allow(expanded_label_program).to receive(:evaluate).with(RDF::URI.new(subject_uri), context: graph, limit_to_context: true).and_return('property' => [expanded_label])
       allow(expanded_id_program).to receive(:evaluate).with(RDF::URI.new(subject_uri), context: graph, limit_to_context: true).and_return('property' => [expanded_id])

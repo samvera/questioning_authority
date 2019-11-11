@@ -19,9 +19,10 @@ module Qa
         # @example ldpath map
         #   {
         #     uri: :subject_uri,
-        #     id: 'locid:lccn :: xsd::string',
+        #     id: 'locid:lccn',
         #     label: 'skos:prefLabel :: xsd::string',
         #     altlabel: 'skos:altLabel :: xsd::string',
+        #     sameas: 'skos:sameAs :: xsd::anyURI',
         #     sort: 'vivo:rank :: xsd::integer'
         #   }
         # @param subject_uri [RDF::URI] the subject within the graph for which the values are being extracted
