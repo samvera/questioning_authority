@@ -1,3 +1,8 @@
+### 4.2.5 (2019-11-12)
+
+* refactor to single request_header parameter for search and find methods; multi-parameters are still supported, but deprecated
+* refactor Discogs to provide the same format for extended context as the linked data module  
+
 ### 4.2.4 (2019-10-17)
 
 * use real discogs uri whenever available and discogs url when not
