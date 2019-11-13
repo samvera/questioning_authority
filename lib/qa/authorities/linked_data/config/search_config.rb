@@ -8,7 +8,7 @@ module Qa::Authorities
       attr_reader :prefixes, :full_config, :search_config
       private :full_config, :search_config
 
-      delegate :authority_name, to: :full_config
+      delegate :authority_name, :service_uri, to: :full_config
 
       # @param [Hash] config the search portion of the config
       # @param [Hash<Symbol><String>] prefixes URL map of prefixes to use with ldpaths
@@ -146,7 +146,7 @@ module Qa::Authorities
         search_config.fetch(:qa_replacement_patterns, {})
       end
 
-      # @return [Boolean] true if supports language parameter; otherwise, false
+      # @return [Boolean] true if supports subauthorities; otherwise, false
       def supports_subauthorities?
         qa_replacement_patterns.key?(:subauth) && subauthorities?
       end
@@ -180,6 +180,22 @@ module Qa::Authorities
       def subauthorities
         @subauthorities ||= {} if search_config.nil? || !(search_config.key? :subauthorities)
         @subauthorities ||= search_config.fetch(:subauthorities)
+      end
+
+      # @return [String] name of parameter holding start record number
+      def start_record_parameter
+        qa_replacement_patterns.key?(:start_record) ? qa_replacement_patterns[:start_record] : nil
+      end
+
+      # @return [String] name of parameter holding number of requested records
+      def requested_records_parameter
+        qa_replacement_patterns.key?(:requested_records) ? qa_replacement_patterns[:requested_records] : nil
+      end
+
+      # @return [String] ldpath of the triple that holds the total number of available records for a search
+      # @see #service_subject_uri
+      def total_count_ldpath
+        search_config.key?(:total_count_ldpath) ? search_config[:total_count_ldpath] : nil
       end
 
       def info

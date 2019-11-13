@@ -25,7 +25,8 @@ describe Qa::Authorities::LinkedData::Config do
   describe '#authority_config' do
     let(:full_auth_config) do
       {
-        QA_CONFIG_VERSION: "2.0",
+        QA_CONFIG_VERSION: "2.2",
+        service_uri: "http://ld4l.org/ld4l_services/cache",
         prefixes: {
           schema: "http://www.w3.org/2000/01/rdf-schema#",
           skos: "http://www.w3.org/2004/02/skos/core#"
@@ -140,9 +141,12 @@ describe Qa::Authorities::LinkedData::Config do
           qa_replacement_patterns: {
             query: 'query',
             subauth: 'subauth',
-            lang: 'lang'
+            lang: 'lang',
+            start_record: 'startRecord',
+            requested_records: 'maxRecords'
           },
           language: ['en', 'fr', 'de'],
+          total_count_ldpath: "vivo:count",
           results: {
             id_predicate: 'http://purl.org/dc/terms/identifier',
             label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
@@ -377,7 +381,7 @@ describe Qa::Authorities::LinkedData::Config do
     let(:authority_config) { full_config.authority_config }
     let(:authority_config_1_0) { full_config_1_0.authority_config }
 
-    it 'returns hash of the full authority 2.0 configuration' do
+    it 'returns hash of the full authority 2.2 configuration' do
       expect(authority_config).to eq full_auth_config
     end
 
@@ -468,18 +472,18 @@ describe Qa::Authorities::LinkedData::Config do
 
     context 'when version is specified in the config file' do
       it 'returns the version from the config file' do
-        expect(full_config.config_version).to eq '2.0'
+        expect(full_config.config_version).to eq '2.2'
       end
     end
   end
 
   describe '#config_version?' do
     it "returns true if the passed in version matches the authority's version" do
-      expect(full_config.config_version?('2.0')).to eq true
+      expect(full_config.config_version?('2.2')).to eq true
     end
 
     it "returns false if the passed in version does NOT match the authority's version" do
-      expect(full_config_1_0.config_version?('2.0')).to eq false
+      expect(full_config_1_0.config_version?('2.2')).to eq false
     end
   end
 end
