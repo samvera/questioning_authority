@@ -296,11 +296,8 @@ module Qa::Authorities
         end
 
         def performance(results)
-          normalized_size = results.to_s.size
-          fetched_size = full_graph.triples.to_s.size
-          perf_data = Qa::LinkedData::PerformanceDataService.performance_data(access_time_s: access_time_s, normalize_time_s: normalize_time_s,
-                                                                              fetched_size: fetched_size, normalized_size: normalized_size)
-          perf_data
+          Qa::LinkedData::PerformanceDataService.performance_data(access_time_s: access_time_s, normalize_time_s: normalize_time_s,
+                                                                  fetched_data_graph: full_graph, normalized_data: results)
         end
 
         def response_header(results)

@@ -10,7 +10,9 @@ module Qa
       # @returns [Hash] performance data
       # @see Qa::Authorities::LinkedData::SearchQuery
       # @see Qa::Authorities::LinkedData::FindTerm
-      def self.performance_data(access_time_s:, normalize_time_s:, fetched_size:, normalized_size:)
+      def self.performance_data(access_time_s:, normalize_time_s:, fetched_data_graph:, normalized_data:)
+        normalized_size = normalized_data.to_s.size
+        fetched_size = fetched_data_graph.triples.to_s.size
         {
           fetch_time_s: access_time_s,
           normalization_time_s: normalize_time_s,
