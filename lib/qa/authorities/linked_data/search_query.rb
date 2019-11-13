@@ -15,8 +15,8 @@ module Qa::Authorities
         @search_config = search_config
       end
 
-      attr_reader :search_config, :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size, :subauthority
-      private :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :fetched_size, :normalized_size, :subauthority
+      attr_reader :search_config, :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :subauthority, :request_header
+      private :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :subauthority, :request_header
 
       delegate :subauthority?, :supports_sort?, :prefixes, :authority_name, to: :search_config
 
@@ -53,22 +53,20 @@ module Qa::Authorities
 
           access_end_dt = Time.now.utc
           @access_time_s = access_end_dt - access_start_dt
-          @fetched_size = full_graph.triples.to_s.size if performance_data?
           Rails.logger.info("Time to receive data from authority: #{access_time_s}s")
         end
 
         def normalize_results
           normalize_start_dt = Time.now.utc
 
-          @filtered_graph = graph_service.filter(graph: @full_graph, language: language)
+          @filtered_graph = graph_service.filter(graph: full_graph, language: language)
           results = map_results
           json = convert_results_to_json(results)
 
           normalize_end_dt = Time.now.utc
           @normalize_time_s = normalize_end_dt - normalize_start_dt
-          @normalized_size = json.to_s.size if performance_data?
           Rails.logger.info("Time to normalize data: #{normalize_time_s}s")
-          json = append_performance_data(json) if performance_data?
+          json = append_data_outside_results(json)
           json
         end
 
@@ -92,6 +90,7 @@ module Qa::Authorities
         end
 
         def unpack_request_header(request_header)
+          @request_header = request_header
           @subauthority = request_header.fetch(:subauthority, nil)
           @context = request_header.fetch(:context, false)
           @performance_data = request_header.fetch(:performance_data, false)
@@ -179,16 +178,19 @@ module Qa::Authorities
           lbl
         end
 
-        def append_performance_data(results)
-          performance = { result_count: results.size,
-                          fetch_time_s: access_time_s,
-                          normalization_time_s: normalize_time_s,
-                          fetched_bytes: fetched_size,
-                          normalized_bytes: normalized_size,
-                          fetch_bytes_per_s: fetched_size / access_time_s,
-                          normalization_bytes_per_s: normalized_size / normalize_time_s,
-                          total_time_s: (access_time_s + normalize_time_s) }
-          { performance: performance, results: results }
+        def append_data_outside_results(results)
+          return results unless performance_data?
+          full_results = {}
+          full_results[:results] = results
+          full_results[:performance] = performance(results)
+          full_results
+        end
+
+        def performance(results)
+          normalized_size = results.to_s.size
+          fetched_size = full_graph.triples.to_s.size
+          Qa::LinkedData::PerformanceDataService.performance_data(access_time_s: access_time_s, normalize_time_s: normalize_time_s,
+                                                                  fetched_size: fetched_size, normalized_size: normalized_size)
         end
 
         # This is providing support for calling build_url with individual parameters instead of the request_header.
