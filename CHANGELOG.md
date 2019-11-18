@@ -1,4 +1,13 @@
+### 5.0.0 (2019-11-18)
+
+This is the same code that was released in 4.2.5.  There was a public API change indicating this should have been a major release.
+
+* refactor to single request_header parameter for search and find methods; multi-parameters are still supported, but deprecated
+* refactor Discogs to provide the same format for extended context as the linked data module  
+
 ### 4.2.5 (2019-11-12)
+
+YANKED and replaced by 5.0.0
 
 * refactor to single request_header parameter for search and find methods; multi-parameters are still supported, but deprecated
 * refactor Discogs to provide the same format for extended context as the linked data module  
