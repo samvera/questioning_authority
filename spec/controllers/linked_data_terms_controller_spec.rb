@@ -403,14 +403,14 @@ describe Qa::LinkedDataTermsController, type: :controller do
         it 'succeeds and defaults to json content type' do
           get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
           expect(response).to be_successful
-          expect(response.content_type).to eq 'application/json'
+          expect(response.media_type).to eq 'application/json'
         end
 
         context 'and it was requested as json' do
           it 'succeeds and returns term data as json content type' do
             get :show, params: { id: '530369', vocab: 'OCLC_FAST', format: 'json' }
             expect(response).to be_successful
-            expect(response.content_type).to eq 'application/json'
+            expect(response.media_type).to eq 'application/json'
           end
         end
 
@@ -418,7 +418,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           it 'succeeds and returns term data as jsonld content type' do
             get :show, params: { id: '530369', vocab: 'OCLC_FAST', format: 'jsonld' }
             expect(response).to be_successful
-            expect(response.content_type).to eq 'application/ld+json'
+            expect(response.media_type).to eq 'application/ld+json'
             expect(JSON.parse(response.body).keys).to match_array ["@context", "@graph"]
           end
         end
@@ -427,7 +427,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           it 'succeeds and returns term data as n3 content type' do
             get :show, params: { id: '530369', vocab: 'OCLC_FAST', format: 'n3' }
             expect(response).to be_successful
-            expect(response.content_type).to eq 'text/n3'
+            expect(response.media_type).to eq 'text/n3'
             expect(response.body).to start_with "@prefix"
           end
         end
@@ -436,7 +436,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           it 'succeeds and returns term data as ntriples content type' do
             get :show, params: { id: '530369', vocab: 'OCLC_FAST', format: 'ntriples' }
             expect(response).to be_successful
-            expect(response.content_type).to eq 'application/n-triples'
+            expect(response.media_type).to eq 'application/n-triples'
             expect(response.body).to include('<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cornell University"')
           end
         end
@@ -476,7 +476,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         it 'succeeds and defaults to json content type' do
           get :show, params: { id: 'sh 85118553', vocab: 'LOC', subauthority: 'subjects' }
           expect(response).to be_successful
-          expect(response.content_type).to eq 'application/json'
+          expect(response.media_type).to eq 'application/json'
         end
       end
     end
@@ -578,14 +578,14 @@ describe Qa::LinkedDataTermsController, type: :controller do
         it 'succeeds and defaults to json content type' do
           get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
           expect(response).to be_successful
-          expect(response.content_type).to eq 'application/json'
+          expect(response.media_type).to eq 'application/json'
         end
 
         context 'and it was requested as json' do
           it 'succeeds and returns term data as json content type' do
             get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'json' }
             expect(response).to be_successful
-            expect(response.content_type).to eq 'application/json'
+            expect(response.media_type).to eq 'application/json'
           end
         end
 
@@ -593,7 +593,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           it 'succeeds and returns term data as jsonld content type' do
             get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'jsonld' }
             expect(response).to be_successful
-            expect(response.content_type).to eq 'application/ld+json'
+            expect(response.media_type).to eq 'application/ld+json'
             expect(JSON.parse(response.body).keys).to match_array ["@context", "@graph"]
           end
         end
@@ -602,7 +602,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           it 'succeeds and returns term data as n3 content type' do
             get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'n3' }
             expect(response).to be_successful
-            expect(response.content_type).to eq 'text/n3'
+            expect(response.media_type).to eq 'text/n3'
             expect(response.body).to start_with "@prefix"
           end
         end
@@ -611,7 +611,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           it 'succeeds and returns term data as ntriples content type' do
             get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', format: 'ntriples' }
             expect(response).to be_successful
-            expect(response.content_type).to eq 'application/n-triples'
+            expect(response.media_type).to eq 'application/n-triples'
             expect(response.body).to include('<http://id.worldcat.org/fast/530369> <http://www.w3.org/2004/02/skos/core#prefLabel> "Cornell University"')
           end
         end
