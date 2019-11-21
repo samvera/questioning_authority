@@ -7,6 +7,8 @@ group :development, :test do
   gem 'simplecov', require: false
 end
 
+gem 'ldpath', github: 'samvera-labs/ldpath', branch: 'maintain_literals'
+
 # BEGIN ENGINE_CART BLOCK
 # engine_cart: 0.10.0
 # engine_cart stanza: 0.10.0

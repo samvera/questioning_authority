@@ -1,5 +1,8 @@
 {
   "QA_CONFIG_VERSION": "2.0",
+  "prefixes": {
+    "dcterms": "http://purl.org/dc/terms/"
+  },
   "term": {
     "url": {
       "@context": "http://www.w3.org/ns/hydra/context.jsonld",
@@ -20,8 +23,8 @@
     },
     "term_id": "URI",
     "results": {
-      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",
-      "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel"
+      "label_ldpath":    "skos:prefLabel",
+      "altlabel_ldpath": "skos:altLabel"
     }
   },
   "search": {
@@ -43,10 +46,10 @@
       "query": "query"
     },
     "results": {
-      "id_predicate":       "http://purl.org/dc/terms/identifier",
-      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",
-      "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
-      "sort_predicate":     "http://www.w3.org/2004/02/skos/core#prefLabel"
+      "id_ldpath":       "dcterms:identifier",
+      "label_ldpath":    "skos:prefLabel",
+      "altlabel_ldpath": "skos:altLabel",
+      "sort_ldpath":     "skos:prefLabel"
     }
   }
 }

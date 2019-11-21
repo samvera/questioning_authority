@@ -42,10 +42,10 @@ module Qa
         # @param limit_to_context [Boolean] if true, the evaluation process will not make any outside network calls.
         #        It will limit results to those found in the context graph.
         ## @return [Array<RDF::Literal>] the extracted values based on the ldpath
-        def ldpath_evaluate(program:, graph:, subject_uri:, limit_to_context: Qa.config.limit_ldpath_to_context?)
+        def ldpath_evaluate(program:, graph:, subject_uri:, limit_to_context: Qa.config.limit_ldpath_to_context?, maintain_literals: false)
           raise ArgumentError, "You must specify a program when calling ldpath_evaluate" if program.blank?
-          output = program.evaluate(subject_uri, context: graph, limit_to_context: limit_to_context)
-          property_implode(output)
+          output = program.evaluate(subject_uri, context: graph, limit_to_context: limit_to_context, maintain_literals: maintain_literals)
+          maintain_literals ? property_implode(output) : output.values.flatten.uniq
         rescue ParseError => e
           Rails.logger.warn("WARNING: #{I18n.t('qa.linked_data.ldpath.evaluate_logger_error')} (cause: #{e.message}")
           raise ParseError, I18n.t("qa.linked_data.ldpath.evaluate_error") + "... cause: #{e.message}"

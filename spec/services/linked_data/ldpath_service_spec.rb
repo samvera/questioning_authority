@@ -90,7 +90,7 @@ PROGRAM
   end
 
   describe '.ldpath_evaluate' do
-    subject { described_class.ldpath_evaluate(program: program, graph: graph, subject_uri: subject_uri) }
+    subject { described_class.ldpath_evaluate(program: program, graph: graph, subject_uri: subject_uri, maintain_literals: maintain_literals) }
 
     let(:program) { instance_double(Ldpath::Program) }
     let(:graph) { instance_double(RDF::Graph) }
@@ -100,79 +100,161 @@ PROGRAM
       allow(Ldpath::Program).to receive(:parse).with(anything).and_return(program)
     end
 
-    context 'when program does not contain languages' do
-      context 'and value is a string' do
-        let(:values) { ['value'] }
-        before do
-          allow(program).to receive(:evaluate)
-            .with(subject_uri, context: graph, limit_to_context: true)
-            .and_return('property' => values)
+    context 'when program does not request languages' do
+      context 'and not maintaining literals' do
+        let(:maintain_literals) { false }
+
+        context 'and value is a string' do
+          let(:values) { ['value', 'value'] }
+          before do
+            allow(program).to receive(:evaluate)
+              .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: maintain_literals)
+              .and_return('property' => values)
+          end
+          it 'returns the string values as is' do
+            expected_values = ['value']
+            expect(subject).to match_array expected_values
+          end
         end
-        it 'returns the string values as is' do
-          expected_values = values.map { |v| RDF::Literal.new(v) }
-          expect(subject).to match_array expected_values
+
+        context 'and value is a URI' do
+          let(:values) { ['http://example.com/1', 'http://example.com/2'] }
+          before do
+            allow(program).to receive(:evaluate)
+              .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: maintain_literals)
+              .and_return('property' => values)
+          end
+          it 'returns the URIs' do
+            expected_values = values
+            expect(subject).to match_array expected_values
+          end
+        end
+
+        context 'and value is numeric' do
+          let(:values) { [23, 14, 55] }
+          before do
+            allow(program).to receive(:evaluate)
+              .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: maintain_literals)
+              .and_return('property' => values)
+          end
+          it 'returns the numeric values' do
+            expected_values = values
+            expect(subject).to match_array expected_values
+          end
         end
       end
 
-      context 'and value is a URI' do
-        let(:values) { [RDF::URI.new('http://example.com/1'), RDF::URI.new('http://example.com/2')] }
-        before do
-          allow(program).to receive(:evaluate)
-            .with(subject_uri, context: graph, limit_to_context: true)
-            .and_return('property' => values)
-        end
-        it 'returns the URIs' do
-          expected_values = values
-          expect(subject).to match_array expected_values
-        end
-      end
+      context 'and maintaining literals' do
+        let(:maintain_literals) { true }
 
-      context 'and value is numeric' do
-        let(:values) { [23, 14, 55] }
-        before do
-          allow(program).to receive(:evaluate)
-            .with(subject_uri, context: graph, limit_to_context: true)
-            .and_return('property' => values)
+        context 'and value is a string' do
+          let(:values) { [RDF::Literal.new('value'), RDF::Literal.new('value')] }
+          before do
+            allow(program).to receive(:evaluate)
+              .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: maintain_literals)
+              .and_return('property' => values)
+          end
+          it 'returns the string values as is' do
+            expected_values = [RDF::Literal.new('value')]
+            expect(subject).to match_array expected_values
+          end
         end
-        it 'returns the URIs' do
-          expected_values = values
-          expect(subject).to match_array expected_values
+
+        context 'and value is a URI' do
+          let(:values) { [RDF::URI.new('http://example.com/1'), RDF::URI.new('http://example.com/2')] }
+          before do
+            allow(program).to receive(:evaluate)
+              .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: maintain_literals)
+              .and_return('property' => values)
+          end
+          it 'returns the URIs' do
+            expect(subject).to match_array values
+          end
+        end
+
+        context 'and value is numeric' do
+          let(:values) { [RDF::Literal.new(23), RDF::Literal.new(14), RDF::Literal.new(55)] }
+          before do
+            allow(program).to receive(:evaluate)
+              .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: maintain_literals)
+              .and_return('property' => values)
+          end
+          it 'returns the numeric values' do
+            expect(subject).to match_array values
+          end
         end
       end
     end
 
     context 'when program has languages' do
-      context 'and one language specified' do
-        let(:en_values) { ['en_value'] }
-        let(:untagged_values) { ['untagged_value'] }
-        before do
-          allow(program).to receive(:evaluate)
-            .with(subject_uri, context: graph, limit_to_context: true)
-            .and_return('en_property' => en_values, 'property' => untagged_values)
+      context 'and not maintaining literals' do
+        let(:maintain_literals) { false }
+
+        context 'and one language specified' do
+          let(:en_values) { ['en_value'] }
+          let(:untagged_values) { ['untagged_value'] }
+          before do
+            allow(program).to receive(:evaluate)
+              .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: maintain_literals)
+              .and_return('en_property' => en_values, 'property' => untagged_values)
+          end
+          it 'generates a program with the language' do
+            expected_values = en_values + untagged_values
+            expect(subject).to match_array expected_values
+          end
         end
-        it 'generates a program with the language' do
-          expected_values =
-            en_values.map { |v| RDF::Literal.new(v, language: :en) } +
-            untagged_values.map { |v| RDF::Literal.new(v) }
-          expect(subject).to match_array expected_values
+
+        context 'and multiple languages specified' do
+          let(:fr_values) { ['fr_value1', 'fr_value2', 'fr_value1'] }
+          let(:de_values) { ['de_value'] }
+          let(:untagged_values) { ['untagged_value'] }
+          before do
+            allow(program).to receive(:evaluate)
+              .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: maintain_literals)
+              .and_return('fr_property' => fr_values, 'de_property' => de_values, 'property' => untagged_values)
+          end
+          it 'returns the extracted label' do
+            expected_values = fr_values.uniq + de_values + untagged_values
+            expect(subject).to match_array expected_values
+          end
         end
       end
 
-      context 'and multiple languages specified' do
-        let(:fr_values) { ['fr_value1', 'fr_value2', 'fr_value1'] }
-        let(:de_values) { ['de_value'] }
-        let(:untagged_values) { ['untagged_value'] }
-        before do
-          allow(program).to receive(:evaluate)
-            .with(subject_uri, context: graph, limit_to_context: true)
-            .and_return('fr_property' => fr_values, 'de_property' => de_values, 'property' => untagged_values)
+      context 'and maintaining literals' do
+        let(:maintain_literals) { true }
+
+        context 'and one language specified' do
+          let(:en_values) { ['en_value'] }
+          let(:untagged_values) { ['untagged_value'] }
+          before do
+            allow(program).to receive(:evaluate)
+              .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: maintain_literals)
+              .and_return('en_property' => en_values, 'property' => untagged_values)
+          end
+          it 'generates a program with the language' do
+            expected_values =
+              en_values.map { |v| RDF::Literal.new(v, language: :en) } +
+              untagged_values.map { |v| RDF::Literal.new(v) }
+            expect(subject).to match_array expected_values
+          end
         end
-        it 'returns the extracted label' do
-          expected_values =
-            (fr_values.uniq.map { |v| RDF::Literal.new(v, language: :fr) } +
-             de_values.map { |v| RDF::Literal.new(v, language: :de) } +
-             untagged_values.map { |v| RDF::Literal.new(v) }).uniq
-          expect(subject).to match_array expected_values
+
+        context 'and multiple languages specified' do
+          let(:fr_values) { ['fr_value1', 'fr_value2', 'fr_value1'] }
+          let(:de_values) { ['de_value'] }
+          let(:untagged_values) { ['untagged_value'] }
+          before do
+            allow(program).to receive(:evaluate)
+              .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: maintain_literals)
+              .and_return('fr_property' => fr_values, 'de_property' => de_values, 'property' => untagged_values)
+          end
+          it 'returns the extracted label' do
+            expected_values =
+              (fr_values.uniq.map { |v| RDF::Literal.new(v, language: :fr) } +
+               de_values.map { |v| RDF::Literal.new(v, language: :de) } +
+               untagged_values.map { |v| RDF::Literal.new(v) }).uniq
+            expect(subject).to match_array expected_values
+          end
         end
       end
     end
@@ -181,8 +263,13 @@ PROGRAM
       let(:cause) { "unknown cause" }
       let(:warning) { I18n.t('qa.linked_data.ldpath.evaluate_logger_error') }
       let(:log_message) { "WARNING: #{warning} (cause: #{cause}" }
+      let(:maintain_literals) { false }
 
-      before { allow(program).to receive(:evaluate).with(subject_uri, context: graph, limit_to_context: true).and_raise(ParseError, cause) }
+      before do
+        allow(program).to receive(:evaluate)
+          .with(subject_uri, context: graph, limit_to_context: true, maintain_literals: false)
+          .and_raise(ParseError, cause)
+      end
 
       it 'logs error and returns PARSE ERROR as the value' do
         expect(Rails.logger).to receive(:warn).with(log_message)
@@ -192,7 +279,8 @@ PROGRAM
 
     context 'when program is empty' do
       let(:program) { nil }
-      it 'returns empty array' do
+      let(:maintain_literals) { false }
+      it 'raise ArgumentError' do
         expect { subject }.to raise_error ArgumentError, "You must specify a program when calling ldpath_evaluate"
       end
     end
