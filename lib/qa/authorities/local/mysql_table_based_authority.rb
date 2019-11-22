@@ -21,7 +21,7 @@ module Qa
 
         def self.index_name_exists?
           conn = ActiveRecord::Base.connection
-          if ActiveRecord::VERSION::MAJOR >= 5 && ActiveRecord::VERSION::MINOR >= 1
+          if (ActiveRecord::VERSION::MAJOR == 5 && ActiveRecord::VERSION::MINOR >= 1) || ActiveRecord::VERSION::MAJOR >= 6
             conn.index_name_exists?(table_name, table_index).blank?
           else
             conn.index_name_exists?(table_name, table_index, :default).blank?
