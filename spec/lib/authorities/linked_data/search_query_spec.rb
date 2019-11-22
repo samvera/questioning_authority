@@ -43,6 +43,43 @@ RSpec.describe Qa::Authorities::LinkedData::SearchQuery do
       end
     end
 
+    context 'response header' do
+      before do
+        stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=oclc.personalName%20all%20%22cornell%22&sortKeys=usage')
+          .to_return(status: 200, body: webmock_fixture('lod_oclc_personalName_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      context 'when set to true' do
+        let :results do
+          lod_oclc.search('cornell', request_header: { subauthority: 'personal_name', replacements: { 'maximumRecords' => '3' }, response_header: true })
+        end
+        it 'includes response header in return hash' do
+          expect(results).to be_kind_of Hash
+          expect(results.keys).to match_array [:response_header, :results]
+          expect(results[:response_header].keys).to match_array [:start_record, :requested_records, :retrieved_records, :total_records]
+          expect(results[:response_header][:retrieved_records]).to eq 3
+          expect(results[:results].count).to eq 3
+        end
+      end
+
+      context 'when set to false' do
+        let :results do
+          lod_oclc.search('cornell', request_header: { subauthority: 'personal_name', replacements: { 'maximumRecords' => '3' }, response_header: false })
+        end
+        it 'does NOT include response header in return hash' do
+          expect(results).to be_kind_of Array
+        end
+      end
+
+      context 'when using default setting' do
+        let :results do
+          lod_oclc.search('cornell', request_header: { subauthority: 'personal_name', replacements: { 'maximumRecords' => '3' } })
+        end
+        it 'does NOT include response header in return hash' do
+          expect(results).to be_kind_of Array
+        end
+      end
+    end
+
     context 'in OCLC_FAST authority' do
       context '0 search results' do
         let :results do

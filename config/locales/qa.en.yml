@@ -7,3 +7,6 @@ en:
         evaluate_logger_error: LDPath failed to evaluate the graph with the provided ldpath.
         parse_error: LDPATH PARSE ERROR (See log for more information)
         parse_logger_error: LDPath failed to parse during ldpath program creation.
+      search:
+        total_not_reported: NOT REPORTED
+        default_requested_records: DEFAULT

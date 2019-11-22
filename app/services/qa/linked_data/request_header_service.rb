@@ -10,6 +10,7 @@ module Qa
       # @option lang [Symbol] language used to select literals when multi-language is supported (e.g. :en, :fr, etc.)
       # @option performance_data [Boolean] true if include_performance_data should be returned with the results; otherwise, false (default: false)
       # @option context [Boolean] true if context should be returned with the results; otherwise, false (default: false) (search only)
+      # @option response_header [Boolean] true if a summary response header should be returned with the results; otherwise, false (default: false) (search only)
       # @option format [String] return data in this format (fetch only)
       # @note params may have additional attribute-value pairs that are passed through via replacements (only configured replacements are used)
       def initialize(request:, params:)
@@ -26,6 +27,7 @@ module Qa
         header[:user_language] = user_language
         header[:performance_data] = performance_data?
         header[:context] = context?
+        header[:response_header] = response_header?
         header[:replacements] = replacements
         header
       end
@@ -39,6 +41,7 @@ module Qa
         header[:user_language] = user_language
         header[:performance_data] = performance_data?
         header[:format] = format
+        header[:response_header] = response_header?
         header[:replacements] = replacements
         header
       end
@@ -77,6 +80,12 @@ module Qa
         def performance_data?
           performance_data = params.fetch(:performance_data, 'false')
           performance_data.casecmp?('true')
+        end
+
+        # include summary response header in the results if true
+        def response_header?
+          response_header = params.fetch(:response_header, 'false')
+          response_header.casecmp?('true')
         end
 
         # any params not specifically handled are passed through via replacements

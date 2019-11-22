@@ -320,6 +320,32 @@ describe Qa::LinkedDataTermsController, type: :controller do
         expect(results).to be_kind_of Array
       end
     end
+
+    context 'when requesting response header' do
+      before do
+        Qa.config.disable_cors_headers
+        stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage')
+          .to_return(status: 200, body: webmock_fixture('lod_oclc_all_query_3_results.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      it "returns basic data + response header when response_header='true'" do
+        get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', maximumRecords: '3', response_header: 'true' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Hash
+        expect(results.keys).to match_array ['response_header', 'results']
+        expect(results['response_header'].keys).to match_array ['start_record', 'requested_records', 'retrieved_records', 'total_records']
+        expect(results['response_header']['retrieved_records']).to eq 3
+        expect(results['results'].count).to eq 3
+      end
+
+      it "returns basic data only when response_header='false'" do
+        get :search, params: { q: 'cornell', vocab: 'OCLC_FAST', maximumRecords: '3', response_header: 'false' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Array
+        expect(results.size).to eq 3
+      end
+    end
   end
 
   describe '#show' do
@@ -505,6 +531,32 @@ describe Qa::LinkedDataTermsController, type: :controller do
         expect(results.keys).not_to include('performance')
       end
     end
+
+    context 'when requesting response header' do
+      before do
+        stub_request(:get, 'http://id.loc.gov/authorities/subjects/sh85118553')
+          .to_return(status: 200, body: webmock_fixture('lod_loc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      it "returns basic data + response header when response_header='true'" do
+        get :show, params: { id: 'sh 85118553', vocab: 'LOC', subauthority: 'subjects', response_header: 'true' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Hash
+        expect(results.keys).to match_array ['response_header', 'results']
+        expect(results['response_header'].keys).to match_array ['predicate_count']
+        expect(results['response_header']['predicate_count']).to eq 15
+        expect(results['results']['predicates'].count).to eq 15
+      end
+
+      it "returns basic data only when response_header='false'" do
+        get :show, params: { id: 'sh 85118553', vocab: 'LOC', subauthority: 'subjects', response_header: 'false' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Hash
+        expect(results.keys).not_to include('response_header')
+        expect(results['predicates'].size).to eq 15
+      end
+    end
   end
 
   describe '#fetch' do
@@ -676,6 +728,32 @@ describe Qa::LinkedDataTermsController, type: :controller do
         results = JSON.parse(response.body)
         expect(results).to be_kind_of Hash
         expect(results.keys).not_to include('performance')
+      end
+    end
+
+    context 'when requesting response header' do
+      before do
+        stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369')
+          .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      it "returns basic data + response header when response_header='true'" do
+        get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', response_header: 'true' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Hash
+        expect(results.keys).to match_array ['response_header', 'results']
+        expect(results['response_header'].keys).to match_array ['predicate_count']
+        expect(results['response_header']['predicate_count']).to eq 7
+        expect(results['results']['predicates'].count).to eq 7
+      end
+
+      it "returns basic data only when response_header='false'" do
+        get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG', response_header: 'false' }
+        expect(response).to be_successful
+        results = JSON.parse(response.body)
+        expect(results).to be_kind_of Hash
+        expect(results.keys).not_to include('response_header')
+        expect(results['predicates'].size).to eq 7
       end
     end
   end

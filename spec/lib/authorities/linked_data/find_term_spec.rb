@@ -53,6 +53,41 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
       end
     end
 
+    context 'response header' do
+      before do
+        stub_request(:get, 'http://id.worldcat.org/fast/530369')
+          .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
+      end
+      context 'when set to true' do
+        let :results do
+          lod_oclc.find('530369', request_header: { response_header: true })
+        end
+        it 'includes response header in return hash' do
+          expect(results.keys).to match_array [:response_header, :results]
+          expect(results[:response_header].keys).to match_array [:predicate_count]
+          expect(results[:response_header][:predicate_count]).to eq 7
+        end
+      end
+
+      context 'when set to false' do
+        let :results do
+          lod_oclc.find('530369', request_header: { response_header: false })
+        end
+        it 'does NOT include response header in return hash' do
+          expect(results.keys).not_to include(:response_header)
+        end
+      end
+
+      context 'when using default setting' do
+        let :results do
+          lod_oclc.find('530369')
+        end
+        it 'does NOT include response header in return hash' do
+          expect(results.keys).not_to include(:response_header)
+        end
+      end
+    end
+
     context 'in OCLC_FAST authority' do
       context 'term found' do
         let :results do
