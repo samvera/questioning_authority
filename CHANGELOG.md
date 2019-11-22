@@ -1,3 +1,7 @@
+### 5.1.0 (2019-11-22)
+
+* add optional response header which has pagination information for search and summary info for fetch
+
 ### 5.0.0 (2019-11-18)
 
 This is the same code that was released in 4.2.5.  There was a public API change indicating this should have been a major release.
