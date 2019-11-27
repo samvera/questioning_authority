@@ -38,11 +38,11 @@ RSpec.describe Qa::LinkedData::Mapper::GraphLdpathMapperService do
         expect(subject.keys).to match_array [:uri, :id, :label, :altlabel, :sameas, :sort]
 
         validate_entry(subject, :uri, [subject_uri.to_s], RDF::URI)
-        validate_entry(subject, :id, ['530369'], String)
-        validate_entry(subject, :label, ['Cornell University'], String)
-        validate_entry(subject, :altlabel, ['Ithaca (N.Y.). Cornell University'], String)
+        validate_entry(subject, :id, ['530369'], RDF::Literal)
+        validate_entry(subject, :label, ['Cornell University'], RDF::Literal)
+        validate_entry(subject, :altlabel, ['Ithaca (N.Y.). Cornell University'], RDF::Literal)
         validate_entry(subject, :sameas, ['http://id.loc.gov/authorities/names/n79021621'], RDF::URI)
-        validate_entry(subject, :sort, ['1'], String)
+        validate_entry(subject, :sort, ['1'], RDF::Literal)
       end
     end
 
@@ -55,11 +55,11 @@ RSpec.describe Qa::LinkedData::Mapper::GraphLdpathMapperService do
         expect(subject.keys).to match_array [:uri, :id, :label, :altlabel, :sameas, :sort]
 
         validate_entry(subject, :uri, [subject_uri.to_s], RDF::URI)
-        validate_entry(subject, :id, ['510103'], String)
-        validate_entry(subject, :label, ['Cornell University. Libraries'], String)
-        validate_entry(subject, :altlabel, ['Cornell University. Central Libraries', 'Cornell University. John M. Olin Library', 'Cornell University. White Library'], String)
+        validate_entry(subject, :id, ['510103'], RDF::Literal)
+        validate_entry(subject, :label, ['Cornell University. Libraries'], RDF::Literal)
+        validate_entry(subject, :altlabel, ['Cornell University. Central Libraries', 'Cornell University. John M. Olin Library', 'Cornell University. White Library'], RDF::Literal)
         validate_entry(subject, :sameas, ['http://id.loc.gov/authorities/names/n50000040', 'https://viaf.org/viaf/147713418'], RDF::URI)
-        validate_entry(subject, :sort, ['2'], String)
+        validate_entry(subject, :sort, ['2'], RDF::Literal)
       end
     end
 
@@ -72,11 +72,11 @@ RSpec.describe Qa::LinkedData::Mapper::GraphLdpathMapperService do
         expect(subject.keys).to match_array [:uri, :id, :label, :altlabel, :sameas, :sort]
 
         validate_entry(subject, :uri, [subject_uri.to_s], RDF::URI)
-        validate_entry(subject, :id, ['5140'], String)
-        validate_entry(subject, :label, ['Cornell, Joseph'], String)
+        validate_entry(subject, :id, ['5140'], RDF::Literal)
+        validate_entry(subject, :label, ['Cornell, Joseph'], RDF::Literal)
         validate_entry(subject, :altlabel, [], NilClass)
         validate_entry(subject, :sameas, [], NilClass)
-        validate_entry(subject, :sort, ['3'], String)
+        validate_entry(subject, :sort, ['3'], RDF::Literal)
       end
     end
 
@@ -98,11 +98,11 @@ RSpec.describe Qa::LinkedData::Mapper::GraphLdpathMapperService do
         expect(subject.keys).to match_array [:uri, :id, :label, :altlabel, :sameas, :sort, :context]
 
         validate_entry(subject, :uri, [subject_uri.to_s], RDF::URI)
-        validate_entry(subject, :id, ['5140'], String)
-        validate_entry(subject, :label, ['Cornell, Joseph'], String)
+        validate_entry(subject, :id, ['5140'], RDF::Literal)
+        validate_entry(subject, :label, ['Cornell, Joseph'], RDF::Literal)
         validate_entry(subject, :altlabel, [], NilClass)
         validate_entry(subject, :sameas, [], NilClass)
-        validate_entry(subject, :sort, ['3'], String)
+        validate_entry(subject, :sort, ['3'], RDF::Literal)
 
         expect(subject[:context]).to be_kind_of Hash
         expect(subject[:context]).to include(context)

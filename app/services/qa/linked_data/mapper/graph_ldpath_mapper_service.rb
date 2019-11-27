@@ -19,9 +19,10 @@ module Qa
         # @example ldpath map
         #   {
         #     uri: :subject_uri,
-        #     id: 'locid:lccn :: xsd::string',
+        #     id: 'locid:lccn',
         #     label: 'skos:prefLabel :: xsd::string',
         #     altlabel: 'skos:altLabel :: xsd::string',
+        #     sameas: 'skos:sameAs :: xsd::anyURI',
         #     sort: 'vivo:rank :: xsd::integer'
         #   }
         # @param subject_uri [RDF::URI] the subject within the graph for which the values are being extracted
@@ -37,7 +38,7 @@ module Qa
           ldpath_map.each do |key, ldpath|
             next value_map[key] = [subject_uri] if ldpath == :subject_uri
             ldpath_program = ldpath_service.ldpath_program(ldpath: ldpath, prefixes: prefixes)
-            values = ldpath_service.ldpath_evaluate(program: ldpath_program, graph: graph, subject_uri: subject_uri)
+            values = ldpath_service.ldpath_evaluate(program: ldpath_program, graph: graph, subject_uri: subject_uri, maintain_literals: true)
             value_map[key] = values
           end
           value_map = yield value_map if block_given?
