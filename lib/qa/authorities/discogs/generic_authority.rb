@@ -29,11 +29,14 @@ module Qa::Authorities
         Rails.logger.error "Questioning Authority tried to call Discogs, but no secret and/or key were set."
         return []
       end
-      response_hash = {}
       response = json(build_query_url(q, tc))
-      response_hash["results"] = parse_authority_response(response)
-      response_hash["response_header"] = build_response_header(response) if tc.params["response_header"] == "true"
-      response_hash
+      if tc.params["response_header"] == "true"
+        response_hash = {}
+        response_hash["results"] = parse_authority_response(response)
+        response_hash["response_header"] = build_response_header(response)
+        return response_hash
+      end
+      parse_authority_response(response)
     end
 
     # If the subauthority = "all" (though it shouldn't), call the fetch_discogs_results method to determine

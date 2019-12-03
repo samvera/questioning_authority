@@ -291,13 +291,13 @@ describe Qa::Authorities::Discogs::GenericAuthority do
         end
 
         it "has id and label keys" do
-          expect(results['results'].first["uri"]).to eq("https://www.discogs.com/Melody-Gardot-Who-Will-Comfort-Me-Over-The-Rainbow/release/1750352")
-          expect(results['results'].first["id"]).to eq "1750352"
-          expect(results['results'].first["label"]).to eq "Melody Gardot - Who Will Comfort Me / Over The Rainbow"
-          expect(results['results'].first["context"][1]["values"]).to eq ["2009"]
-          expect(results['results'].first["context"][3]["values"][0]).to eq "Vinyl"
-          expect(results['results'].first["context"][2]["values"][1]).to eq "Universal Music Classics & Jazz"
-          expect(results['results'].first["context"][4]["values"][0]).to eq "release"
+          expect(results.first["uri"]).to eq("https://www.discogs.com/Melody-Gardot-Who-Will-Comfort-Me-Over-The-Rainbow/release/1750352")
+          expect(results.first["id"]).to eq "1750352"
+          expect(results.first["label"]).to eq "Melody Gardot - Who Will Comfort Me / Over The Rainbow"
+          expect(results.first["context"][1]["values"]).to eq ["2009"]
+          expect(results.first["context"][3]["values"][0]).to eq "Vinyl"
+          expect(results.first["context"][2]["values"][1]).to eq "Universal Music Classics & Jazz"
+          expect(results.first["context"][4]["values"][0]).to eq "release"
         end
       end
 
@@ -314,12 +314,12 @@ describe Qa::Authorities::Discogs::GenericAuthority do
         end
 
         it "has id and label keys" do
-          expect(results['results'].first['uri']).to eq "https://www.discogs.com/Wes-Montgomery-Bumpin-On-Sunset-Tequila/master/606116"
-          expect(results['results'].first['id']).to eq "606116"
-          expect(results['results'].first['label']).to eq "Wes Montgomery - Bumpin' On Sunset / Tequila"
-          expect(results['results'].first['context'][1]["values"]).to eq ['1966']
-          expect(results['results'].first['context'][3]["values"][2]).to eq "45 RPM"
-          expect(results['results'].first["context"][4]["values"][0]).to eq "master"
+          expect(results.first['uri']).to eq "https://www.discogs.com/Wes-Montgomery-Bumpin-On-Sunset-Tequila/master/606116"
+          expect(results.first['id']).to eq "606116"
+          expect(results.first['label']).to eq "Wes Montgomery - Bumpin' On Sunset / Tequila"
+          expect(results.first['context'][1]["values"]).to eq ['1966']
+          expect(results.first['context'][3]["values"][2]).to eq "45 RPM"
+          expect(results.first["context"][4]["values"][0]).to eq "master"
         end
       end
 
