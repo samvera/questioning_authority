@@ -55,12 +55,47 @@ module Qa::Authorities
         "http://id.loc.gov/ontologies/bibframe/Role"
       end
 
+      def format(tc)
+        return 'json' unless tc.params.key?('format')
+        return 'json' if tc.params['format'].blank?
+        tc.params['format']
+      end
+
+      def jsonld?(tc)
+        format(tc).casecmp?('jsonld')
+      end
+
+      def n3?(tc)
+        format(tc).casecmp?('n3')
+      end
+
+      def ntriples?(tc)
+        format(tc).casecmp?('ntriples')
+      end
+
+      def graph_format?(tc)
+        jsonld?(tc) || n3?(tc) || ntriples?(tc)
+      end
+
       def discogs_genres
         DISCOGS_GENRE_MAPPING
       end
 
       def discogs_formats
         DISCOGS_FORMATS_MAPPING
+      end
+
+      # @param json results
+      # @param json results
+      # @return [String] status information
+      def check_for_msg_response(release_resp, master_resp)
+        if release_resp.key?("message") && master_resp.key?("message")
+          "no responses"
+        elsif !release_resp.key?("message") && !master_resp.key?("message")
+          "two responses"
+        else
+          "mixed"
+        end
       end
 
       # both the work and the instance require a statement for the release year
