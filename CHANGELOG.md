@@ -1,3 +1,8 @@
+### 5.2.0 (2019-12-03)
+
+* add optional response header which has pagination information for DISCOGs search
+* add support for Rails 6
+
 ### 5.1.0 (2019-11-22)
 
 * add optional response header which has pagination information for search and summary info for fetch
