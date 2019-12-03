@@ -4,6 +4,7 @@ module Qa::Authorities
   class Discogs::GenericAuthority < Base
     include WebServiceBase
     include Discogs::DiscogsTranslation
+    include Discogs::DiscogsUtils
 
     class_attribute :discogs_secret, :discogs_key
     attr_accessor :primary_artists, :selected_format, :work_uri, :instance_uri
@@ -28,7 +29,11 @@ module Qa::Authorities
         Rails.logger.error "Questioning Authority tried to call Discogs, but no secret and/or key were set."
         return []
       end
-      parse_authority_response(json(build_query_url(q, tc.params["subauthority"])))
+      response_hash = {}
+      response = json(build_query_url(q, tc))
+      response_hash["results"] = parse_authority_response(response)
+      response_hash["response_header"] = build_response_header(response) if tc.params["response_header"] == "true"
+      response_hash
     end
 
     # If the subauthority = "all" (though it shouldn't), call the fetch_discogs_results method to determine
@@ -52,9 +57,18 @@ module Qa::Authorities
     # @param [String] the query
     # @param [String] the subauthority
     # @return [String] the url
-    def build_query_url(q, subauthority)
+    def build_query_url(q, tc)
+      page = nil
+      per_page = nil
+      if tc.params["startRecord"].present?
+        page = (tc.params["startRecord"].to_i - 1) / tc.params["maxRecords"].to_i + 1
+        per_page = tc.params["maxRecords"]
+      else
+        page = tc.params["page"]
+        per_page = tc.params["per_page"]
+      end
       escaped_q = ERB::Util.url_encode(q)
-      "https://api.discogs.com/database/search?q=#{escaped_q}&type=#{subauthority}&key=#{discogs_key}&secret=#{discogs_secret}"
+      "https://api.discogs.com/database/search?q=#{escaped_q}&type=#{tc.params['subauthority']}&page=#{page}&per_page=#{per_page}&key=#{discogs_key}&secret=#{discogs_secret}"
     end
 
     # @param [String] the id of the selected item
@@ -84,19 +98,6 @@ module Qa::Authorities
         return master_resp unless master_resp.key?("message")
         # return release_resp unless release_resp.key?("message")
         release_resp
-      end
-
-      # @param json results
-      # @param json results
-      # @return [String] status information
-      def check_for_msg_response(release_resp, master_resp)
-        if release_resp.key?("message") && master_resp.key?("message")
-          "no responses"
-        elsif !release_resp.key?("message") && !master_resp.key?("message")
-          "two responses"
-        else
-          "mixed"
-        end
       end
 
       # @param [Hash] the http response from discogs
@@ -131,6 +132,19 @@ module Qa::Authorities
         end
       end
 
+      # @param [Hash] the http response from discogs
+      # @param [Class] QA::TermsController
+      # @example returns parsed discogs pagination data
+      def build_response_header(response)
+        start_record = (response['pagination']['page'] - 1) * response['pagination']['per_page'] + 1
+        rh_hash = {}
+        rh_hash['start_record'] = start_record
+        rh_hash['requested_records'] = response['pagination']['per_page']
+        rh_hash['retrieved_records'] = response['results'].length
+        rh_hash['total_records'] = response['pagination']['items']
+        rh_hash
+      end
+
       # @param [Hash] the results hash from the JSON returned by Discogs
       def build_uri(result)
         result['uri'].present? ? "https://www.discogs.com" + result['uri'].to_s : result['resource_url'].to_s
@@ -155,28 +169,6 @@ module Qa::Authorities
       # @param [Array] returns an empty array if item is not presentr
       def get_context_for_array(item)
         item.present? ? item : [""]
-      end
-
-      def format(tc)
-        return 'json' unless tc.params.key?('format')
-        return 'json' if tc.params['format'].blank?
-        tc.params['format']
-      end
-
-      def jsonld?(tc)
-        format(tc).casecmp?('jsonld')
-      end
-
-      def n3?(tc)
-        format(tc).casecmp?('n3')
-      end
-
-      def ntriples?(tc)
-        format(tc).casecmp?('ntriples')
-      end
-
-      def graph_format?(tc)
-        jsonld?(tc) || n3?(tc) || ntriples?(tc)
       end
   end
 end

@@ -9,8 +9,26 @@ describe Qa::Authorities::Discogs::GenericAuthority do
   let(:authority) { described_class.new "all" }
 
   describe "#build_query_url" do
-    subject { authority.build_query_url("foo", 'master') }
-    it { is_expected.to eq 'https://api.discogs.com/database/search?q=foo&type=master&key=dummy_key&secret=dummy_secret' }
+    context "build_query_url startRecord" do
+      subject { authority.build_query_url("foo", tc) }
+      let(:tc) { instance_double(Qa::TermsController) }
+      before do
+        allow(Qa::TermsController).to receive(:new).and_return(tc)
+        allow(tc).to receive(:params).and_return('startRecord' => "16", 'maxRecords' => "5", 'subauthority' => "master")
+      end
+
+      it { is_expected.to eq 'https://api.discogs.com/database/search?q=foo&type=master&page=4&per_page=5&key=dummy_key&secret=dummy_secret' }
+    end
+    context "build_query_url per_page" do
+      subject { authority.build_query_url("foo", tc) }
+      let(:tc) { instance_double(Qa::TermsController) }
+      before do
+        allow(Qa::TermsController).to receive(:new).and_return(tc)
+        allow(tc).to receive(:params).and_return('page' => "1", 'per_page' => "10", 'subauthority' => "master")
+      end
+
+      it { is_expected.to eq 'https://api.discogs.com/database/search?q=foo&type=master&page=1&per_page=10&key=dummy_key&secret=dummy_secret' }
+    end
   end
 
   describe "#find_url" do
@@ -263,7 +281,7 @@ describe Qa::Authorities::Discogs::GenericAuthority do
       context "with subauthority all" do
         let(:tc) { instance_double(Qa::TermsController) }
         let :results do
-          stub_request(:get, "https://api.discogs.com/database/search?q=melody+gardot+who+will+comfort+me+over+the+rainbo&type=all&key=dummy_key&secret=dummy_secret")
+          stub_request(:get, "https://api.discogs.com/database/search?q=melody+gardot+who+will+comfort+me+over+the+rainbo&type=all&page=&per_page=&key=dummy_key&secret=dummy_secret")
             .to_return(status: 200, body: webmock_fixture("discogs-search-response-no-subauth.json"))
           authority.search("melody gardot who will comfort me over the rainbo", tc)
         end
@@ -273,20 +291,20 @@ describe Qa::Authorities::Discogs::GenericAuthority do
         end
 
         it "has id and label keys" do
-          expect(results.first["uri"]).to eq("https://www.discogs.com/Melody-Gardot-Who-Will-Comfort-Me-Over-The-Rainbow/release/1750352")
-          expect(results.first["id"]).to eq "1750352"
-          expect(results.first["label"]).to eq "Melody Gardot - Who Will Comfort Me / Over The Rainbow"
-          expect(results.first["context"][1]["values"]).to eq ["2009"]
-          expect(results.first["context"][3]["values"][0]).to eq "Vinyl"
-          expect(results.first["context"][2]["values"][1]).to eq "Universal Music Classics & Jazz"
-          expect(results.first["context"][4]["values"][0]).to eq "release"
+          expect(results['results'].first["uri"]).to eq("https://www.discogs.com/Melody-Gardot-Who-Will-Comfort-Me-Over-The-Rainbow/release/1750352")
+          expect(results['results'].first["id"]).to eq "1750352"
+          expect(results['results'].first["label"]).to eq "Melody Gardot - Who Will Comfort Me / Over The Rainbow"
+          expect(results['results'].first["context"][1]["values"]).to eq ["2009"]
+          expect(results['results'].first["context"][3]["values"][0]).to eq "Vinyl"
+          expect(results['results'].first["context"][2]["values"][1]).to eq "Universal Music Classics & Jazz"
+          expect(results['results'].first["context"][4]["values"][0]).to eq "release"
         end
       end
 
       context "with subauthority master" do
         let(:tc) { instance_double(Qa::TermsController) }
         let :results do
-          stub_request(:get, "https://api.discogs.com/database/search?q=wes+montgomery+tequila+bumpin'+on+sunse&type=master&key=dummy_key&secret=dummy_secret")
+          stub_request(:get, "https://api.discogs.com/database/search?q=wes+montgomery+tequila+bumpin'+on+sunse&type=master&page=&per_page=&key=dummy_key&secret=dummy_secret")
             .to_return(status: 200, body: webmock_fixture("discogs-search-response-subauth.json"))
           authority.search("wes montgomery tequila bumpin' on sunse", tc)
         end
@@ -296,12 +314,52 @@ describe Qa::Authorities::Discogs::GenericAuthority do
         end
 
         it "has id and label keys" do
-          expect(results.first['uri']).to eq "https://www.discogs.com/Wes-Montgomery-Bumpin-On-Sunset-Tequila/master/606116"
-          expect(results.first['id']).to eq "606116"
-          expect(results.first['label']).to eq "Wes Montgomery - Bumpin' On Sunset / Tequila"
-          expect(results.first['context'][1]["values"]).to eq ['1966']
-          expect(results.first['context'][3]["values"][2]).to eq "45 RPM"
-          expect(results.first["context"][4]["values"][0]).to eq "master"
+          expect(results['results'].first['uri']).to eq "https://www.discogs.com/Wes-Montgomery-Bumpin-On-Sunset-Tequila/master/606116"
+          expect(results['results'].first['id']).to eq "606116"
+          expect(results['results'].first['label']).to eq "Wes Montgomery - Bumpin' On Sunset / Tequila"
+          expect(results['results'].first['context'][1]["values"]).to eq ['1966']
+          expect(results['results'].first['context'][3]["values"][2]).to eq "45 RPM"
+          expect(results['results'].first["context"][4]["values"][0]).to eq "master"
+        end
+      end
+
+      context "with setRecord and maxRecords" do
+        let(:tc) { instance_double(Qa::TermsController) }
+        let :results do
+          stub_request(:get, "https://api.discogs.com/database/search?q=james+taylor+new+moon+shine&type=master&page=4&per_page=5&key=dummy_key&secret=dummy_secret")
+            .to_return(status: 200, body: webmock_fixture("discogs-search-response-set-record.json"))
+          authority.search("james taylor new moon shine", tc)
+        end
+        before do
+          allow(Qa::TermsController).to receive(:new).and_return(tc)
+          allow(tc).to receive(:params).and_return('subauthority' => "master", 'startRecord' => 16, 'maxRecords' => 5, 'response_header' => 'true')
+        end
+
+        it "has id and label keys" do
+          expect(results['response_header']['start_record']).to eq 16
+          expect(results['response_header']['requested_records']).to eq 5
+          expect(results['response_header']['retrieved_records']).to eq 2
+          expect(results['response_header']['total_records']).to eq 17
+        end
+      end
+
+      context "with page and per_page" do
+        let(:tc) { instance_double(Qa::TermsController) }
+        let :results do
+          stub_request(:get, "https://api.discogs.com/database/search?q=james+taylor+new+moon+shine&type=master&page=1&per_page=10&key=dummy_key&secret=dummy_secret")
+            .to_return(status: 200, body: webmock_fixture("discogs-search-response-per-page.json"))
+          authority.search("james taylor new moon shine", tc)
+        end
+        before do
+          allow(Qa::TermsController).to receive(:new).and_return(tc)
+          allow(tc).to receive(:params).and_return('subauthority' => "master", 'page' => 1, 'per_page' => 10, 'response_header' => 'true')
+        end
+
+        it "has id and label keys" do
+          expect(results['response_header']['start_record']).to eq 1
+          expect(results['response_header']['requested_records']).to eq 10
+          expect(results['response_header']['retrieved_records']).to eq 10
+          expect(results['response_header']['total_records']).to eq 17
         end
       end
 
