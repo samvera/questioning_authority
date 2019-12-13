@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'json'
 
 describe Qa::LinkedDataTermsController, type: :controller do
+  let(:graph_load_failure) { /^\*\*\*\*\*\*\*\* RDF\:\:Graph\#load failure/ }
   before do
     @routes = Qa::Engine.routes
   end
@@ -140,6 +141,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
             .to_return(status: 500)
         end
         it 'returns 500' do
+          expect(Rails.logger).to receive(:warn).with(graph_load_failure)
           expect(Rails.logger).to receive(:warn).with("Internal Server Error - Search query my_query unsuccessful for authority OCLC_FAST")
           get :search, params: { q: 'my_query', vocab: 'OCLC_FAST', maximumRecords: '3' }
           expect(response.code).to eq('500')
@@ -154,6 +156,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'returns 500' do
           msg = "RDF Format Error - Results from search query my_query for authority OCLC_FAST was not identified as a valid RDF format.  You may need to include the linkeddata gem."
+          expect(Rails.logger).to receive(:warn).with(graph_load_failure)
           expect(Rails.logger).to receive(:warn).with(msg)
           get :search, params: { q: 'my_query', vocab: 'OCLC_FAST', maximumRecords: '3' }
           expect(response.code).to eq('500')
@@ -166,6 +169,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
             .to_return(status: 501)
         end
         it 'returns 500' do
+          expect(Rails.logger).to receive(:warn).with(graph_load_failure)
           expect(Rails.logger).to receive(:warn).with("Internal Server Error - Search query my_query unsuccessful for authority OCLC_FAST")
           get :search, params: { q: 'my_query', vocab: 'OCLC_FAST', maximumRecords: '3' }
           expect(response.code).to eq('500')
@@ -179,6 +183,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           .to_return(status: 503)
       end
       it 'returns 503' do
+        expect(Rails.logger).to receive(:warn).with(graph_load_failure)
         expect(Rails.logger).to receive(:warn).with("Service Unavailable - Search query my_query unsuccessful for authority OCLC_FAST")
         get :search, params: { q: 'my_query', vocab: 'OCLC_FAST', maximumRecords: '3' }
         expect(response.code).to eq('503')
@@ -355,6 +360,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           stub_request(:get, 'http://id.worldcat.org/fast/530369').to_return(status: 500)
         end
         it 'returns 500' do
+          expect(Rails.logger).to receive(:warn).with(graph_load_failure)
           expect(Rails.logger).to receive(:warn).with("Internal Server Error - Fetch term 530369 unsuccessful for authority OCLC_FAST")
           get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
           expect(response.code).to eq('500')
@@ -380,6 +386,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         end
         it 'returns 500' do
           msg = "RDF Format Error - Results from fetch term 530369 for authority OCLC_FAST was not identified as a valid RDF format.  You may need to include the linkeddata gem."
+          expect(Rails.logger).to receive(:warn).with(graph_load_failure)
           expect(Rails.logger).to receive(:warn).with(msg)
           get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
           expect(response.code).to eq('500')
@@ -391,6 +398,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           stub_request(:get, 'http://id.worldcat.org/fast/530369').to_return(status: 501)
         end
         it 'returns 500' do
+          expect(Rails.logger).to receive(:warn).with(graph_load_failure)
           expect(Rails.logger).to receive(:warn).with("Internal Server Error - Fetch term 530369 unsuccessful for authority OCLC_FAST")
           get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
           expect(response.code).to eq('500')
@@ -403,6 +411,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         stub_request(:get, 'http://id.worldcat.org/fast/530369').to_return(status: 503)
       end
       it 'returns 503' do
+        expect(Rails.logger).to receive(:warn).with(graph_load_failure)
         expect(Rails.logger).to receive(:warn).with("Service Unavailable - Fetch term 530369 unsuccessful for authority OCLC_FAST")
         get :show, params: { id: '530369', vocab: 'OCLC_FAST' }
         expect(response.code).to eq('503')
@@ -414,6 +423,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         stub_request(:get, 'http://id.worldcat.org/fast/FAKE_ID').to_return(status: 404, body: '', headers: {})
       end
       it 'returns 404' do
+        expect(Rails.logger).to receive(:warn).with(graph_load_failure)
         expect(Rails.logger).to receive(:warn).with('Term Not Found - Fetch term FAKE_ID unsuccessful for authority OCLC_FAST')
         get :show, params: { id: 'FAKE_ID', vocab: 'OCLC_FAST' }
         expect(response.code).to eq('404')
@@ -566,6 +576,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369').to_return(status: 500)
         end
         it 'returns 500' do
+          expect(Rails.logger).to receive(:warn).with(graph_load_failure)
           expect(Rails.logger).to receive(:warn).with("Internal Server Error - Fetch term http://id.worldcat.org/fast/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
           get :fetch, params: { vocab: 'LOD_TERM_URI_PARAM_CONFIG', uri: 'http://id.worldcat.org/fast/530369' }
           expect(response.code).to eq('500')
@@ -580,6 +591,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         it 'returns 500' do
           msg = "RDF Format Error - Results from fetch term http://id.worldcat.org/fast/530369 for authority LOD_TERM_URI_PARAM_CONFIG was not identified as a valid RDF format.  " \
                 "You may need to include the linkeddata gem."
+          expect(Rails.logger).to receive(:warn).with(graph_load_failure)
           expect(Rails.logger).to receive(:warn).with(msg)
           get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
           expect(response.code).to eq('500')
@@ -591,6 +603,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
           stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369').to_return(status: 501)
         end
         it 'returns 500' do
+          expect(Rails.logger).to receive(:warn).with(graph_load_failure)
           expect(Rails.logger).to receive(:warn).with("Internal Server Error - Fetch term http://id.worldcat.org/fast/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
           get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
           expect(response.code).to eq('500')
@@ -603,6 +616,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         stub_request(:get, 'http://localhost/test_default/term?uri=http://id.worldcat.org/fast/530369').to_return(status: 503)
       end
       it 'returns 503' do
+        expect(Rails.logger).to receive(:warn).with(graph_load_failure)
         expect(Rails.logger).to receive(:warn).with("Service Unavailable - Fetch term http://id.worldcat.org/fast/530369 unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG")
         get :fetch, params: { uri: 'http://id.worldcat.org/fast/530369', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
         expect(response.code).to eq('503')
@@ -614,6 +628,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
         stub_request(:get, 'http://localhost/test_default/term?uri=http://test.org/FAKE_ID').to_return(status: 404, body: '', headers: {})
       end
       it 'returns 404' do
+        expect(Rails.logger).to receive(:warn).with(graph_load_failure)
         expect(Rails.logger).to receive(:warn).with('Term Not Found - Fetch term http://test.org/FAKE_ID unsuccessful for authority LOD_TERM_URI_PARAM_CONFIG')
         get :fetch, params: { uri: 'http://test.org/FAKE_ID', vocab: 'LOD_TERM_URI_PARAM_CONFIG' }
         expect(response.code).to eq('404')

@@ -91,6 +91,7 @@ module Qa
           end
 
           def process_error(e, url)
+            Rails.logger.warn("******** RDF::Graph#load failure: exception=#{e.inspect}, url=#{url}")
             uri = URI(url)
             raise RDF::FormatError, "Unknown RDF format of results returned by #{uri}. (RDF::FormatError)  You may need to include gem 'linkeddata'." if e.is_a? RDF::FormatError
             response_code = ioerror_code(e)
