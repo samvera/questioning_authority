@@ -2,8 +2,11 @@ require 'spec_helper'
 
 RSpec.describe Qa::LinkedData::RequestHeaderService do
   let(:request) { double }
+  before { allow(SecureRandom).to receive(:uuid).and_return(request_id) }
 
   describe '#search_header' do
+    let(:request_id) { 's1' }
+
     context 'when optional params are defined' do
       let(:search_params) do
         {
@@ -20,6 +23,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
       it 'uses passed in params' do
         expected_results =
           {
+            request: request,
+            request_id: request_id,
             context: true,
             performance_data: true,
             replacements: { 'maxRecords' => '4' },
@@ -37,6 +42,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults' do
           expected_results =
             {
+              request: request,
+              request_id: request_id,
               context: false,
               performance_data: false,
               replacements: {},
@@ -53,6 +60,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults with language set to request language' do
           expected_results =
             {
+              request: request,
+              request_id: request_id,
               context: false,
               performance_data: false,
               replacements: {},
@@ -67,6 +76,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
   end
 
   describe '#fetch_header' do
+    let(:request_id) { 'f1' }
     context 'when optional params are defined' do
       let(:fetch_params) do
         {
@@ -84,6 +94,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
       it 'uses passed in params' do
         expected_results =
           {
+            request: request,
+            request_id: request_id,
             format: 'n3',
             performance_data: true,
             replacements: { 'extra' => 'data', 'even' => 'more data' },
@@ -101,6 +113,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults' do
           expected_results =
             {
+              request: request,
+              request_id: request_id,
               format: 'json',
               performance_data: false,
               replacements: {},
@@ -117,6 +131,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults with language set to request language' do
           expected_results =
             {
+              request: request,
+              request_id: request_id,
               format: 'json',
               performance_data: false,
               replacements: {},

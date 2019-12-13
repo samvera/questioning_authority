@@ -2,7 +2,7 @@
 module Qa
   module LinkedData
     class RequestHeaderService
-      attr_reader :request, :params
+      attr_reader :request, :params, :request_id
 
       # @param request [HttpRequest] request from controller
       # @param params [Hash] attribute-value pairs holding the request parameters
@@ -16,6 +16,7 @@ module Qa
       def initialize(request:, params:)
         @request = request
         @params = params
+        @request_id = assign_request_id
       end
 
       # Construct request parameters to pass to search_query (linked data module).
@@ -23,6 +24,8 @@ module Qa
       # @see Qa::Authorities::LinkedData::SearchQuery
       def search_header
         header = {}
+        header[:request] = request
+        header[:request_id] = request_id
         header[:subauthority] = params.fetch(:subauthority, nil)
         header[:user_language] = user_language
         header[:performance_data] = performance_data?
@@ -37,6 +40,8 @@ module Qa
       # @see Qa::Authorities::LinkedData::FindTerm
       def fetch_header
         header = {}
+        header[:request] = request
+        header[:request_id] = request_id
         header[:subauthority] = params.fetch(:subauthority, nil)
         header[:user_language] = user_language
         header[:performance_data] = performance_data?
@@ -61,6 +66,11 @@ module Qa
       end
 
       private
+
+        # assign request id
+        def assign_request_id
+          SecureRandom.uuid
+        end
 
         # filter literals in results to this language
         def user_language
