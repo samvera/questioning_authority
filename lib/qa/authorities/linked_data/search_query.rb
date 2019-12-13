@@ -15,8 +15,8 @@ module Qa::Authorities
         @search_config = search_config
       end
 
-      attr_reader :search_config, :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :subauthority, :request_header
-      private :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :subauthority, :request_header
+      attr_reader :search_config, :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :subauthority, :request_header, :request_id, :request
+      private :full_graph, :filtered_graph, :language, :access_time_s, :normalize_time_s, :subauthority, :request_header, :request_id, :request
 
       delegate :subauthority?, :supports_sort?, :prefixes, :authority_name, to: :search_config
 
@@ -37,9 +37,9 @@ module Qa::Authorities
       def search(query, request_header: {}, language: nil, replacements: {}, subauth: nil, context: false, performance_data: false) # rubocop:disable Metrics/ParameterLists
         request_header = build_request_header(language: language, replacements: replacements, subauth: subauth, context: context, performance_data: performance_data) if request_header.empty?
         unpack_request_header(request_header)
-        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauthority}" unless subauthority.nil? || subauthority?(subauthority)
+        raise Qa::InvalidLinkedDataAuthority, "#{request_id} - Unable to initialize linked data search sub-authority #{subauthority}" unless subauthority.nil? || subauthority?(subauthority)
         url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, request_header: request_header)
-        Rails.logger.info "QA Linked Data search url: #{url}"
+        Rails.logger.info "#{request_id} - QA Linked Data search url: #{url}"
         load_graph(url: url)
         normalize_results
       end
@@ -53,7 +53,7 @@ module Qa::Authorities
 
           access_end_dt = Time.now.utc
           @access_time_s = access_end_dt - access_start_dt
-          Rails.logger.info("Time to receive data from authority: #{access_time_s}s")
+          Rails.logger.info("#{request_id} - Time to receive data from authority: #{access_time_s}s")
         end
 
         def normalize_results
@@ -65,7 +65,7 @@ module Qa::Authorities
 
           normalize_end_dt = Time.now.utc
           @normalize_time_s = normalize_end_dt - normalize_start_dt
-          Rails.logger.info("Time to normalize data: #{normalize_time_s}s")
+          Rails.logger.info("#{request_id} - Time to normalize data: #{normalize_time_s}s")
           json = append_data_outside_results(json)
           json
         end
@@ -91,6 +91,8 @@ module Qa::Authorities
 
         def unpack_request_header(request_header)
           @request_header = request_header
+          @request = request_header.fetch(:request, nil)
+          @request_id = request_header.fetch(:request_id, 'UNASSIGNED')
           @subauthority = request_header.fetch(:subauthority, nil)
           @context = request_header.fetch(:context, false)
           @performance_data = request_header.fetch(:performance_data, false)
@@ -211,6 +213,7 @@ module Qa::Authorities
             )
           end
           request_header = {}
+          request_header[:request_id] = SecureRandom.uuid
           request_header[:replacements] = replacements || {}
           request_header[:subauthority] = subauth || nil
           request_header[:language] = language || nil
