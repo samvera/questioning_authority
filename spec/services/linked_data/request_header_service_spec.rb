@@ -2,7 +2,40 @@ require 'spec_helper'
 
 RSpec.describe Qa::LinkedData::RequestHeaderService do
   let(:request) { double }
-  before { allow(SecureRandom).to receive(:uuid).and_return(request_id) }
+  let(:request_id) { 'anID' }
+  let(:some_params) { double }
+  let(:location) { double }
+  let(:fake_ip) { '111.22.33.4444' }
+  let(:city) { 'Ithaca' }
+  let(:state) { 'New York' }
+  let(:country) { 'US' }
+  before do
+    allow(request).to receive(:request_id).and_return(request_id)
+    allow(request).to receive_message_chain(:path_parameters, :[]).with(:action).and_return('search') # rubocop:disable RSpec/MessageChain
+    allow(request).to receive(:location).and_return(location)
+    allow(request).to receive(:ip).and_return(fake_ip)
+    allow(location).to receive(:city).and_return(city)
+    allow(location).to receive(:state).and_return(state)
+    allow(location).to receive(:country).and_return(country)
+  end
+
+  describe '#initialize' do
+    context 'when Qa.config.suppress_ip_data_from_log is true' do
+      before { allow(Qa).to receive_message_chain(:config, :suppress_ip_data_from_log).and_return(true) } # rubocop:disable RSpec/MessageChain
+      it 'does not include IP info in log message' do
+        expect(Rails.logger).to receive(:info).with("******** SEARCH")
+        described_class.new(request: request, params: some_params)
+      end
+    end
+
+    context 'when Qa.config.suppress_ip_data_from_log is false' do
+      before { allow(Qa).to receive_message_chain(:config, :suppress_ip_data_from_log).and_return(false) } # rubocop:disable RSpec/MessageChain
+      it 'does include IP info in log message' do
+        expect(Rails.logger).to receive(:info).with("******** SEARCH from IP #{fake_ip} in {city: #{city}, state: #{state}, country: #{country}}")
+        described_class.new(request: request, params: some_params)
+      end
+    end
+  end
 
   describe '#search_header' do
     let(:request_id) { 's1' }

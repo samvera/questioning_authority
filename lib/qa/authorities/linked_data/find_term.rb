@@ -46,10 +46,10 @@ module Qa::Authorities
       def find(id, request_header: {}, language: nil, replacements: {}, subauth: nil, format: 'json', performance_data: false) # rubocop:disable Metrics/ParameterLists
         request_header = build_request_header(language: language, replacements: replacements, subauth: subauth, format: format, performance_data: performance_data) if request_header.empty?
         unpack_request_header(request_header)
-        raise Qa::InvalidLinkedDataAuthority, "#{request_id} - Unable to initialize linked data term sub-authority #{subauthority}" unless subauthority.nil? || term_subauthority?(subauthority)
+        raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data term sub-authority #{subauthority}" unless subauthority.nil? || term_subauthority?(subauthority)
         @id = id
         url = authority_service.build_url(action_config: term_config, action: :term, action_request: normalize_id, request_header: request_header)
-        Rails.logger.info "#{request_id} - QA Linked Data term url: #{url}"
+        Rails.logger.info "QA Linked Data term url: #{url}"
         load_graph(url: url)
         normalize_results
       end
@@ -63,7 +63,7 @@ module Qa::Authorities
 
           access_end_dt = Time.now.utc
           @access_time_s = access_end_dt - access_start_dt
-          Rails.logger.info("#{request_id} - Time to receive data from authority: #{access_time_s}s")
+          Rails.logger.info("Time to receive data from authority: #{access_time_s}s")
         end
 
         def normalize_results
@@ -73,7 +73,7 @@ module Qa::Authorities
 
           normalize_end_dt = Time.now.utc
           @normalize_time_s = normalize_end_dt - normalize_start_dt
-          Rails.logger.info("#{request_id} - Time to normalize data: #{normalize_time_s}s")
+          Rails.logger.info("Time to normalize data: #{normalize_time_s}s")
           results = append_data_outside_results(results)
           results
         end
@@ -316,7 +316,6 @@ module Qa::Authorities
             )
           end
           request_header = {}
-          request_header[:request_id] = SecureRandom.uuid
           request_header[:replacements] = replacements || {}
           request_header[:subauthority] = subauth || nil
           request_header[:language] = language || nil
