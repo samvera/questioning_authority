@@ -1,3 +1,9 @@
+### 5.3.0 (2019-12-13)
+
+* add request id to the search and find request headers
+* log exception for graph load failures
+* optionally include IP info at start of search/find linked data requests
+
 ### 5.2.0 (2019-12-03)
 
 * add optional response header which has pagination information for DISCOGs search
