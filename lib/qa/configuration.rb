@@ -54,5 +54,14 @@ module Qa
       @property_map_default_for_optional = false if @property_map_default_for_optional.nil?
       @property_map_default_for_optional
     end
+
+    # IP data including IP address, city, state, and country will be logged with each request.
+    # When false, IP data is logged
+    # When true, IP data will not be logged (default for backward compatibility)
+    attr_writer :suppress_ip_data_from_log
+    def suppress_ip_data_from_log
+      @suppress_ip_data_from_log = true if @suppress_ip_data_from_log.nil?
+      @suppress_ip_data_from_log
+    end
   end
 end

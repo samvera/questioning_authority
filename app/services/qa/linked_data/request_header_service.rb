@@ -1,4 +1,5 @@
 # Service to construct a request header that includes optional attributes for search and fetch requests.
+require 'geocoder'
 module Qa
   module LinkedData
     class RequestHeaderService
@@ -16,7 +17,8 @@ module Qa
       def initialize(request:, params:)
         @request = request
         @params = params
-        @request_id = assign_request_id
+        @request_id = request.request_id
+        log_request
       end
 
       # Construct request parameters to pass to search_query (linked data module).
@@ -67,9 +69,11 @@ module Qa
 
       private
 
-        # assign request id
-        def assign_request_id
-          SecureRandom.uuid
+        def log_request
+          gc = request.location
+          msg = "******** #{request.path_parameters[:action].upcase}"
+          msg += " from IP #{request.ip} in {city: #{gc.city}, state: #{gc.state}, country: #{gc.country}}" unless Qa.config.suppress_ip_data_from_log
+          Rails.logger.info(msg)
         end
 
         # filter literals in results to this language

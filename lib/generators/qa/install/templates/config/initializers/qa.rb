@@ -23,4 +23,9 @@ Qa.config do |config|
   # When false, properties that do not override default optional behavior will be shown whether or not the property has a value in the graph.
   # When true, properties that do not override default optional behavior will not be shown whn the property does not have a value in the graph.
   # config.property_map_default_for_optional = false
+
+  # IP data including IP address, city, state, and country will be logged with each request.
+  # When false, IP data is logged
+  # When true, IP data will not be logged (default for backward compatibility)
+  # config.suppress_ip_data_from_log = true
 end
