@@ -70,9 +70,14 @@ module Qa
       private
 
         def log_request
-          gc = request.location
           msg = "******** #{request.path_parameters[:action].upcase}"
-          msg += " from IP #{request.ip} in {city: #{gc.city}, state: #{gc.state}, country: #{gc.country}}" unless Qa.config.suppress_ip_data_from_log
+          unless Qa.config.suppress_ip_data_from_log
+            gc = request.respond_to?(:location) ? request.location : nil
+            city = gc.nil? ? "UNKNOWN" : gc.city
+            state = gc.nil? ? "UNKNOWN" : gc.state
+            country = gc.nil? ? "UNKNOWN" : gc.country
+            msg += " from IP #{request.ip} in {city: #{city}, state: #{state}, country: #{country}}"
+          end
           Rails.logger.info(msg)
         end
 
