@@ -1,3 +1,7 @@
+### 5.3.1 (2019-12-17)
+
+* bug fix to make ip logging more robust when location cannot be retrieved from the request
+
 ### 5.3.0 (2019-12-13)
 
 * add request id to the search and find request headers
