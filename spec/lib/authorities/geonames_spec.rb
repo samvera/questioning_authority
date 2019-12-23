@@ -28,9 +28,9 @@ describe Qa::Authorities::Geonames do
 
       context "with default label" do
         it "has id and label keys" do
-          expect(subject.first).to eq("id" => 'http://sws.geonames.org/2088122/',
+          expect(subject.first).to eq("id" => 'https://sws.geonames.org/2088122/',
                                       "label" => "Port Moresby, National Capital, Papua New Guinea")
-          expect(subject.last).to eq("id" => 'http://sws.geonames.org/377039/',
+          expect(subject.last).to eq("id" => 'https://sws.geonames.org/377039/',
                                      "label" => "Port Sudan, Red Sea, Sudan")
           expect(subject.size).to eq(10)
         end
