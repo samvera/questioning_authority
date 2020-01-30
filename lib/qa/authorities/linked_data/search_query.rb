@@ -71,21 +71,12 @@ module Qa::Authorities
         end
 
         def map_results
-          predicate_map = preds_for_search
           ldpath_map = ldpaths_for_search
-
-          raise Qa::InvalidConfiguration, "do not specify results using both predicates and ldpath in search configuration for linked data authority #{authority_name} (ldpath is preferred)" if predicate_map.present? && ldpath_map.present? # rubocop:disable Metrics/LineLength
-          raise Qa::InvalidConfiguration, "must specify label_ldpath or label_predicate in search configuration for linked data authority #{authority_name} (label_ldpath is preferred)" unless ldpath_map.key?(:label) || predicate_map.key?(:label) # rubocop:disable Metrics/LineLength
-
-          if predicate_map.present?
-            Qa.deprecation_warning(
-              in_msg: 'Qa::Authorities::LinkedData::SearchQuery',
-              msg: "defining results using predicates in search config is deprecated; update to define using ldpaths (authority: #{authority_name})"
-            )
+          unless ldpath_map.key?(:label)
+            raise Qa::InvalidConfiguration,
+                  "must specify label_ldpath in search configuration for linked data authority #{authority_name}"
           end
-
-          results_mapper_service.map_values(graph: filtered_graph, prefixes: prefixes, ldpath_map: ldpath_map,
-                                            predicate_map: predicate_map, sort_key: :sort,
+          results_mapper_service.map_values(graph: filtered_graph, prefixes: prefixes, ldpath_map: ldpath_map, sort_key: :sort,
                                             preferred_language: language, context_map: context_map)
         end
 
@@ -134,24 +125,6 @@ module Qa::Authorities
 
         def sort_ldpath
           @sort_ldpath ||= search_config.results_sort_ldpath
-        end
-
-        def preds_for_search
-          label_pred_uri = search_config.results_label_predicate(suppress_deprecation_warning: true)
-          return {} if label_pred_uri.blank?
-          preds = { label: label_pred_uri, uri: :subject_uri }
-          preds[:altlabel] = search_config.results_altlabel_predicate unless search_config.results_altlabel_predicate.nil?
-          preds[:id] = id_predicate.present? ? id_predicate : :subject_uri
-          preds[:sort] = sort_predicate.present? ? sort_predicate : preds[:label]
-          preds
-        end
-
-        def id_predicate
-          @id_predicate ||= search_config.results_id_predicate
-        end
-
-        def sort_predicate
-          @sort_predicate ||= search_config.results_sort_predicate
         end
 
         def convert_results_to_json(results)
