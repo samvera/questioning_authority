@@ -2,7 +2,33 @@ module Qa::Authorities
   class Geonames < Base
     include WebServiceBase
 
-    class_attribute :username, :label
+    class_attribute :username, :label, :query_url_host, :find_url_host
+
+    # You may need to change your query_url_host in your implementation. To do
+    # so, in the installed application's config/initializers/qa.rb add the
+    # following:
+    #
+    # @example
+    #   Qa::Authorities::Geonames.query_url_host = "http://ws.geonames.net"
+    #
+    # @note This is not exposed as part of the configuration block, but is
+    #       something you can add after the configuration block.
+    # @todo Expose this magic value as a configuration option; Which likely
+    #       requires consideration about how to do this for the general case
+    self.query_url_host = "http://api.geonames.org"
+
+    # You may need to change your query_url_host in your implementation. To do
+    # so, in the installed application's config/initializers/qa.rb add the
+    # following:
+    #
+    # @example
+    #   Qa::Authorities::Geonames.find_url_host = "http://ws.geonames.net"
+    #
+    # @note This is not exposed as part of the configuration block, but is
+    #       something you can add after the configuration block.
+    # @todo Expose this magic value as a configuration option; Which likely
+    #       requires consideration about how to do this for the general case
+    self.find_url_host = "http://www.geonames.org"
 
     self.label = lambda do |item|
       [item['name'], item['adminName1'], item['countryName']].compact.join(', ')
@@ -18,7 +44,7 @@ module Qa::Authorities
 
     def build_query_url(q)
       query = ERB::Util.url_encode(untaint(q))
-      "http://api.geonames.org/searchJSON?q=#{query}&username=#{username}&maxRows=10"
+      File.join(query_url_host, "searchJSON?q=#{query}&username=#{username}&maxRows=10")
     end
 
     def untaint(q)
@@ -30,7 +56,7 @@ module Qa::Authorities
     end
 
     def find_url(id)
-      "http://www.geonames.org/getJSON?geonameId=#{id}&username=#{username}"
+      File.join(find_url_host, "getJSON?geonameId=#{id}&username=#{username}")
     end
 
     private

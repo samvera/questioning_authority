@@ -7,6 +7,34 @@ describe Qa::Authorities::Geonames do
 
   let(:authority) { described_class.new }
 
+  describe ".query_url_host" do
+    subject { described_class.query_url_host }
+    it { is_expected.to eq "http://api.geonames.org" }
+    it "can be overridden" do
+      begin
+        before_change = described_class.query_url_host
+        described_class.query_url_host = "http://myhost.com"
+        expect(described_class.query_url_host).to eq("http://myhost.com")
+      ensure
+        described_class.query_url_host = before_change
+      end
+    end
+  end
+
+  describe ".find_url_host" do
+    subject { described_class.find_url_host }
+    it { is_expected.to eq "http://www.geonames.org" }
+    it "can be overridden" do
+      begin
+        before_change = described_class.find_url_host
+        described_class.find_url_host = "http://myhost.com"
+        expect(described_class.find_url_host).to eq("http://myhost.com")
+      ensure
+        described_class.find_url_host = before_change
+      end
+    end
+  end
+
   describe "#build_query_url" do
     subject { authority.build_query_url("foo") }
     it { is_expected.to eq 'http://api.geonames.org/searchJSON?q=foo&username=dummy&maxRows=10' }
