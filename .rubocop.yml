@@ -10,8 +10,6 @@ AllCops:
     - 'db/**/*'
     - 'script/**/*'
     - 'vendor/**/*'
-  # Include:
-  #   - '**/Rakefile'
 
 Lint/ImplicitStringConcatenation:
   Exclude:
