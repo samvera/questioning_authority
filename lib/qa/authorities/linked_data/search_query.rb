@@ -74,8 +74,8 @@ module Qa::Authorities
           predicate_map = preds_for_search
           ldpath_map = ldpaths_for_search
 
-          raise Qa::InvalidConfiguration, "do not specify results using both predicates and ldpath in search configuration for linked data authority #{authority_name} (ldpath is preferred)" if predicate_map.present? && ldpath_map.present? # rubocop:disable Metrics/LineLength
-          raise Qa::InvalidConfiguration, "must specify label_ldpath or label_predicate in search configuration for linked data authority #{authority_name} (label_ldpath is preferred)" unless ldpath_map.key?(:label) || predicate_map.key?(:label) # rubocop:disable Metrics/LineLength
+          raise Qa::InvalidConfiguration, "do not specify results using both predicates and ldpath in search configuration for linked data authority #{authority_name} (ldpath is preferred)" if predicate_map.present? && ldpath_map.present? # rubocop:disable Layout/LineLength
+          raise Qa::InvalidConfiguration, "must specify label_ldpath or label_predicate in search configuration for linked data authority #{authority_name} (label_ldpath is preferred)" unless ldpath_map.key?(:label) || predicate_map.key?(:label) # rubocop:disable Layout/LineLength
 
           if predicate_map.present?
             Qa.deprecation_warning(

@@ -77,7 +77,7 @@ describe Qa::Authorities::Getty::TGN do
     subject { authority.request_options }
     it { is_expected.to eq(accept: "application/sparql-results+json") }
   end
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   describe "#sparql" do
     context "using a single subject term" do
       subject { authority.sparql('search_term') }
@@ -92,5 +92,5 @@ describe Qa::Authorities::Getty::TGN do
       }
     end
   end
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Layout/LineLength
 end
