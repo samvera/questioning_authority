@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rdf'
 
   # the hyrax style guide is based on `bixby`. see `.rubocop.yml`
-  s.add_development_dependency 'bixby', '~> 1.0.0'
+  s.add_development_dependency 'bixby', '~> 3.0.0'
   s.add_development_dependency 'rails', '!=5.2.0', '!=5.2.1', '!=5.2.2'
   s.add_development_dependency 'byebug'
   s.add_development_dependency 'engine_cart', '~> 2.0'
