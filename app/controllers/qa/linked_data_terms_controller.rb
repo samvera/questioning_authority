@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # This controller is used for all requests to linked data authorities. It will verify params and figure
 # out which linked data authority to query based on the 'vocab' param.
 
@@ -119,107 +120,107 @@ class Qa::LinkedDataTermsController < ::ApplicationController
 
   private
 
-    def render_simple_list
-      render json: Qa::LinkedData::AuthorityService.authority_names.to_json
-    end
+  def render_simple_list
+    render json: Qa::LinkedData::AuthorityService.authority_names.to_json
+  end
 
-    def render_detail_list
-      render json: Qa::LinkedData::AuthorityService.authority_details.to_json
-    end
+  def render_detail_list
+    render json: Qa::LinkedData::AuthorityService.authority_details.to_json
+  end
 
-    def check_authority
-      if params[:vocab].nil? || !params[:vocab].size.positive? # rubocop:disable Style/GuardClause
-        msg = "Required param 'vocab' is missing or empty"
-        logger.warn msg
-        render json: { errors: msg }, status: :bad_request
-      end
-    end
-
-    def check_search_subauthority
-      return if subauthority.nil?
-      unless @authority.search_subauthority?(subauthority) # rubocop:disable Style/GuardClause
-        msg = "Unable to initialize linked data search sub-authority '#{subauthority}' for authority '#{vocab_param}'"
-        logger.warn msg
-        render json: { errors: msg }, status: :bad_request
-      end
-    end
-
-    def check_show_subauthority
-      return if subauthority.nil?
-      unless @authority.term_subauthority?(subauthority) # rubocop:disable Style/GuardClause
-        msg = "Unable to initialize linked data term sub-authority '#{subauthority}' for authority '#{vocab_param}'"
-        logger.warn msg
-        render json: { errors: msg }, status: :bad_request
-      end
-    end
-
-    def create_request_header_service
-      @request_header_service = request_header_service_class.new(request: request, params: params)
-    end
-
-    def init_authority
-      @authority = Qa::Authorities::LinkedData::GenericAuthority.new(vocab_param)
-    rescue Qa::InvalidLinkedDataAuthority => e
-      msg = e.message
+  def check_authority
+    if params[:vocab].nil? || !params[:vocab].size.positive? # rubocop:disable Style/GuardClause
+      msg = "Required param 'vocab' is missing or empty"
       logger.warn msg
       render json: { errors: msg }, status: :bad_request
     end
+  end
 
-    def vocab_param
-      params[:vocab].upcase.to_sym
-    end
-
-    def check_query_param
-      missing_required_param('search', 'q') if params[:q].blank?
-    end
-
-    def check_id_param
-      missing_required_param('show', 'id') if id.blank?
-    end
-
-    def check_uri_param
-      missing_required_param('fetch', 'uri') if uri.blank?
-    end
-
-    def missing_required_param(action_name, param_name)
-      msg = "Required #{action_name} param '#{param_name}' is missing or empty"
+  def check_search_subauthority
+    return if subauthority.nil?
+    unless @authority.search_subauthority?(subauthority) # rubocop:disable Style/GuardClause
+      msg = "Unable to initialize linked data search sub-authority '#{subauthority}' for authority '#{vocab_param}'"
       logger.warn msg
       render json: { errors: msg }, status: :bad_request
     end
+  end
 
-    # converts wildcards into URL-encoded characters
-    def query
-      params[:q].gsub("*", "%2A")
-    end
-
-    def uri
-      params[:uri]
-    end
-
-    def id
-      params[:id]
-    end
-
-    def subauthority
-      params[:subauthority]
-    end
-
-    def subauth_warn_msg
-      subauthority.blank? ? "" : " sub-authority #{subauthority} in"
-    end
-
-    def details?
-      details = params.fetch(:details, 'false')
-      details.casecmp?('true')
-    end
-
-    def validate_auth_reload_token
-      token = params.key?(:auth_token) ? params[:auth_token] : nil
-      valid = Qa.config.valid_authority_reload_token?(token)
-      return true if valid
-      msg = "FAIL: unable to reload authorities; error_msg: Invalid token (#{token}) does not match expected token."
+  def check_show_subauthority
+    return if subauthority.nil?
+    unless @authority.term_subauthority?(subauthority) # rubocop:disable Style/GuardClause
+      msg = "Unable to initialize linked data term sub-authority '#{subauthority}' for authority '#{vocab_param}'"
       logger.warn msg
-      render json: { errors: msg }, status: :unauthorized
-      false
+      render json: { errors: msg }, status: :bad_request
     end
+  end
+
+  def create_request_header_service
+    @request_header_service = request_header_service_class.new(request: request, params: params)
+  end
+
+  def init_authority
+    @authority = Qa::Authorities::LinkedData::GenericAuthority.new(vocab_param)
+  rescue Qa::InvalidLinkedDataAuthority => e
+    msg = e.message
+    logger.warn msg
+    render json: { errors: msg }, status: :bad_request
+  end
+
+  def vocab_param
+    params[:vocab].upcase.to_sym
+  end
+
+  def check_query_param
+    missing_required_param('search', 'q') if params[:q].blank?
+  end
+
+  def check_id_param
+    missing_required_param('show', 'id') if id.blank?
+  end
+
+  def check_uri_param
+    missing_required_param('fetch', 'uri') if uri.blank?
+  end
+
+  def missing_required_param(action_name, param_name)
+    msg = "Required #{action_name} param '#{param_name}' is missing or empty"
+    logger.warn msg
+    render json: { errors: msg }, status: :bad_request
+  end
+
+  # converts wildcards into URL-encoded characters
+  def query
+    params[:q].gsub("*", "%2A")
+  end
+
+  def uri
+    params[:uri]
+  end
+
+  def id
+    params[:id]
+  end
+
+  def subauthority
+    params[:subauthority]
+  end
+
+  def subauth_warn_msg
+    subauthority.blank? ? "" : " sub-authority #{subauthority} in"
+  end
+
+  def details?
+    details = params.fetch(:details, 'false')
+    details.casecmp?('true')
+  end
+
+  def validate_auth_reload_token
+    token = params.key?(:auth_token) ? params[:auth_token] : nil
+    valid = Qa.config.valid_authority_reload_token?(token)
+    return true if valid
+    msg = "FAIL: unable to reload authorities; error_msg: Invalid token (#{token}) does not match expected token."
+    logger.warn msg
+    render json: { errors: msg }, status: :unauthorized
+    false
+  end
 end

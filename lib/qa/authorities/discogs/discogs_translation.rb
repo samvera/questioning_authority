@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rdf'
 module Qa::Authorities
   module Discogs
@@ -30,7 +31,7 @@ module Qa::Authorities
         # all we need is a work and not an instance. If there's no subauthority, we can determine
         # if the discogs record is a master because it will have a main_release field.
         if master_only(response, subauthority)
-          self.work_uri = response["uri"].present? ? response["uri"] : response["resource_url"]
+          self.work_uri = response["uri"].presence || response["resource_url"]
           complete_rdf_stmts.concat(build_master_statements(response))
         else
           # If the subauthority is "release," we need to define an instance as well as a
@@ -39,7 +40,7 @@ module Qa::Authorities
           master_resp = response["master_id"].present? ? json("https://api.discogs.com/masters/#{response['master_id']}") : response
           complete_rdf_stmts.concat(build_master_statements(master_resp))
           # Now do the statements for the release/instance.
-          self.instance_uri = response["uri"].present? ? response["uri"] : response["resource_url"]
+          self.instance_uri = response["uri"].presence || response["resource_url"]
           complete_rdf_stmts.concat(build_instance_statements(response))
         end
       end

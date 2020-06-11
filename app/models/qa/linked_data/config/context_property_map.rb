@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Defines the external authority predicates used to extract additional context from the graph.
 require 'ldpath'
 
@@ -97,35 +98,35 @@ module Qa
 
         private
 
-          def extract_label
-            i18n_key = Qa::LinkedData::Config::Helper.fetch(property_map, :property_label_i18n, nil)
-            default = Qa::LinkedData::Config::Helper.fetch(property_map, :property_label_default, nil)
-            return I18n.t(i18n_key, default: default) if i18n_key.present?
-            default
-          end
+        def extract_label
+          i18n_key = Qa::LinkedData::Config::Helper.fetch(property_map, :property_label_i18n, nil)
+          default = Qa::LinkedData::Config::Helper.fetch(property_map, :property_label_default, nil)
+          return I18n.t(i18n_key, default: default) if i18n_key.present?
+          default
+        end
 
-          def basic_program
-            @basic_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: ldpath, prefixes: prefixes)
-          end
+        def basic_program
+          @basic_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: ldpath, prefixes: prefixes)
+        end
 
-          def expansion_label_program
-            @expansion_label_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: expansion_label_ldpath, prefixes: prefixes)
-          end
+        def expansion_label_program
+          @expansion_label_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: expansion_label_ldpath, prefixes: prefixes)
+        end
 
-          def expansion_id_program
-            @expansion_id_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: expansion_id_ldpath, prefixes: prefixes)
-          end
+        def expansion_id_program
+          @expansion_id_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: expansion_id_ldpath, prefixes: prefixes)
+        end
 
-          def expansion_label(graph, uri)
-            label = Qa::LinkedData::LdpathService.ldpath_evaluate(program: expansion_label_program, graph: graph, subject_uri: RDF::URI(uri))
-            label.size == 1 ? label.first : label
-          end
+        def expansion_label(graph, uri)
+          label = Qa::LinkedData::LdpathService.ldpath_evaluate(program: expansion_label_program, graph: graph, subject_uri: RDF::URI(uri))
+          label.size == 1 ? label.first : label
+        end
 
-          def expansion_id(graph, uri)
-            return uri if expansion_id_ldpath.blank?
-            id = Qa::LinkedData::LdpathService.ldpath_evaluate(program: expansion_id_program, graph: graph, subject_uri: RDF::URI(uri))
-            id.size == 1 ? id.first : id
-          end
+        def expansion_id(graph, uri)
+          return uri if expansion_id_ldpath.blank?
+          id = Qa::LinkedData::LdpathService.ldpath_evaluate(program: expansion_id_program, graph: graph, subject_uri: RDF::URI(uri))
+          id.size == 1 ? id.first : id
+        end
       end
     end
   end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide service for mapping graph to json limited to configured fields and context.
 module Qa
   module LinkedData
@@ -79,37 +80,37 @@ module Qa
 
           private
 
-            # The graph mapper creates the basic value_map for all subject URIs, but we only want the ones that represent search results.
-            def result_subject?(value_map, sort_key)
-              return true unless sort_key.present?        # if sort_key is not defined, then all subjects are considered matches
-              return false unless value_map.key? sort_key # otherwise, sort_key must be in the basic value_map
-              value_map[sort_key].present?                # AND have a value for this to be a search result
-            end
+          # The graph mapper creates the basic value_map for all subject URIs, but we only want the ones that represent search results.
+          def result_subject?(value_map, sort_key)
+            return true if sort_key.blank? # if sort_key is not defined, then all subjects are considered matches
+            return false unless value_map.key? sort_key # otherwise, sort_key must be in the basic value_map
+            value_map[sort_key].present?                # AND have a value for this to be a search result
+          end
 
-            def map_context(graph, sort_key, context_map, value_map, subject)
-              return value_map if context_map.blank?
-              return value_map unless result_subject? value_map, sort_key
-              context = {}
-              context = context_mapper_service.map_context(graph: graph, context_map: context_map, subject_uri: subject) if context_map.present?
-              value_map[:context] = context
-              value_map
-            end
+          def map_context(graph, sort_key, context_map, value_map, subject)
+            return value_map if context_map.blank?
+            return value_map unless result_subject? value_map, sort_key
+            context = {}
+            context = context_mapper_service.map_context(graph: graph, context_map: context_map, subject_uri: subject) if context_map.present?
+            value_map[:context] = context
+            value_map
+          end
 
-            def map_values_with_ldpath_map(graph:, ldpath_map:, prefixes:, subject_uri:, sort_key:, context_map:) # rubocop:disable Metrics/ParameterLists
-              graph_ldpath_mapper_service.map_values(graph: graph, ldpath_map: ldpath_map, prefixes: prefixes, subject_uri: subject_uri) do |value_map|
-                map_context(graph, sort_key, context_map, value_map, subject_uri)
-              end
+          def map_values_with_ldpath_map(graph:, ldpath_map:, prefixes:, subject_uri:, sort_key:, context_map:) # rubocop:disable Metrics/ParameterLists
+            graph_ldpath_mapper_service.map_values(graph: graph, ldpath_map: ldpath_map, prefixes: prefixes, subject_uri: subject_uri) do |value_map|
+              map_context(graph, sort_key, context_map, value_map, subject_uri)
             end
+          end
 
-            def map_values_with_predicate_map(graph:, predicate_map:, subject_uri:, sort_key:, context_map:)
-              Qa.deprecation_warning(
-                in_msg: 'Qa::LinkedData::Mapper::SearchResultsMapperService',
-                msg: 'predicate_map is deprecated; update to use ldpath_map'
-              )
-              graph_predicate_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri) do |value_map|
-                map_context(graph, sort_key, context_map, value_map, subject_uri)
-              end
+          def map_values_with_predicate_map(graph:, predicate_map:, subject_uri:, sort_key:, context_map:)
+            Qa.deprecation_warning(
+              in_msg: 'Qa::LinkedData::Mapper::SearchResultsMapperService',
+              msg: 'predicate_map is deprecated; update to use ldpath_map'
+            )
+            graph_predicate_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri) do |value_map|
+              map_context(graph, sort_key, context_map, value_map, subject_uri)
             end
+          end
         end
       end
     end

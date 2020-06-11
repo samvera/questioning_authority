@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide service for building a URL based on an IRI Templated Link and its variable mappings based on provided substitutions.
 module Qa
   class IriTemplateService
@@ -30,10 +31,10 @@ module Qa
 
       private
 
-        # In the process of substitution, if a value is missing, you can end up with '?&', '&&', or ending with '&'.  These are all removed this method.
-        def clean(url)
-          url.gsub(/&&*/, '&').chomp('&').gsub('?&', '?')
-        end
+      # In the process of substitution, if a value is missing, you can end up with '?&', '&&', or ending with '&'.  These are all removed this method.
+      def clean(url)
+        url.gsub(/&&*/, '&').chomp('&').gsub('?&', '?')
+      end
     end
   end
 end

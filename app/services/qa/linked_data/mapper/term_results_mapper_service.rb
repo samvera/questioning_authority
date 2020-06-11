@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide service for mapping graph to json limited to configured fields and context.
 module Qa
   module LinkedData
@@ -62,17 +63,17 @@ module Qa
 
           private
 
-            def map_values_with_ldpath_map(graph:, ldpath_map:, prefixes:, subject_uri:)
-              graph_ldpath_mapper_service.map_values(graph: graph, ldpath_map: ldpath_map, prefixes: prefixes, subject_uri: subject_uri)
-            end
+          def map_values_with_ldpath_map(graph:, ldpath_map:, prefixes:, subject_uri:)
+            graph_ldpath_mapper_service.map_values(graph: graph, ldpath_map: ldpath_map, prefixes: prefixes, subject_uri: subject_uri)
+          end
 
-            def map_values_with_predicate_map(graph:, predicate_map:, subject_uri:)
-              Qa.deprecation_warning(
-                in_msg: 'Qa::LinkedData::Mapper::TermResultsMapperService',
-                msg: 'predicate_map is deprecated; update to use ldpath_map'
-              )
-              graph_predicate_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri)
-            end
+          def map_values_with_predicate_map(graph:, predicate_map:, subject_uri:)
+            Qa.deprecation_warning(
+              in_msg: 'Qa::LinkedData::Mapper::TermResultsMapperService',
+              msg: 'predicate_map is deprecated; update to use ldpath_map'
+            )
+            graph_predicate_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri)
+          end
         end
       end
     end

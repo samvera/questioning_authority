@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rdf'
 module Qa::Authorities
   module Discogs

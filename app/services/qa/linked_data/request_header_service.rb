@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Service to construct a request header that includes optional attributes for search and fetch requests.
 require 'geocoder'
 module Qa
@@ -69,57 +70,57 @@ module Qa
 
       private
 
-        def log_request
-          msg = "******** #{request.path_parameters[:action].upcase}"
-          unless Qa.config.suppress_ip_data_from_log
-            gc = request.respond_to?(:location) ? request.location : nil
-            city = gc.nil? ? "UNKNOWN" : gc.city
-            state = gc.nil? ? "UNKNOWN" : gc.state
-            country = gc.nil? ? "UNKNOWN" : gc.country
-            msg += " from IP #{request.ip} in {city: #{city}, state: #{state}, country: #{country}}"
-          end
-          Rails.logger.info(msg)
+      def log_request
+        msg = "******** #{request.path_parameters[:action].upcase}"
+        unless Qa.config.suppress_ip_data_from_log
+          gc = request.respond_to?(:location) ? request.location : nil
+          city = gc.nil? ? "UNKNOWN" : gc.city
+          state = gc.nil? ? "UNKNOWN" : gc.state
+          country = gc.nil? ? "UNKNOWN" : gc.country
+          msg += " from IP #{request.ip} in {city: #{city}, state: #{state}, country: #{country}}"
         end
+        Rails.logger.info(msg)
+      end
 
-        # filter literals in results to this language
-        def user_language
-          request_language = request.env['HTTP_ACCEPT_LANGUAGE']
-          request_language = request_language.scan(/^[a-z]{2}/).first if request_language.present?
-          lang = params[:lang] || request_language
-          lang.present? ? Array(lang) : nil
-        end
+      # filter literals in results to this language
+      def user_language
+        request_language = request.env['HTTP_ACCEPT_LANGUAGE']
+        request_language = request_language.scan(/^[a-z]{2}/).first if request_language.present?
+        lang = params[:lang] || request_language
+        lang.present? ? Array(lang) : nil
+      end
 
-        # include extended context in the results if true (applies to search only)
-        def context?
-          context = params.fetch(:context, 'false')
-          context.casecmp?('true')
-        end
+      # include extended context in the results if true (applies to search only)
+      def context?
+        context = params.fetch(:context, 'false')
+        context.casecmp?('true')
+      end
 
-        # include performance data in the results if true
-        def performance_data?
-          performance_data = params.fetch(:performance_data, 'false')
-          performance_data.casecmp?('true')
-        end
+      # include performance data in the results if true
+      def performance_data?
+        performance_data = params.fetch(:performance_data, 'false')
+        performance_data.casecmp?('true')
+      end
 
-        # include summary response header in the results if true
-        def response_header?
-          response_header = params.fetch(:response_header, 'false')
-          response_header.casecmp?('true')
-        end
+      # include summary response header in the results if true
+      def response_header?
+        response_header = params.fetch(:response_header, 'false')
+        response_header.casecmp?('true')
+      end
 
-        # any params not specifically handled are passed through via replacements
-        def replacements
-          params.reject do |k, _v|
-            ['q', 'vocab', 'controller', 'action', 'subauthority', 'lang', 'id',
-             'context', 'performance_data', 'response_header', 'format'].include?(k)
-          end
+      # any params not specifically handled are passed through via replacements
+      def replacements
+        params.reject do |k, _v|
+          ['q', 'vocab', 'controller', 'action', 'subauthority', 'lang', 'id',
+           'context', 'performance_data', 'response_header', 'format'].include?(k)
         end
+      end
 
-        # results are returned in the format (applies to fetch only)
-        def format
-          f = params.fetch(:format, 'json').downcase
-          ['jsonld', 'n3', 'ntriples'].include?(f) ? f : 'json'
-        end
+      # results are returned in the format (applies to fetch only)
+      def format
+        f = params.fetch(:format, 'json').downcase
+        ['jsonld', 'n3', 'ntriples'].include?(f) ? f : 'json'
+      end
     end
   end
 end

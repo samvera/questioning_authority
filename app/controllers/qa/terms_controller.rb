@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # This controller is used for all requests to all authorities. It will verify
 # params and figure out which class to instantiate based on the "vocab" param.
 # All the authority classes inherit from a super class so they implement the
@@ -14,8 +15,8 @@ class Qa::TermsController < ::ApplicationController
     cors_allow_origin_header(response)
     render json: begin
       @authority.all
-    rescue NotImplementedError
-      nil
+                 rescue NotImplementedError
+                   nil
     end
   end
 
@@ -72,37 +73,37 @@ class Qa::TermsController < ::ApplicationController
 
   private
 
-    def authority_class
-      "Qa::Authorities::" + params[:vocab].capitalize
-    end
+  def authority_class
+    "Qa::Authorities::" + params[:vocab].capitalize
+  end
 
-    # converts wildcards into URL-encoded characters
-    def url_search
-      params[:q].gsub("*", "%2A")
-    end
+  # converts wildcards into URL-encoded characters
+  def url_search
+    params[:q].gsub("*", "%2A")
+  end
 
-    def format
-      return 'json' unless params.key?(:format)
-      return 'json' if params[:format].blank?
-      params[:format]
-    end
+  def format
+    return 'json' unless params.key?(:format)
+    return 'json' if params[:format].blank?
+    params[:format]
+  end
 
-    def jsonld?
-      format.casecmp?('jsonld')
-    end
+  def jsonld?
+    format.casecmp?('jsonld')
+  end
 
-    def n3?
-      format.casecmp?('n3')
-    end
+  def n3?
+    format.casecmp?('n3')
+  end
 
-    def ntriples?
-      format.casecmp?('ntriples')
-    end
+  def ntriples?
+    format.casecmp?('ntriples')
+  end
 
-    def content_type_for_format
-      return 'application/ld+json' if jsonld?
-      return 'text/n3' if n3?
-      return 'application/n-triples' if ntriples?
-      'application/json'
-    end
+  def content_type_for_format
+    return 'application/ld+json' if jsonld?
+    return 'text/n3' if n3?
+    return 'application/n-triples' if ntriples?
+    'application/json'
+  end
 end

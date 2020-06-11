@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "qa/engine"
 require "active_record"
 require "activerecord-import"
@@ -25,7 +26,7 @@ module Qa
   end
 
   def self.deprecation_warning(in_msg: nil, msg:)
-    return if Rails.env == 'test'
+    return if Rails.env.test?
     in_msg = in_msg.present? ? "In #{in_msg}, " : ''
     warn "[DEPRECATED] #{in_msg}#{msg}  It will be removed in the next major release."
   end

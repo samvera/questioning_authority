@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 describe Qa::Authorities::Getty::Ulan do
@@ -15,12 +16,11 @@ describe Qa::Authorities::Getty::Ulan do
 
   describe "#search" do
     context "authorities" do
+      subject { authority.search('whatever') }
       before do
         stub_request(:get, /vocab\.getty\.edu.*/)
           .to_return(body: webmock_fixture("ulan-response.txt"), status: 200)
       end
-
-      subject { authority.search('whatever') }
 
       it "has id and label keys" do
         expect(subject.first).to eq("id" => 'http://vocab.getty.edu/ulan/500233743', "label" => "Alan Turner and Associates (British architectural firm, contemporary)")
@@ -58,11 +58,11 @@ describe Qa::Authorities::Getty::Ulan do
 
   describe "#find" do
     context "using a subject id" do
+      subject { authority.find("500026846") }
       before do
         stub_request(:get, "http://vocab.getty.edu/download/json?uri=http://vocab.getty.edu/ulan/500026846.json")
           .to_return(status: 200, body: webmock_fixture("getty-ulan-find-response.json"))
       end
-      subject { authority.find("500026846") }
 
       it "returns the complete record for a given subject" do
         expect(subject['results']['bindings'].size).to eq 880
@@ -89,7 +89,8 @@ describe Qa::Authorities::Getty::Ulan do
                  foaf:focus/gvp:biographyPreferred [schema:description ?bio] ;
                  skos:altLabel ?alt .
               FILTER regex(?name, "search_term", "i") .
-            } ORDER BY ?name'.gsub(/[\s\n]+/, ' ') }
+            } ORDER BY ?name'.gsub(/[\s\n]+/, ' ')
+      }
     end
     context "using a two subject terms" do
       subject { authority.sparql('search term') }
@@ -101,7 +102,8 @@ describe Qa::Authorities::Getty::Ulan do
                  foaf:focus/gvp:biographyPreferred [schema:description ?bio] ;
                  skos:altLabel ?alt .
               FILTER ((regex(?name, "search", "i") || regex(?alt, "search", "i")) && (regex(?name, "term", "i") || regex(?alt, "term", "i"))) .
-            } ORDER BY ?name).gsub(/[\s\n]+/, ' ') }
+            } ORDER BY ?name).gsub(/[\s\n]+/, ' ')
+      }
     end
   end
 end

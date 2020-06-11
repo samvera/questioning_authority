@@ -1,13 +1,14 @@
+# frozen_string_literal: true
 # Encapsulate information about assignFAST subauthorities
 module Qa::Authorities::AssignFastSubauthority
   # Hash of subauthority names used in qa routes => 'index' used by API
   SUBAUTHORITIES = {
-    'all'        => 'suggestall',
-    'personal'   => 'suggest00',
-    'corporate'  => 'suggest10',
-    'event'      => 'suggest11',
-    'uniform'    => 'suggest30',
-    'topical'    => 'suggest50',
+    'all' => 'suggestall',
+    'personal' => 'suggest00',
+    'corporate' => 'suggest10',
+    'event' => 'suggest11',
+    'uniform' => 'suggest30',
+    'topical' => 'suggest50',
     'geographic' => 'suggest51',
     'form_genre' => 'suggest55'
   }.freeze

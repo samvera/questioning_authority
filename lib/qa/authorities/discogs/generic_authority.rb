@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rdf'
 require 'rdf/ntriples'
 module Qa::Authorities
@@ -83,95 +84,95 @@ module Qa::Authorities
 
     private
 
-      # In the unusual case that we have an id and the subauthority is "all", we don't know which Discogs url to
-      # use. If the id is a match for both a release and a master (or neither), return that info as the
-      # message. Otherwise, return the data for the release or master.
-      # @param [String] the id of the selected item
-      # @return json results
-      def fetch_discogs_results(id)
-        release_resp = json(find_url(id, "release"))
-        master_resp = json(find_url(id, "master"))
-        message_status = check_for_msg_response(release_resp, master_resp)
+    # In the unusual case that we have an id and the subauthority is "all", we don't know which Discogs url to
+    # use. If the id is a match for both a release and a master (or neither), return that info as the
+    # message. Otherwise, return the data for the release or master.
+    # @param [String] the id of the selected item
+    # @return json results
+    def fetch_discogs_results(id)
+      release_resp = json(find_url(id, "release"))
+      master_resp = json(find_url(id, "master"))
+      message_status = check_for_msg_response(release_resp, master_resp)
 
-        return { "message" => "Neither a master nor a release matches the requested ID." } if message_status == "no responses"
-        if message_status == "two responses"
-          return { "message" => "Both a master and a release match the requested ID.",
-                   "resource_url" => ["https://api.discogs.com/masters/#{id}", "https://api.discogs.com/releases/#{id}"] }
-        end
-        return master_resp unless master_resp.key?("message")
-        # return release_resp unless release_resp.key?("message")
-        release_resp
+      return { "message" => "Neither a master nor a release matches the requested ID." } if message_status == "no responses"
+      if message_status == "two responses"
+        return { "message" => "Both a master and a release match the requested ID.",
+                 "resource_url" => ["https://api.discogs.com/masters/#{id}", "https://api.discogs.com/releases/#{id}"] }
       end
+      return master_resp unless master_resp.key?("message")
+      # return release_resp unless release_resp.key?("message")
+      release_resp
+    end
 
-      # @param [Hash] the http response from discogs
-      # @example returns parsed discogs data with context
-      # [{
-      # 	"uri": "https://www.discogs.com/Frank-Sinatra-And-The-Modernaires-Sorry-Why-Remind-Me/release/4212473",
-      # 	"id": "4212473",
-      # 	"label": "Frank Sinatra And The Modernaires - Sorry / Why Remind Me",
-      # 	"context": [{
-      # 		"property": "Image URL",
-      # 		"values": ["https://img.discogs.com/1358693671-5430.jpeg.jpg"]
-      # 	}, {
-      # 		"property": "Year",
-      # 		"values": ["1950"]
-      # 	}, {
-      # 		"property": "Record Labels",
-      # 		"values": ["Columbia"]
-      # 	}, {
-      # 		"property": "Formats",
-      # 		"values": ["Shellac", "10\"", "78 RPM"]
-      # 	}, {
-      # 		"property": "Type",
-      # 		"values": ["release"]
-      # 	}]
-      # }]
-      def parse_authority_response(response)
-        response['results'].map do |result|
-          { 'uri' => build_uri(result),
-            'id' => result['id'].to_s,
-            'label' => result['title'].to_s,
-            'context' => assemble_search_context(result) }
-        end
+    # @param [Hash] the http response from discogs
+    # @example returns parsed discogs data with context
+    # [{
+    # 	"uri": "https://www.discogs.com/Frank-Sinatra-And-The-Modernaires-Sorry-Why-Remind-Me/release/4212473",
+    # 	"id": "4212473",
+    # 	"label": "Frank Sinatra And The Modernaires - Sorry / Why Remind Me",
+    # 	"context": [{
+    # 		"property": "Image URL",
+    # 		"values": ["https://img.discogs.com/1358693671-5430.jpeg.jpg"]
+    # 	}, {
+    # 		"property": "Year",
+    # 		"values": ["1950"]
+    # 	}, {
+    # 		"property": "Record Labels",
+    # 		"values": ["Columbia"]
+    # 	}, {
+    # 		"property": "Formats",
+    # 		"values": ["Shellac", "10\"", "78 RPM"]
+    # 	}, {
+    # 		"property": "Type",
+    # 		"values": ["release"]
+    # 	}]
+    # }]
+    def parse_authority_response(response)
+      response['results'].map do |result|
+        { 'uri' => build_uri(result),
+          'id' => result['id'].to_s,
+          'label' => result['title'].to_s,
+          'context' => assemble_search_context(result) }
       end
+    end
 
-      # @param [Hash] the http response from discogs
-      # @param [Class] QA::TermsController
-      # @example returns parsed discogs pagination data
-      def build_response_header(response)
-        start_record = (response['pagination']['page'] - 1) * response['pagination']['per_page'] + 1
-        rh_hash = {}
-        rh_hash['start_record'] = start_record
-        rh_hash['requested_records'] = response['pagination']['per_page']
-        rh_hash['retrieved_records'] = response['results'].length
-        rh_hash['total_records'] = response['pagination']['items']
-        rh_hash
-      end
+    # @param [Hash] the http response from discogs
+    # @param [Class] QA::TermsController
+    # @example returns parsed discogs pagination data
+    def build_response_header(response)
+      start_record = (response['pagination']['page'] - 1) * response['pagination']['per_page'] + 1
+      rh_hash = {}
+      rh_hash['start_record'] = start_record
+      rh_hash['requested_records'] = response['pagination']['per_page']
+      rh_hash['retrieved_records'] = response['results'].length
+      rh_hash['total_records'] = response['pagination']['items']
+      rh_hash
+    end
 
-      # @param [Hash] the results hash from the JSON returned by Discogs
-      def build_uri(result)
-        result['uri'].present? ? "https://www.discogs.com" + result['uri'].to_s : result['resource_url'].to_s
-      end
+    # @param [Hash] the results hash from the JSON returned by Discogs
+    def build_uri(result)
+      result['uri'].present? ? "https://www.discogs.com" + result['uri'].to_s : result['resource_url'].to_s
+    end
 
-      # @param [Hash] the results hash from the JSON returned by Discogs
-      def assemble_search_context(result)
-        [{ "property" => "Image URL", "values" => get_context_for_string(result['cover_image']) },
-         { "property" => "Year", "values" => get_context_for_string(result['year']) },
-         { "property" => "Record Labels", "values" => get_context_for_array(result['label']) },
-         { "property" => "Formats", "values" => get_context_for_array(result['format']) },
-         { "property" => "Type", "values" => get_context_for_string(result['type']) }]
-      end
+    # @param [Hash] the results hash from the JSON returned by Discogs
+    def assemble_search_context(result)
+      [{ "property" => "Image URL", "values" => get_context_for_string(result['cover_image']) },
+       { "property" => "Year", "values" => get_context_for_string(result['year']) },
+       { "property" => "Record Labels", "values" => get_context_for_array(result['label']) },
+       { "property" => "Formats", "values" => get_context_for_array(result['format']) },
+       { "property" => "Type", "values" => get_context_for_string(result['type']) }]
+    end
 
-      # checks if the param is null, returns appropriate value
-      # @param [String] returns an empty string if item is not presentr
-      def get_context_for_string(item)
-        [item.present? ? item.to_s : ""]
-      end
+    # checks if the param is null, returns appropriate value
+    # @param [String] returns an empty string if item is not presentr
+    def get_context_for_string(item)
+      [item.present? ? item.to_s : ""]
+    end
 
-      # checks if the param is null, returns appropriate value
-      # @param [Array] returns an empty array if item is not presentr
-      def get_context_for_array(item)
-        item.present? ? item : [""]
-      end
+    # checks if the param is null, returns appropriate value
+    # @param [Array] returns an empty array if item is not presentr
+    def get_context_for_array(item)
+      item.presence || [""]
+    end
   end
 end

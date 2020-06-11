@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   # for use with Faraday; encode spaces as '%20' not '+'
   class AssignFast::SpaceFixEncoder

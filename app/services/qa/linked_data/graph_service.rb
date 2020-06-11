@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Extend the RDF graph to include additional processing methods.
 module Qa
   module LinkedData
@@ -19,7 +20,7 @@ module Qa
         # @param remove_blanknode_subjects [Boolean] will remove any statement whose subject is a blanknode, if true
         # @return [RDF::Graph] a new instance of graph with statements not matching the filters removed
         def filter(graph:, language: nil, remove_blanknode_subjects: false)
-          return graph unless graph.present?
+          return graph if graph.blank?
           return graph unless language.present? || remove_blanknode_subjects
           filtered_graph = deep_copy(graph: graph)
           filtered_graph.statements.each do |st|
@@ -64,54 +65,54 @@ module Qa
 
         private
 
-          def filter_out_blanknode(remove, subj)
-            remove && subj.anonymous?
-          end
+        def filter_out_blanknode(remove, subj)
+          remove && subj.anonymous?
+        end
 
-          # Filter out language based on...
-          # * do not remove if the object literal does not respond to :language
-          # * do not remove if the object literal does not have a language marker
-          # * do not remove if the object has the targeted language marker
-          # * do not remove if none of the other objects with this statement's predicate have the targeted language marker
-          def filter_out_language(graph, language, statement)
-            return false if language.blank?
-            return false unless Qa::LinkedData::LanguageService.literal_has_language_marker?(statement.object)
-            objects = object_values(graph: graph, subject: statement.subject, predicate: statement.predicate)
-            return false unless at_least_one_object_has_language?(objects, language)
-            !language.include?(statement.object.language)
-          end
+        # Filter out language based on...
+        # * do not remove if the object literal does not respond to :language
+        # * do not remove if the object literal does not have a language marker
+        # * do not remove if the object has the targeted language marker
+        # * do not remove if none of the other objects with this statement's predicate have the targeted language marker
+        def filter_out_language(graph, language, statement)
+          return false if language.blank?
+          return false unless Qa::LinkedData::LanguageService.literal_has_language_marker?(statement.object)
+          objects = object_values(graph: graph, subject: statement.subject, predicate: statement.predicate)
+          return false unless at_least_one_object_has_language?(objects, language)
+          !language.include?(statement.object.language)
+        end
 
-          def at_least_one_object_has_language?(objects, language)
-            objects.each do |obj|
-              next unless Qa::LinkedData::LanguageService.literal_has_language_marker?(obj)
-              next unless language.include? obj.language
-              return true
-            end
-            false
+        def at_least_one_object_has_language?(objects, language)
+          objects.each do |obj|
+            next unless Qa::LinkedData::LanguageService.literal_has_language_marker?(obj)
+            next unless language.include? obj.language
+            return true
           end
+          false
+        end
 
-          def process_error(e, url)
-            Rails.logger.warn("******** RDF::Graph#load failure: exception=#{e.inspect}, url=#{url}")
-            uri = URI(url)
-            raise RDF::FormatError, "Unknown RDF format of results returned by #{uri}. (RDF::FormatError)  You may need to include gem 'linkeddata'." if e.is_a? RDF::FormatError
-            response_code = ioerror_code(e)
-            case response_code
-            when '404'
-              raise Qa::TermNotFound, "#{uri} Not Found - Term may not exist at LOD Authority. (HTTPNotFound - 404)"
-            when '500'
-              raise Qa::ServiceError, "#{uri.hostname} on port #{uri.port} is not responding.  Try again later. (HTTPServerError - 500)"
-            when '503'
-              raise Qa::ServiceUnavailable, "#{uri.hostname} on port #{uri.port} is not responding.  Try again later. (HTTPServiceUnavailable - 503)"
-            else
-              raise Qa::ServiceError, "Unknown error for #{uri.hostname} on port #{uri.port}.  Try again later. (Cause - #{e.message})"
-            end
+        def process_error(e, url)
+          Rails.logger.warn("******** RDF::Graph#load failure: exception=#{e.inspect}, url=#{url}")
+          uri = URI(url)
+          raise RDF::FormatError, "Unknown RDF format of results returned by #{uri}. (RDF::FormatError)  You may need to include gem 'linkeddata'." if e.is_a? RDF::FormatError
+          response_code = ioerror_code(e)
+          case response_code
+          when '404'
+            raise Qa::TermNotFound, "#{uri} Not Found - Term may not exist at LOD Authority. (HTTPNotFound - 404)"
+          when '500'
+            raise Qa::ServiceError, "#{uri.hostname} on port #{uri.port} is not responding.  Try again later. (HTTPServerError - 500)"
+          when '503'
+            raise Qa::ServiceUnavailable, "#{uri.hostname} on port #{uri.port} is not responding.  Try again later. (HTTPServiceUnavailable - 503)"
+          else
+            raise Qa::ServiceError, "Unknown error for #{uri.hostname} on port #{uri.port}.  Try again later. (Cause - #{e.message})"
           end
+        end
 
-          # process ioerror_code from RDF::Graph.load whether the code is in parentheses (i.e. "... (404)"), or not (i.e. "... 404")
-          def ioerror_code(e)
-            msg = e.message
-            msg[/(\(?)(\d\d\d)(\)?)$/, 2]
-          end
+        # process ioerror_code from RDF::Graph.load whether the code is in parentheses (i.e. "... (404)"), or not (i.e. "... 404")
+        def ioerror_code(e)
+          msg = e.message
+          msg[/(\(?)(\d\d\d)(\)?)$/, 2]
+        end
       end
     end
   end

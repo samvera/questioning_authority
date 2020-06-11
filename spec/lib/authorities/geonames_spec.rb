@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 describe Qa::Authorities::Geonames do
@@ -11,13 +12,11 @@ describe Qa::Authorities::Geonames do
     subject { described_class.query_url_host }
     it { is_expected.to eq "http://api.geonames.org" }
     it "can be overridden" do
-      begin
-        before_change = described_class.query_url_host
-        described_class.query_url_host = "http://myhost.com"
-        expect(described_class.query_url_host).to eq("http://myhost.com")
-      ensure
-        described_class.query_url_host = before_change
-      end
+      before_change = described_class.query_url_host
+      described_class.query_url_host = "http://myhost.com"
+      expect(described_class.query_url_host).to eq("http://myhost.com")
+    ensure
+      described_class.query_url_host = before_change
     end
   end
 
@@ -25,13 +24,11 @@ describe Qa::Authorities::Geonames do
     subject { described_class.find_url_host }
     it { is_expected.to eq "http://www.geonames.org" }
     it "can be overridden" do
-      begin
-        before_change = described_class.find_url_host
-        described_class.find_url_host = "http://myhost.com"
-        expect(described_class.find_url_host).to eq("http://myhost.com")
-      ensure
-        described_class.find_url_host = before_change
-      end
+      before_change = described_class.find_url_host
+      described_class.find_url_host = "http://myhost.com"
+      expect(described_class.find_url_host).to eq("http://myhost.com")
+    ensure
+      described_class.find_url_host = before_change
     end
   end
 
@@ -47,12 +44,11 @@ describe Qa::Authorities::Geonames do
 
   describe "#search" do
     context "authorities" do
+      subject { authority.search('whatever') }
       before do
         stub_request(:get, /api\.geonames\.org.*/)
           .to_return(body: webmock_fixture("geonames-response.json"), status: 200)
       end
-
-      subject { authority.search('whatever') }
 
       context "with default label" do
         it "has id and label keys" do
@@ -103,11 +99,11 @@ describe Qa::Authorities::Geonames do
 
   describe "#find" do
     context "using a subject id" do
+      subject { authority.find("2088122") }
       before do
         stub_request(:get, "http://www.geonames.org/getJSON?geonameId=2088122&username=dummy")
           .to_return(status: 200, body: webmock_fixture("geonames-find-response.json"))
       end
-      subject { authority.find("2088122") }
 
       it "returns the complete record for a given subject" do
         expect(subject['geonameId']).to eq 2_088_122

@@ -4,14 +4,14 @@ inherit_gem:
 inherit_from: .rubocop_todo.yml
 
 AllCops:
-  TargetRubyVersion: 2.1
+  TargetRubyVersion: 2.6
   DisplayCopNames: true
   Exclude:
     - 'db/**/*'
     - 'script/**/*'
     - 'vendor/**/*'
-  Include:
-    - '**/Rakefile'
+  # Include:
+  #   - '**/Rakefile'
 
 Lint/ImplicitStringConcatenation:
   Exclude:
@@ -27,4 +27,10 @@ Metrics/BlockLength:
 #   Prefer have_received for setting message expectations. Setup form as a spy using allow or instance_spy.
 # The default assumes EnforcedStyle is 'have_received'. Most of our specs are 'receive'
 RSpec/MessageSpies:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/NamedSubject:
   Enabled: false

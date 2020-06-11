@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide access to iri template variable map configuration.
 # See https://www.hydra-cg.com/spec/latest/core/#templated-links for information on IRI Templated Links - Variable Mapping.
 # TODO: It would be good to find a more complete resource describing templated links.
@@ -5,7 +6,7 @@
 module Qa
   module IriTemplate
     class VariableMap
-      TYPE = "IriTemplateMapping".freeze
+      TYPE = "IriTemplateMapping"
       attr_reader :variable
       attr_reader :default
       private :default
@@ -46,17 +47,17 @@ module Qa
 
       private
 
-        # Is this variable required?
-        # @return true if required; otherwise, false
-        def required?
-          @required
-        end
+      # Is this variable required?
+      # @return true if required; otherwise, false
+      def required?
+        @required
+      end
 
-        # Should the variable's value be encoded?
-        # @return true if should encode; otherwise, false
-        def encode?
-          @encode
-        end
+      # Should the variable's value be encoded?
+      # @return true if should encode; otherwise, false
+      def encode?
+        @encode
+      end
     end
   end
 end

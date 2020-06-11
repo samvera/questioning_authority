@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   # Provide authority namespace
   module AssignFast

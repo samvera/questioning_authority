@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa
   class Configuration
     def cors_headers?

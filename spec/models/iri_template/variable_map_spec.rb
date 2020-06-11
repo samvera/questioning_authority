@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 RSpec.describe Qa::IriTemplate::VariableMap do
@@ -5,7 +6,7 @@ RSpec.describe Qa::IriTemplate::VariableMap do
 
   let(:map) do
     {
-      :"@type" => "IriTemplateMapping",
+      "@type": "IriTemplateMapping",
       property: "hydra:freetextQuery",
       variable: "subauth",
       required: true

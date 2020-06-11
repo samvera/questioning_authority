@@ -1,4 +1,5 @@
-class Qa::SubjectMeshTerm < ActiveRecord::Base
+# frozen_string_literal: true
+class Qa::SubjectMeshTerm < ApplicationRecord
   has_many :mesh_trees, foreign_key: "term_id"
 
   def self.from_tree_number(tree_id)
@@ -25,16 +26,16 @@ class Qa::SubjectMeshTerm < ActiveRecord::Base
 
   private
 
-    # Return all of the intial segements of our tree number,
-    # from most general to most specific
-    # e.g. 'D03.456.23.789' returns ['D03', 'D03.456', 'D03.456.23', 'D03.456.23.789']
-    def initial_segements_of(s)
-      result = []
-      loop do
-        result << s
-        s = s.rpartition('.').first
-        break if s.empty?
-      end
-      result.reverse
+  # Return all of the intial segements of our tree number,
+  # from most general to most specific
+  # e.g. 'D03.456.23.789' returns ['D03', 'D03.456', 'D03.456.23', 'D03.456.23.789']
+  def initial_segements_of(s)
+    result = []
+    loop do
+      result << s
+      s = s.rpartition('.').first
+      break if s.empty?
     end
+    result.reverse
+  end
 end

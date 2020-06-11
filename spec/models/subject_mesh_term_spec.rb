@@ -1,9 +1,10 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 # rubocop:disable RSpec/InstanceVariable # TODO: Explore if there is a way to remove this disable
 describe Qa::SubjectMeshTerm, type: :model do
   before(:all) do
-    @term = Qa::SubjectMeshTerm.new
+    @term = described_class.new
     @term.term_id = "ABCDEFG"
     @term.term = "Glyphon"
     @term.save!
@@ -18,7 +19,7 @@ describe Qa::SubjectMeshTerm, type: :model do
     expect(@term.trees).to eq([])
   end
   it "saves a synonym list" do
-    a = Qa::SubjectMeshTerm.new
+    a = described_class.new
     a.term_id = 'a'
     a.synonyms = ['b', 'c']
     a.save
@@ -29,7 +30,7 @@ describe Qa::SubjectMeshTerm, type: :model do
     t.term_id = @term.term_id
     t.tree_number = "D1.2.3.4"
     t.save!
-    a = Qa::SubjectMeshTerm.from_tree_number("D1.2.3.4")
+    a = described_class.from_tree_number("D1.2.3.4")
     expect(a.length).to eq(1)
   end
 

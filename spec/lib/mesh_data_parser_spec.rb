@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 describe Qa::Authorities::MeshTools::MeshDataParser do
@@ -47,7 +48,7 @@ EOS
     expect(records[1]).to eq({})
   end
 
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   it 'parses a sample mesh file' do
     mesh = described_class.new(webmock_fixture('mesh.txt'))
     records = mesh.all_records
@@ -117,5 +118,5 @@ EOS
                              "DX" => ["19840101"],
                              "UI" => ["D000001"])
   end
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Layout/LineLength
 end

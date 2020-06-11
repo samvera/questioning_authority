@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa
   class ApplicationController < ActionController::Base
     skip_before_action :verify_authenticity_token, only: :options, raise: false

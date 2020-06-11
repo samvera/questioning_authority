@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 # Service to determine which language to use for sorting and filtering.
 module Qa
   module LinkedData
     class LanguageService
-      WILDCARD = '*'.freeze
+      WILDCARD = '*'
 
       class << self
         # @param user_langauge [Symbol|String] the language code (e.g. :en, :fr) specified as URL parameter or on URL header
@@ -27,15 +28,15 @@ module Qa
 
         private
 
-          # Normalize language
-          # @param [String | Symbol | Array] language for filtering graph (e.g. "en" OR :en OR ["en", "fr"] OR [:en, :fr])
-          # @return [Array<Symbol>] an array of languages encoded as symbols (e.g. [:en] OR [:en, :fr])
-          def normalize_language(language)
-            return language if language.blank?
-            language = [language] unless language.is_a? Array
-            return nil if language.include?(WILDCARD)
-            language.map(&:to_sym)
-          end
+        # Normalize language
+        # @param [String | Symbol | Array] language for filtering graph (e.g. "en" OR :en OR ["en", "fr"] OR [:en, :fr])
+        # @return [Array<Symbol>] an array of languages encoded as symbols (e.g. [:en] OR [:en, :fr])
+        def normalize_language(language)
+          return language if language.blank?
+          language = [language] unless language.is_a? Array
+          return nil if language.include?(WILDCARD)
+          language.map(&:to_sym)
+        end
       end
     end
   end

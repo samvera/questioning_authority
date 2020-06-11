@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   module Local
     class Registry
@@ -20,7 +21,7 @@ module Qa::Authorities
 
       def self.logger
         @logger ||= begin
-          ::Rails.logger if defined? Rails && Rails.respond_to?(:logger)
+          ::Rails.logger if defined? Rails&.respond_to?(:logger)
         end
       end
 

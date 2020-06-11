@@ -1,11 +1,12 @@
+# frozen_string_literal: true
 # Provide access to iri template configuration.
 # See https://www.hydra-cg.com/spec/latest/core/#templated-links for information on IRI Templated Links.
 # TODO: It would be good to find a more complete resource describing templated links.
 module Qa
   module IriTemplate
     class UrlConfig
-      TYPE = "IriTemplate".freeze
-      CONTEXT = "http://www.w3.org/ns/hydra/context.jsonld".freeze
+      TYPE = "IriTemplate"
+      CONTEXT = "http://www.w3.org/ns/hydra/context.jsonld"
       attr_reader :template # [String] the URL template with variables for substitution (required)
       attr_reader :variable_representation # [String] always "BasicRepresentation" # TODO what other values are supported and what do they mean
       attr_reader :mapping # [Array<Qa::IriTempalte::VariableMap>] array of maps for use with a template (required)
@@ -34,14 +35,14 @@ module Qa
 
       private
 
-        # Initialize the variable maps
-        # @param config [Hash] configuration holding the variable maps to be extracted
-        # @return [Array<IriTemplate::Map>] array of the variable maps
-        def extract_mapping
-          mapping = Qa::LinkedData::Config::Helper.fetch_required(@url_config, :mapping, nil)
-          raise Qa::InvalidConfiguration, "mapping must include at least one map" if mapping.empty?
-          mapping.collect { |m| Qa::IriTemplate::VariableMap.new(m) }
-        end
+      # Initialize the variable maps
+      # @param config [Hash] configuration holding the variable maps to be extracted
+      # @return [Array<IriTemplate::Map>] array of the variable maps
+      def extract_mapping
+        mapping = Qa::LinkedData::Config::Helper.fetch_required(@url_config, :mapping, nil)
+        raise Qa::InvalidConfiguration, "mapping must include at least one map" if mapping.empty?
+        mapping.collect { |m| Qa::IriTemplate::VariableMap.new(m) }
+      end
     end
   end
 end

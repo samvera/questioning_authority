@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Local
   class FilesGenerator < Rails::Generators::Base
     source_root File.expand_path('../../templates', __FILE__)

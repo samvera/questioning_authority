@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   module Local
     extend ActiveSupport::Autoload
@@ -27,7 +28,7 @@ module Qa::Authorities
       # Local sub-authorities are any YAML files in the subauthorities_path
       def names
         raise Qa::ConfigDirectoryNotFound, "There's no directory at #{subauthorities_path}. You must create it in order to use local authorities" unless Dir.exist? subauthorities_path
-        Dir.entries(subauthorities_path).map { |f| File.basename(f, ".yml") if f =~ /yml$/ }.compact
+        Dir.entries(subauthorities_path).map { |f| File.basename(f, ".yml") if /yml$/.match?(f) }.compact
       end
 
       def subauthority_for(subauthority)
@@ -57,11 +58,11 @@ module Qa::Authorities
 
       private
 
-        def register_defaults(reg)
-          names.each do |name|
-            reg.add(name, 'Qa::Authorities::Local::FileBasedAuthority')
-          end
+      def register_defaults(reg)
+        names.each do |name|
+          reg.add(name, 'Qa::Authorities::Local::FileBasedAuthority')
         end
+      end
     end
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   class Oclcts::GenericOclcAuthority < Base
     attr_reader :subauthority
@@ -23,18 +24,18 @@ module Qa::Authorities
 
     private
 
-      def parse_full_record(id)
-        a = {}
-        zthes_record = raw_response.xpath("sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData/Zthes/term[termId='#{id}']", 'sru' => 'http://www.loc.gov/zing/srw/')
-        zthes_record.children.each do |child|
-          a[child.name] = child.children.first.to_s if (child.is_a? Nokogiri::XML::Element) && !child.children.nil? && (child.children.size == 1) && (child.children.first.is_a? Nokogiri::XML::Text)
-        end
-        a
+    def parse_full_record(id)
+      a = {}
+      zthes_record = raw_response.xpath("sru:searchRetrieveResponse/sru:records/sru:record/sru:recordData/Zthes/term[termId='#{id}']", 'sru' => 'http://www.loc.gov/zing/srw/')
+      zthes_record.children.each do |child|
+        a[child.name] = child.children.first.to_s if (child.is_a? Nokogiri::XML::Element) && !child.children.nil? && (child.children.size == 1) && (child.children.first.is_a? Nokogiri::XML::Text)
       end
+      a
+    end
 
-      def get_raw_response(query_type, id)
-        query_url = Oclcts.url_pattern(query_type).gsub("{query}", id).gsub("{id}", id).gsub("{authority-id}", subauthority)
-        @raw_response = Nokogiri::XML(open(query_url))
-      end
+    def get_raw_response(query_type, id)
+      query_url = Oclcts.url_pattern(query_type).gsub("{query}", id).gsub("{id}", id).gsub("{authority-id}", subauthority)
+      @raw_response = Nokogiri::XML(open(query_url))
+    end
   end
 end

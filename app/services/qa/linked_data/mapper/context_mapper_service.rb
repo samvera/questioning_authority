@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide service for mapping predicates to object values.
 module Qa
   module LinkedData
@@ -30,32 +31,32 @@ module Qa
 
           private
 
-            def populate_property_map(context_map, property_map, graph, subject_uri)
-              begin
-                values = property_values(property_map, graph, subject_uri)
-              rescue => e
-                values = Qa::LinkedData::Config::ContextPropertyMap::VALUE_ON_ERROR
-                error = e.message
-              end
-              return {} if values.blank? && property_map.optional?
-              property_info(values, error, context_map, property_map)
+          def populate_property_map(context_map, property_map, graph, subject_uri)
+            begin
+              values = property_values(property_map, graph, subject_uri)
+            rescue => e
+              values = Qa::LinkedData::Config::ContextPropertyMap::VALUE_ON_ERROR
+              error = e.message
             end
+            return {} if values.blank? && property_map.optional?
+            property_info(values, error, context_map, property_map)
+          end
 
-            def property_info(values, error, context_map, property_map)
-              property_info = {}
-              property_info["group"] = context_map.group_label(property_map.group_id) if property_map.group?
-              property_info["property"] = property_map.label
-              property_info["values"] = values
-              property_info["selectable"] = property_map.selectable?
-              property_info["drillable"] = property_map.drillable?
-              property_info["error"] = error if error.present?
-              property_info
-            end
+          def property_info(values, error, context_map, property_map)
+            property_info = {}
+            property_info["group"] = context_map.group_label(property_map.group_id) if property_map.group?
+            property_info["property"] = property_map.label
+            property_info["values"] = values
+            property_info["selectable"] = property_map.selectable?
+            property_info["drillable"] = property_map.drillable?
+            property_info["error"] = error if error.present?
+            property_info
+          end
 
-            def property_values(property_map, graph, subject_uri)
-              return property_map.expanded_values(graph, subject_uri) if property_map.expand_uri?
-              property_map.values(graph, subject_uri)
-            end
+          def property_values(property_map, graph, subject_uri)
+            return property_map.expanded_values(graph, subject_uri) if property_map.expand_uri?
+            property_map.values(graph, subject_uri)
+          end
         end
       end
     end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide attr_reader methods specific to term configuration for linked data authority configurations.  This is separated
 # out for readability and file length.
 # @see Qa::Authorities::LinkedData::Config
@@ -239,54 +240,54 @@ module Qa::Authorities
 
       private
 
-        # Parse ldpath into an array of predicates.
-        # Gets ldpath (e.g. 'loc:lccn | madsrdf:code :: xsd:string') using config accessor for results id ldpath.
-        # Multiple paths are delineated by | which is used to split the ldpath into an array of paths.
-        # @return [Array<String>] the predicate for each path in the ldpath
-        def id_predicates_from_ldpath
-          id_ldpath = term_results_id_ldpath
-          return [] if id_ldpath.blank?
-          id_ldpath.split('|').map(&:strip).map do |path|
-            predicate = parse_predicate_from_single_path(path)
-            predicate.present? ? RDF::URI.new(predicate) : nil
-          end.compact
-        end
+      # Parse ldpath into an array of predicates.
+      # Gets ldpath (e.g. 'loc:lccn | madsrdf:code :: xsd:string') using config accessor for results id ldpath.
+      # Multiple paths are delineated by | which is used to split the ldpath into an array of paths.
+      # @return [Array<String>] the predicate for each path in the ldpath
+      def id_predicates_from_ldpath
+        id_ldpath = term_results_id_ldpath
+        return [] if id_ldpath.blank?
+        id_ldpath.split('|').map(&:strip).map do |path|
+          predicate = parse_predicate_from_single_path(path)
+          predicate.present? ? RDF::URI.new(predicate) : nil
+        end.compact
+      end
 
-        # Parse a single path (e.g. 'loc:lccn' where 'loc' is the ontology prefix and 'lccn' is the property name)
-        # Gets prefixes (e.g. { "loc": "http://id.loc.gov/vocabulary/identifiers/", "madsrdf": "http://www.loc.gov/mads/rdf/v1#" }) from authority config
-        # @return [String] the predicate constructed by combining the expanded prefix with the property name
-        def parse_predicate_from_single_path(path)
-          tokens = path.split(':')
-          return nil if tokens.size < 2
-          prefix = tokens.first.to_sym
-          prefix_path = prefixes[prefix]
-          prefix_path = Qa::LinkedData::LdpathService.predefined_prefixes[prefix] if prefix_path.blank?
-          raise Qa::InvalidConfiguration, "Prefix '#{prefix}' is not defined in term configuration for authority #{authority_name}" if prefix_path.blank?
-          "#{prefix_path}#{tokens.second.strip}"
-        end
+      # Parse a single path (e.g. 'loc:lccn' where 'loc' is the ontology prefix and 'lccn' is the property name)
+      # Gets prefixes (e.g. { "loc": "http://id.loc.gov/vocabulary/identifiers/", "madsrdf": "http://www.loc.gov/mads/rdf/v1#" }) from authority config
+      # @return [String] the predicate constructed by combining the expanded prefix with the property name
+      def parse_predicate_from_single_path(path)
+        tokens = path.split(':')
+        return nil if tokens.size < 2
+        prefix = tokens.first.to_sym
+        prefix_path = prefixes[prefix]
+        prefix_path = Qa::LinkedData::LdpathService.predefined_prefixes[prefix] if prefix_path.blank?
+        raise Qa::InvalidConfiguration, "Prefix '#{prefix}' is not defined in term configuration for authority #{authority_name}" if prefix_path.blank?
+        "#{prefix_path}#{tokens.second.strip}"
+      end
 
-        def summary_without_subauthority(auth_name, language)
-          [
-            {
-              "label" => "#{auth_name} term (QA)",
-              "uri" => "urn:qa:term:#{auth_name}",
-              "authority" => auth_name,
-              "action" => "term",
-              "language" => language
-            }
-          ]
-        end
-
-        def summary_with_subauthority(auth_name, subauth_name, language)
+      def summary_without_subauthority(auth_name, language)
+        [
           {
-            "label" => "#{auth_name} term #{subauth_name} (QA)",
-            "uri" => "urn:qa:term:#{auth_name}:#{subauth_name}",
+            "label" => "#{auth_name} term (QA)",
+            "uri" => "urn:qa:term:#{auth_name}",
             "authority" => auth_name,
-            "subauthority" => subauth_name,
             "action" => "term",
             "language" => language
           }
-        end
+        ]
+      end
+
+      def summary_with_subauthority(auth_name, subauth_name, language)
+        {
+          "label" => "#{auth_name} term #{subauth_name} (QA)",
+          "uri" => "urn:qa:term:#{auth_name}:#{subauth_name}",
+          "authority" => auth_name,
+          "subauthority" => subauth_name,
+          "action" => "term",
+          "language" => language
+        }
+      end
     end
   end
 end

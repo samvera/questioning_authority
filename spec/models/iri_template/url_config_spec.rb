@@ -1,35 +1,36 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 RSpec.describe Qa::IriTemplate::UrlConfig do
   let(:url_template) do
     {
-      :"@context" => "http://www.w3.org/ns/hydra/context.jsonld",
-      :"@type" => "IriTemplate",
+      "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+      "@type": "IriTemplate",
       template: "http://localhost/test_default/search?{?subauth}&{?query}&{?param1}&{?param2}",
       variableRepresentation: "BasicRepresentation",
       mapping: [
         {
-          :"@type" => "IriTemplateMapping",
+          "@type": "IriTemplateMapping",
           variable: "query",
           property: "hydra:freetextQuery",
           required: true
         },
         {
-          :"@type" => "IriTemplateMapping",
+          "@type": "IriTemplateMapping",
           variable: "subauth",
           property: "hydra:freetextQuery",
           required: false,
           default: "search_sub1_name"
         },
         {
-          :"@type" => "IriTemplateMapping",
+          "@type": "IriTemplateMapping",
           variable: "param1",
           property: "hydra:freetextQuery",
           required: false,
           default: "delta"
         },
         {
-          :"@type" => "IriTemplateMapping",
+          "@type": "IriTemplateMapping",
           variable: "param2",
           property: "hydra:freetextQuery",
           required: false,

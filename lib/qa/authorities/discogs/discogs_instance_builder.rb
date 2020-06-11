@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rdf'
 module Qa::Authorities
   module Discogs
@@ -13,7 +14,7 @@ module Qa::Authorities
         # and release information. Process the "name" field first, then the "descriptions"
         # In unusual cases, there can be multiple playing speeds. Need to distinguish among them.
         count = 1
-        return stmts unless response["formats"].present?
+        return stmts if response["formats"].blank?
         response["formats"].each do |format|
           stmts.concat(build_format_name_stmts(format["name"]))
           # Now process playing speed, playback channel and release info
@@ -42,7 +43,7 @@ module Qa::Authorities
         stmts = []
         # The Discogs data includes identifiers such as side label codes and rights society codes.
         count = 1
-        return stmts unless response["identifiers"].present?
+        return stmts if response["identifiers"].blank?
         response["identifiers"].each do |activity|
           stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/identifiedBy", "iidn#{count}")
           stmts << contruct_stmt_uri_object("iidn#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Identifier")
@@ -58,7 +59,7 @@ module Qa::Authorities
       # @return [Array] rdf statements
       def build_format_desc_stmts(descs, count)
         stmts = []
-        return stmts unless descs.present?
+        return stmts if descs.blank?
         descs.each do |desc|
           # map discogs description field to the corresponding LOC type
           df = discogs_formats[desc.gsub(/\s+/, "")]
@@ -94,7 +95,7 @@ module Qa::Authorities
       # @return [Array] rdf statements
       def build_format_name_stmts(name)
         stmts = []
-        return stmts unless name.present?
+        return stmts if name.blank?
         dc = discogs_formats[name.gsub(/\s+/, "")]
         if dc.present?
           stmts << contruct_stmt_uri_object(instance_uri, "http://id.loc.gov/ontologies/bibframe/carrier", dc["uri"])

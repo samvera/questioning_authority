@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide service for mapping predicates to object values.
 module Qa
   module LinkedData

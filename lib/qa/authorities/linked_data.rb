@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   module LinkedData
     extend ActiveSupport::Autoload

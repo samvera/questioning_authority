@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide service for for sorting an array of hash based on the values at a specified key in the hash.
 module Qa
   module LinkedData
@@ -119,119 +120,119 @@ module Qa
 
         private
 
-          # If both test values are single value and both are integers, do a numeric sort
-          def numeric_comparator(other)
-            integer <=> other.integer
-          end
+        # If both test values are single value and both are integers, do a numeric sort
+        def numeric_comparator(other)
+          integer <=> other.integer
+        end
 
-          # If both test values are single value and at least one is not numeric, do a string sort taking language into consideration
-          # * sort values if neither has a language marker or they both have the same language marker
-          # * otherwise, sort language markers
-          def single_value_comparator(other)
-            return downcase_string <=> other.downcase_string if same_language?(literal, other.literal)
-            compare_languages(language, other.language)
-          end
+        # If both test values are single value and at least one is not numeric, do a string sort taking language into consideration
+        # * sort values if neither has a language marker or they both have the same language marker
+        # * otherwise, sort language markers
+        def single_value_comparator(other)
+          return downcase_string <=> other.downcase_string if same_language?(literal, other.literal)
+          compare_languages(language, other.language)
+        end
 
-          def compare_languages(lang, other_lang)
-            return -1 if preferred_language? lang
-            return 1 if preferred_language? other_lang
-            return -1 if other_lang.blank?
-            return 1 if lang.blank?
-            lang <=> other_lang
-          end
+        def compare_languages(lang, other_lang)
+          return -1 if preferred_language? lang
+          return 1 if preferred_language? other_lang
+          return -1 if other_lang.blank?
+          return 1 if lang.blank?
+          lang <=> other_lang
+        end
 
-          # If at least one of the test values has multiple values, sort the multiple values taking language into consideration
-          # * if both lists have all the same language or no language markers at all, just sort the lists and compare each element
-          # * if either list has the preferred language, try to sort the two lists by element after filtering for the preferred language
-          # * otherwise, sort by language until there is a difference
-          def multiple_value_comparator(other)
-            return single_language_list_comparator(other) if all_same_language? && other.all_same_language?
-            return specified_language_list_comparator(other, preferred_language) if includes_preferred_language? && other.includes_preferred_language?
-            multi_language_list_comparator(other)
-          end
+        # If at least one of the test values has multiple values, sort the multiple values taking language into consideration
+        # * if both lists have all the same language or no language markers at all, just sort the lists and compare each element
+        # * if either list has the preferred language, try to sort the two lists by element after filtering for the preferred language
+        # * otherwise, sort by language until there is a difference
+        def multiple_value_comparator(other)
+          return single_language_list_comparator(other) if all_same_language? && other.all_same_language?
+          return specified_language_list_comparator(other, preferred_language) if includes_preferred_language? && other.includes_preferred_language?
+          multi_language_list_comparator(other)
+        end
 
-          def single_language_list_comparator(other)
-            list_comparator(literals, other.literals)
-          end
+        def single_language_list_comparator(other)
+          list_comparator(literals, other.literals)
+        end
 
-          def specified_language_list_comparator(other, lang)
-            filtered = filtered_literals(lang)
-            other_filtered = other.filtered_literals(lang)
-            return -1 if !filtered.empty? && other_filtered.empty?
-            return 1 if filtered.empty? && !other_filtered.empty?
-            list_comparator(filtered, other_filtered)
-          end
+        def specified_language_list_comparator(other, lang)
+          filtered = filtered_literals(lang)
+          other_filtered = other.filtered_literals(lang)
+          return -1 if !filtered.empty? && other_filtered.empty?
+          return 1 if filtered.empty? && !other_filtered.empty?
+          list_comparator(filtered, other_filtered)
+        end
 
-          # Walk through language sorted lists
-          # * for each language, determine how closely the list of terms matches
-          # * prioritize the list that gets the most low values
-          def multi_language_list_comparator(other)
-            combined_languages = languages.concat(other.languages).uniq
-            by_language_comparisons = {}
-            combined_languages.each do |lang|
-              cmp = list_comparator(filtered_literals(lang), other.filtered_literals(lang))
-              by_language_comparisons[lang] = cmp
-            end
-            cmp_sum = by_language_comparisons.values.sum
-            return 1 if cmp_sum.positive?
-            return -1 if cmp_sum.negative?
-            0
+        # Walk through language sorted lists
+        # * for each language, determine how closely the list of terms matches
+        # * prioritize the list that gets the most low values
+        def multi_language_list_comparator(other)
+          combined_languages = languages.concat(other.languages).uniq
+          by_language_comparisons = {}
+          combined_languages.each do |lang|
+            cmp = list_comparator(filtered_literals(lang), other.filtered_literals(lang))
+            by_language_comparisons[lang] = cmp
           end
+          cmp_sum = by_language_comparisons.values.sum
+          return 1 if cmp_sum.positive?
+          return -1 if cmp_sum.negative?
+          0
+        end
 
-          def list_comparator(list, other_list)
-            # if an element doesn't have any terms in a language, the other element sorts lower
-            return -1 if other_list.empty?
-            return 1 if list.empty?
-            shorter_list_size = [list.size, other_list.size].min
-            cmp = 0
-            0.upto(shorter_list_size - 1) do |idx|
-              cmp = to_downcase(list[idx]) <=> to_downcase(other_list[idx])
-              return cmp unless cmp.zero?
-            end
-            return cmp if list.size == other_list.size
-            other_list.size < list.size ? 1 : -1 # didn't find any diffs, shorter list is considered lower
+        def list_comparator(list, other_list)
+          # if an element doesn't have any terms in a language, the other element sorts lower
+          return -1 if other_list.empty?
+          return 1 if list.empty?
+          shorter_list_size = [list.size, other_list.size].min
+          cmp = 0
+          0.upto(shorter_list_size - 1) do |idx|
+            cmp = to_downcase(list[idx]) <=> to_downcase(other_list[idx])
+            return cmp unless cmp.zero?
           end
+          return cmp if list.size == other_list.size
+          other_list.size < list.size ? 1 : -1 # didn't find any diffs, shorter list is considered lower
+        end
 
-          def same_language?(lit, other_lit)
-            return false if only_one_has_language_marker?(lit, other_lit)
-            return true if neither_have_language_markers?(lit, other_lit)
-            lit.language == other_lit.language
-          end
+        def same_language?(lit, other_lit)
+          return false if only_one_has_language_marker?(lit, other_lit)
+          return true if neither_have_language_markers?(lit, other_lit)
+          lit.language == other_lit.language
+        end
 
-          def neither_have_language_markers?(lit, other_lit)
-            !language?(lit) && !language?(other_lit)
-          end
+        def neither_have_language_markers?(lit, other_lit)
+          !language?(lit) && !language?(other_lit)
+        end
 
-          def only_one_has_language_marker?(lit, other_lit)
-            (!language?(lit) && language?(other_lit)) || (language?(lit) && !language?(other_lit))
-          end
+        def only_one_has_language_marker?(lit, other_lit)
+          (!language?(lit) && language?(other_lit)) || (language?(lit) && !language?(other_lit))
+        end
 
-          def language?(lit)
-            Qa::LinkedData::LanguageService.literal_has_language_marker? lit
-          end
+        def language?(lit)
+          Qa::LinkedData::LanguageService.literal_has_language_marker? lit
+        end
 
-          def preferred_language?(lang)
-            preferred_language.present? ? lang == preferred_language : false
-          end
+        def preferred_language?(lang)
+          preferred_language.present? ? lang == preferred_language : false
+        end
 
-          def to_downcase(lit)
-            lit.to_s.downcase
-          end
+        def to_downcase(lit)
+          lit.to_s.downcase
+        end
 
-          def filtered_literals_by_language
-            @filtered_literals_by_language ||= create_all_filters
-          end
+        def filtered_literals_by_language
+          @filtered_literals_by_language ||= create_all_filters
+        end
 
-          def create_all_filters
-            bins = {}
-            0.upto(size - 1) do |idx|
-              lang = language(literals[idx])
-              filter = bins.fetch(lang, [])
-              filter << literal(idx)
-              bins[lang] = filter
-            end
-            bins
+        def create_all_filters
+          bins = {}
+          0.upto(size - 1) do |idx|
+            lang = language(literals[idx])
+            filter = bins.fetch(lang, [])
+            filter << literal(idx)
+            bins[lang] = filter
           end
+          bins
+        end
       end
       private_constant :DeepSortElement
     end

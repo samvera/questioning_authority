@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   class Getty::Ulan < Base
     include WebServiceBase
@@ -51,17 +52,17 @@ module Qa::Authorities
 
     private
 
-      # Reformats the data received from the Getty service
-      # Add the bio for disambiguation
-      def parse_authority_response(response)
-        response['results']['bindings'].map do |result|
-          { 'id' => result['s']['value'], 'label' => result['name']['value'] + ' (' + result['bio']['value'] + ')' }
-        end
-      rescue StandardError => e
-        cause = response.fetch('error', {}).fetch('cause', 'UNKNOWN')
-        cause = cause.present? ? cause : 'UNKNOWN'
-        Rails.logger.warn "  ERROR fetching Getty response: #{e.message}; cause: #{cause}"
-        {}
+    # Reformats the data received from the Getty service
+    # Add the bio for disambiguation
+    def parse_authority_response(response)
+      response['results']['bindings'].map do |result|
+        { 'id' => result['s']['value'], 'label' => result['name']['value'] + ' (' + result['bio']['value'] + ')' }
       end
+    rescue StandardError => e
+      cause = response.fetch('error', {}).fetch('cause', 'UNKNOWN')
+      cause = cause.presence || 'UNKNOWN'
+      Rails.logger.warn "  ERROR fetching Getty response: #{e.message}; cause: #{cause}"
+      {}
+    end
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # This module loads linked data authorities and provides access to their configurations.
 module Qa
   module LinkedData

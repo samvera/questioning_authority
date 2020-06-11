@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   module LinkedData
     # A wrapper around configured linked data authorities for use with questioning_authority.  The search and find methods
@@ -45,13 +46,13 @@ module Qa::Authorities
 
       private
 
-        def search_config
-          authority_config.search
-        end
+      def search_config
+        authority_config.search
+      end
 
-        def term_config
-          authority_config.term
-        end
+      def term_config
+        authority_config.term
+      end
     end
   end
 end

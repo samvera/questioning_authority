@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Defines the external authority predicates used to extract additional context from the graph.
 require 'ldpath'
 

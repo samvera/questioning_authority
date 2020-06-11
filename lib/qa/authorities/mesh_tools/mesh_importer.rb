@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   module MeshTools
     class MeshImporter
@@ -24,14 +25,14 @@ module Qa::Authorities
 
       private
 
-        def get_synonyms(record)
-          first_terms(record, 'PRINT ENTRY') + first_terms(record, 'ENTRY')
-        end
+      def get_synonyms(record)
+        first_terms(record, 'PRINT ENTRY') + first_terms(record, 'ENTRY')
+      end
 
-        def first_terms(record, field)
-          return [] if record[field].nil?
-          record[field].map { |s| s.split('|').first }
-        end
+      def first_terms(record, field)
+        return [] if record[field].nil?
+        record[field].map { |s| s.split('|').first }
+      end
     end
   end
 end

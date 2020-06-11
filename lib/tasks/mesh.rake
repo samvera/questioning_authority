@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'benchmark'
 
 namespace :qa do
@@ -20,7 +21,7 @@ namespace :qa do
     end
 
     desc "Delete all mesh terms from the database---not implemented"
-    task :clear do
+    task clear: :environment do
       puts "Not implemented"
     end
   end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 describe Qa::Authorities::Getty::TGN do
@@ -15,12 +16,11 @@ describe Qa::Authorities::Getty::TGN do
 
   describe "#search" do
     context "authorities" do
+      subject { authority.search('whatever') }
       before do
         stub_request(:get, /vocab\.getty\.edu.*/)
           .to_return(body: webmock_fixture("tgn-response.txt"), status: 200)
       end
-
-      subject { authority.search('whatever') }
 
       it "has id and label keys" do
         expect(subject.first).to eq("id" => 'http://vocab.getty.edu/tgn/2058300', "label" => "Cawood (Andrew, Missouri, United States)")
@@ -58,11 +58,11 @@ describe Qa::Authorities::Getty::TGN do
 
   describe "#find" do
     context "using a subject id" do
+      subject { authority.find("1028772") }
       before do
         stub_request(:get, "http://vocab.getty.edu/download/json?uri=http://vocab.getty.edu/tgn/1028772.json")
           .to_return(status: 200, body: webmock_fixture("getty-tgn-find-response.json"))
       end
-      subject { authority.find("1028772") }
 
       it "returns the complete record for a given subject" do
         expect(subject['results']['bindings'].size).to eq 103
@@ -77,7 +77,7 @@ describe Qa::Authorities::Getty::TGN do
     subject { authority.request_options }
     it { is_expected.to eq(accept: "application/sparql-results+json") }
   end
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   describe "#sparql" do
     context "using a single subject term" do
       subject { authority.sparql('search_term') }
@@ -92,5 +92,5 @@ describe Qa::Authorities::Getty::TGN do
       }
     end
   end
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Layout/LineLength
 end

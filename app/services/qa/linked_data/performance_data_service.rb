@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Service to construct a request header that includes optional attributes for search and fetch requests.
 module Qa
   module LinkedData

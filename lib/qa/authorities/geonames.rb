@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   class Geonames < Base
     include WebServiceBase
@@ -61,13 +62,13 @@ module Qa::Authorities
 
     private
 
-      # Reformats the data received from the service
-      def parse_authority_response(response)
-        response['geonames'].map do |result|
-          # Note: the trailing slash is meaningful.
-          { 'id' => "https://sws.geonames.org/#{result['geonameId']}/",
-            'label' => label.call(result) }
-        end
+    # Reformats the data received from the service
+    def parse_authority_response(response)
+      response['geonames'].map do |result|
+        # Note: the trailing slash is meaningful.
+        { 'id' => "https://sws.geonames.org/#{result['geonameId']}/",
+          'label' => label.call(result) }
       end
+    end
   end
 end

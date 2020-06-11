@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rdf'
 module Qa::Authorities
   module Discogs
@@ -10,7 +11,7 @@ module Qa::Authorities
         stmts = []
         # can have multiple artists as primary contributors to the work; need to distinguish among them
         count = 1
-        return stmts unless response["extraartists"].present?
+        return stmts if response["extraartists"].blank?
         response["extraartists"].each do |artist|
           stmts << contruct_stmt_uri_object(work_uri, "http://id.loc.gov/ontologies/bibframe/contribution", "contrbn1#{count}")
           stmts << contruct_stmt_uri_object("contrbn1#{count}", rdf_type_predicate, "http://id.loc.gov/ontologies/bibframe/Contribution")
@@ -57,7 +58,7 @@ module Qa::Authorities
         stmts = []
         # individual tracks become secondary works; need to distinguish among them
         w_count = 2
-        return stmts unless response["tracklist"].present?
+        return stmts if response["tracklist"].blank?
         response["tracklist"].each do |track|
           stmts.concat(build_secondary_works(track, w_count))
           # If the Discogs data includes the primary artists for each track, use those. If not,
@@ -74,7 +75,7 @@ module Qa::Authorities
       # @param [Array] artists from discogs
       # @return [Array] either the tracklist "artists" or the primary artists
       def build_artist_array(artists)
-        artists.present? ? artists : primary_artists
+        artists.presence || primary_artists
       end
 
       # @param [Hash] discogs artists associated with the main work (master or release)

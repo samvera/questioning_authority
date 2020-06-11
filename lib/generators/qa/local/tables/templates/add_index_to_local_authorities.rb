@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AddIndexToLocalAuthorities < ActiveRecord::Migration
   # we'd like to be able to run this, but rails quotes the functional index.
   # add_index :local_authority_entries,

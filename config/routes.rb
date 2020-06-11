@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Qa::Engine.routes.draw do
   get "/list/linked_data/authorities", controller: :linked_data_terms, action: :list
   get "/reload/linked_data/authorities", controller: :linked_data_terms, action: :reload

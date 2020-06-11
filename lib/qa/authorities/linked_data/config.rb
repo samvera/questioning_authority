@@ -1,5 +1,6 @@
-require 'qa/authorities/linked_data/config/term_config'.freeze
-require 'qa/authorities/linked_data/config/search_config'.freeze
+# frozen_string_literal: true
+require 'qa/authorities/linked_data/config/term_config'
+require 'qa/authorities/linked_data/config/search_config'
 require 'json'
 
 # Provide attr_reader methods for linked data authority configurations.  Some default configurations are provided for several
@@ -78,18 +79,18 @@ module Qa::Authorities
 
       private
 
-        def convert_1_0_to_2_0
-          convert_1_0_url_to_2_0_url(:search)
-          convert_1_0_url_to_2_0_url(:term)
-        end
+      def convert_1_0_to_2_0
+        convert_1_0_url_to_2_0_url(:search)
+        convert_1_0_url_to_2_0_url(:term)
+      end
 
-        # @deprecated Update to linked data config version 2.0 instead
-        def convert_1_0_url_to_2_0_url(action_key)
-          url_template = @authority_config.fetch(action_key, {}).fetch(:url, {}).fetch(:template, "")
-          return if url_template.blank?
-          Qa.deprecation_warning(msg: "Linked data configuration #{authority_name} has 1.0 version format which is deprecated; update to version 2.0 configuration.")
-          @authority_config[action_key][:url][:template] = url_template.gsub("{?", "{")
-        end
+      # @deprecated Update to linked data config version 2.0 instead
+      def convert_1_0_url_to_2_0_url(action_key)
+        url_template = @authority_config.fetch(action_key, {}).fetch(:url, {}).fetch(:template, "")
+        return if url_template.blank?
+        Qa.deprecation_warning(msg: "Linked data configuration #{authority_name} has 1.0 version format which is deprecated; update to version 2.0 configuration.")
+        @authority_config[action_key][:url][:template] = url_template.gsub("{?", "{")
+      end
     end
   end
 end

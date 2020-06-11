@@ -1,4 +1,5 @@
-class Qa::MeshTree < ActiveRecord::Base
+# frozen_string_literal: true
+class Qa::MeshTree < ApplicationRecord
   belongs_to :subject_mesh_term, foreign_key: "term_id", primary_key: 'term_id'
 
   def self.classify_all_trees

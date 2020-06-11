@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'qa/authorities/linked_data/config/term_config'
 
@@ -10,12 +11,12 @@ describe Qa::Authorities::LinkedData::TermConfig do
 
   let(:ldpath_results_config) do
     {
-      id_ldpath:       'schema:identifier ::xsd:string',
-      label_ldpath:    'skos:prefLabel ::xsd:string',
+      id_ldpath: 'schema:identifier ::xsd:string',
+      label_ldpath: 'skos:prefLabel ::xsd:string',
       altlabel_ldpath: 'skos:altLabel ::xsd:string',
-      broader_ldpath:  'skos:broader ::xsd:string',
+      broader_ldpath: 'skos:broader ::xsd:string',
       narrower_ldpath: 'skos:narrower ::xsd:string',
-      sameas_ldpath:   'skos:exactMatch ::xsd:string'
+      sameas_ldpath: 'skos:exactMatch ::xsd:string'
     }
   end
 

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # spec/requests/cors_headers_spec.rb
 require 'spec_helper'
 

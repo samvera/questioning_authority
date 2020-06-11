@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide helper method for common processing of configurations.
 module Qa
   module LinkedData

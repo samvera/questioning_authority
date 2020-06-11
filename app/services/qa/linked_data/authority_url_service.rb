@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide service for constructing the external access URL for an authority.
 module Qa
   module LinkedData
@@ -23,58 +24,58 @@ module Qa
 
         private
 
-          def action_validation(action)
-            return if [:search, :term].include? action
-            raise Qa::UnsupportedAction, "#{action} Not Supported - Action must be one of the supported actions (e.g. :term, :search)"
-          end
+        def action_validation(action)
+          return if [:search, :term].include? action
+          raise Qa::UnsupportedAction, "#{action} Not Supported - Action must be one of the supported actions (e.g. :term, :search)"
+        end
 
-          def combined_substitutions(action_config, action, action_request, request_header)
-            substitutions = request_header.fetch(:replacements, {})
-            substitutions[action_request_variable(action_config, action)] = action_request
-            substitutions[action_subauth_variable(action_config)] = action_subauth_variable_value(action_config, request_header)
-            substitutions[action_language_variable(action_config)] = language_value(action_config, request_header)
-            substitutions.reject { |_k, v| v.nil? }
-            substitutions
-          end
+        def combined_substitutions(action_config, action, action_request, request_header)
+          substitutions = request_header.fetch(:replacements, {})
+          substitutions[action_request_variable(action_config, action)] = action_request
+          substitutions[action_subauth_variable(action_config)] = action_subauth_variable_value(action_config, request_header)
+          substitutions[action_language_variable(action_config)] = language_value(action_config, request_header)
+          substitutions.reject { |_k, v| v.nil? }
+          substitutions
+        end
 
-          def action_request_variable(action_config, action)
-            key = action == :search ? :query : :term_id
-            action_config.qa_replacement_patterns[key]
-          end
+        def action_request_variable(action_config, action)
+          key = action == :search ? :query : :term_id
+          action_config.qa_replacement_patterns[key]
+        end
 
-          def action_subauth_variable(action_config)
-            action_config.qa_replacement_patterns[:subauth]
-          end
+        def action_subauth_variable(action_config)
+          action_config.qa_replacement_patterns[:subauth]
+        end
 
-          def action_subauth_variable_value(action_config, request_header)
-            subauth = request_header.fetch(:subauthority, nil)
-            return nil unless subauth && action_config.supports_subauthorities?
-            action_config.subauthorities[subauth.to_sym]
-          end
+        def action_subauth_variable_value(action_config, request_header)
+          subauth = request_header.fetch(:subauthority, nil)
+          return nil unless subauth && action_config.supports_subauthorities?
+          action_config.subauthorities[subauth.to_sym]
+        end
 
-          def action_language_variable(action_config)
-            action_config.qa_replacement_patterns[:lang]
-          end
+        def action_language_variable(action_config)
+          action_config.qa_replacement_patterns[:lang]
+        end
 
-          def language_value(action_config, request_header)
-            return nil unless action_config.supports_language_parameter?
-            request_header.fetch(:language, []).first
-          end
+        def language_value(action_config, request_header)
+          return nil unless action_config.supports_language_parameter?
+          request_header.fetch(:language, []).first
+        end
 
-          # This is providing support for calling build_url with individual parameters instead of the request_header.
-          # This is deprecated and will be removed in the next major release.
-          def build_request_header(substitutions, subauthority, language) # rubocop:disable Metrics/CyclomaticComplexity
-            return {} if substitutions.blank? && subauthority.blank? && language.blank?
-            Qa.deprecation_warning(
-              in_msg: 'Qa::LinkedData::AuthorityUrlService',
-              msg: "individual attributes for options (e.g. substitutions, subauthority, language) are deprecated; use request_header instead"
-            )
-            request_header = {}
-            request_header[:replacements] = substitutions unless substititions.blank?
-            request_header[:subauthority] = subauthority unless subauthority.blank?
-            request_header[:language] = language unless language.blank?
-            request_header
-          end
+        # This is providing support for calling build_url with individual parameters instead of the request_header.
+        # This is deprecated and will be removed in the next major release.
+        def build_request_header(substitutions, subauthority, language) # rubocop:disable Metrics/CyclomaticComplexity
+          return {} if substitutions.blank? && subauthority.blank? && language.blank?
+          Qa.deprecation_warning(
+            in_msg: 'Qa::LinkedData::AuthorityUrlService',
+            msg: "individual attributes for options (e.g. substitutions, subauthority, language) are deprecated; use request_header instead"
+          )
+          request_header = {}
+          request_header[:replacements] = substitutions if substititions.present?
+          request_header[:subauthority] = subauthority if subauthority.present?
+          request_header[:language] = language if language.present?
+          request_header
+        end
       end
     end
   end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   # A wrapper around the FAST api for use with questioning_authority
   # API documentation:
@@ -49,20 +50,20 @@ module Qa::Authorities
 
     private
 
-      # Removes characters from the query string that are not tolerated by the API
-      #   See oclc sample code at
-      #   http://experimental.worldcat.org/fast/assignfast/js/assignFASTComplete.js
-      def clean_query_string(q)
-        ERB::Util.url_encode(q.gsub(/-|\(|\)|:/, ""))
-      end
+    # Removes characters from the query string that are not tolerated by the API
+    #   See oclc sample code at
+    #   http://experimental.worldcat.org/fast/assignfast/js/assignFASTComplete.js
+    def clean_query_string(q)
+      ERB::Util.url_encode(q.gsub(/-|\(|\)|:/, ""))
+    end
 
-      def parse_authority_response(raw_response)
-        raw_response['response']['docs'].map do |doc|
-          index = AssignFast.index_for_authority(subauthority)
-          term = doc[index].first
-          term += ' USE ' + doc['auth'] if doc['type'] == 'alt'
-          { id: doc['idroot'], label: term, value: doc['auth'] }
-        end
+    def parse_authority_response(raw_response)
+      raw_response['response']['docs'].map do |doc|
+        index = AssignFast.index_for_authority(subauthority)
+        term = doc[index].first
+        term += ' USE ' + doc['auth'] if doc['type'] == 'alt'
+        { id: doc['idroot'], label: term, value: doc['auth'] }
       end
+    end
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   class Local::TableBasedAuthority < Base
     class_attribute :table_name, :table_index
@@ -21,14 +22,14 @@ module Qa::Authorities
 
       private
 
-        def table_or_view_exists?
-          conn = ActiveRecord::Base.connection
-          if conn.respond_to?(:data_source_exists?)
-            conn.data_source_exists?(table_name)
-          else
-            conn.table_exists?(table_name)
-          end
+      def table_or_view_exists?
+        conn = ActiveRecord::Base.connection
+        if conn.respond_to?(:data_source_exists?)
+          conn.data_source_exists?(table_name)
+        else
+          conn.table_exists?(table_name)
         end
+      end
     end
 
     attr_reader :subauthority
@@ -55,20 +56,20 @@ module Qa::Authorities
 
     private
 
-      def base_relation
-        Qa::LocalAuthorityEntry.where(local_authority: local_authority)
-      end
+    def base_relation
+      Qa::LocalAuthorityEntry.where(local_authority: local_authority)
+    end
 
-      def output_set(set)
-        set.map { |item| output(item) }
-      end
+    def output_set(set)
+      set.map { |item| output(item) }
+    end
 
-      def output(item)
-        { id: item[:uri], label: item[:label] }.with_indifferent_access
-      end
+    def output(item)
+      { id: item[:uri], label: item[:label] }.with_indifferent_access
+    end
 
-      def local_authority
-        Qa::LocalAuthority.find_by_name(subauthority)
-      end
+    def local_authority
+      Qa::LocalAuthority.find_by_name(subauthority)
+    end
   end
 end

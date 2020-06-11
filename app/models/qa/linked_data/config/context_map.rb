@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Defines the external authority predicates used to extract additional context from the graph.
 module Qa
   module LinkedData
@@ -52,25 +53,25 @@ module Qa
 
         private
 
-          def extract_properties
-            @properties = []
-            properties_map = Qa::LinkedData::Config::Helper.fetch(context_map, :properties, {})
-            properties_map.each { |property_map| @properties << ContextPropertyMap.new(property_map, prefixes) }
-          end
+        def extract_properties
+          @properties = []
+          properties_map = Qa::LinkedData::Config::Helper.fetch(context_map, :properties, {})
+          properties_map.each { |property_map| @properties << ContextPropertyMap.new(property_map, prefixes) }
+        end
 
-          def extract_groups
-            @groups = {}
-            groups_map = Qa::LinkedData::Config::Helper.fetch(context_map, :groups, {})
-            groups_map.each { |group_id, group_map| add_group(group_id, group_map) }
-          end
+        def extract_groups
+          @groups = {}
+          groups_map = Qa::LinkedData::Config::Helper.fetch(context_map, :groups, {})
+          groups_map.each { |group_id, group_map| add_group(group_id, group_map) }
+        end
 
-          def add_group(group_id, group_map)
-            return if groups.key? group_id
-            i18n_key = Qa::LinkedData::Config::Helper.fetch(group_map, :group_label_i18n, nil)
-            default = Qa::LinkedData::Config::Helper.fetch(group_map, :group_label_default, nil)
-            return groups[group_id] = I18n.t(i18n_key, default: default) if i18n_key.present?
-            groups[group_id] = default
-          end
+        def add_group(group_id, group_map)
+          return if groups.key? group_id
+          i18n_key = Qa::LinkedData::Config::Helper.fetch(group_map, :group_label_i18n, nil)
+          default = Qa::LinkedData::Config::Helper.fetch(group_map, :group_label_default, nil)
+          return groups[group_id] = I18n.t(i18n_key, default: default) if i18n_key.present?
+          groups[group_id] = default
+        end
       end
     end
   end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Provide attr_reader methods specific to search configuration for linked data authority configurations.  This is separated
 # out for readability and file length.
 # @see Qa::Authorities::LinkedData::Config
@@ -105,7 +106,7 @@ module Qa::Authorities
       # Does this authority configuration support sorting of search results?
       # @return [True|False] true if sorting of search results is supported; otherwise, false
       def supports_sort?
-        return true unless results_sort_ldpath.present? || !results_sort_predicate.present?
+        return true unless results_sort_ldpath.present? || results_sort_predicate.blank?
         false
       end
 
@@ -209,28 +210,28 @@ module Qa::Authorities
 
       private
 
-        def summary_without_subauthority(auth_name, language)
-          [
-            {
-              "label" => "#{auth_name} search (QA)",
-              "uri" => "urn:qa:search:#{auth_name}",
-              "authority" => auth_name,
-              "action" => "search",
-              "language" => language
-            }
-          ]
-        end
-
-        def summary_with_subauthority(auth_name, subauth_name, language)
+      def summary_without_subauthority(auth_name, language)
+        [
           {
-            "label" => "#{auth_name} search #{subauth_name} (QA)",
-            "uri" => "urn:qa:search:#{auth_name}:#{subauth_name}",
+            "label" => "#{auth_name} search (QA)",
+            "uri" => "urn:qa:search:#{auth_name}",
             "authority" => auth_name,
-            "subauthority" => subauth_name,
             "action" => "search",
             "language" => language
           }
-        end
+        ]
+      end
+
+      def summary_with_subauthority(auth_name, subauth_name, language)
+        {
+          "label" => "#{auth_name} search #{subauth_name} (QA)",
+          "uri" => "urn:qa:search:#{auth_name}:#{subauth_name}",
+          "authority" => auth_name,
+          "subauthority" => subauth_name,
+          "action" => "search",
+          "language" => language
+        }
+      end
     end
   end
 end

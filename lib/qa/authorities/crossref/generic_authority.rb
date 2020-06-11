@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Qa::Authorities
   class Crossref::GenericAuthority < Base
     include WebServiceBase
@@ -41,23 +42,23 @@ module Qa::Authorities
 
     private
 
-      # Reformats the data received from the service
-      def parse_authority_response(response)
-        response['message']['items'].map do |result|
-          case subauthority
-          when 'funders'
-            { id: result['id'],
-              uri: result['uri'],
-              label: label.call(result),
-              value: result['name'] }
-          when 'journals'
-            { id: result['ISSN'].first,
-              label: result['title'],
-              publisher: result['publisher'],
-              issn: result['ISSN'] }
+    # Reformats the data received from the service
+    def parse_authority_response(response)
+      response['message']['items'].map do |result|
+        case subauthority
+        when 'funders'
+          { id: result['id'],
+            uri: result['uri'],
+            label: label.call(result),
+            value: result['name'] }
+        when 'journals'
+          { id: result['ISSN'].first,
+            label: result['title'],
+            publisher: result['publisher'],
+            issn: result['ISSN'] }
 
-          end
         end
       end
+    end
   end
 end
