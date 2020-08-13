@@ -1,8 +1,23 @@
 # Changelog
 
-## [5.4.0](https://github.com/samvera/questioning_authority/tree/5.4.0) (2020-06-11)
+## [5.5.0](https://github.com/samvera/questioning_authority/tree/5.5.0) (2020-08-13)
 
-[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.3.1...5.4.0)
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.4.0...5.5.0)
+
+**Closed issues:**
+
+- Library of Congress now redirecting HTTP requests to HTTPS [\#320](https://github.com/samvera/questioning_authority/issues/320)
+
+**Merged pull requests:**
+
+- Changes LoC authorities to use https [\#321](https://github.com/samvera/questioning_authority/pull/321) ([rotated8](https://github.com/rotated8))
+- Adding CONTRIBUTING.md
+
+This was uploaded via automation. [\#318](https://github.com/samvera/questioning_authority/pull/318) ([jeremyf](https://github.com/jeremyf))
+
+## [v5.4.0](https://github.com/samvera/questioning_authority/tree/v5.4.0) (2020-06-11)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.3.1...v5.4.0)
 
 **Closed issues:**
 
@@ -12,6 +27,8 @@
 
 **Merged pull requests:**
 
+- Prep for 5.4.0 release [\#317](https://github.com/samvera/questioning_authority/pull/317) ([bess](https://github.com/bess))
+- Standardize and document release process [\#316](https://github.com/samvera/questioning_authority/pull/316) ([bess](https://github.com/bess))
 - Align style practice with current Samvera norms [\#315](https://github.com/samvera/questioning_authority/pull/315) ([bess](https://github.com/bess))
 - Updating Rails development dependency [\#313](https://github.com/samvera/questioning_authority/pull/313) ([jeremyf](https://github.com/jeremyf))
 - Adding config option for Geonames URLs [\#312](https://github.com/samvera/questioning_authority/pull/312) ([jeremyf](https://github.com/jeremyf))
@@ -37,6 +54,7 @@
 - prep for release 5.3.0 [\#303](https://github.com/samvera/questioning_authority/pull/303) ([elrayle](https://github.com/elrayle))
 - optionally include IP info at start of search/find linked data requests [\#302](https://github.com/samvera/questioning_authority/pull/302) ([elrayle](https://github.com/elrayle))
 - add a request id to the search and find request headers [\#301](https://github.com/samvera/questioning_authority/pull/301) ([elrayle](https://github.com/elrayle))
+- bump version to 5.0.0 [\#286](https://github.com/samvera/questioning_authority/pull/286) ([elrayle](https://github.com/elrayle))
 
 ## [v5.2.0](https://github.com/samvera/questioning_authority/tree/v5.2.0) (2019-12-03)
 
@@ -46,6 +64,7 @@
 
 - prep for release 5.2.0 [\#300](https://github.com/samvera/questioning_authority/pull/300) ([elrayle](https://github.com/elrayle))
 - update Discogs authority to support pagination parameters [\#299](https://github.com/samvera/questioning_authority/pull/299) ([tworrall](https://github.com/tworrall))
+- use response.media\_type instead of .content\_type in tests [\#292](https://github.com/samvera/questioning_authority/pull/292) ([jrochkind](https://github.com/jrochkind))
 - Rails6 allowed [\#291](https://github.com/samvera/questioning_authority/pull/291) ([jrochkind](https://github.com/jrochkind))
 
 ## [v5.1.0](https://github.com/samvera/questioning_authority/tree/v5.1.0) (2019-11-22)
@@ -56,7 +75,6 @@
 
 - prep for 5.1.0 release [\#297](https://github.com/samvera/questioning_authority/pull/297) ([elrayle](https://github.com/elrayle))
 - use new index\_name\_exists? method signature if rails6 too [\#294](https://github.com/samvera/questioning_authority/pull/294) ([jrochkind](https://github.com/jrochkind))
-- use response.media\_type instead of .content\_type in tests [\#292](https://github.com/samvera/questioning_authority/pull/292) ([jrochkind](https://github.com/jrochkind))
 - add option to include a response header in results [\#283](https://github.com/samvera/questioning_authority/pull/283) ([elrayle](https://github.com/elrayle))
 
 ## [v5.0.0](https://github.com/samvera/questioning_authority/tree/v5.0.0) (2019-11-18)
@@ -78,10 +96,8 @@
 
 **Merged pull requests:**
 
-- bump version to 5.0.0 [\#286](https://github.com/samvera/questioning_authority/pull/286) ([elrayle](https://github.com/elrayle))
 - prep for release 4.2.5 [\#285](https://github.com/samvera/questioning_authority/pull/285) ([elrayle](https://github.com/elrayle))
 - Issue 278: context should be an array, not a hash [\#280](https://github.com/samvera/questioning_authority/pull/280) ([tworrall](https://github.com/tworrall))
-- refactor optional attributes for linked data search/fetch to pass as hash [\#279](https://github.com/samvera/questioning_authority/pull/279) ([elrayle](https://github.com/elrayle))
 
 ## [v4.2.4](https://github.com/samvera/questioning_authority/tree/v4.2.4) (2019-10-17)
 
@@ -89,6 +105,7 @@
 
 **Merged pull requests:**
 
+- refactor optional attributes for linked data search/fetch to pass as hash [\#279](https://github.com/samvera/questioning_authority/pull/279) ([elrayle](https://github.com/elrayle))
 - prep for release 4.2.4 [\#277](https://github.com/samvera/questioning_authority/pull/277) ([elrayle](https://github.com/elrayle))
 - Discogs URI change [\#276](https://github.com/samvera/questioning_authority/pull/276) ([tworrall](https://github.com/tworrall))
 - only use the resource\_url for the uri when no uri exists [\#275](https://github.com/samvera/questioning_authority/pull/275) ([tworrall](https://github.com/tworrall))
