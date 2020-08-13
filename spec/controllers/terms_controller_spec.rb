@@ -78,7 +78,7 @@ describe Qa::TermsController, type: :controller do
 
     context "loc" do
       before do
-        stub_request(:get, "http://id.loc.gov/search/?format=json&q=Berry&q=cs:http://id.loc.gov/authorities/names")
+        stub_request(:get, "https://id.loc.gov/search/?format=json&q=Berry&q=cs:https://id.loc.gov/authorities/names")
           .with(headers: { 'Accept' => 'application/json' })
           .to_return(body: webmock_fixture("loc-names-response.txt"), status: 200)
       end
@@ -184,7 +184,7 @@ describe Qa::TermsController, type: :controller do
   describe "#show" do
     context "with supported authorities" do
       before do
-        stub_request(:get, "http://id.loc.gov/authorities/subjects/sh85077565.json")
+        stub_request(:get, "https://id.loc.gov/authorities/subjects/sh85077565.json")
           .with(headers: { 'Accept' => 'application/json' })
           .to_return(status: 200, body: webmock_fixture("loc-names-response.txt"), headers: {})
       end
