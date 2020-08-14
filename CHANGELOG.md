@@ -1,3 +1,7 @@
+### 3.1.0 (2020-08-14)
+
+* backport fix for LOC change to use https for API
+
 ### 3.0.0 (2018-11-19)
 
 * remove agrovoc linked data configuration
