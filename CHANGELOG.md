@@ -1,12 +1,21 @@
 # Changelog
 
-## [5.5.0](https://github.com/samvera/questioning_authority/tree/5.5.0) (2020-08-13)
+## [5.5.1](https://github.com/samvera/questioning_authority/tree/5.5.1) (2020-08-14)
 
-[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.4.0...5.5.0)
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.5.0...5.5.1)
 
 **Closed issues:**
 
 - Library of Congress now redirecting HTTP requests to HTTPS [\#320](https://github.com/samvera/questioning_authority/issues/320)
+
+**Merged pull requests:**
+
+- Fixes issue limiting LoC results to an authority [\#323](https://github.com/samvera/questioning_authority/pull/323) ([rotated8](https://github.com/rotated8))
+- prep release 5.5.0 [\#322](https://github.com/samvera/questioning_authority/pull/322) ([elrayle](https://github.com/elrayle))
+
+## [v5.5.0](https://github.com/samvera/questioning_authority/tree/v5.5.0) (2020-08-13)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.4.0...v5.5.0)
 
 **Merged pull requests:**
 
@@ -54,7 +63,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 - prep for release 5.3.0 [\#303](https://github.com/samvera/questioning_authority/pull/303) ([elrayle](https://github.com/elrayle))
 - optionally include IP info at start of search/find linked data requests [\#302](https://github.com/samvera/questioning_authority/pull/302) ([elrayle](https://github.com/elrayle))
 - add a request id to the search and find request headers [\#301](https://github.com/samvera/questioning_authority/pull/301) ([elrayle](https://github.com/elrayle))
-- bump version to 5.0.0 [\#286](https://github.com/samvera/questioning_authority/pull/286) ([elrayle](https://github.com/elrayle))
 
 ## [v5.2.0](https://github.com/samvera/questioning_authority/tree/v5.2.0) (2019-12-03)
 
@@ -64,7 +72,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 - prep for release 5.2.0 [\#300](https://github.com/samvera/questioning_authority/pull/300) ([elrayle](https://github.com/elrayle))
 - update Discogs authority to support pagination parameters [\#299](https://github.com/samvera/questioning_authority/pull/299) ([tworrall](https://github.com/tworrall))
-- use response.media\_type instead of .content\_type in tests [\#292](https://github.com/samvera/questioning_authority/pull/292) ([jrochkind](https://github.com/jrochkind))
 - Rails6 allowed [\#291](https://github.com/samvera/questioning_authority/pull/291) ([jrochkind](https://github.com/jrochkind))
 
 ## [v5.1.0](https://github.com/samvera/questioning_authority/tree/v5.1.0) (2019-11-22)
@@ -75,6 +82,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 - prep for 5.1.0 release [\#297](https://github.com/samvera/questioning_authority/pull/297) ([elrayle](https://github.com/elrayle))
 - use new index\_name\_exists? method signature if rails6 too [\#294](https://github.com/samvera/questioning_authority/pull/294) ([jrochkind](https://github.com/jrochkind))
+- use response.media\_type instead of .content\_type in tests [\#292](https://github.com/samvera/questioning_authority/pull/292) ([jrochkind](https://github.com/jrochkind))
 - add option to include a response header in results [\#283](https://github.com/samvera/questioning_authority/pull/283) ([elrayle](https://github.com/elrayle))
 
 ## [v5.0.0](https://github.com/samvera/questioning_authority/tree/v5.0.0) (2019-11-18)
@@ -83,6 +91,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
+- bump version to 5.0.0 [\#286](https://github.com/samvera/questioning_authority/pull/286) ([elrayle](https://github.com/elrayle))
 - move performance data output generation to a service [\#282](https://github.com/samvera/questioning_authority/pull/282) ([elrayle](https://github.com/elrayle))
 - add new configurations for identifying parameters related to pagination of linked data results [\#281](https://github.com/samvera/questioning_authority/pull/281) ([elrayle](https://github.com/elrayle))
 
@@ -98,6 +107,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 - prep for release 4.2.5 [\#285](https://github.com/samvera/questioning_authority/pull/285) ([elrayle](https://github.com/elrayle))
 - Issue 278: context should be an array, not a hash [\#280](https://github.com/samvera/questioning_authority/pull/280) ([tworrall](https://github.com/tworrall))
+- refactor optional attributes for linked data search/fetch to pass as hash [\#279](https://github.com/samvera/questioning_authority/pull/279) ([elrayle](https://github.com/elrayle))
 
 ## [v4.2.4](https://github.com/samvera/questioning_authority/tree/v4.2.4) (2019-10-17)
 
@@ -105,7 +115,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
-- refactor optional attributes for linked data search/fetch to pass as hash [\#279](https://github.com/samvera/questioning_authority/pull/279) ([elrayle](https://github.com/elrayle))
 - prep for release 4.2.4 [\#277](https://github.com/samvera/questioning_authority/pull/277) ([elrayle](https://github.com/elrayle))
 - Discogs URI change [\#276](https://github.com/samvera/questioning_authority/pull/276) ([tworrall](https://github.com/tworrall))
 - only use the resource\_url for the uri when no uri exists [\#275](https://github.com/samvera/questioning_authority/pull/275) ([tworrall](https://github.com/tworrall))
@@ -113,6 +122,10 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 ## [v4.2.3](https://github.com/samvera/questioning_authority/tree/v4.2.3) (2019-10-10)
 
 [Full Changelog](https://github.com/samvera/questioning_authority/compare/v4.2.2...v4.2.3)
+
+**Implemented enhancements:**
+
+- add ability to return a single term as n3 format for linked data [\#263](https://github.com/samvera/questioning_authority/pull/263) ([elrayle](https://github.com/elrayle))
 
 **Merged pull requests:**
 
@@ -141,10 +154,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 ## [v4.2.1](https://github.com/samvera/questioning_authority/tree/v4.2.1) (2019-08-08)
 
 [Full Changelog](https://github.com/samvera/questioning_authority/compare/v4.2.0...v4.2.1)
-
-**Implemented enhancements:**
-
-- add ability to return a single term as n3 format for linked data [\#263](https://github.com/samvera/questioning_authority/pull/263) ([elrayle](https://github.com/elrayle))
 
 **Fixed bugs:**
 
@@ -630,6 +639,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
+- Fix LCSH queries [\#49](https://github.com/samvera/questioning_authority/pull/49) ([jechols](https://github.com/jechols))
 - Issue47 [\#48](https://github.com/samvera/questioning_authority/pull/48) ([awead](https://github.com/awead))
 - Remove LCSH authority because it duplicates LOC's subjects sub-authority [\#46](https://github.com/samvera/questioning_authority/pull/46) ([awead](https://github.com/awead))
 - Remove Curb as a dependency.  Deprecate get\_full\_record [\#44](https://github.com/samvera/questioning_authority/pull/44) ([jcoyne](https://github.com/jcoyne))
