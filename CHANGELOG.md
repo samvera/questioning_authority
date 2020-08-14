@@ -1,3 +1,7 @@
+### 4.3.0 (2020-08-14)
+
+* backport fix for LOC change to use https for API
+
 ### 4.2.5 (2019-11-12)
 
 * refactor to single request_header parameter for search and find methods; multi-parameters are still supported, but deprecated
