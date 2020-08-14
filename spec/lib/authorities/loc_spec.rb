@@ -28,7 +28,7 @@ describe Qa::Authorities::Loc do
     end
 
     context "for searching" do
-      let(:url) { 'https://id.loc.gov/search/?q=foo&q=cs%3Ahttps%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects&format=json' }
+      let(:url) { 'https://id.loc.gov/search/?q=foo&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects&format=json' }
       it "returns a url" do
         expect(authority.build_query_url("foo")).to eq(url)
       end
@@ -49,15 +49,15 @@ describe Qa::Authorities::Loc do
     end
 
     before do
-      stub_request(:get, "https://id.loc.gov/search/?format=json&q=cs:https://id.loc.gov/authorities/subjects")
+      stub_request(:get, "https://id.loc.gov/search/?format=json&q=cs:http://id.loc.gov/authorities/subjects")
         .with(headers: { 'Accept' => 'application/json' })
         .to_return(status: 200, body: "")
     end
 
     context "with flat params encoded" do
-      let(:url) { 'https://id.loc.gov/search/?q=foo&q=cs%3Ahttps%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects&format=json' }
+      let(:url) { 'https://id.loc.gov/search/?q=foo&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects&format=json' }
       it "returns a response" do
-        flat_params_url = "https://id.loc.gov/search/?format=json&q=foo&q=cs%3Ahttps%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects"
+        flat_params_url = "https://id.loc.gov/search/?format=json&q=foo&q=cs%3Ahttp%3A%2F%2Fid.loc.gov%2Fauthorities%2Fsubjects"
         expect(subject.env.url.to_s).to eq(flat_params_url)
       end
     end
@@ -66,7 +66,7 @@ describe Qa::Authorities::Loc do
   describe "#search" do
     context "any LOC authorities" do
       let :authority do
-        stub_request(:get, "https://id.loc.gov/search/?format=json&q=s&q=cs:https://id.loc.gov/vocabulary/geographicAreas")
+        stub_request(:get, "https://id.loc.gov/search/?format=json&q=s&q=cs:http://id.loc.gov/vocabulary/geographicAreas")
           .with(headers: { 'Accept' => 'application/json' })
           .to_return(body: webmock_fixture("loc-response.txt"), status: 200)
         described_class.subauthority_for("geographicAreas")
@@ -95,7 +95,7 @@ describe Qa::Authorities::Loc do
 
     context "subject terms" do
       let :results do
-        stub_request(:get, "https://id.loc.gov/search/?format=json&q=History--&q=cs:https://id.loc.gov/authorities/subjects")
+        stub_request(:get, "https://id.loc.gov/search/?format=json&q=History--&q=cs:http://id.loc.gov/authorities/subjects")
           .with(headers: { 'Accept' => 'application/json' })
           .to_return(body: webmock_fixture("loc-subjects-response.txt"), status: 200)
         described_class.subauthority_for("subjects").search("History--")
@@ -111,7 +111,7 @@ describe Qa::Authorities::Loc do
 
     context "name terms" do
       let :results do
-        stub_request(:get, "https://id.loc.gov/search/?format=json&q=Berry&q=cs:https://id.loc.gov/authorities/names")
+        stub_request(:get, "https://id.loc.gov/search/?format=json&q=Berry&q=cs:http://id.loc.gov/authorities/names")
           .with(headers: { 'Accept' => 'application/json' })
           .to_return(body: webmock_fixture("loc-names-response.txt"), status: 200)
         described_class.subauthority_for("names").search("Berry")
