@@ -357,7 +357,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
     context 'producing internal server error' do
       context 'when server returns 500' do
         before do
-          stub_request(:get, 'http://id.worldcat.org/fast/530369').to_return(status: 500)
+          stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml').to_return(status: 500)
         end
         it 'returns 500' do
           expect(Rails.logger).to receive(:warn).with(graph_load_failure)
@@ -369,7 +369,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
 
       context 'when data normalization error' do
         before do
-          stub_request(:get, 'http://id.worldcat.org/fast/530369')
+          stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_term_bad_id.nt'), headers: { 'Content-Type' => 'application/ntriples' })
         end
         it 'returns 500' do
@@ -381,7 +381,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
 
       context 'when rdf format error' do
         before do
-          stub_request(:get, 'http://id.worldcat.org/fast/530369').to_return(status: 200)
+          stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml').to_return(status: 200)
           allow(RDF::Graph).to receive(:load).and_raise(RDF::FormatError)
         end
         it 'returns 500' do
@@ -395,7 +395,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
 
       context "when error isn't specifically handled" do
         before do
-          stub_request(:get, 'http://id.worldcat.org/fast/530369').to_return(status: 501)
+          stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml').to_return(status: 501)
         end
         it 'returns 500' do
           expect(Rails.logger).to receive(:warn).with(graph_load_failure)
@@ -408,7 +408,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
 
     context 'when service unavailable' do
       before do
-        stub_request(:get, 'http://id.worldcat.org/fast/530369').to_return(status: 503)
+        stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml').to_return(status: 503)
       end
       it 'returns 503' do
         expect(Rails.logger).to receive(:warn).with(graph_load_failure)
@@ -420,7 +420,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
 
     context 'when requested term is not found at the server' do
       before do
-        stub_request(:get, 'http://id.worldcat.org/fast/FAKE_ID').to_return(status: 404, body: '', headers: {})
+        stub_request(:get, 'http://id.worldcat.org/fast/FAKE_ID.rdf.xml').to_return(status: 404, body: '', headers: {})
       end
       it 'returns 404' do
         expect(Rails.logger).to receive(:warn).with(graph_load_failure)
@@ -433,7 +433,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
     context 'in OCLC_FAST authority' do
       context 'term found' do
         before do
-          stub_request(:get, 'http://id.worldcat.org/fast/530369')
+          stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
         end
         it 'succeeds and defaults to json content type' do
@@ -481,7 +481,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
       context 'when cors headers are enabled' do
         before do
           Qa.config.enable_cors_headers
-          stub_request(:get, 'http://id.worldcat.org/fast/530369')
+          stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
         end
         it 'Access-Control-Allow-Origin is *' do
@@ -493,7 +493,7 @@ describe Qa::LinkedDataTermsController, type: :controller do
       context 'when cors headers are disabled' do
         before do
           Qa.config.disable_cors_headers
-          stub_request(:get, 'http://id.worldcat.org/fast/530369')
+          stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
         end
         it 'Access-Control-Allow-Origin is not present' do

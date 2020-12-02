@@ -8,18 +8,18 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
     context 'basic parameter testing' do
       context 'with bad id' do
         before do
-          stub_request(:get, 'http://id.worldcat.org/fast/FAKE_ID')
+          stub_request(:get, 'http://id.worldcat.org/fast/FAKE_ID.rdf.xml')
             .to_return(status: 404, body: '', headers: {})
         end
         it 'raises a TermNotFound exception' do
-          expect { lod_oclc.find('FAKE_ID') }.to raise_error Qa::TermNotFound, /.*\/FAKE_ID\ Not Found - Term may not exist at LOD Authority./
+          expect { lod_oclc.find('FAKE_ID') }.to raise_error Qa::TermNotFound, /.*\/FAKE_ID.rdf.xml\ Not Found - Term may not exist at LOD Authority./
         end
       end
     end
 
     context 'performance stats' do
       before do
-        stub_request(:get, 'http://id.worldcat.org/fast/530369')
+        stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml')
           .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
       end
       context 'when set to true' do
@@ -55,7 +55,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
 
     context 'response header' do
       before do
-        stub_request(:get, 'http://id.worldcat.org/fast/530369')
+        stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml')
           .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
       end
       context 'when set to true' do
@@ -91,7 +91,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
     context 'in OCLC_FAST authority' do
       context 'term found' do
         let :results do
-          stub_request(:get, 'http://id.worldcat.org/fast/530369')
+          stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml')
             .to_return(status: 200, body: webmock_fixture('lod_oclc_term_found.rdf.xml'), headers: { 'Content-Type' => 'application/rdf+xml' })
           lod_oclc.find('530369')
         end
@@ -128,7 +128,7 @@ RSpec.describe Qa::Authorities::LinkedData::FindTerm do
 
         context "ID in graph doesn't match ID in request URI" do
           before do
-            stub_request(:get, 'http://id.worldcat.org/fast/530369')
+            stub_request(:get, 'http://id.worldcat.org/fast/530369.rdf.xml')
               .to_return(status: 200, body: webmock_fixture('lod_oclc_term_bad_id.nt'), headers: { 'Content-Type' => 'application/ntriples' })
           end
 
