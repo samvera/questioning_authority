@@ -83,7 +83,7 @@ RSpec.describe Qa::LinkedData::AuthorityUrlService do
           let(:action_request) { 'mark twain' }
 
           it 'returns template with substitutions' do
-            expected_url = 'http://experimental.worldcat.org/fast/search?query=oclc.personalName+all+%22mark twain%22&sortKeys=usage&maximumRecords=10'
+            expected_url = 'http://experimental.worldcat.org/fast/search?query=oclc.personalName+all+%22mark%20twain%22&sortKeys=usage&maximumRecords=10'
             expect(subject).to eq expected_url
           end
 
@@ -98,7 +98,7 @@ RSpec.describe Qa::LinkedData::AuthorityUrlService do
           let(:action_request) { 'mark twain' }
 
           it 'returns template with substitutions' do
-            expected_url = 'http://experimental.worldcat.org/fast/search?query=cql.any+all+%22mark twain%22&sortKeys=usage&maximumRecords=20'
+            expected_url = 'http://experimental.worldcat.org/fast/search?query=cql.any+all+%22mark%20twain%22&sortKeys=usage&maximumRecords=20'
             expect(subject).to eq expected_url
           end
         end
@@ -110,7 +110,7 @@ RSpec.describe Qa::LinkedData::AuthorityUrlService do
         let(:action_request) { 'n79021164' }
 
         it 'returns template with substitutions' do
-          expected_url = 'http://id.worldcat.org/fast/n79021164'
+          expected_url = 'http://id.worldcat.org/fast/n79021164.rdf.xml'
           expect(subject).to eq expected_url
         end
       end
