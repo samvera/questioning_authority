@@ -86,6 +86,12 @@ RSpec.describe Qa::LinkedData::AuthorityUrlService do
             expected_url = 'http://experimental.worldcat.org/fast/search?query=oclc.personalName+all+%22mark twain%22&sortKeys=usage&maximumRecords=10'
             expect(subject).to eq expected_url
           end
+
+          it 'does not mutate substitutions hash' do
+            before_substitutions = substitutions.clone
+            subject
+            expect(substitutions).to eq before_substitutions
+          end
         end
 
         context 'when no substitutions specified' do

@@ -29,7 +29,7 @@ module Qa
           end
 
           def combined_substitutions(action_config, action, action_request, request_header)
-            substitutions = request_header.fetch(:replacements, {})
+            substitutions = request_header.fetch(:replacements, {}).clone
             substitutions[action_request_variable(action_config, action)] = action_request
             substitutions[action_subauth_variable(action_config)] = action_subauth_variable_value(action_config, request_header)
             substitutions[action_language_variable(action_config)] = language_value(action_config, request_header)
