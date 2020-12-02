@@ -1,8 +1,38 @@
 # Changelog
 
-## [5.5.1](https://github.com/samvera/questioning_authority/tree/5.5.1) (2020-08-14)
+## [5.5.2](https://github.com/samvera/questioning_authority/tree/5.5.2) (2020-12-02)
 
-[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.5.0...5.5.1)
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v3.1.0...5.5.2)
+
+**Closed issues:**
+
+- OCLC\_FAST linked data connection times out [\#327](https://github.com/samvera/questioning_authority/issues/327)
+- generated sample URL has extra parameters [\#326](https://github.com/samvera/questioning_authority/issues/326)
+
+**Merged pull requests:**
+
+- do not overwrite passed in replacements hash [\#329](https://github.com/samvera/questioning_authority/pull/329) ([elrayle](https://github.com/elrayle))
+- encode query for linked data access to OCLC FAST [\#328](https://github.com/samvera/questioning_authority/pull/328) ([elrayle](https://github.com/elrayle))
+
+## [v3.1.0](https://github.com/samvera/questioning_authority/tree/v3.1.0) (2020-08-14)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v4.3.0...v3.1.0)
+
+## [v4.3.0](https://github.com/samvera/questioning_authority/tree/v4.3.0) (2020-08-14)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v2.3.0...v4.3.0)
+
+## [v2.3.0](https://github.com/samvera/questioning_authority/tree/v2.3.0) (2020-08-14)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.5.1...v2.3.0)
+
+**Merged pull requests:**
+
+- prep release 5.5.1 [\#324](https://github.com/samvera/questioning_authority/pull/324) ([elrayle](https://github.com/elrayle))
+
+## [v5.5.1](https://github.com/samvera/questioning_authority/tree/v5.5.1) (2020-08-14)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.5.0...v5.5.1)
 
 **Closed issues:**
 
@@ -123,10 +153,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 [Full Changelog](https://github.com/samvera/questioning_authority/compare/v4.2.2...v4.2.3)
 
-**Implemented enhancements:**
-
-- add ability to return a single term as n3 format for linked data [\#263](https://github.com/samvera/questioning_authority/pull/263) ([elrayle](https://github.com/elrayle))
-
 **Merged pull requests:**
 
 - prep for release of v4.2.3 [\#274](https://github.com/samvera/questioning_authority/pull/274) ([elrayle](https://github.com/elrayle))
@@ -154,6 +180,10 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 ## [v4.2.1](https://github.com/samvera/questioning_authority/tree/v4.2.1) (2019-08-08)
 
 [Full Changelog](https://github.com/samvera/questioning_authority/compare/v4.2.0...v4.2.1)
+
+**Implemented enhancements:**
+
+- add ability to return a single term as n3 format for linked data [\#263](https://github.com/samvera/questioning_authority/pull/263) ([elrayle](https://github.com/elrayle))
 
 **Fixed bugs:**
 
@@ -196,10 +226,15 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 - Fix the test that broke during merge of multiple PRs [\#251](https://github.com/samvera/questioning_authority/pull/251) ([elrayle](https://github.com/elrayle))
 - determine is loc special processing should be done based on template uri instead of authority name [\#248](https://github.com/samvera/questioning_authority/pull/248) ([elrayle](https://github.com/elrayle))
 - Updates the CircleCI configuration to test against Ruby releases 2.6.3, 2.5.5, and 2.4.6 [\#243](https://github.com/samvera/questioning_authority/pull/243) ([jrgriffiniii](https://github.com/jrgriffiniii))
+- release 4.1.0 [\#237](https://github.com/samvera/questioning_authority/pull/237) ([elrayle](https://github.com/elrayle))
 
 ## [v4.1.1](https://github.com/samvera/questioning_authority/tree/v4.1.1) (2019-05-08)
 
 [Full Changelog](https://github.com/samvera/questioning_authority/compare/v4.1.0...v4.1.1)
+
+**Implemented enhancements:**
+
+- add option to include performance statistics in the returned result [\#236](https://github.com/samvera/questioning_authority/pull/236) ([elrayle](https://github.com/elrayle))
 
 **Closed issues:**
 
@@ -218,7 +253,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Implemented enhancements:**
 
-- add option to include performance statistics in the returned result [\#236](https://github.com/samvera/questioning_authority/pull/236) ([elrayle](https://github.com/elrayle))
 - add option to include authority details when getting list of authorities [\#234](https://github.com/samvera/questioning_authority/pull/234) ([elrayle](https://github.com/elrayle))
 - Add ldpath for findterm [\#233](https://github.com/samvera/questioning_authority/pull/233) ([elrayle](https://github.com/elrayle))
 - switch search configs to use ldpath instead of predicates for specifying results [\#229](https://github.com/samvera/questioning_authority/pull/229) ([elrayle](https://github.com/elrayle))
@@ -375,7 +409,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
-- Remove 4.2 support [\#155](https://github.com/samvera/questioning_authority/pull/155) ([elrayle](https://github.com/elrayle))
 - Add version to migrations to support rails \>= 5.1 [\#154](https://github.com/samvera/questioning_authority/pull/154) ([elrayle](https://github.com/elrayle))
 
 ## [v1.2.0](https://github.com/samvera/questioning_authority/tree/v1.2.0) (2017-06-23)
@@ -392,9 +425,11 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
+- Remove 4.2 support [\#155](https://github.com/samvera/questioning_authority/pull/155) ([elrayle](https://github.com/elrayle))
 - bumping version to 1.2.0 [\#151](https://github.com/samvera/questioning_authority/pull/151) ([revgum](https://github.com/revgum))
 - adds active flag to terms defaulting to true [\#150](https://github.com/samvera/questioning_authority/pull/150) ([revgum](https://github.com/revgum))
 - provide better error messages and codes [\#146](https://github.com/samvera/questioning_authority/pull/146) ([elrayle](https://github.com/elrayle))
+- Bump version to 1.1.0 [\#145](https://github.com/samvera/questioning_authority/pull/145) ([jcoyne](https://github.com/jcoyne))
 
 ## [v1.1.0](https://github.com/samvera/questioning_authority/tree/v1.1.0) (2017-05-02)
 
@@ -402,7 +437,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
-- Bump version to 1.1.0 [\#145](https://github.com/samvera/questioning_authority/pull/145) ([jcoyne](https://github.com/jcoyne))
 - Add trailing slashes to geonames uris [\#144](https://github.com/samvera/questioning_authority/pull/144) ([jcoyne](https://github.com/jcoyne))
 - Added support for the crossref REST API - api.crossref.org [\#132](https://github.com/samvera/questioning_authority/pull/132) ([geekscruff](https://github.com/geekscruff))
 - Add code to process linked data authorities via configuration [\#131](https://github.com/samvera/questioning_authority/pull/131) ([elrayle](https://github.com/elrayle))
@@ -451,7 +485,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 - Loosen nokogiri dependency [\#120](https://github.com/samvera/questioning_authority/pull/120) ([jcoyne](https://github.com/jcoyne))
 - Add search method to see if wants the controller with the request. [\#119](https://github.com/samvera/questioning_authority/pull/119) ([andjsmit](https://github.com/andjsmit))
 - Stop spamming IRC with Travis builds [\#118](https://github.com/samvera/questioning_authority/pull/118) ([mjgiarlo](https://github.com/mjgiarlo))
-- Add Faraday encoder for finicky FAST api; fixes multi-word queries [\#117](https://github.com/samvera/questioning_authority/pull/117) ([hackmastera](https://github.com/hackmastera))
+- Add Faraday encoder for finicky FAST api; fixes multi-word queries [\#117](https://github.com/samvera/questioning_authority/pull/117) ([hackartisan](https://github.com/hackartisan))
 
 ## [v0.10.2](https://github.com/samvera/questioning_authority/tree/v0.10.2) (2016-10-25)
 
@@ -530,9 +564,9 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 **Merged pull requests:**
 
 - Replace rest-client with faraday [\#88](https://github.com/samvera/questioning_authority/pull/88) ([cbeer](https://github.com/cbeer))
-- Add FAST documentation to the README. [\#86](https://github.com/samvera/questioning_authority/pull/86) ([hackmastera](https://github.com/hackmastera))
+- Add FAST documentation to the README. [\#86](https://github.com/samvera/questioning_authority/pull/86) ([hackartisan](https://github.com/hackartisan))
 - Added support for  Getty TGN \(search and find\).  [\#83](https://github.com/samvera/questioning_authority/pull/83) ([geekscruff](https://github.com/geekscruff))
-- New authority - a wrapper for FAST autocomplete service [\#82](https://github.com/samvera/questioning_authority/pull/82) ([hackmastera](https://github.com/hackmastera))
+- New authority - a wrapper for FAST autocomplete service [\#82](https://github.com/samvera/questioning_authority/pull/82) ([hackartisan](https://github.com/hackartisan))
 
 ## [v0.5.0](https://github.com/samvera/questioning_authority/tree/v0.5.0) (2015-04-17)
 
@@ -592,7 +626,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 **Merged pull requests:**
 
 - Added Getty AAT vocabulary [\#73](https://github.com/samvera/questioning_authority/pull/73) ([jcoyne](https://github.com/jcoyne))
-- Test rails 4.2 [\#72](https://github.com/samvera/questioning_authority/pull/72) ([jcoyne](https://github.com/jcoyne))
 - Check for query parameter when searching; updating to Rspec v3 syntax [\#66](https://github.com/samvera/questioning_authority/pull/66) ([awead](https://github.com/awead))
 - Refactoring, enabling \#find for individual records [\#64](https://github.com/samvera/questioning_authority/pull/64) ([awead](https://github.com/awead))
 - Implement \#all for authorities and refactor [\#62](https://github.com/samvera/questioning_authority/pull/62) ([awead](https://github.com/awead))
@@ -608,6 +641,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
+- Test rails 4.2 [\#72](https://github.com/samvera/questioning_authority/pull/72) ([jcoyne](https://github.com/jcoyne))
 - results method and generators for Local authorities [\#56](https://github.com/samvera/questioning_authority/pull/56) ([awead](https://github.com/awead))
 - Testing multiple Rails versions [\#54](https://github.com/samvera/questioning_authority/pull/54) ([awead](https://github.com/awead))
 
@@ -639,7 +673,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
-- Fix LCSH queries [\#49](https://github.com/samvera/questioning_authority/pull/49) ([jechols](https://github.com/jechols))
 - Issue47 [\#48](https://github.com/samvera/questioning_authority/pull/48) ([awead](https://github.com/awead))
 - Remove LCSH authority because it duplicates LOC's subjects sub-authority [\#46](https://github.com/samvera/questioning_authority/pull/46) ([awead](https://github.com/awead))
 - Remove Curb as a dependency.  Deprecate get\_full\_record [\#44](https://github.com/samvera/questioning_authority/pull/44) ([jcoyne](https://github.com/jcoyne))
