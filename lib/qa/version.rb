@@ -1,3 +1,3 @@
 module Qa
-  VERSION = "5.5.2".freeze
+  VERSION = "5.6.0".freeze
 end

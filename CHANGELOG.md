@@ -1,8 +1,20 @@
 # Changelog
 
-## [5.5.2](https://github.com/samvera/questioning_authority/tree/5.5.2) (2020-12-02)
+## [5.6.0](https://github.com/samvera/questioning_authority/tree/5.6.0) (2021-01-11)
 
-[Full Changelog](https://github.com/samvera/questioning_authority/compare/v3.1.0...5.5.2)
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.5.2...5.6.0)
+
+**Closed issues:**
+
+- support Rails 6.1? [\#330](https://github.com/samvera/questioning_authority/issues/330)
+
+**Merged pull requests:**
+
+- allow rails 6.2 [\#332](https://github.com/samvera/questioning_authority/pull/332) ([jrochkind](https://github.com/jrochkind))
+
+## [v5.5.2](https://github.com/samvera/questioning_authority/tree/v5.5.2) (2020-12-02)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v3.1.0...v5.5.2)
 
 **Closed issues:**
 
@@ -224,17 +236,11 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 - prep for release 4.2.0 [\#257](https://github.com/samvera/questioning_authority/pull/257) ([elrayle](https://github.com/elrayle))
 - Fix the test that broke during merge of multiple PRs [\#251](https://github.com/samvera/questioning_authority/pull/251) ([elrayle](https://github.com/elrayle))
-- determine is loc special processing should be done based on template uri instead of authority name [\#248](https://github.com/samvera/questioning_authority/pull/248) ([elrayle](https://github.com/elrayle))
 - Updates the CircleCI configuration to test against Ruby releases 2.6.3, 2.5.5, and 2.4.6 [\#243](https://github.com/samvera/questioning_authority/pull/243) ([jrgriffiniii](https://github.com/jrgriffiniii))
-- release 4.1.0 [\#237](https://github.com/samvera/questioning_authority/pull/237) ([elrayle](https://github.com/elrayle))
 
 ## [v4.1.1](https://github.com/samvera/questioning_authority/tree/v4.1.1) (2019-05-08)
 
 [Full Changelog](https://github.com/samvera/questioning_authority/compare/v4.1.0...v4.1.1)
-
-**Implemented enhancements:**
-
-- add option to include performance statistics in the returned result [\#236](https://github.com/samvera/questioning_authority/pull/236) ([elrayle](https://github.com/elrayle))
 
 **Closed issues:**
 
@@ -242,6 +248,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
+- determine is loc special processing should be done based on template uri instead of authority name [\#248](https://github.com/samvera/questioning_authority/pull/248) ([elrayle](https://github.com/elrayle))
 - release 4.1.1 [\#241](https://github.com/samvera/questioning_authority/pull/241) ([elrayle](https://github.com/elrayle))
 - reset uri with every call to find [\#240](https://github.com/samvera/questioning_authority/pull/240) ([elrayle](https://github.com/elrayle))
 - do not discard blank nodes [\#239](https://github.com/samvera/questioning_authority/pull/239) ([elrayle](https://github.com/elrayle))
@@ -253,6 +260,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Implemented enhancements:**
 
+- add option to include performance statistics in the returned result [\#236](https://github.com/samvera/questioning_authority/pull/236) ([elrayle](https://github.com/elrayle))
 - add option to include authority details when getting list of authorities [\#234](https://github.com/samvera/questioning_authority/pull/234) ([elrayle](https://github.com/elrayle))
 - Add ldpath for findterm [\#233](https://github.com/samvera/questioning_authority/pull/233) ([elrayle](https://github.com/elrayle))
 - switch search configs to use ldpath instead of predicates for specifying results [\#229](https://github.com/samvera/questioning_authority/pull/229) ([elrayle](https://github.com/elrayle))
@@ -409,6 +417,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
+- Remove 4.2 support [\#155](https://github.com/samvera/questioning_authority/pull/155) ([elrayle](https://github.com/elrayle))
 - Add version to migrations to support rails \>= 5.1 [\#154](https://github.com/samvera/questioning_authority/pull/154) ([elrayle](https://github.com/elrayle))
 
 ## [v1.2.0](https://github.com/samvera/questioning_authority/tree/v1.2.0) (2017-06-23)
@@ -425,11 +434,9 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
-- Remove 4.2 support [\#155](https://github.com/samvera/questioning_authority/pull/155) ([elrayle](https://github.com/elrayle))
 - bumping version to 1.2.0 [\#151](https://github.com/samvera/questioning_authority/pull/151) ([revgum](https://github.com/revgum))
 - adds active flag to terms defaulting to true [\#150](https://github.com/samvera/questioning_authority/pull/150) ([revgum](https://github.com/revgum))
 - provide better error messages and codes [\#146](https://github.com/samvera/questioning_authority/pull/146) ([elrayle](https://github.com/elrayle))
-- Bump version to 1.1.0 [\#145](https://github.com/samvera/questioning_authority/pull/145) ([jcoyne](https://github.com/jcoyne))
 
 ## [v1.1.0](https://github.com/samvera/questioning_authority/tree/v1.1.0) (2017-05-02)
 
@@ -437,6 +444,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
+- Bump version to 1.1.0 [\#145](https://github.com/samvera/questioning_authority/pull/145) ([jcoyne](https://github.com/jcoyne))
 - Add trailing slashes to geonames uris [\#144](https://github.com/samvera/questioning_authority/pull/144) ([jcoyne](https://github.com/jcoyne))
 - Added support for the crossref REST API - api.crossref.org [\#132](https://github.com/samvera/questioning_authority/pull/132) ([geekscruff](https://github.com/geekscruff))
 - Add code to process linked data authorities via configuration [\#131](https://github.com/samvera/questioning_authority/pull/131) ([elrayle](https://github.com/elrayle))
@@ -626,6 +634,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 **Merged pull requests:**
 
 - Added Getty AAT vocabulary [\#73](https://github.com/samvera/questioning_authority/pull/73) ([jcoyne](https://github.com/jcoyne))
+- Test rails 4.2 [\#72](https://github.com/samvera/questioning_authority/pull/72) ([jcoyne](https://github.com/jcoyne))
 - Check for query parameter when searching; updating to Rspec v3 syntax [\#66](https://github.com/samvera/questioning_authority/pull/66) ([awead](https://github.com/awead))
 - Refactoring, enabling \#find for individual records [\#64](https://github.com/samvera/questioning_authority/pull/64) ([awead](https://github.com/awead))
 - Implement \#all for authorities and refactor [\#62](https://github.com/samvera/questioning_authority/pull/62) ([awead](https://github.com/awead))
@@ -641,7 +650,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
-- Test rails 4.2 [\#72](https://github.com/samvera/questioning_authority/pull/72) ([jcoyne](https://github.com/jcoyne))
 - results method and generators for Local authorities [\#56](https://github.com/samvera/questioning_authority/pull/56) ([awead](https://github.com/awead))
 - Testing multiple Rails versions [\#54](https://github.com/samvera/questioning_authority/pull/54) ([awead](https://github.com/awead))
 
