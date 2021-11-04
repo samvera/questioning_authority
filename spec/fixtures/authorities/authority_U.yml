@@ -1,0 +1,13 @@
+:terms:
+    - :id: A1
+      :term: Abc Term A1
+      :uri: http://my.domain/terms/a1
+      :active: true
+    - :id: A2
+      :term: Term A2
+      :uri: http://my.domain/terms/a2
+      :active: false
+    - :id: A3
+      :term: Abc Term A3
+      :uri: http://my.domain/terms/a3
+      :active: true
