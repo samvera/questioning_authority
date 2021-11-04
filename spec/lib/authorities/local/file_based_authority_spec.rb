@@ -5,6 +5,7 @@ describe Qa::Authorities::Local::FileBasedAuthority do
   let(:authority_b) { Qa::Authorities::Local.subauthority_for("authority_B") }
   let(:authority_c) { Qa::Authorities::Local.subauthority_for("authority_C") }
   let(:authority_d) { Qa::Authorities::Local.subauthority_for("authority_D") }
+  let(:authority_u) { Qa::Authorities::Local.subauthority_for("authority_U") }
 
   describe "#all" do
     let(:expected) do
@@ -33,6 +34,16 @@ describe Qa::Authorities::Local::FileBasedAuthority do
       end
       it "uses the terms as labels" do
         expect(authority_c.all).to eq(expected)
+      end
+    end
+    context "when terms have uris" do
+      let(:expected) do
+        [{ 'id' => "A1", 'label' => "Abc Term A1", 'active' => true, 'uri' => 'http://my.domain/terms/a1' },
+         { 'id' => "A2", 'label' => "Term A2", 'active' => false, 'uri' => 'http://my.domain/terms/a2' },
+         { 'id' => "A3", 'label' => "Abc Term A3", 'active' => true, 'uri' => 'http://my.domain/terms/a3' }]
+      end
+      it "sets the id to be same as the label" do
+        expect(authority_u.all).to eq(expected)
       end
     end
     context "YAML file is malformed" do
