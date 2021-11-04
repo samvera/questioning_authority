@@ -1,8 +1,27 @@
 # Changelog
 
-## [5.6.0](https://github.com/samvera/questioning_authority/tree/5.6.0) (2021-01-11)
+## [v5.7.0](https://github.com/samvera/questioning_authority/tree/v5.7.0) (2021-11-04)
 
-[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.5.2...5.6.0)
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.6.0...v5.7.0)
+
+**Closed issues:**
+
+- RENAME: Update CONTRIBUTING.md to match the maintenance template [\#340](https://github.com/samvera/questioning_authority/issues/340)
+- RENAME: Add language to README about branch naming [\#337](https://github.com/samvera/questioning_authority/issues/337)
+- RENAME: Add Circle CI step that fails if branch name is master [\#336](https://github.com/samvera/questioning_authority/issues/336)
+- RENAME master branch to main [\#335](https://github.com/samvera/questioning_authority/issues/335)
+- Rails 6.0? [\#287](https://github.com/samvera/questioning_authority/issues/287)
+
+**Merged pull requests:**
+
+- add fetch action allowing for uri parameter [\#343](https://github.com/samvera/questioning_authority/pull/343) ([elrayle](https://github.com/elrayle))
+- add optional URI to locally defined yml file authorities [\#342](https://github.com/samvera/questioning_authority/pull/342) ([elrayle](https://github.com/elrayle))
+- Update CONTRIBUTING.md to match the maintenance template [\#341](https://github.com/samvera/questioning_authority/pull/341) ([elrayle](https://github.com/elrayle))
+- prevent master branch; provide info on branch naming in README [\#339](https://github.com/samvera/questioning_authority/pull/339) ([elrayle](https://github.com/elrayle))
+
+## [v5.6.0](https://github.com/samvera/questioning_authority/tree/v5.6.0) (2021-01-11)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.5.2...v5.6.0)
 
 **Closed issues:**
 
@@ -10,7 +29,7 @@
 
 **Merged pull requests:**
 
-- allow rails 6.2 [\#332](https://github.com/samvera/questioning_authority/pull/332) ([jrochkind](https://github.com/jrochkind))
+- allow rails 6.1 [\#332](https://github.com/samvera/questioning_authority/pull/332) ([jrochkind](https://github.com/jrochkind))
 
 ## [v5.5.2](https://github.com/samvera/questioning_authority/tree/v5.5.2) (2020-12-02)
 
@@ -54,6 +73,7 @@
 
 - Fixes issue limiting LoC results to an authority [\#323](https://github.com/samvera/questioning_authority/pull/323) ([rotated8](https://github.com/rotated8))
 - prep release 5.5.0 [\#322](https://github.com/samvera/questioning_authority/pull/322) ([elrayle](https://github.com/elrayle))
+- Align style practice with current Samvera norms [\#315](https://github.com/samvera/questioning_authority/pull/315) ([bess](https://github.com/bess))
 
 ## [v5.5.0](https://github.com/samvera/questioning_authority/tree/v5.5.0) (2020-08-13)
 
@@ -80,7 +100,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 - Prep for 5.4.0 release [\#317](https://github.com/samvera/questioning_authority/pull/317) ([bess](https://github.com/bess))
 - Standardize and document release process [\#316](https://github.com/samvera/questioning_authority/pull/316) ([bess](https://github.com/bess))
-- Align style practice with current Samvera norms [\#315](https://github.com/samvera/questioning_authority/pull/315) ([bess](https://github.com/bess))
 - Updating Rails development dependency [\#313](https://github.com/samvera/questioning_authority/pull/313) ([jeremyf](https://github.com/jeremyf))
 - Adding config option for Geonames URLs [\#312](https://github.com/samvera/questioning_authority/pull/312) ([jeremyf](https://github.com/jeremyf))
 - Remove Ruby 2.4 / Rails 6.0 build [\#311](https://github.com/samvera/questioning_authority/pull/311) ([bkeese](https://github.com/bkeese))
@@ -236,6 +255,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 - prep for release 4.2.0 [\#257](https://github.com/samvera/questioning_authority/pull/257) ([elrayle](https://github.com/elrayle))
 - Fix the test that broke during merge of multiple PRs [\#251](https://github.com/samvera/questioning_authority/pull/251) ([elrayle](https://github.com/elrayle))
+- determine is loc special processing should be done based on template uri instead of authority name [\#248](https://github.com/samvera/questioning_authority/pull/248) ([elrayle](https://github.com/elrayle))
 - Updates the CircleCI configuration to test against Ruby releases 2.6.3, 2.5.5, and 2.4.6 [\#243](https://github.com/samvera/questioning_authority/pull/243) ([jrgriffiniii](https://github.com/jrgriffiniii))
 
 ## [v4.1.1](https://github.com/samvera/questioning_authority/tree/v4.1.1) (2019-05-08)
@@ -248,7 +268,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
-- determine is loc special processing should be done based on template uri instead of authority name [\#248](https://github.com/samvera/questioning_authority/pull/248) ([elrayle](https://github.com/elrayle))
 - release 4.1.1 [\#241](https://github.com/samvera/questioning_authority/pull/241) ([elrayle](https://github.com/elrayle))
 - reset uri with every call to find [\#240](https://github.com/samvera/questioning_authority/pull/240) ([elrayle](https://github.com/elrayle))
 - do not discard blank nodes [\#239](https://github.com/samvera/questioning_authority/pull/239) ([elrayle](https://github.com/elrayle))
