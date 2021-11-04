@@ -33,7 +33,9 @@ describe Qa::Authorities::Local do
 
   describe "#names" do
     it "returns a list of yaml files" do
-      expect(described_class.names).to include("authority_A", "authority_B", "authority_C", "authority_D", "states")
+      expect(described_class.names)
+        .to include("authority_A", "authority_B", "authority_C",
+                    "authority_D", "authority_U", "states")
     end
 
     context "when the path doesn't exist" do

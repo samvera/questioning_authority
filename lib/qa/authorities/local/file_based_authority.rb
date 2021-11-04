@@ -8,13 +8,14 @@ module Qa::Authorities
     def search(q)
       r = q.blank? ? [] : terms.select { |term| /\b#{q.downcase}/.match(term[:term].downcase) }
       r.map do |res|
-        { id: res[:id], label: res[:term] }.with_indifferent_access
+        { id: res[:id], label: res[:term], uri: res.fetch(:uri, nil) }.compact.with_indifferent_access
       end
     end
 
     def all
       terms.map do |res|
-        { id: res[:id], label: res[:term], active: res.fetch(:active, true) }.with_indifferent_access
+        { id: res[:id], label: res[:term], active: res.fetch(:active, true), uri: res.fetch(:uri, nil) }
+          .compact.with_indifferent_access
       end
     end
 
