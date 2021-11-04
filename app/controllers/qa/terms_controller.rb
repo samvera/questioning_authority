@@ -27,8 +27,17 @@ class Qa::TermsController < ::ApplicationController
   end
 
   # If the subauthority supports it, return all the information for a given term
+  # Expects id to be part of the request path (e.g. http://my.app/qa/show/auth/subauth/{:id})
   def show
     term = @authority.method(:find).arity == 2 ? @authority.find(params[:id], self) : @authority.find(params[:id])
+    cors_allow_origin_header(response)
+    render json: term, content_type: content_type_for_format
+  end
+
+  # If the subauthority supports it, return all the information for a given term
+  # Expects uri to be a request parameter (e.g. http://my.app/qa/show/auth/subauth?uri={:uri})
+  def fetch
+    term = @authority.method(:find).arity == 2 ? @authority.find(params[:uri], self) : @authority.find(params[:uri])
     cors_allow_origin_header(response)
     render json: term, content_type: content_type_for_format
   end

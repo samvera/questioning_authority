@@ -253,4 +253,33 @@ describe Qa::TermsController, type: :controller do
       end
     end
   end
+
+  describe "#fetch" do
+    context "with supported authorities" do
+      it "returns an individual state term" do
+        get :fetch, params: { vocab: "local", subauthority: "authority_U", uri: "http://my.domain/terms/a2" }
+        expect(response).to be_successful
+      end
+
+      context 'when cors headers are enabled' do
+        before do
+          Qa.config.enable_cors_headers
+        end
+        it 'Access-Control-Allow-Origin is *' do
+          get :fetch, params: { vocab: "local", subauthority: "authority_U", uri: "http://my.domain/terms/a2" }
+          expect(response.headers['Access-Control-Allow-Origin']).to eq '*'
+        end
+      end
+
+      context 'when cors headers are disabled' do
+        before do
+          Qa.config.disable_cors_headers
+        end
+        it 'Access-Control-Allow-Origin is not present' do
+          get :fetch, params: { vocab: "local", subauthority: "authority_U", uri: "http://my.domain/terms/a2" }
+          expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
+        end
+      end
+    end
+  end
 end
