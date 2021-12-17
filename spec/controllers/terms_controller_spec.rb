@@ -69,7 +69,7 @@ describe Qa::TermsController, type: :controller do
           end
 
           def search(_arg1, _arg2)
-            true
+            []
           end
         end
         Qa::Authorities::Local.register_subauthority('two_args', 'Qa::Authorities::Local::TwoArgs')
@@ -120,6 +120,78 @@ describe Qa::TermsController, type: :controller do
         it 'Access-Control-Allow-Origin is not present' do
           get :search, params: { q: "Tibetan", vocab: "tgnlang" }
           expect(response.headers.key?('Access-Control-Allow-Origin')).to be false
+        end
+      end
+
+      context 'when pagination parameters are set' do
+        context 'and no format is specified' do
+          let(:params) do
+            {
+              q: "Berry", vocab: "loc", subauthority: "names",
+              page_limit: "5", page_offset: "6"
+            }
+          end
+
+          it "returns a subset of results as an Array<Hash>" do
+            # query without pagination is expected to return 20 results
+            get :search, params: params
+            expect(response).to be_successful
+            expect(response.content_type.split(';')).to include 'application/json'
+            results = JSON.parse(response.body)
+            expect(results.count).to eq 5
+          end
+        end
+
+        context 'and format is specified as :jsonapi' do
+          let(:params) do
+            {
+              q: "Berry", vocab: "loc", subauthority: "names",
+              page_limit: "5", page_offset: "6", format: "jsonapi"
+            }
+          end
+          let(:total_num_found) { "20" } # query without pagination is expected to return 20 results
+
+          it "returns a subset of results in the JSON-API format" do
+            get :search, params: params
+            expect(response).to be_successful
+            expect(response.content_type.split(';')).to include 'application/vnd.api+json'
+            json_api_response = JSON.parse(response.body)
+            expect(json_api_response['data'].count).to eq 5
+          end
+
+          it "sets meta['page'] stats" do
+            get :search, params: params
+            json_api_response = JSON.parse(response.body)
+            expect(json_api_response["meta"]["page"]["page_offset"]).to eq "6"
+            expect(json_api_response["meta"]["page"]["page_limit"]).to eq "5"
+            expect(json_api_response["meta"]["page"]["actual_page_size"]).to eq "5"
+            expect(json_api_response["meta"]["page"]["total_num_found"]).to eq total_num_found
+          end
+
+          it 'sets links with next set to nil' do
+            get :search, params: params
+
+            base_url = request.base_url
+            url_path = request.path
+            first_page = "#{base_url}#{url_path}?q=Berry&page_limit=5&page_offset=1"
+            second_page = "#{base_url}#{url_path}?q=Berry&page_limit=5&page_offset=6"
+            third_page = "#{base_url}#{url_path}?q=Berry&page_limit=5&page_offset=11"
+            fourth_page = "#{base_url}#{url_path}?q=Berry&page_limit=5&page_offset=16"
+            last_page = fourth_page
+
+            json_api_response = JSON.parse(response.body)
+            expect(json_api_response['links']["self"]).to eq second_page
+            expect(json_api_response['links']["first"]).to eq first_page
+            expect(json_api_response['links']["prev"]).to eq first_page
+            expect(json_api_response['links']["next"]).to eq third_page
+            expect(json_api_response['links']["last"]).to eq last_page
+          end
+
+          it 'does not include errors' do
+            get :search, params: params
+            json_api_response = JSON.parse(response.body)
+            expect(json_api_response.key?('errors')).to eq false
+          end
         end
       end
     end

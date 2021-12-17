@@ -4,6 +4,9 @@
 # same methods.
 
 class Qa::TermsController < ::ApplicationController
+  class_attribute :pagination_service_class
+  self.pagination_service_class = Qa::PaginationService
+
   before_action :check_vocab_param, :init_authority
   before_action :check_query_param, only: :search
 
@@ -23,7 +26,11 @@ class Qa::TermsController < ::ApplicationController
   def search
     terms = @authority.method(:search).arity == 2 ? @authority.search(url_search, self) : @authority.search(url_search)
     cors_allow_origin_header(response)
-    render json: terms
+    respond_to do |wants|
+      wants.json { render json: pagination_service(format: :json, results: terms).build_response }
+      wants.jsonapi { render json: pagination_service(format: :jsonapi, results: terms).build_response }
+      wants.any { render json: pagination_service(format: :json, results: terms).build_response, content_type: json_content_type }
+    end
   end
 
   # If the subauthority supports it, return all the information for a given term
@@ -31,7 +38,13 @@ class Qa::TermsController < ::ApplicationController
   def show
     term = @authority.method(:find).arity == 2 ? @authority.find(params[:id], self) : @authority.find(params[:id])
     cors_allow_origin_header(response)
-    render json: term, content_type: content_type_for_format
+    respond_to do |wants|
+      wants.json { render json: term }
+      wants.n3 { render json: term }
+      wants.jsonld { render json: term }
+      wants.ntriples { render json: term }
+      wants.any { render json: term, content_type: json_content_type }
+    end
   end
 
   # If the subauthority supports it, return all the information for a given term
@@ -39,7 +52,13 @@ class Qa::TermsController < ::ApplicationController
   def fetch
     term = @authority.method(:find).arity == 2 ? @authority.find(params[:uri], self) : @authority.find(params[:uri])
     cors_allow_origin_header(response)
-    render json: term, content_type: content_type_for_format
+    respond_to do |wants|
+      wants.json { render json: term }
+      wants.n3 { render json: term }
+      wants.jsonld { render json: term }
+      wants.ntriples { render json: term }
+      wants.any { render json: term, content_type: json_content_type }
+    end
   end
 
   def check_vocab_param
@@ -90,28 +109,11 @@ class Qa::TermsController < ::ApplicationController
       params[:q].gsub("*", "%2A")
     end
 
-    def format
-      return 'json' unless params.key?(:format)
-      return 'json' if params[:format].blank?
-      params[:format]
+    def json_content_type
+      Mime::Type.lookup_by_extension(:json).to_str
     end
 
-    def jsonld?
-      format.casecmp?('jsonld')
-    end
-
-    def n3?
-      format.casecmp?('n3')
-    end
-
-    def ntriples?
-      format.casecmp?('ntriples')
-    end
-
-    def content_type_for_format
-      return 'application/ld+json' if jsonld?
-      return 'text/n3' if n3?
-      return 'application/n-triples' if ntriples?
-      'application/json'
+    def pagination_service(results:, format:)
+      pagination_service_class.new(request: request, results: results, format: format)
     end
 end
