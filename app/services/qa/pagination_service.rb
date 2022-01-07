@@ -1,6 +1,83 @@
 module Qa
-  # Provide pagination processing that authority modules can use to respond to
-  # requests for paginated results.
+  # Provide pagination processing used to respond to requests for paginated results.
+  #
+  # <b>Defaults for page_offset and page_limit:</b> (see example responses under #build_response)
+  #
+  # format == :json
+  #
+  # * if neither page_offset nor page_limit is passed in, then... (backward compatible)
+  #   * returns results as an Array<Hash>
+  #   * returns all results
+  #   * page_offset is "1"
+  #   * page_limit is total_num_found
+  #
+  # * if either page_offset or page_limit is passed in, then...
+  #   * returns results as an Array<Hash>
+  #   * returns a page of results
+  #   * default for page_offset is "1"
+  #   * default for page_limit is DEFAULT_PAGE_LIMIT (i.e., 10)
+  #
+  # format == :jsonapi
+  #
+  # * response is always in the jsonapi format
+  # * results are always paginated
+  # * default for page_offset is "1"
+  # * default for page_limit is DEFAULT_PAGE_LIMIT (i.e., 10)
+  #
+  # <b>How page_offset is calculated for pagination links:</b>
+  #
+  # expected page boundaries
+  #
+  # * Expected page boundaries are always calculated starting from page_offset=1
+  #   and the current page_limit.  The page boundaries will include the page_offsets
+  #   that cover all results.  For example, page_limit=10 with 36 results will have
+  #   page boundaries 1, 11, 21, 31.
+  #
+  # self url
+  #
+  # * The self url always has the page_offset for the current page, which defaults
+  #   to 1 if not passed in.
+  #
+  # first page url
+  #
+  # * The first page url always has page_offset=1.
+  #
+  # last page url
+  #
+  # * The last page url always has page_offset equal to the last of the expected page
+  #   boundaries regardless of the passed in page_offset.  For the example where
+  #   page_limit=10 with 36 results, the last page will always have page_offset=31.
+  #
+  # prev page url
+  #
+  # * Previous' page_offset is calculated from the passed in page_offset whether or
+  #   not it is on an expected page boundary.
+  #
+  # * For prev, page_offset = passed in page_offset - page_limit || nil if calculated as < 1
+  #   * when current page_offset (e.g. 1) is less than page_limit (e.g. 10), then page_offset
+  #     for prev will be nil (e.g. 1 - 10 = -9 which is < 1)
+  #   * when current page_offset is an expected page boundary (e.g. 21), then
+  #     page_offset for prev will also be a page boundary (e.g. 21 - 10 = 11
+  #     which is an expected page boundary)
+  #   * when current page_offset is not on an expected page boundary (e.g. 13), then
+  #     page_offset for prev will not be on an expected page boundary (e.g. 13 - 10 = 3
+  #     which is not an expected page boundary)
+  #
+  # next page url
+  #
+  # * Next's page_offset is calculated from the passed in page_offset whether or
+  #   not it is on an expected page boundary.
+  #
+  # * For next, page_offset = passed in page_offset + page_limit || nil if calculated > total number of results found
+  #   * when current page_offset (e.g. 31) is greater than total number of results (e.g. 36),
+  #     then page_offset for next will be nil (e.g. 31 + 10 = 41 which is > 36)
+  #   * when current page_offset is an expected page boundary (e.g. 21), then
+  #     page_offset for next will also be a page boundary (e.g. 21 + 10 = 31
+  #     which is an expected page boundary)
+  #   * when current page_offset is not on an expected page boundary (e.g. 13), then
+  #     page_offset for next will not be on an expected page boundary (e.g. 13 + 10 = 23
+  #     which is not an expected page boundary)
+  #
   class PaginationService # rubocop:disable Metrics/ClassLength
     # Default page_limit to use if not passed in with the request.
     DEFAULT_PAGE_LIMIT = 10
@@ -16,13 +93,13 @@ module Qa
     #   To support pagination, it's params need to respond to:
     #   * #page_offset [Integer] - the offset into the results for the start of the page (counts from 1; default: 1)
     #   * #page_limit [Integer] - the max number of records to return in a page
-    #     * if not paginating, defaults to: all
-    #     * if `default_to_all_terms == true` AND neither page_offset nor page_limit are set, defaults to: all
-    #     * else defaults to: DEFAULT_PAGE_LIMIT
-    # @param results [Array<Hash>] results of a search query as processed by the authority module.
+    #     * if format==:jsonapi, defaults to: DEFAULT_PAGE_LIMIT
+    #     * if page_offset is passed in, defaults to: DEFAULT_PAGE_LIMIT
+    #     * else when format==:json && page_offset.nil?, defaults to all results (backward compatible)
+    # @param results [Array<Hash>] results of a search query as processed by the authority module
     # @param format [String] - if present, supported values are [:json | :jsonapi]
-    #     * when :json, the response is an array of results
-    #     * when :json-api, the response follows the JSON API specification
+    #     * when :json, the response is an array of results (default)
+    #     * when :jsonapi, the response follows the JSON API specification
     #
     # @see https://jsonapi.org/format/#fetching-pagination Pagination section of JSON API specification
     # @see https://jsonapi.org/examples/#pagination JSON API example pagination
@@ -38,7 +115,7 @@ module Qa
     #     formatted according to the JSON-API standard.  The default is to return
     #     just the results for backward compatibility.  See examples.
     #
-    # @example json without pagination (backward compatible)
+    # @example json without pagination (backward compatible) (used only if neither page_offset nor page_limit are passed in)
     #   # request: q=term
     #   # response: format=json, no pagination, all results
     #   [
@@ -48,7 +125,7 @@ module Qa
     #     { "id": "28", "label": "term 28" }
     #   ]
     #
-    # @example json with pagination
+    # @example json with pagination (used if either page_offset or page_limit are passed in)
     #   # request: q=term, page_offset=3, page_limit=2
     #   # response: format=json, paginated, results 3..4
     #   [
@@ -403,7 +480,7 @@ module Qa
         limit = Integer(requested_page_limit)
         @page_limit_error = ERROR_OUT_OF_RANGE_TOO_SMALL if limit < 1
         limit.positive? ? limit : nil
-      rescue
+      rescue ArgumentError
         @page_limit_error = ERROR_NOT_INTEGER
         nil
       end
