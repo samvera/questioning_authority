@@ -318,14 +318,8 @@ RSpec.describe Qa::PaginationService do
 
           it 'sets page_offset out of range and page_limit out of range errors' do
             expect(response['errors'].size).to eq 2
-            offset_error_is_first = response['errors'].first['title'].starts_with? 'Page Offset'
-            if offset_error_is_first
-              offset_error = response['errors'].first
-              limit_error = response['errors'].second
-            else
-              limit_error = response['errors'].first
-              offset_error = response['errors'].second
-            end
+            offset_error = response['errors'].find { |err| err['title'].starts_with? 'Page Offset' }
+            limit_error = response['errors'].find { |err| err['title'].starts_with? 'Page Limit' }
 
             expect(offset_error['status']).to eq '200'
             expect(offset_error['source']).to include("page_offset" => "40")
@@ -374,15 +368,14 @@ RSpec.describe Qa::PaginationService do
 
           it "sets meta['page'] stats" do
             expect(response["meta"]["page"]["page_offset"]).to eq "1"
-            expect(response["meta"]["page"]["page_limit"]).to eq described_class::DEFAULT_PAGE_LIMIT.to_s
-            expect(response["meta"]["page"]["actual_page_size"]).to eq described_class::DEFAULT_PAGE_LIMIT.to_s
+            expect(response["meta"]["page"]["page_limit"]).to eq "10"
+            expect(response["meta"]["page"]["actual_page_size"]).to eq "10"
             expect(response["meta"]["page"]["total_num_found"]).to eq "36"
           end
 
           it "sets prev link to nil and next link to next page" do
-            next_url = "#{base_url}#{url_path}?q=term&format=jsonapi&page_limit=10&page_offset=11"
             expect(response['links']['prev']).to be_nil
-            expect(response['links']['next']).to eq next_url
+            expect(response['links']['next']).to eq second_page
           end
 
           it "sets first and self links to first page and last link to third page" do
@@ -502,7 +495,7 @@ RSpec.describe Qa::PaginationService do
             query_params[:page_offset] = "31"
           end
 
-          it 'returns json api response with a partial page of results starting at 11th result' do
+          it 'returns json api response with a partial page of results starting at 31th result' do
             expect(response["data"]).to match_array(results[30..35])
           end
 
@@ -643,7 +636,7 @@ RSpec.describe Qa::PaginationService do
             expect(response["meta"]["page"]["total_num_found"]).to eq "36"
           end
 
-          it 'sets links with next set to nil' do
+          it 'sets links with prev and next having values' do
             expect(response['links']["self"]).to eq third_page
             expect(response['links']["first"]).to eq first_page
             expect(response['links']["prev"]).to eq second_page
@@ -660,7 +653,7 @@ RSpec.describe Qa::PaginationService do
           let(:page_offset) { "31" }
 
           it 'returns json api response third page of results' do
-            expect(response["data"]).to match_array(results[30..39])
+            expect(response["data"]).to match_array(results[30..35])
           end
 
           it "sets meta['page'] stats" do

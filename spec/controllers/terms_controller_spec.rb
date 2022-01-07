@@ -168,7 +168,7 @@ describe Qa::TermsController, type: :controller do
             expect(json_api_response["meta"]["page"]["total_num_found"]).to eq total_num_found
           end
 
-          it 'sets links with next set to nil' do
+          it 'sets links with prev and next having values' do
             get :search, params: params
 
             base_url = request.base_url

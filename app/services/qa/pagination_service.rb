@@ -58,28 +58,28 @@ module Qa
     #
     # @example json-api with pagination using default page_offset and page_limit
     #   # request: q=term, format=json-api
-    #   # response: format=json-api, paginated, results 1..8
+    #   # response: format=json-api, paginated, results 1..10
     #   {
     #     "data": [
     #       { "id": "1", "label": "term 1" },
     #       { "id": "2", "label": "term 2" },
     #       ...
-    #       { "id": "8", "label": "term 8" }
+    #       { "id": "10", "label": "term 10" }
     #     ],
     #     "meta": {
     #       "page": {
     #         "page_offset": "1",
-    #         "page_limit": "8",
-    #         "actual_page_size": "8",
+    #         "page_limit": "10",
+    #         "actual_page_size": "10",
     #         "total_num_found": "28",
     #       }
     #     }
     #     "links": {
-    #       "self_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=8&page_offset=1",
-    #       "first_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=8&page_offset=1",
+    #       "self_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=10&page_offset=1",
+    #       "first_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=10&page_offset=1",
     #       "prev_url": nil,
-    #       "next_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=8&page_offset=9",
-    #       "last_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=8&page_offset=25"
+    #       "next_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=10&page_offset=11",
+    #       "last_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=10&page_offset=21"
     #     }
     #   }
     #
@@ -123,10 +123,10 @@ module Qa
     #     }
     #     "links": {
     #       "self_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=-1&page_offset=0",
-    #       "first_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=8&page_offset=1",
+    #       "first_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=10&page_offset=1",
     #       "prev_url": nil,
     #       "next_url": nil,
-    #       "last_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=8&page_offset=25"
+    #       "last_url": "http://example.com/qa/search/local/states?q=new&format=json-api&page_limit=10&page_offset=21"
     #     }
     #     "errors": [
     #       {
@@ -368,7 +368,7 @@ module Qa
         @page_offset_error = ERROR_OUT_OF_RANGE_TOO_SMALL if offset < 1
         @page_offset_error = ERROR_OUT_OF_RANGE_TOO_LARGE if offset > total_num_found
         offset
-      rescue
+      rescue ArgumentError
         @page_offset_error = ERROR_NOT_INTEGER
         nil
       end
@@ -500,11 +500,7 @@ module Qa
       # @return [Hash] parameter key-value pairs formatted for the URL using
       #     the preferred parameter name and updated page_offset value
       def update_parameters(page_offset)
-        updated_params = {}
-        request_query_params.each do |k, v|
-          next if ['page_offset', 'page_limit'].include? k
-          updated_params[k] = v
-        end
+        updated_params = request_query_params.except('page_offset', 'page_limit')
         updated_params['page_limit'] = page_limit
         updated_params['page_offset'] = page_offset
         updated_params
