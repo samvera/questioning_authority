@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.8.0](https://github.com/samvera/questioning_authority/tree/5.8.0) (2022-02-04)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.7.0...5.8.0)
+
+**Merged pull requests:**
+
+- wrap initialization in reloader.to\_prepare to avoid autoload deprecation warning in some cases [\#349](https://github.com/samvera/questioning_authority/pull/349) ([jrochkind](https://github.com/jrochkind))
+- add pagination service for non-linked data authorities following jsonapi standard [\#348](https://github.com/samvera/questioning_authority/pull/348) ([elrayle](https://github.com/elrayle))
+- temporarily pin Faraday gem to \< 2.0 [\#347](https://github.com/samvera/questioning_authority/pull/347) ([elrayle](https://github.com/elrayle))
+
 ## [v5.7.0](https://github.com/samvera/questioning_authority/tree/v5.7.0) (2021-11-04)
 
 [Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.6.0...v5.7.0)
@@ -73,7 +83,6 @@
 
 - Fixes issue limiting LoC results to an authority [\#323](https://github.com/samvera/questioning_authority/pull/323) ([rotated8](https://github.com/rotated8))
 - prep release 5.5.0 [\#322](https://github.com/samvera/questioning_authority/pull/322) ([elrayle](https://github.com/elrayle))
-- Align style practice with current Samvera norms [\#315](https://github.com/samvera/questioning_authority/pull/315) ([bess](https://github.com/bess))
 
 ## [v5.5.0](https://github.com/samvera/questioning_authority/tree/v5.5.0) (2020-08-13)
 
@@ -100,6 +109,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 - Prep for 5.4.0 release [\#317](https://github.com/samvera/questioning_authority/pull/317) ([bess](https://github.com/bess))
 - Standardize and document release process [\#316](https://github.com/samvera/questioning_authority/pull/316) ([bess](https://github.com/bess))
+- Align style practice with current Samvera norms [\#315](https://github.com/samvera/questioning_authority/pull/315) ([bess](https://github.com/bess))
 - Updating Rails development dependency [\#313](https://github.com/samvera/questioning_authority/pull/313) ([jeremyf](https://github.com/jeremyf))
 - Adding config option for Geonames URLs [\#312](https://github.com/samvera/questioning_authority/pull/312) ([jeremyf](https://github.com/jeremyf))
 - Remove Ruby 2.4 / Rails 6.0 build [\#311](https://github.com/samvera/questioning_authority/pull/311) ([bkeese](https://github.com/bkeese))
@@ -257,6 +267,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 - Fix the test that broke during merge of multiple PRs [\#251](https://github.com/samvera/questioning_authority/pull/251) ([elrayle](https://github.com/elrayle))
 - determine is loc special processing should be done based on template uri instead of authority name [\#248](https://github.com/samvera/questioning_authority/pull/248) ([elrayle](https://github.com/elrayle))
 - Updates the CircleCI configuration to test against Ruby releases 2.6.3, 2.5.5, and 2.4.6 [\#243](https://github.com/samvera/questioning_authority/pull/243) ([jrgriffiniii](https://github.com/jrgriffiniii))
+- reset uri with every call to find [\#240](https://github.com/samvera/questioning_authority/pull/240) ([elrayle](https://github.com/elrayle))
 
 ## [v4.1.1](https://github.com/samvera/questioning_authority/tree/v4.1.1) (2019-05-08)
 
@@ -269,7 +280,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 **Merged pull requests:**
 
 - release 4.1.1 [\#241](https://github.com/samvera/questioning_authority/pull/241) ([elrayle](https://github.com/elrayle))
-- reset uri with every call to find [\#240](https://github.com/samvera/questioning_authority/pull/240) ([elrayle](https://github.com/elrayle))
 - do not discard blank nodes [\#239](https://github.com/samvera/questioning_authority/pull/239) ([elrayle](https://github.com/elrayle))
 - improve deprecation warnings [\#238](https://github.com/samvera/questioning_authority/pull/238) ([elrayle](https://github.com/elrayle))
 
@@ -300,6 +310,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 - Move search and find tests SearchQuery and FindTerm specs [\#228](https://github.com/samvera/questioning_authority/pull/228) ([elrayle](https://github.com/elrayle))
 - Add CircleCI instead of Travis [\#222](https://github.com/samvera/questioning_authority/pull/222) ([tpendragon](https://github.com/tpendragon))
 - New authority for Discogs data. [\#220](https://github.com/samvera/questioning_authority/pull/220) ([tworrall](https://github.com/tworrall))
+- Default id to subject uri when missing [\#219](https://github.com/samvera/questioning_authority/pull/219) ([elrayle](https://github.com/elrayle))
 
 ## [v4.0.0](https://github.com/samvera/questioning_authority/tree/v4.0.0) (2019-03-11)
 
@@ -324,7 +335,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
-- Default id to subject uri when missing [\#219](https://github.com/samvera/questioning_authority/pull/219) ([elrayle](https://github.com/elrayle))
 - prep for release candidate 4.0.0.rc1 [\#217](https://github.com/samvera/questioning_authority/pull/217) ([elrayle](https://github.com/elrayle))
 - prep for 4.0.0 release [\#216](https://github.com/samvera/questioning_authority/pull/216) ([elrayle](https://github.com/elrayle))
 - Update README to point to new wiki documentation [\#215](https://github.com/samvera/questioning_authority/pull/215) ([elrayle](https://github.com/elrayle))
@@ -703,6 +713,7 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 - Issue47 [\#48](https://github.com/samvera/questioning_authority/pull/48) ([awead](https://github.com/awead))
 - Remove LCSH authority because it duplicates LOC's subjects sub-authority [\#46](https://github.com/samvera/questioning_authority/pull/46) ([awead](https://github.com/awead))
 - Remove Curb as a dependency.  Deprecate get\_full\_record [\#44](https://github.com/samvera/questioning_authority/pull/44) ([jcoyne](https://github.com/jcoyne))
+- add full\_record method to local subauthority [\#43](https://github.com/samvera/questioning_authority/pull/43) ([jcoyne](https://github.com/jcoyne))
 
 ## [v0.0.3](https://github.com/samvera/questioning_authority/tree/v0.0.3) (2013-11-11)
 
@@ -714,7 +725,6 @@ This was uploaded via automation. [\#318](https://github.com/samvera/questioning
 
 **Merged pull requests:**
 
-- add full\_record method to local subauthority [\#43](https://github.com/samvera/questioning_authority/pull/43) ([jcoyne](https://github.com/jcoyne))
 - Re-add mesh rake tasks [\#37](https://github.com/samvera/questioning_authority/pull/37) ([dbrower](https://github.com/dbrower))
 
 ## [v0.0.2](https://github.com/samvera/questioning_authority/tree/v0.0.2) (2013-11-07)
