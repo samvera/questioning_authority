@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  samvera: samvera/circleci-orb@0
+  samvera: samvera/circleci-orb@1.0
 jobs:
   bundle_and_test:
     parameters:
@@ -8,7 +8,7 @@ jobs:
         type: string
       bundler_version:
         type: string
-        default: 1.17.3
+        default: 2.3.10
       rails_version:
         type: string
     executor:
@@ -31,6 +31,9 @@ jobs:
             fi
             [[ -z "$(git branch --all --list master */master)" ]]
 
+      - run: 'sudo apt-get update'
+      - run: 'sudo apt-get install -y libsqlite3-dev'
+
       - samvera/bundle_for_gem:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
@@ -51,51 +54,120 @@ jobs:
 workflows:
   ci:
     jobs:
+      # Ruby 2.7 release
       - bundle_and_test:
           name: "ruby2-7_rails6-1"
-          ruby_version: 2.7.2
+          ruby_version: 2.7.5
           rails_version: 6.1.1
       - bundle_and_test:
           name: "ruby2-7_rails6-0"
-          ruby_version: 2.7.0
-          rails_version: 6.0.2
-      - bundle_and_test:
-          name: "ruby2-6_rails6-0"
-          ruby_version: 2.6.5
-          rails_version: 6.0.2
-      - bundle_and_test:
-          name: "ruby2-5_rails6-0"
-          ruby_version: 2.5.7
+          ruby_version: 2.7.5
           rails_version: 6.0.2
       - bundle_and_test:
           name: "ruby2-7_rails5-2"
-          ruby_version: 2.7.0
-          rails_version: 5.2.4
-      - bundle_and_test:
-          name: "ruby2-6_rails5-2"
-          ruby_version: 2.6.5
-          rails_version: 5.2.4
-      - bundle_and_test:
-          name: "ruby2-5_rails5-2"
-          ruby_version: 2.5.7
-          rails_version: 5.2.4
-      - bundle_and_test:
-          name: "ruby2-4_rails5-2"
-          ruby_version: 2.4.9
+          ruby_version: 2.7.5
           rails_version: 5.2.4
       - bundle_and_test:
           name: "ruby2-7_rails5-1"
-          ruby_version: 2.7.0
+          ruby_version: 2.7.5
           rails_version: 5.1.7
+
+      # Ruby 2.6 release
+      - bundle_and_test:
+          name: "ruby2-6_rails6-1"
+          ruby_version: 2.6.9
+          rails_version: 6.1.1
+      - bundle_and_test:
+          name: "ruby2-6_rails6-0"
+          ruby_version: 2.6.9
+          rails_version: 6.0.2
+      - bundle_and_test:
+          name: "ruby2-6_rails5-2"
+          ruby_version: 2.6.9
+          rails_version: 5.2.4
       - bundle_and_test:
           name: "ruby2-6_rails5-1"
-          ruby_version: 2.6.5
+          ruby_version: 2.6.9
           rails_version: 5.1.7
+
+      # Ruby 2.5 release
+      - bundle_and_test:
+          name: "ruby2-5_rails6-1"
+          ruby_version: 2.5.9
+          rails_version: 6.1.0
+      - bundle_and_test:
+          name: "ruby2-5_rails6-0"
+          ruby_version: 2.5.9
+          rails_version: 6.0.2
+      - bundle_and_test:
+          name: "ruby2-5_rails5-2"
+          ruby_version: 2.5.9
+          rails_version: 5.2.4
       - bundle_and_test:
           name: "ruby2-5_rails5-1"
-          ruby_version: 2.5.7
+          ruby_version: 2.5.9
           rails_version: 5.1.7
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - main
+
+    jobs:
+      # Ruby 2.7 release
       - bundle_and_test:
-          name: "ruby2-4_rails5-1"
-          ruby_version: 2.4.9
+          name: "ruby2-7_rails6-1"
+          ruby_version: 2.7.5
+          rails_version: 6.1.1
+      - bundle_and_test:
+          name: "ruby2-7_rails6-0"
+          ruby_version: 2.7.5
+          rails_version: 6.0.2
+      - bundle_and_test:
+          name: "ruby2-7_rails5-2"
+          ruby_version: 2.7.5
+          rails_version: 5.2.4
+      - bundle_and_test:
+          name: "ruby2-7_rails5-1"
+          ruby_version: 2.7.5
+          rails_version: 5.1.7
+
+      # Ruby 2.6 release
+      - bundle_and_test:
+          name: "ruby2-6_rails6-1"
+          ruby_version: 2.6.9
+          rails_version: 6.1.1
+      - bundle_and_test:
+          name: "ruby2-6_rails6-0"
+          ruby_version: 2.6.9
+          rails_version: 6.0.2
+      - bundle_and_test:
+          name: "ruby2-6_rails5-2"
+          ruby_version: 2.6.9
+          rails_version: 5.2.4
+      - bundle_and_test:
+          name: "ruby2-6_rails5-1"
+          ruby_version: 2.6.9
+          rails_version: 5.1.7
+
+      # Ruby 2.5 release
+      - bundle_and_test:
+          name: "ruby2-5_rails6-1"
+          ruby_version: 2.5.9
+          rails_version: 6.1.0
+      - bundle_and_test:
+          name: "ruby2-5_rails6-0"
+          ruby_version: 2.5.9
+          rails_version: 6.0.2
+      - bundle_and_test:
+          name: "ruby2-5_rails5-2"
+          ruby_version: 2.5.9
+          rails_version: 5.2.4
+      - bundle_and_test:
+          name: "ruby2-5_rails5-1"
+          ruby_version: 2.5.9
           rails_version: 5.1.7
