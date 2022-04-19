@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activerecord-import'
   s.add_dependency 'deprecation'
-  s.add_dependency 'faraday', '< 2.0'
+  s.add_dependency 'faraday', '< 3.0', '!= 2.0.0'
   s.add_dependency 'geocoder'
   s.add_dependency 'ldpath'
   s.add_dependency 'nokogiri', '~> 1.6'
