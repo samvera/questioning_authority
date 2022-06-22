@@ -64,7 +64,7 @@ module Qa::Authorities
       # Reformats the data received from the service
       def parse_authority_response(response)
         response['geonames'].map do |result|
-          # Note: the trailing slash is meaningful.
+          # NOTE: the trailing slash is meaningful.
           { 'id' => "https://sws.geonames.org/#{result['geonameId']}/",
             'label' => label.call(result) }
         end

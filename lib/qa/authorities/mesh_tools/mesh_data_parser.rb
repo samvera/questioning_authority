@@ -7,7 +7,9 @@ module Qa::Authorities
         @file = file
       end
 
-      def each_mesh_record # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/CyclomaticComplexity
+      def each_mesh_record
         current_data = {}
         in_record = false
         file.each_line do |line|
