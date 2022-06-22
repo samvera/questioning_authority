@@ -2,11 +2,6 @@ source "https://rubygems.org"
 
 gemspec path: File.expand_path('..', __FILE__)
 
-group :development, :test do
-  gem 'coveralls', require: false
-  gem 'simplecov', require: false
-end
-
 # BEGIN ENGINE_CART BLOCK
 # engine_cart: 0.10.0
 # engine_cart stanza: 0.10.0
