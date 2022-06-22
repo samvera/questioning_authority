@@ -21,7 +21,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'faraday', '< 3.0', '!= 2.0.0'
   s.add_dependency 'geocoder'
   s.add_dependency 'ldpath'
+  s.add_dependency 'net-smtp'
   s.add_dependency 'nokogiri', '~> 1.6'
+  # Pinning psych to 3.3.2 to avoid this bug:
+  # https://stackoverflow.com/questions/71191685/visit-psych-nodes-alias-unknown-alias-default-psychbadalias
+  s.add_dependency 'psych', '< 4'
   s.add_dependency 'rails', '>=5.0', "< 6.2"
   s.add_dependency 'rdf'
 
