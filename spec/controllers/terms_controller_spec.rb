@@ -65,6 +65,7 @@ describe Qa::TermsController, type: :controller do
         class Qa::Authorities::Local::TwoArgs < Qa::Authorities::Base
           attr_reader :subauthority
           def initialize(subauthority)
+            super()
             @subauthority = subauthority
           end
 
