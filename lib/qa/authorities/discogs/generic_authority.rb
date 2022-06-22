@@ -11,6 +11,7 @@ module Qa::Authorities
 
     # @param [String] subauthority to use
     def initialize(subauthority)
+      super()
       @subauthority = subauthority
       self.primary_artists = []
       self.work_uri = "workn1"

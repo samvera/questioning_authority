@@ -4,7 +4,9 @@ module Qa::Authorities
   # http://www.oclc.org/developer/develop/web-services/fast-api/assign-fast.en.html
   class AssignFast::GenericAuthority < Base
     attr_reader :subauthority
+
     def initialize(subauthority)
+      super()
       @subauthority = subauthority
     end
 

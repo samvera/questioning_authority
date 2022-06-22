@@ -34,6 +34,7 @@ module Qa::Authorities
     attr_reader :subauthority
 
     def initialize(subauthority)
+      super()
       self.class.check_for_index
       @subauthority = subauthority
     end
