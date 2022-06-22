@@ -57,7 +57,7 @@ module Qa
         def deep_copy(graph:)
           new_graph = RDF::Graph.new
           graph.statements.each do |st|
-            new_graph.insert(st.dup)
+            new_graph << st.dup
           end
           new_graph
         end
