@@ -36,10 +36,8 @@ module Qa::Authorities
       end
 
       def registry
-        @registry ||= begin
-          Registry.new do |reg|
-            register_defaults(reg)
-          end
+        @registry ||= Registry.new do |reg|
+          register_defaults(reg)
         end
       end
 
