@@ -5,18 +5,12 @@ group :development do
 
   case ENV['RAILS_VERSION']
 
-  # Both of these are probably only needed for Rails 6.1 and Ruby 3.1 
+  # This only "fixes" the problem in the tests.
   when /^6\.1\./
-    # opt into mail 2.8.0.rc1 so we get extra dependencies required for rails 6.1
-    # Once mail 2.8.0 final is released this will not be required.
-    # https://github.com/mikel/mail/pull/1472
-    gem 'mail', '>= 2.8.0.rc1'
-
     # Ruby 3.0 comes with Psych 3, while Ruby 3.1 comes with Psych 4,
     # which has a major breaking change (diff 3.3.2 → 4.0.0).
     # See: https://bugs.ruby-lang.org/issues/17866
     # See also: https://stackoverflow.com/questions/71191685/visit-psych-nodes-alias-unknown-alias-default-psychbadalias/71192990#71192990
-    # Once psych catches up, this can be removed.
     gem 'psych', '< 4'
   end
 end
