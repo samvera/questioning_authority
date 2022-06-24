@@ -136,7 +136,7 @@ module Qa::Authorities
         # Special processing for loc ids for backward compatibility.  IDs may be in the form 'n123' or 'n 123'.  This adds
         # the <blank> into the ID to allow it to be found as the object of a triple in the graph.
         def loc_id
-          loc_id = URI.unescape(id)
+          loc_id = id
           digit_idx = loc_id.index(/\d/)
           loc_id.insert(digit_idx, ' ') if loc? && loc_id.index(' ').blank? && digit_idx > 0
           loc_id
@@ -164,7 +164,7 @@ module Qa::Authorities
         def extract_uri_by_id(id_predicate)
           @uri = graph_service.subjects_for_object_value(graph: @filtered_graph,
                                                          predicate: id_predicate,
-                                                         object_value: URI.unescape(id)).first
+                                                         object_value: id).first
           return if @uri.present? || !loc?
 
           # NOTE: Second call to try and extract using the loc_id allows for special processing on the id for LOC authorities.
@@ -172,7 +172,7 @@ module Qa::Authorities
           #       the ID is provided without the <blank>, this tries a second time to find it with the <blank>.
           @uri = graph_service.subjects_for_object_value(graph: @filtered_graph,
                                                          predicate: id_predicate,
-                                                         object_value: URI.unescape(loc_id)).first
+                                                         object_value: loc_id).first
           return if @uri.blank? # only show the depercation warning if the loc_id was used
           Qa.deprecation_warning(
             in_msg: 'Qa::Authorities::LinkedData::FindTerm',
