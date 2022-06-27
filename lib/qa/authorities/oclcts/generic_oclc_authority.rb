@@ -35,7 +35,7 @@ module Qa::Authorities
 
       def get_raw_response(query_type, id)
         query_url = Oclcts.url_pattern(query_type).gsub("{query}", id).gsub("{id}", id).gsub("{authority-id}", subauthority)
-        @raw_response = Nokogiri::XML(open(query_url))
+        @raw_response = Nokogiri::XML(URI.open(query_url))
       end
   end
 end
