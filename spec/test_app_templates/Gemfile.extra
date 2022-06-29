@@ -2,4 +2,15 @@
 
 group :development do
   gem 'linkeddata'
+
+  case ENV['RAILS_VERSION']
+
+  # This only "fixes" the problem in the tests.
+  when /^6\.1\./
+    # Ruby 3.0 comes with Psych 3, while Ruby 3.1 comes with Psych 4,
+    # which has a major breaking change (diff 3.3.2 → 4.0.0).
+    # See: https://bugs.ruby-lang.org/issues/17866
+    # See also: https://stackoverflow.com/questions/71191685/visit-psych-nodes-alias-unknown-alias-default-psychbadalias/71192990#71192990
+    gem 'psych', '< 4'
+  end
 end

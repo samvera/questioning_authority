@@ -152,9 +152,11 @@ If you're working on PR for this project, create a feature branch off of `main`.
 This repository follows the [Samvera Community Code of Conduct](https://samvera.atlassian.net/wiki/spaces/samvera/pages/405212316/Code+of+Conduct) and [language recommendations](https://github.com/samvera/maintenance/blob/main/templates/CONTRIBUTING.md#language).  Please ***do not*** create a branch called `master` for this repository or as part of your pull request; the branch will either need to be removed or renamed before it can be considered for inclusion in the code base and history of this repository.
 
 ## Compatibility
-
-- Ruby 2.5 or the latest 2.4 version is recommended. Later versions may also work.
-- Rails 5 is required. We recommend the latest Rails 5.2 release.
+This code works with the latest versions of:
+ - Rails 6.1, 6.0, 5.2 and 5.1.
+ - Ruby 3.0, 2.6, and 2.5.
+ - You can also use Ruby 3.1, but the combination of Ruby 3.1 and Rails 6.1 comes with a caveat: your app will not be able to use `psych 4` (which ordinarily comes with 3.1). See https://bugs.ruby-lang.org/issues/17866 and https://stackoverflow.com/questions/71191685/visit-psych-nodes-alias-unknown-alias-default-psychbadalias/71192990#71192990 for an explanation. One workaround is to modify your app's `Gemfile` to hold back `psych`: `gem 'psych', '< 4'`.
+See also  `.circleci/config.yml`.
 
 ## Product Owner & Maintenance
 
