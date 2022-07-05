@@ -60,7 +60,7 @@ module Qa::Authorities
       def authority_config
         @authority_config ||= Qa::LinkedData::AuthorityService.authority_config(@authority_name)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data authority '#{@authority_name}'" if @authority_config.nil?
-        convert_1_0_to_2_0 if @authority_config.fetch(:QA_CONFIG_VERSION, '1.0') == '1.0'
+        convert_1_0_to_2_0_version if @authority_config.fetch(:QA_CONFIG_VERSION, '1.0') == '1.0'
         @authority_config
       end
 
@@ -78,7 +78,7 @@ module Qa::Authorities
 
       private
 
-        def convert_1_0_to_2_0
+        def convert_1_0_to_2_0_version
           convert_1_0_url_to_2_0_url(:search)
           convert_1_0_url_to_2_0_url(:term)
         end

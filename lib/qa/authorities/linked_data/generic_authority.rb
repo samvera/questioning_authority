@@ -20,6 +20,7 @@ module Qa::Authorities
       delegate :subauthority?, :subauthorities?, to: :search_config, prefix: 'search'
 
       def initialize(auth_name)
+        super()
         @authority_config = Qa::Authorities::LinkedData::Config.new(auth_name)
       end
 
