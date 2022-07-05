@@ -32,7 +32,7 @@ module Qa
       ## @return [Array<String>] the extracted values based on the ldpath
       def self.ldpath_evaluate(program:, graph:, subject_uri:, limit_to_context: Qa.config.limit_ldpath_to_context?)
         return VALUE_ON_ERROR if program.blank?
-        output = program.evaluate(subject_uri, context: graph, limit_to_context: limit_to_context)
+        output = program.evaluate(subject_uri, context: graph, limit_to_context:)
         output.present? ? output['property'].uniq : nil
       rescue => e
         Rails.logger.warn("WARNING: #{I18n.t('qa.linked_data.ldpath.evaluate_logger_error')} (cause: #{e.message}")

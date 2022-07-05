@@ -67,9 +67,9 @@ module Qa
             graph.subjects.each do |subject|
               next if subject.anonymous? # skip blank nodes
               values = if ldpath_map.present?
-                         map_values_with_ldpath_map(graph: graph, ldpath_map: ldpath_map, prefixes: prefixes, subject_uri: subject, sort_key: sort_key, context_map: context_map)
+                         map_values_with_ldpath_map(graph:, ldpath_map:, prefixes:, subject_uri: subject, sort_key:, context_map:)
                        else
-                         map_values_with_predicate_map(graph: graph, predicate_map: predicate_map, subject_uri: subject, sort_key: sort_key, context_map: context_map)
+                         map_values_with_predicate_map(graph:, predicate_map:, subject_uri: subject, sort_key:, context_map:)
                        end
               search_matches << values if result_subject? values, sort_key
             end
@@ -90,13 +90,13 @@ module Qa
               return value_map if context_map.blank?
               return value_map unless result_subject? value_map, sort_key
               context = {}
-              context = context_mapper_service.map_context(graph: graph, context_map: context_map, subject_uri: subject) if context_map.present?
+              context = context_mapper_service.map_context(graph:, context_map:, subject_uri: subject) if context_map.present?
               value_map[:context] = context
               value_map
             end
 
             def map_values_with_ldpath_map(graph:, ldpath_map:, prefixes:, subject_uri:, sort_key:, context_map:) # rubocop:disable Metrics/ParameterLists
-              graph_ldpath_mapper_service.map_values(graph: graph, ldpath_map: ldpath_map, prefixes: prefixes, subject_uri: subject_uri) do |value_map|
+              graph_ldpath_mapper_service.map_values(graph:, ldpath_map:, prefixes:, subject_uri:) do |value_map|
                 map_context(graph, sort_key, context_map, value_map, subject_uri)
               end
             end
@@ -106,7 +106,7 @@ module Qa
                 in_msg: 'Qa::LinkedData::Mapper::SearchResultsMapperService',
                 msg: 'predicate_map is deprecated; update to use ldpath_map'
               )
-              graph_predicate_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri) do |value_map|
+              graph_predicate_mapper_service.map_values(graph:, predicate_map:, subject_uri:) do |value_map|
                 map_context(graph, sort_key, context_map, value_map, subject_uri)
               end
             end

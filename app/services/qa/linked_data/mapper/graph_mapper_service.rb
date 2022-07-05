@@ -24,7 +24,7 @@ module Qa
         #    :sort=>[#<RDF::Literal:0x3fcff54b4c18("2")>]}
         def self.map_values(graph:, predicate_map:, subject_uri:, &block)
           Qa.deprecation_warning(msg: "`Qa::LinkedData::Mapper::GraphMapperService` is deprecated; update to `Qa::LinkedData::Mapper::GraphPredicateMapperService`.")
-          Qa::LinkedData::Mapper::GraphPredicateMapperService.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri, &block)
+          Qa::LinkedData::Mapper::GraphPredicateMapperService.map_values(graph:, predicate_map:, subject_uri:, &block)
         end
       end
     end

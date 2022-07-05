@@ -18,7 +18,7 @@ module Qa
           action_validation(action)
           url_config = action_config.url_config
           selected_substitutions = url_config.extract_substitutions(combined_substitutions(action_config, action, action_request, request_header))
-          Qa::IriTemplateService.build_url(url_config: url_config, substitutions: selected_substitutions)
+          Qa::IriTemplateService.build_url(url_config:, substitutions: selected_substitutions)
         end
 
         private

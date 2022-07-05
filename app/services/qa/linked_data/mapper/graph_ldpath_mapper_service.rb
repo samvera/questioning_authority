@@ -36,8 +36,8 @@ module Qa
           value_map = {}
           ldpath_map.each do |key, ldpath|
             next value_map[key] = [subject_uri] if ldpath == :subject_uri
-            ldpath_program = ldpath_service.ldpath_program(ldpath: ldpath, prefixes: prefixes)
-            values = ldpath_service.ldpath_evaluate(program: ldpath_program, graph: graph, subject_uri: subject_uri)
+            ldpath_program = ldpath_service.ldpath_program(ldpath:, prefixes:)
+            values = ldpath_service.ldpath_evaluate(program: ldpath_program, graph:, subject_uri:)
             value_map[key] = values
           end
           value_map = yield value_map if block_given?

@@ -20,7 +20,7 @@ RSpec.describe Qa::LinkedData::Mapper::SearchResultsMapperService do
   end
 
   describe '.map_values' do
-    subject { described_class.map_values(graph: graph, predicate_map: predicate_map, sort_key: sort_key) }
+    subject { described_class.map_values(graph:, predicate_map:, sort_key:) }
 
     let(:sort_key) { :sort }
     let(:expected530369) do
@@ -61,7 +61,7 @@ RSpec.describe Qa::LinkedData::Mapper::SearchResultsMapperService do
     end
 
     context 'when context_map is passed in' do
-      subject { described_class.map_values(graph: graph, predicate_map: predicate_map, sort_key: sort_key, context_map: context_map) }
+      subject { described_class.map_values(graph:, predicate_map:, sort_key:, context_map:) }
 
       let(:context_map) { instance_double(Qa::LinkedData::Config::ContextMap) }
       let(:context) do
@@ -75,7 +75,7 @@ RSpec.describe Qa::LinkedData::Mapper::SearchResultsMapperService do
           altlabel: [RDF::Literal.new('Ithaca (N.Y.). Cornell University')],
           sameas: [RDF::URI.new('http://id.loc.gov/authorities/names/n79021621')],
           sort: [RDF::Literal.new('1')],
-          context: context
+          context:
         }
       end
       let(:expected5140_with_context) do
@@ -86,7 +86,7 @@ RSpec.describe Qa::LinkedData::Mapper::SearchResultsMapperService do
           altlabel: [RDF::URI.new('_:b0')],
           sameas: [],
           sort: [RDF::Literal.new('3')],
-          context: context
+          context:
         }
       end
 

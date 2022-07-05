@@ -35,12 +35,12 @@ module Qa::Authorities
       #     {"uri":"http://id.worldcat.org/fast/72456","id":"72456","label":"Cornell, Sarah Maria, 1802-1832"},
       #     {"uri":"http://id.worldcat.org/fast/409667","id":"409667","label":"Cornell, Ezra, 1807-1874"} ]
       def search(query, request_header: {}, language: nil, replacements: {}, subauth: nil, context: false, performance_data: false) # rubocop:disable Metrics/ParameterLists
-        request_header = build_request_header(language: language, replacements: replacements, subauth: subauth, context: context, performance_data: performance_data) if request_header.empty?
+        request_header = build_request_header(language:, replacements:, subauth:, context:, performance_data:) if request_header.empty?
         unpack_request_header(request_header)
         raise Qa::InvalidLinkedDataAuthority, "Unable to initialize linked data search sub-authority #{subauthority}" unless subauthority.nil? || subauthority?(subauthority)
-        url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, request_header: request_header)
+        url = authority_service.build_url(action_config: search_config, action: :search, action_request: query, request_header:)
         Rails.logger.info "QA Linked Data search url: #{url}"
-        load_graph(url: url)
+        load_graph(url:)
         normalize_results
       end
 
@@ -49,7 +49,7 @@ module Qa::Authorities
         def load_graph(url:)
           access_start_dt = Time.now.utc
 
-          @full_graph = graph_service.load_graph(url: url)
+          @full_graph = graph_service.load_graph(url:)
 
           access_end_dt = Time.now.utc
           @access_time_s = access_end_dt - access_start_dt
@@ -59,7 +59,7 @@ module Qa::Authorities
         def normalize_results
           normalize_start_dt = Time.now.utc
 
-          @filtered_graph = graph_service.filter(graph: full_graph, language: language)
+          @filtered_graph = graph_service.filter(graph: full_graph, language:)
           results = map_results
           json = convert_results_to_json(results)
 
@@ -84,9 +84,9 @@ module Qa::Authorities
             )
           end
 
-          results_mapper_service.map_values(graph: filtered_graph, prefixes: prefixes, ldpath_map: ldpath_map,
-                                            predicate_map: predicate_map, sort_key: :sort,
-                                            preferred_language: language, context_map: context_map)
+          results_mapper_service.map_values(graph: filtered_graph, prefixes:, ldpath_map:,
+                                            predicate_map:, sort_key: :sort,
+                                            preferred_language: language, context_map:)
         end
 
         def unpack_request_header(request_header)
@@ -195,12 +195,12 @@ module Qa::Authorities
         end
 
         def performance(results)
-          Qa::LinkedData::PerformanceDataService.performance_data(access_time_s: access_time_s, normalize_time_s: normalize_time_s,
+          Qa::LinkedData::PerformanceDataService.performance_data(access_time_s:, normalize_time_s:,
                                                                   fetched_data_graph: full_graph, normalized_data: results)
         end
 
         def response_header(results)
-          Qa::LinkedData::ResponseHeaderService.new(results: results, request_header: request_header, config: search_config, graph: full_graph).search_header
+          Qa::LinkedData::ResponseHeaderService.new(results:, request_header:, config: search_config, graph: full_graph).search_header
         end
 
         # This is providing support for calling build_url with individual parameters instead of the request_header.

@@ -21,7 +21,7 @@ module Qa
         def filter(graph:, language: nil, remove_blanknode_subjects: false)
           return graph unless graph.present?
           return graph unless language.present? || remove_blanknode_subjects
-          filtered_graph = deep_copy(graph: graph)
+          filtered_graph = deep_copy(graph:)
           filtered_graph.statements.each do |st|
             filtered_graph.delete(st) if filter_out_blanknode(remove_blanknode_subjects, st.subject) || filter_out_language(graph, language, st)
           end
@@ -76,7 +76,7 @@ module Qa
           def filter_out_language(graph, language, statement)
             return false if language.blank?
             return false unless Qa::LinkedData::LanguageService.literal_has_language_marker?(statement.object)
-            objects = object_values(graph: graph, subject: statement.subject, predicate: statement.predicate)
+            objects = object_values(graph:, subject: statement.subject, predicate: statement.predicate)
             return false unless at_least_one_object_has_language?(objects, language)
             !language.include?(statement.object.language)
           end

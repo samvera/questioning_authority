@@ -4,7 +4,7 @@ RSpec.describe Qa::LinkedData::LdpathService do
   let(:ldpath) { 'skos:prefLabel ::xsd:string' }
 
   describe '.ldpath_program' do
-    subject { described_class.ldpath_program(ldpath: ldpath, prefixes: prefixes) }
+    subject { described_class.ldpath_program(ldpath:, prefixes:) }
 
     let(:prefixes) do
       { skos: 'http://www.w3.org/2004/02/skos/core#' }
@@ -30,7 +30,7 @@ RSpec.describe Qa::LinkedData::LdpathService do
   end
 
   describe '.ldpath_evaluate' do
-    subject { described_class.ldpath_evaluate(program: program, graph: graph, subject_uri: subject_uri) }
+    subject { described_class.ldpath_evaluate(program:, graph:, subject_uri:) }
 
     let(:program) { instance_double(Ldpath::Program) }
     let(:graph) { instance_double(RDF::Graph) }

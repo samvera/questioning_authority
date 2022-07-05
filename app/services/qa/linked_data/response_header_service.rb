@@ -63,8 +63,8 @@ module Qa
           service_uri = RDF::URI.new(config.service_uri)
           return I18n.t("qa.linked_data.search.total_not_reported") unless ldpath && service_uri
           prefixes = config.prefixes
-          ldpath_program = ldpath_service.ldpath_program(ldpath: ldpath, prefixes: prefixes)
-          values = ldpath_service.ldpath_evaluate(program: ldpath_program, graph: graph, subject_uri: service_uri)
+          ldpath_program = ldpath_service.ldpath_program(ldpath:, prefixes:)
+          values = ldpath_service.ldpath_evaluate(program: ldpath_program, graph:, subject_uri: service_uri)
           values.map!(&:to_i)
           values.first || I18n.t("qa.linked_data.search.total_not_reported")
         end

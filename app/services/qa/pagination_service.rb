@@ -527,7 +527,7 @@ module Qa
 
       # @return the URL to current page of results
       def self_link
-        url_with(page_offset: page_offset)
+        url_with(page_offset:)
       end
 
       # @return the URL to the first page of results

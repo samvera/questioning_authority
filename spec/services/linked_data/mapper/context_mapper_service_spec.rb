@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Qa::LinkedData::Mapper::ContextMapperService do
-  subject { described_class.map_context(graph: graph, context_map: context_map, subject_uri: subject_uri) }
+  subject { described_class.map_context(graph:, context_map:, subject_uri:) }
 
   let(:graph) { instance_double(RDF::Graph) }
   let(:context_map) { instance_double(Qa::LinkedData::Config::ContextMap) }

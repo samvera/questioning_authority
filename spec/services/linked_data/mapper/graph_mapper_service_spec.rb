@@ -19,7 +19,7 @@ RSpec.describe Qa::LinkedData::Mapper::GraphMapperService do
   end
 
   describe '.map_values' do
-    subject { described_class.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri) }
+    subject { described_class.map_values(graph:, predicate_map:, subject_uri:) }
 
     context 'when each predicate has one value' do
       let(:subject_uri) { RDF::URI.new('http://id.worldcat.org/fast/530369') }
@@ -78,7 +78,7 @@ RSpec.describe Qa::LinkedData::Mapper::GraphMapperService do
         { location: '42.4488° N, 76.4763° W' }
       end
       let(:subject) do
-        described_class.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri) do |value_map|
+        described_class.map_values(graph:, predicate_map:, subject_uri:) do |value_map|
           value_map[:context] = context
           value_map
         end

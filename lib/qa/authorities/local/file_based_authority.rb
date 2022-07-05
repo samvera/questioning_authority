@@ -39,7 +39,7 @@ module Qa::Authorities
       def normalize_terms(terms)
         terms.map do |term|
           if term.is_a? String
-            { id: term, term: term }.with_indifferent_access
+            { id: term, term: }.with_indifferent_access
           else
             term[:id] ||= term[:term]
             term

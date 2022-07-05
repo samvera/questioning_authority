@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Qa::LinkedData::GraphService do
   describe '.load_graph' do
-    subject { described_class.load_graph(url: url) }
+    subject { described_class.load_graph(url:) }
     let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
 
     context 'when graph can be loaded' do
@@ -26,12 +26,12 @@ RSpec.describe Qa::LinkedData::GraphService do
       end
 
       it 'raises error' do
-        expect { described_class.load_graph(url: url) }.to raise_error(Qa::TermNotFound, "#{url} Not Found - Term may not exist at LOD Authority. (HTTPNotFound - 404)")
+        expect { described_class.load_graph(url:) }.to raise_error(Qa::TermNotFound, "#{url} Not Found - Term may not exist at LOD Authority. (HTTPNotFound - 404)")
       end
     end
 
     context 'when service error' do
-      subject { described_class.load_graph(url: url) }
+      subject { described_class.load_graph(url:) }
 
       let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
       let(:uri) { URI(url) }
@@ -47,7 +47,7 @@ RSpec.describe Qa::LinkedData::GraphService do
     end
 
     context 'when service unavailable' do
-      subject { described_class.load_graph(url: url) }
+      subject { described_class.load_graph(url:) }
 
       let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
       let(:uri) { URI(url) }
@@ -63,7 +63,7 @@ RSpec.describe Qa::LinkedData::GraphService do
     end
 
     context "when error isn't specifically handled" do
-      subject { described_class.load_graph(url: url) }
+      subject { described_class.load_graph(url:) }
 
       let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
       let(:regurl) { 'http:\/\/experimental.worldcat.org\/fast\/search\?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
@@ -82,10 +82,10 @@ RSpec.describe Qa::LinkedData::GraphService do
 
   describe '.filter' do
     context 'with language filter' do
-      subject { described_class.filter(graph: graph, language: language) }
+      subject { described_class.filter(graph:, language:) }
 
       let(:url) { 'http://authority.with.language/search?query=foo' }
-      let(:graph) { described_class.load_graph(url: url) }
+      let(:graph) { described_class.load_graph(url:) }
 
       let(:en_dried_milk) { RDF::Literal.new("dried milk", language: :en) }
       let(:fr_dried_milk) { RDF::Literal.new("lait en poudre", language: :fr) }
@@ -177,10 +177,10 @@ RSpec.describe Qa::LinkedData::GraphService do
     end
 
     context 'with filter out subject blanknodes' do
-      subject { described_class.filter(graph: graph, remove_blanknode_subjects: true) }
+      subject { described_class.filter(graph:, remove_blanknode_subjects: true) }
 
       let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
-      let(:graph) { described_class.load_graph(url: url) }
+      let(:graph) { described_class.load_graph(url:) }
 
       before do
         stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage')
@@ -195,10 +195,10 @@ RSpec.describe Qa::LinkedData::GraphService do
   end
 
   describe '.object_values' do
-    subject { described_class.object_values(graph: graph, subject: subject_uri, predicate: predicate_uri) }
+    subject { described_class.object_values(graph:, subject: subject_uri, predicate: predicate_uri) }
 
     let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
-    let(:graph) { described_class.load_graph(url: url) }
+    let(:graph) { described_class.load_graph(url:) }
     let(:subject_uri) { RDF::URI('http://id.worldcat.org/fast/530369') }
     let(:predicate_uri) { RDF::URI('http://schema.org/sameAs') }
 
@@ -214,11 +214,11 @@ RSpec.describe Qa::LinkedData::GraphService do
   end
 
   describe '.deep_copy' do
-    subject { described_class.object_values(graph: graph, subject: subject_uri, predicate: predicate_uri) }
+    subject { described_class.object_values(graph:, subject: subject_uri, predicate: predicate_uri) }
 
     let(:url) { 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage' }
-    let(:graph) { described_class.load_graph(url: url) }
-    let(:copied_graph) { described_class.deep_copy(graph: graph) }
+    let(:graph) { described_class.load_graph(url:) }
+    let(:copied_graph) { described_class.deep_copy(graph:) }
 
     before do
       stub_request(:get, 'http://experimental.worldcat.org/fast/search?maximumRecords=3&query=cql.any%20all%20%22cornell%22&sortKeys=usage')

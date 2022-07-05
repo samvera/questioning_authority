@@ -154,7 +154,7 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     end
 
     def create_request_header_service
-      @request_header_service = request_header_service_class.new(request: request, params: params)
+      @request_header_service = request_header_service_class.new(request:, params:)
     end
 
     def init_authority

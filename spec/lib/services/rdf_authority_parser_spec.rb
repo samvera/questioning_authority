@@ -10,10 +10,10 @@ describe Qa::Services::RDFAuthorityParser do
   let(:ari_entry) { Qa::LocalAuthorityEntry.find_by(label: 'Ari') }
 
   describe "#import_rdf" do
-    before { described_class.import_rdf(name, source, format: format, predicate: predicate) }
+    before { described_class.import_rdf(name, source, format:, predicate:) }
     it "creates the authority and authority entries" do
       expect(Qa::LocalAuthority.count).to eq(1)
-      expect(Qa::LocalAuthority.find_by(name: name)).not_to be_nil
+      expect(Qa::LocalAuthority.find_by(name:)).not_to be_nil
       expect(Qa::LocalAuthorityEntry.count).to eq(2)
       expect(alum_entry.uri).to eq('http://lexvo.org/id/iso639-3/aab')
       expect(ari_entry.uri).to eq('http://lexvo.org/id/iso639-3/aac')

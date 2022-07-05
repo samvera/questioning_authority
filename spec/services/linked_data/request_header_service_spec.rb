@@ -24,7 +24,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
       before { allow(Qa).to receive_message_chain(:config, :suppress_ip_data_from_log).and_return(true) } # rubocop:disable RSpec/MessageChain
       it 'does not include IP info in log message' do
         expect(Rails.logger).to receive(:info).with("******** SEARCH")
-        described_class.new(request: request, params: some_params)
+        described_class.new(request:, params: some_params)
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
       before { allow(Qa).to receive_message_chain(:config, :suppress_ip_data_from_log).and_return(false) } # rubocop:disable RSpec/MessageChain
       it 'does include IP info in log message' do
         expect(Rails.logger).to receive(:info).with("******** SEARCH from IP #{fake_ip} in {city: #{city}, state: #{state}, country: #{country}}")
-        described_class.new(request: request, params: some_params)
+        described_class.new(request:, params: some_params)
       end
     end
   end
@@ -56,8 +56,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
       it 'uses passed in params' do
         expected_results =
           {
-            request: request,
-            request_id: request_id,
+            request:,
+            request_id:,
             context: true,
             performance_data: true,
             replacements: { 'maxRecords' => '4' },
@@ -65,7 +65,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
             subauthority: 'person',
             user_language: ['sp']
           }
-        expect(described_class.new(request: request, params: search_params).search_header).to eq expected_results
+        expect(described_class.new(request:, params: search_params).search_header).to eq expected_results
       end
     end
 
@@ -75,8 +75,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults' do
           expected_results =
             {
-              request: request,
-              request_id: request_id,
+              request:,
+              request_id:,
               context: false,
               performance_data: false,
               replacements: {},
@@ -84,7 +84,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               subauthority: nil,
               user_language: nil
             }
-          expect(described_class.new(request: request, params: {}).search_header).to eq expected_results
+          expect(described_class.new(request:, params: {}).search_header).to eq expected_results
         end
       end
 
@@ -93,8 +93,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults with language set to request language' do
           expected_results =
             {
-              request: request,
-              request_id: request_id,
+              request:,
+              request_id:,
               context: false,
               performance_data: false,
               replacements: {},
@@ -102,7 +102,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               subauthority: nil,
               user_language: ['de']
             }
-          expect(described_class.new(request: request, params: {}).search_header).to eq expected_results
+          expect(described_class.new(request:, params: {}).search_header).to eq expected_results
         end
       end
     end
@@ -127,8 +127,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
       it 'uses passed in params' do
         expected_results =
           {
-            request: request,
-            request_id: request_id,
+            request:,
+            request_id:,
             format: 'n3',
             performance_data: true,
             replacements: { 'extra' => 'data', 'even' => 'more data' },
@@ -136,7 +136,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
             subauthority: 'person',
             user_language: ['sp']
           }
-        expect(described_class.new(request: request, params: fetch_params).fetch_header).to eq expected_results
+        expect(described_class.new(request:, params: fetch_params).fetch_header).to eq expected_results
       end
     end
 
@@ -146,8 +146,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults' do
           expected_results =
             {
-              request: request,
-              request_id: request_id,
+              request:,
+              request_id:,
               format: 'json',
               performance_data: false,
               replacements: {},
@@ -155,7 +155,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               subauthority: nil,
               user_language: nil
             }
-          expect(described_class.new(request: request, params: {}).fetch_header).to eq expected_results
+          expect(described_class.new(request:, params: {}).fetch_header).to eq expected_results
         end
       end
 
@@ -164,8 +164,8 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
         it 'returns defaults with language set to request language' do
           expected_results =
             {
-              request: request,
-              request_id: request_id,
+              request:,
+              request_id:,
               format: 'json',
               performance_data: false,
               replacements: {},
@@ -173,7 +173,7 @@ RSpec.describe Qa::LinkedData::RequestHeaderService do
               subauthority: nil,
               user_language: ['de']
             }
-          expect(described_class.new(request: request, params: {}).fetch_header).to eq expected_results
+          expect(described_class.new(request:, params: {}).fetch_header).to eq expected_results
         end
       end
     end

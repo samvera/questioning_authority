@@ -32,9 +32,9 @@ RSpec.describe Qa::LinkedData::ResponseHeaderService do
         allow(search_config).to receive(:service_uri).and_return(service_uri)
         allow(results).to receive(:count).and_return(10)
         allow(Qa::LinkedData::LdpathService).to receive(:ldpath_program)
-          .with(ldpath: ldpath, prefixes: search_config.prefixes).and_return(ldpath_program)
+          .with(ldpath:, prefixes: search_config.prefixes).and_return(ldpath_program)
         allow(Qa::LinkedData::LdpathService).to receive(:ldpath_evaluate)
-          .with(program: ldpath_program, graph: graph, subject_uri: anything).and_return(['134'])
+          .with(program: ldpath_program, graph:, subject_uri: anything).and_return(['134'])
       end
 
       it 'gets pagination data from request header' do
@@ -45,7 +45,7 @@ RSpec.describe Qa::LinkedData::ResponseHeaderService do
             retrieved_records: 10,
             total_records: 134
           }
-        expect(described_class.new(request_header: request_header, results: results, config: search_config, graph: graph).search_header).to eq expected_results
+        expect(described_class.new(request_header:, results:, config: search_config, graph:).search_header).to eq expected_results
       end
     end
 
@@ -67,7 +67,7 @@ RSpec.describe Qa::LinkedData::ResponseHeaderService do
             retrieved_records: 10,
             total_records: "NOT REPORTED"
           }
-        expect(described_class.new(request_header: request_header, results: results, config: search_config, graph: graph).search_header).to eq expected_results
+        expect(described_class.new(request_header:, results:, config: search_config, graph:).search_header).to eq expected_results
       end
     end
   end
@@ -91,7 +91,7 @@ RSpec.describe Qa::LinkedData::ResponseHeaderService do
           {
             predicate_count: 2
           }
-        expect(described_class.new(request_header: request_header, results: results, config: term_config, graph: graph).fetch_header).to eq expected_results
+        expect(described_class.new(request_header:, results:, config: term_config, graph:).fetch_header).to eq expected_results
       end
     end
 
@@ -105,7 +105,7 @@ RSpec.describe Qa::LinkedData::ResponseHeaderService do
           {
             predicate_count: 0
           }
-        expect(described_class.new(request_header: request_header, results: results, config: term_config, graph: graph).fetch_header).to eq expected_results
+        expect(described_class.new(request_header:, results:, config: term_config, graph:).fetch_header).to eq expected_results
       end
     end
   end

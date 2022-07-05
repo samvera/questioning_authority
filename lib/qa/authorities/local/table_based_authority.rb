@@ -49,7 +49,7 @@ module Qa::Authorities
     end
 
     def find(uri)
-      record = base_relation.find_by(uri: uri)
+      record = base_relation.find_by(uri:)
       return unless record
       output(record)
     end
@@ -57,7 +57,7 @@ module Qa::Authorities
     private
 
       def base_relation
-        Qa::LocalAuthorityEntry.where(local_authority: local_authority)
+        Qa::LocalAuthorityEntry.where(local_authority:)
       end
 
       def output_set(set)

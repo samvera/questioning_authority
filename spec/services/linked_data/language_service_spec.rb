@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Qa::LinkedData::LanguageService do
   describe '.preferred_language' do
-    subject { described_class.preferred_language(user_language: user_language, authority_language: authority_language) }
+    subject { described_class.preferred_language(user_language:, authority_language:) }
 
     let(:user_language) { nil }
     let(:authority_language) { nil }

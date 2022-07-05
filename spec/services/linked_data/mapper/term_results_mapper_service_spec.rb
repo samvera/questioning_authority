@@ -31,7 +31,7 @@ RSpec.describe Qa::LinkedData::Mapper::TermResultsMapperService do
 
   describe '.map_values' do
     context 'when given a predicate map' do
-      subject { described_class.map_values(graph: graph, predicate_map: predicate_map, subject_uri: RDF::URI.new('http://aims.fao.org/aos/agrovoc/c_9513')) }
+      subject { described_class.map_values(graph:, predicate_map:, subject_uri: RDF::URI.new('http://aims.fao.org/aos/agrovoc/c_9513')) }
 
       let(:predicate_map) do
         {
@@ -58,7 +58,7 @@ RSpec.describe Qa::LinkedData::Mapper::TermResultsMapperService do
     end
 
     context 'when given an ldpath map' do
-      subject { described_class.map_values(graph: graph, prefixes: prefixes, ldpath_map: ldpath_map, subject_uri: RDF::URI.new('http://aims.fao.org/aos/agrovoc/c_9513')) }
+      subject { described_class.map_values(graph:, prefixes:, ldpath_map:, subject_uri: RDF::URI.new('http://aims.fao.org/aos/agrovoc/c_9513')) }
 
       let(:prefixes) do
         {

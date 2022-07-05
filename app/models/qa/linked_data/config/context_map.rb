@@ -68,7 +68,7 @@ module Qa
             return if groups.key? group_id
             i18n_key = Qa::LinkedData::Config::Helper.fetch(group_map, :group_label_i18n, nil)
             default = Qa::LinkedData::Config::Helper.fetch(group_map, :group_label_default, nil)
-            return groups[group_id] = I18n.t(i18n_key, default: default) if i18n_key.present?
+            return groups[group_id] = I18n.t(i18n_key, default:) if i18n_key.present?
             groups[group_id] = default
           end
       end

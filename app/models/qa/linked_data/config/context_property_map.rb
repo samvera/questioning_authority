@@ -74,7 +74,7 @@ module Qa
         # Values of this property for a specfic subject URI
         # @return [Array<String>] values for this property
         def values(graph, subject_uri)
-          Qa::LinkedData::LdpathService.ldpath_evaluate(program: basic_program, graph: graph, subject_uri: subject_uri)
+          Qa::LinkedData::LdpathService.ldpath_evaluate(program: basic_program, graph:, subject_uri:)
         end
 
         # Values of this property for a specfic subject URI with URI values expanded to include id and label.
@@ -90,7 +90,7 @@ module Qa
           return values unless expand_uri?
           return values unless values.respond_to? :map!
           values.map! do |uri|
-            { uri: uri, id: expansion_id(graph, uri), label: expansion_label(graph, uri) }
+            { uri:, id: expansion_id(graph, uri), label: expansion_label(graph, uri) }
           end
           values
         end
@@ -100,30 +100,30 @@ module Qa
           def extract_label
             i18n_key = Qa::LinkedData::Config::Helper.fetch(property_map, :property_label_i18n, nil)
             default = Qa::LinkedData::Config::Helper.fetch(property_map, :property_label_default, nil)
-            return I18n.t(i18n_key, default: default) if i18n_key.present?
+            return I18n.t(i18n_key, default:) if i18n_key.present?
             default
           end
 
           def basic_program
-            @basic_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: ldpath, prefixes: prefixes)
+            @basic_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath:, prefixes:)
           end
 
           def expansion_label_program
-            @expansion_label_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: expansion_label_ldpath, prefixes: prefixes)
+            @expansion_label_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: expansion_label_ldpath, prefixes:)
           end
 
           def expansion_id_program
-            @expansion_id_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: expansion_id_ldpath, prefixes: prefixes)
+            @expansion_id_program ||= Qa::LinkedData::LdpathService.ldpath_program(ldpath: expansion_id_ldpath, prefixes:)
           end
 
           def expansion_label(graph, uri)
-            label = Qa::LinkedData::LdpathService.ldpath_evaluate(program: expansion_label_program, graph: graph, subject_uri: RDF::URI(uri))
+            label = Qa::LinkedData::LdpathService.ldpath_evaluate(program: expansion_label_program, graph:, subject_uri: RDF::URI(uri))
             label.size == 1 ? label.first : label
           end
 
           def expansion_id(graph, uri)
             return uri if expansion_id_ldpath.blank?
-            id = Qa::LinkedData::LdpathService.ldpath_evaluate(program: expansion_id_program, graph: graph, subject_uri: RDF::URI(uri))
+            id = Qa::LinkedData::LdpathService.ldpath_evaluate(program: expansion_id_program, graph:, subject_uri: RDF::URI(uri))
             id.size == 1 ? id.first : id
           end
       end

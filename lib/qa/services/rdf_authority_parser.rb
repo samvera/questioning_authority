@@ -27,7 +27,7 @@ module Qa
         #                              must match a field in the source file(s)
         #                             defaults to http://www.w3.org/2004/02/skos/core#prefLabel
         def import_rdf(name, sources, opts = {})
-          authority = Qa::LocalAuthority.find_or_create_by(name: name)
+          authority = Qa::LocalAuthority.find_or_create_by(name:)
           format = opts.fetch(:format, :ntriples)
           predicate = opts.fetch(:predicate, ::RDF::Vocab::SKOS.prefLabel)
           sources.each do |uri|
@@ -38,7 +38,7 @@ module Qa
         private
 
         def import_source(authority, format, predicate, uri)
-          ::RDF::Reader.open(uri, format: format) do |reader|
+          ::RDF::Reader.open(uri, format:) do |reader|
             reader.each_statement do |statement|
               parse_statement(statement, predicate, authority)
             end

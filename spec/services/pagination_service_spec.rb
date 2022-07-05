@@ -22,8 +22,8 @@ RSpec.describe Qa::PaginationService do
   end
 
   let(:service) do
-    described_class.new(request: request,
-                        results: results,
+    described_class.new(request:,
+                        results:,
                         format: requested_format)
   end
   let(:base_url) { 'http://example.com' }

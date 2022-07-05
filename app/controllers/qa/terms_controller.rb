@@ -114,6 +114,6 @@ class Qa::TermsController < ::ApplicationController
     end
 
     def pagination_service(results:, format:)
-      pagination_service_class.new(request: request, results: results, format: format)
+      pagination_service_class.new(request:, results:, format:)
     end
 end

@@ -6,7 +6,7 @@ class Qa::SubjectMeshTerm < ActiveRecord::Base
   end
 
   def trees
-    Qa::MeshTree.where(term_id: term_id).map(&:tree_number)
+    Qa::MeshTree.where(term_id:).map(&:tree_number)
   end
 
   def synonyms

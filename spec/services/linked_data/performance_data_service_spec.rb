@@ -30,7 +30,7 @@ RSpec.describe Qa::LinkedData::PerformanceDataService do
             normalization_bytes_per_s: (normalized_size / normalize_time_s),
             total_time_s: (access_time_s + normalize_time_s)
           }
-        expect(described_class.performance_data(access_time_s: access_time_s, normalize_time_s: normalize_time_s, fetched_data_graph: graph, normalized_data: results)).to eq expected_results
+        expect(described_class.performance_data(access_time_s:, normalize_time_s:, fetched_data_graph: graph, normalized_data: results)).to eq expected_results
       end
     end
   end

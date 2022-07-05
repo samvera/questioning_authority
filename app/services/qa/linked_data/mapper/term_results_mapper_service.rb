@@ -54,16 +54,16 @@ module Qa
           #   ]
           def map_values(graph:, subject_uri:, prefixes: nil, ldpath_map: nil, predicate_map: nil)
             if ldpath_map.present?
-              map_values_with_ldpath_map(graph: graph, ldpath_map: ldpath_map, prefixes: prefixes, subject_uri: subject_uri)
+              map_values_with_ldpath_map(graph:, ldpath_map:, prefixes:, subject_uri:)
             else
-              map_values_with_predicate_map(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri)
+              map_values_with_predicate_map(graph:, predicate_map:, subject_uri:)
             end
           end
 
           private
 
             def map_values_with_ldpath_map(graph:, ldpath_map:, prefixes:, subject_uri:)
-              graph_ldpath_mapper_service.map_values(graph: graph, ldpath_map: ldpath_map, prefixes: prefixes, subject_uri: subject_uri)
+              graph_ldpath_mapper_service.map_values(graph:, ldpath_map:, prefixes:, subject_uri:)
             end
 
             def map_values_with_predicate_map(graph:, predicate_map:, subject_uri:)
@@ -71,7 +71,7 @@ module Qa
                 in_msg: 'Qa::LinkedData::Mapper::TermResultsMapperService',
                 msg: 'predicate_map is deprecated; update to use ldpath_map'
               )
-              graph_predicate_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri)
+              graph_predicate_mapper_service.map_values(graph:, predicate_map:, subject_uri:)
             end
         end
       end
