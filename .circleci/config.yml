@@ -51,9 +51,27 @@ jobs:
 
       - samvera/parallel_rspec
 
+
+
 workflows:
   ci:
     jobs:
+      # Ruby 3.1 release
+      - bundle_and_test:
+          name: "ruby3-1_rails6-1"
+          ruby_version: 3.1.2
+          rails_version: 6.1.1
+
+      # Ruby 3.0 release
+      - bundle_and_test:
+          name: "ruby3-0_rails6-1"
+          ruby_version: 3.0.3
+          rails_version: 6.1.1
+      - bundle_and_test:
+          name: "ruby3-0_rails6-0"
+          ruby_version: 3.0.3
+          rails_version: 6.0.5
+
       # Ruby 2.7 release
       - bundle_and_test:
           name: "ruby2-7_rails6-1"
@@ -62,11 +80,11 @@ workflows:
       - bundle_and_test:
           name: "ruby2-7_rails6-0"
           ruby_version: 2.7.5
-          rails_version: 6.0.2
+          rails_version: 6.0.5
       - bundle_and_test:
           name: "ruby2-7_rails5-2"
           ruby_version: 2.7.5
-          rails_version: 5.2.4
+          rails_version: 5.2.6
       - bundle_and_test:
           name: "ruby2-7_rails5-1"
           ruby_version: 2.7.5
@@ -80,11 +98,11 @@ workflows:
       - bundle_and_test:
           name: "ruby2-6_rails6-0"
           ruby_version: 2.6.9
-          rails_version: 6.0.2
+          rails_version: 6.0.5
       - bundle_and_test:
           name: "ruby2-6_rails5-2"
           ruby_version: 2.6.9
-          rails_version: 5.2.4
+          rails_version: 5.2.6
       - bundle_and_test:
           name: "ruby2-6_rails5-1"
           ruby_version: 2.6.9
@@ -94,15 +112,15 @@ workflows:
       - bundle_and_test:
           name: "ruby2-5_rails6-1"
           ruby_version: 2.5.9
-          rails_version: 6.1.0
+          rails_version: 6.1.1
       - bundle_and_test:
           name: "ruby2-5_rails6-0"
           ruby_version: 2.5.9
-          rails_version: 6.0.2
+          rails_version: 6.0.5
       - bundle_and_test:
           name: "ruby2-5_rails5-2"
           ruby_version: 2.5.9
-          rails_version: 5.2.4
+          rails_version: 5.2.6
       - bundle_and_test:
           name: "ruby2-5_rails5-1"
           ruby_version: 2.5.9
@@ -118,6 +136,22 @@ workflows:
                 - main
 
     jobs:
+      # Ruby 3.1 release
+      - bundle_and_test:
+          name: "ruby3-1_rails6-1"
+          ruby_version: 3.1.2
+          rails_version: 6.1.1
+
+      # Ruby 3.0 release
+      - bundle_and_test:
+          name: "ruby3-0_rails6-1"
+          ruby_version: 3.0.3
+          rails_version: 6.1.1
+      - bundle_and_test:
+          name: "ruby3-0_rails6-0"
+          ruby_version: 3.0.3
+          rails_version: 6.0.5
+
       # Ruby 2.7 release
       - bundle_and_test:
           name: "ruby2-7_rails6-1"
@@ -126,11 +160,11 @@ workflows:
       - bundle_and_test:
           name: "ruby2-7_rails6-0"
           ruby_version: 2.7.5
-          rails_version: 6.0.2
+          rails_version: 6.0.5
       - bundle_and_test:
           name: "ruby2-7_rails5-2"
           ruby_version: 2.7.5
-          rails_version: 5.2.4
+          rails_version: 5.2.6
       - bundle_and_test:
           name: "ruby2-7_rails5-1"
           ruby_version: 2.7.5
@@ -144,11 +178,11 @@ workflows:
       - bundle_and_test:
           name: "ruby2-6_rails6-0"
           ruby_version: 2.6.9
-          rails_version: 6.0.2
+          rails_version: 6.0.5
       - bundle_and_test:
           name: "ruby2-6_rails5-2"
           ruby_version: 2.6.9
-          rails_version: 5.2.4
+          rails_version: 5.2.6
       - bundle_and_test:
           name: "ruby2-6_rails5-1"
           ruby_version: 2.6.9
@@ -158,15 +192,15 @@ workflows:
       - bundle_and_test:
           name: "ruby2-5_rails6-1"
           ruby_version: 2.5.9
-          rails_version: 6.1.0
+          rails_version: 6.1.1
       - bundle_and_test:
           name: "ruby2-5_rails6-0"
           ruby_version: 2.5.9
-          rails_version: 6.0.2
+          rails_version: 6.0.5
       - bundle_and_test:
           name: "ruby2-5_rails5-2"
           ruby_version: 2.5.9
-          rails_version: 5.2.4
+          rails_version: 5.2.6
       - bundle_and_test:
           name: "ruby2-5_rails5-1"
           ruby_version: 2.5.9

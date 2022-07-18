@@ -2,4 +2,17 @@
 
 group :development do
   gem 'linkeddata'
+  if ENV['RAILS_VERSION'] =~ /^6\.1\./ && ENV['RUBY_VERSION'] =~ /^3\.1\./
+    # Ruby 3.0 comes with Psych 3, while Ruby 3.1 comes with Psych 4,
+    # which has a major breaking change (diff 3.3.2 → 4.0.0).
+    # See: https://bugs.ruby-lang.org/issues/17866
+    # See also: https://stackoverflow.com/questions/71191685/visit-psych-nodes-alias-unknown-alias-default-psychbadalias/71192990#71192990
+    gem 'psych', '< 4'
+    # opt into mail 2.8.0.rc1 so we get extra dependencies
+    # Once mail 2.8.0 final is released this will not be required.
+    # https://github.com/mikel/mail/pull/1472
+    gem "mail", ">= 2.8.0.rc1"
+    # See https://stackoverflow.com/questions/70500220/rails-7-ruby-3-1-loaderror-cannot-load-such-file-net-smtp
+    gem 'net-smtp', require: false
+  end
 end
