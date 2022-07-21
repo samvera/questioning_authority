@@ -1,8 +1,31 @@
 # Changelog
 
-## [5.8.1](https://github.com/samvera/questioning_authority/tree/5.8.1) (2022-02-07)
+## [5.9.0](https://github.com/samvera/questioning_authority/tree/5.9.0) (2022-07-19)
 
-[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.8.0...5.8.1)
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.8.1...5.9.0)
+
+**Closed issues:**
+
+- Configure nightly CircleCI test suite executions [\#352](https://github.com/samvera/questioning_authority/issues/352)
+- Support Rails 6.1 releases [\#344](https://github.com/samvera/questioning_authority/issues/344)
+
+**Merged pull requests:**
+
+- Ruby 3.1 and Rails 6.1 support [\#371](https://github.com/samvera/questioning_authority/pull/371) ([eddierubeiz](https://github.com/eddierubeiz))
+- Replace URI.unescape with CGI.unescape [\#369](https://github.com/samvera/questioning_authority/pull/369) ([eddierubeiz](https://github.com/eddierubeiz))
+- Change open\(url\) to URI.open\(url\) [\#367](https://github.com/samvera/questioning_authority/pull/367) ([eddierubeiz](https://github.com/eddierubeiz))
+- Use a regular expression to match error messages [\#363](https://github.com/samvera/questioning_authority/pull/363) ([eddierubeiz](https://github.com/eddierubeiz))
+- Remove simplecov and coveralls [\#362](https://github.com/samvera/questioning_authority/pull/362) ([eddierubeiz](https://github.com/eddierubeiz))
+- Trivial rubocop changes [\#361](https://github.com/samvera/questioning_authority/pull/361) ([eddierubeiz](https://github.com/eddierubeiz))
+- Remove two unneeded blocks [\#360](https://github.com/samvera/questioning_authority/pull/360) ([eddierubeiz](https://github.com/eddierubeiz))
+- Call `super()` in a bunch of initializers [\#359](https://github.com/samvera/questioning_authority/pull/359) ([eddierubeiz](https://github.com/eddierubeiz))
+- Use \<\< instead of insert, per `Rails/skipsmodelvalidations` rubocop [\#357](https://github.com/samvera/questioning_authority/pull/357) ([eddierubeiz](https://github.com/eddierubeiz))
+- Allow Faraday 2.x again [\#354](https://github.com/samvera/questioning_authority/pull/354) ([jrochkind](https://github.com/jrochkind))
+- Ensures that CircleCI executes nightly test suites are executed [\#353](https://github.com/samvera/questioning_authority/pull/353) ([jrgriffiniii](https://github.com/jrgriffiniii))
+
+## [v5.8.1](https://github.com/samvera/questioning_authority/tree/v5.8.1) (2022-02-07)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.8.0...v5.8.1)
 
 **Merged pull requests:**
 
