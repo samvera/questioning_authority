@@ -40,7 +40,7 @@ jobs:
           project: qa
 
       - samvera/engine_cart_generate:
-          cache_key: v7-internal-test-app-{{ checksum "qa.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "lib/generators/qa/install/install_generator.rb" }}-<< parameters.rails_version >>-<< parameters.ruby_version >>
+          cache_key: v8-internal-test-app-{{ checksum "qa.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "lib/generators/qa/install/install_generator.rb" }}-<< parameters.rails_version >>-<< parameters.ruby_version >>
 
       - samvera/bundle_for_gem:
           ruby_version: << parameters.ruby_version >>
@@ -140,67 +140,67 @@ workflows:
       - bundle_and_test:
           name: "ruby3-1_rails6-1"
           ruby_version: 3.1.2
-          rails_version: 6.1.1
+          rails_version: 6.1.6.1
 
       # Ruby 3.0 release
       - bundle_and_test:
           name: "ruby3-0_rails6-1"
-          ruby_version: 3.0.3
-          rails_version: 6.1.1
+          ruby_version: 3.0.4
+          rails_version: 6.1.6.1
       - bundle_and_test:
           name: "ruby3-0_rails6-0"
-          ruby_version: 3.0.3
-          rails_version: 6.0.5
+          ruby_version: 3.0.4
+          rails_version: 6.0.5.1
 
       # Ruby 2.7 release
       - bundle_and_test:
           name: "ruby2-7_rails6-1"
-          ruby_version: 2.7.5
-          rails_version: 6.1.1
+          ruby_version: 2.7.6
+          rails_version: 6.1.6.1
       - bundle_and_test:
           name: "ruby2-7_rails6-0"
-          ruby_version: 2.7.5
-          rails_version: 6.0.5
+          ruby_version: 2.7.6
+          rails_version: 6.0.5.1
       - bundle_and_test:
           name: "ruby2-7_rails5-2"
-          ruby_version: 2.7.5
-          rails_version: 5.2.6
+          ruby_version: 2.7.6
+          rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-7_rails5-1"
-          ruby_version: 2.7.5
+          ruby_version: 2.7.6
           rails_version: 5.1.7
 
       # Ruby 2.6 release
       - bundle_and_test:
           name: "ruby2-6_rails6-1"
-          ruby_version: 2.6.9
-          rails_version: 6.1.1
+          ruby_version: 2.6.10
+          rails_version: 6.1.6.1
       - bundle_and_test:
           name: "ruby2-6_rails6-0"
-          ruby_version: 2.6.9
-          rails_version: 6.0.5
+          ruby_version: 2.6.10
+          rails_version: 6.0.5.1
       - bundle_and_test:
           name: "ruby2-6_rails5-2"
-          ruby_version: 2.6.9
-          rails_version: 5.2.6
+          ruby_version: 2.6.10
+          rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-6_rails5-1"
-          ruby_version: 2.6.9
+          ruby_version: 2.6.10
           rails_version: 5.1.7
 
       # Ruby 2.5 release
       - bundle_and_test:
           name: "ruby2-5_rails6-1"
           ruby_version: 2.5.9
-          rails_version: 6.1.1
+          rails_version: 6.1.6.1
       - bundle_and_test:
           name: "ruby2-5_rails6-0"
           ruby_version: 2.5.9
-          rails_version: 6.0.5
+          rails_version: 6.0.5.1
       - bundle_and_test:
           name: "ruby2-5_rails5-2"
           ruby_version: 2.5.9
-          rails_version: 5.2.6
+          rails_version: 5.2.8.1
       - bundle_and_test:
           name: "ruby2-5_rails5-1"
           ruby_version: 2.5.9
