@@ -1,12 +1,7 @@
 # Use this file to reference specific commits of gems.
 
 
-
-
-
 group :development do
-  gem 'linkeddata'
-
   # Rails < 6.1 are not compatible with psych 4, although doesn't know it.
   # Local apps using old Rails will have to lock locally.  Latest versions
   # of Rails 6.1+ has been updated to work with psych 4.
@@ -16,6 +11,11 @@ group :development do
   #
   if ENV['RAILS_VERSION'] && Gem::Version.new(ENV['RAILS_VERSION']) < Gem::Version.new("6.1")
     gem 'psych', '< 4'
+
+    # AND we need a version of linkeddata that will allow psych < 4, not sure why
+    # bundler can't resolve that on it's own.
+    # https://github.com/ruby-rdf/linkeddata/issues/16
+    gem 'linkeddata', "<= 3.2.0"
   end
 
   if ENV['RAILS_VERSION'] =~ /^6\.1\./ && ENV['RUBY_VERSION'] =~ /^3\.1\./
