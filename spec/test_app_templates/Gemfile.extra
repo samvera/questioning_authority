@@ -12,10 +12,14 @@ group :development do
   if ENV['RAILS_VERSION'] && Gem::Version.new(ENV['RAILS_VERSION']) < Gem::Version.new("6.1")
     gem 'psych', '< 4'
 
-    # AND we need a version of linkeddata that will allow psych < 4, not sure why
-    # bundler can't resolve that on it's own.
-    # https://github.com/ruby-rdf/linkeddata/issues/16
-    gem 'linkeddata', "<= 3.2.0"
+    # Some versions of linkeddata dependency depend on yaml-ld gem... yaml-ld 0.0.1
+    # has a dependency on psych 4.x specifically, conflicting with above, bundler
+    # seems to be having trouble resolving to yaml-ld 0.0.2 on it's own.
+    # We don't actually depend on yaml-ld at all ourselves, just trying
+    # to help bundler resolve a tree that works.
+    #
+    # https://github.com/ruby-rdf/linkeddata/issues/16#issuecomment-1239912981
+    gem 'yaml-ld', ">= 0.0.2"
   end
 
   if ENV['RAILS_VERSION'] =~ /^6\.1\./ && ENV['RUBY_VERSION'] =~ /^3\.1\./
