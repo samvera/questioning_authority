@@ -30,7 +30,20 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rails', '!=5.2.0', '!=5.2.1', '!=5.2.2'
   s.add_development_dependency 'byebug'
   s.add_development_dependency 'engine_cart', '~> 2.0'
-  s.add_development_dependency 'linkeddata'
+
+  # Not sure why these RDF-related gems are only being listed as development dependencies
+  # not general runtime dependencies...
+  # ... maybe meant to be optional dependencies only if you are using related
+  # func? See also the "meta" gem `linkeddata` which includes all of these deps.
+  #
+  # If apps find they need these optional dependencies for linked-data-related
+  # functionality from qa gem, they may find it easiest to include the `linkeddata`
+  # aggregator gem as one of their dependencies.
+  s.add_development_dependency 'rdf-n3', '~> 3.0'
+  s.add_development_dependency 'rdf-rdfxml', '~> 3.0'
+  s.add_development_dependency 'json-ld', '~> 3.0'
+  s.add_development_dependency 'rdf-vocab', '~> 3.0'
+
   s.add_development_dependency 'pry'
   s.add_development_dependency 'pry-byebug'
   s.add_development_dependency 'rspec-rails'
