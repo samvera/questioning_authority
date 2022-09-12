@@ -1,13 +1,19 @@
 # Use this file to reference specific commits of gems.
 
+
 group :development do
-  gem 'linkeddata'
-  if ENV['RAILS_VERSION'] =~ /^6\.1\./ && ENV['RUBY_VERSION'] =~ /^3\.1\./
-    # Ruby 3.0 comes with Psych 3, while Ruby 3.1 comes with Psych 4,
-    # which has a major breaking change (diff 3.3.2 → 4.0.0).
-    # See: https://bugs.ruby-lang.org/issues/17866
-    # See also: https://stackoverflow.com/questions/71191685/visit-psych-nodes-alias-unknown-alias-default-psychbadalias/71192990#71192990
+  # Rails < 6.1 are not compatible with psych 4, although doesn't know it.
+  # Local apps using old Rails will have to lock locally.  Latest versions
+  # of Rails 6.1+ has been updated to work with psych 4.
+  # See also:
+  #
+  # https://stackoverflow.com/questions/71191685/visit-psych-nodes-alias-unknown-alias-default-psychbadalias/71192990#71192990
+  #
+  if ENV['RAILS_VERSION'] && Gem::Version.new(ENV['RAILS_VERSION']) < Gem::Version.new("6.1")
     gem 'psych', '< 4'
+  end
+
+  if ENV['RAILS_VERSION'] =~ /^6\.1\./ && ENV['RUBY_VERSION'] =~ /^3\.1\./
     # opt into mail 2.8.0.rc1 so we get extra dependencies
     # Once mail 2.8.0 final is released this will not be required.
     # https://github.com/mikel/mail/pull/1472

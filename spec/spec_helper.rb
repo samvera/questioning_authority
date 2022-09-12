@@ -1,4 +1,10 @@
-require 'linkeddata'
+# Not sure why these RDF-related gems are only being used in CI and not general
+# dependencies... maybe meant to be optional dependencies?
+require 'rdf/n3'
+require 'rdf/rdfxml'
+require 'json/ld'
+require 'rdf/vocab'
+
 require 'json'
 require 'engine_cart'
 require 'byebug' unless ENV['TRAVIS']

@@ -212,7 +212,7 @@ describe Qa::Authorities::Discogs::GenericAuthority do
           expect(JSON.parse(results).keys).to match_array ["@context", "@graph"]
           expect(JSON.parse(results)["@context"]["bf2"]).to eq("http://id.loc.gov/ontologies/bibframe/")
           expect(results).to include("You Go To My Head")
-          expect(results).to include("Rodgers & Hart")
+          expect(JSON.parse(results).inspect).to include("Rodgers & Hart")
           expect(results).to include("Ray Brown")
           expect(results).to include("1952")
           expect(results).to include("Single")
