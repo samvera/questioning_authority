@@ -69,26 +69,14 @@ class Qa::TermsController < ::ApplicationController
   end
 
   def init_authority # rubocop:disable Metrics/MethodLength
-    begin
-      mod = authority_class.camelize.constantize
-    rescue NameError
-      msg = "Unable to initialize authority #{authority_class}"
-      logger.warn msg
-      render json: { errors: msg }, status: :bad_request
-      return
-    end
-    begin
-      @authority = if mod.is_a? Class
-                     mod.new
-                   else
-                     raise Qa::MissingSubAuthority, "No sub-authority provided" if params[:subauthority].blank?
-                     mod.subauthority_for(params[:subauthority])
-                   end
-    rescue Qa::InvalidSubAuthority, Qa::MissingSubAuthority => e
-      msg = e.message
-      logger.warn msg
-      render json: { errors: msg }, status: :bad_request
-    end
+    @authority = Qa.authority_for(vocab: params[:vocab],
+                                  subauthority: params[:subauthority],
+                                  # Included to preserve error message text
+                                  try_linked_data_config: false)
+  rescue Qa::InvalidAuthorityError, Qa::InvalidSubAuthority, Qa::MissingSubAuthority => e
+    msg = e.message
+    logger.warn msg
+    render json: { errors: msg }, status: :bad_request
   end
 
   def check_query_param

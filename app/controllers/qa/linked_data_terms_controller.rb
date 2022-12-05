@@ -158,8 +158,8 @@ class Qa::LinkedDataTermsController < ::ApplicationController
     end
 
     def init_authority
-      @authority = Qa::Authorities::LinkedData::GenericAuthority.new(vocab_param)
-    rescue Qa::InvalidLinkedDataAuthority => e
+      @authority = Qa.authority_for(vocab: params[:vocab], subauthority: params[:subauthority])
+    rescue Qa::InvalidAuthorityError, Qa::InvalidLinkedDataAuthority => e
       msg = e.message
       logger.warn msg
       render json: { errors: msg }, status: :bad_request
