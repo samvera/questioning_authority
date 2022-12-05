@@ -61,6 +61,10 @@ workflows:
           name: "ruby3-1_rails6-1"
           ruby_version: 3.1.2
           rails_version: 6.1.6.1
+      - bundle_and_test:
+          name: "ruby3-1_rails7-0"
+          ruby_version: 3.1.2
+          rails_version: 7.0.4
 
       # Ruby 3.0 release
       - bundle_and_test:

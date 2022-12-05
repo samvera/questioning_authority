@@ -150,14 +150,14 @@ rake ci
 
 Commit your features into a new branch and submit a pull request.
 
-## Contributing 
+## Contributing
 
-If you're working on PR for this project, create a feature branch off of `main`. 
+If you're working on PR for this project, create a feature branch off of `main`.
 
 This repository follows the [Samvera Community Code of Conduct](https://samvera.atlassian.net/wiki/spaces/samvera/pages/405212316/Code+of+Conduct) and [language recommendations](https://github.com/samvera/maintenance/blob/main/templates/CONTRIBUTING.md#language).  Please ***do not*** create a branch called `master` for this repository or as part of your pull request; the branch will either need to be removed or renamed before it can be considered for inclusion in the code base and history of this repository.
 
 ## Compatibility
-This gem works with Rails 5.0-6.1 and Ruby 2.5-3.1, provided the version of Rails supports the version of Ruby.
+This gem works with Rails 5.0-7.0 and Ruby 2.5-3.1, provided the version of Rails supports the version of Ruby.
  - Consult `.circleci/config.yml` for a list of supported combinations.
  - The combination of Ruby 3.1 and Rails 6.0 comes with three caveats:
    - your app will not be able to use `psych 4` (which ordinarily comes with 3.1). See https://bugs.ruby-lang.org/issues/17866 and https://stackoverflow.com/questions/71191685/visit-psych-nodes-alias-unknown-alias-default-psychbadalias/71192990#71192990 for an explanation. One workaround is to modify your app's `Gemfile` to hold back `psych`: `gem 'psych', '< 4'`.
