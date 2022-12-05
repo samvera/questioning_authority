@@ -1,8 +1,23 @@
 # Changelog
 
-## [5.9.0](https://github.com/samvera/questioning_authority/tree/5.9.0) (2022-07-19)
+## [5.10.0](https://github.com/samvera/questioning_authority/tree/5.10.0) (2022-12-05)
 
-[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.8.1...5.9.0)
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.9.0...5.10.0)
+
+**Closed issues:**
+
+- address use of autoload in initializers which is deprecated [\#351](https://github.com/samvera/questioning_authority/issues/351)
+- Support Ruby 3.0.3 releases [\#345](https://github.com/samvera/questioning_authority/issues/345)
+
+**Merged pull requests:**
+
+- Support for Rails 7.0.x [\#377](https://github.com/samvera/questioning_authority/pull/377) ([jrochkind](https://github.com/jrochkind))
+- Updating the Product Owner information in preparation for the 2022 autumn request for maintenance [\#376](https://github.com/samvera/questioning_authority/pull/376) ([jrgriffiniii](https://github.com/jrgriffiniii))
+- Fix CI build [\#374](https://github.com/samvera/questioning_authority/pull/374) ([jrochkind](https://github.com/jrochkind)) (includes changing gemspec dependencies to drop `linkeddata` for specifying more specific sub-dependencies actually used). 
+
+## [v5.9.0](https://github.com/samvera/questioning_authority/tree/v5.9.0) (2022-07-21)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.8.1...v5.9.0)
 
 **Closed issues:**
 
