@@ -1,6 +1,7 @@
 require "qa/engine"
 require "active_record"
 require "activerecord-import"
+require "qa/authority_wrapper"
 
 module Qa
   extend ActiveSupport::Autoload
@@ -80,7 +81,7 @@ module Qa
   #
   # @param vocab [String]
   # @param subauthority [String]
-  #
+  # @param context [#params, #search_header, #fetch_header]
   # @param try_linked_data_config [Boolean] when true attempt to check for a linked data authority;
   #        this is included as an option to help preserve error messaging from the 5.10.0 branch.
   #        Unless you want to mirror the error messages of `Qa::TermsController#init_authority` then
@@ -93,15 +94,21 @@ module Qa
   #         #fetch.  This is provided as a means of normalizing how we initialize an authority.
   #         And to provide a means to request an authority both within a controller request cycle as
   #         well as outside of that cycle.
-  def self.authority_for(vocab:, subauthority: nil, try_linked_data_config: true)
+  def self.authority_for(vocab:, context:, subauthority: nil, try_linked_data_config: true)
+    authority = build_authority_for(vocab: vocab,
+                                    subauthority: subauthority,
+                                    try_linked_data_config: try_linked_data_config)
+    AuthorityWrapper.new(authority: authority, subauthority: subauthority, context: context)
+  end
+
+  # @api private
+  def self.build_authority_for(vocab:, subauthority: nil, try_linked_data_config: true)
     authority_constant_name = "Qa::Authorities::#{vocab.to_s.camelcase}"
     authority_constant = authority_constant_name.safe_constantize
     if authority_constant.nil?
-      if try_linked_data_config
-        return Qa::Authorities::LinkedData::GenericAuthority.new(vocab.upcase.to_sym)
-      else
-        raise InvalidAuthorityError, authority_constant_name
-      end
+      return Qa::Authorities::LinkedData::GenericAuthority.new(vocab.upcase.to_sym) if try_linked_data_config
+
+      raise InvalidAuthorityError, authority_constant_name
     end
 
     return authority_constant.new if authority_constant.is_a?(Class)
@@ -109,4 +116,5 @@ module Qa
 
     raise Qa::MissingSubAuthority, "No sub-authority provided"
   end
+  private_class_method :build_authority_for
 end

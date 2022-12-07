@@ -72,7 +72,8 @@ class Qa::TermsController < ::ApplicationController
     @authority = Qa.authority_for(vocab: params[:vocab],
                                   subauthority: params[:subauthority],
                                   # Included to preserve error message text
-                                  try_linked_data_config: false)
+                                  try_linked_data_config: false,
+                                  context: self)
   rescue Qa::InvalidAuthorityError, Qa::InvalidSubAuthority, Qa::MissingSubAuthority => e
     msg = e.message
     logger.warn msg

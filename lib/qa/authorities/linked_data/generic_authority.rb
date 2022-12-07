@@ -13,6 +13,8 @@ module Qa::Authorities
       attr_reader :authority_config
       private :authority_config
 
+      self.linked_data = true
+
       delegate :supports_term?, :term_subauthorities?, :term_subauthority?,
                :term_id_expects_uri?, :term_id_expects_id?, to: :term_config
 
