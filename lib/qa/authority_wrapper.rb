@@ -11,6 +11,7 @@ module Qa
   # data or not?"  And what specifically are the parameter differences.  You will need to perhaps
   # include some additional values in the context if you don't call this from a controller.
   class AuthorityWrapper
+    require 'qa/authority_request_context.rb'
     # @param authority [#find, #search]
     # @param subauthority [#to_s]
     # @param context [#params, #search_header, #fetch_header]

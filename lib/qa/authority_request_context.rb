@@ -36,13 +36,13 @@ module Qa
 
     def search_header
       SEARCH_HEADER_KEYS.each_with_object(headers.deep_dup) do |key, header|
-        header[key] = send(key).present?
+        header[key] = send(key) if send(key).present?
       end.compact
     end
 
     def fetch_header
       FETCH_HEADER_KEYS.each_with_object(headers.deep_dup) do |key, header|
-        header[key] = send(key).present?
+        header[key] = send(key) if send(key).present?
       end.compact
     end
   end
