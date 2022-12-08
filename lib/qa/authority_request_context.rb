@@ -20,8 +20,9 @@ module Qa
       new
     end
 
-    def initialize(params: {}, **kwargs)
+    def initialize(params: {}, headers: {}, **kwargs)
       @params = params
+      @headers = headers
       (SEARCH_HEADER_KEYS + FETCH_HEADER_KEYS).uniq.each do |key|
         send("#{key}=", kwargs[key]) if kwargs.key?(key)
       end
@@ -30,15 +31,19 @@ module Qa
     SEARCH_HEADER_KEYS = %i[request request_id subauthority user_language performance_data context response_header replacements].freeze
     FETCH_HEADER_KEYS = %i[request request_id subauthority user_language performance_data format response_header replacements].freeze
 
-    attr_accessor :params
+    attr_accessor :params, :headers
     attr_accessor(*(SEARCH_HEADER_KEYS + FETCH_HEADER_KEYS).uniq)
 
     def search_header
-      @headers.slice(*SEARCH_HEADER_KEYS).compact
+      SEARCH_HEADER_KEYS.each_with_object(headers.deep_dup) do |key, header|
+        header[key] = send(key).present?
+      end.compact
     end
 
     def fetch_header
-      @headers.slice(*FETCH_HEADER_KEYS).compact
+      FETCH_HEADER_KEYS.each_with_object(headers.deep_dup) do |key, header|
+        header[key] = send(key).present?
+      end.compact
     end
   end
 end
