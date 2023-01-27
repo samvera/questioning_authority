@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["spec/**/*"]
+  s.metadata = { "rubygems_mfa_required" => "true" }
 
   s.add_dependency 'activerecord-import'
   s.add_dependency 'deprecation'
