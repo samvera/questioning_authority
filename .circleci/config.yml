@@ -8,7 +8,7 @@ jobs:
         type: string
       bundler_version:
         type: string
-        default: 2.3.10
+        default: 2.3.26
       rails_version:
         type: string
     executor:
