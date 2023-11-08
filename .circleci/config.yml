@@ -8,7 +8,7 @@ jobs:
         type: string
       bundler_version:
         type: string
-        default: 2.3.10
+        default: 2.3.26
       rails_version:
         type: string
     executor:
@@ -57,6 +57,11 @@ workflows:
   ci:
     jobs:
       # Ruby 3.2
+      - bundle_and_test:
+          name: "ruby3-2_rails7-1"
+          ruby_version: 3.2.2
+          rails_version: 7.1.1
+
       - bundle_and_test:
           name: "ruby3-2_rails7-0"
           ruby_version: 3.2.0
