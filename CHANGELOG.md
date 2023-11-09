@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.11.0](https://github.com/samvera/questioning_authority/tree/5.10.0) (2023-11-09)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.10.0...5.11.0)
+
+* Fixed "encoding" attribute in TGN_LANGAUGES.xml to fix bug triggered in some nokogiri versions. https://github.com/samvera/questioning_authority/pull/385
+
+* Allow and build CI with Rails 7.1 https://github.com/samvera/questioning_authority/pull/384
+
 ## [5.10.0](https://github.com/samvera/questioning_authority/tree/5.10.0) (2022-12-05)
 
 [Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.9.0...5.10.0)
@@ -13,7 +21,7 @@
 
 - Support for Rails 7.0.x [\#377](https://github.com/samvera/questioning_authority/pull/377) ([jrochkind](https://github.com/jrochkind))
 - Updating the Product Owner information in preparation for the 2022 autumn request for maintenance [\#376](https://github.com/samvera/questioning_authority/pull/376) ([jrgriffiniii](https://github.com/jrgriffiniii))
-- Fix CI build [\#374](https://github.com/samvera/questioning_authority/pull/374) ([jrochkind](https://github.com/jrochkind)) (includes changing gemspec dependencies to drop `linkeddata` for specifying more specific sub-dependencies actually used). 
+- Fix CI build [\#374](https://github.com/samvera/questioning_authority/pull/374) ([jrochkind](https://github.com/jrochkind)) (includes changing gemspec dependencies to drop `linkeddata` for specifying more specific sub-dependencies actually used).
 
 ## [v5.9.0](https://github.com/samvera/questioning_authority/tree/v5.9.0) (2022-07-21)
 
