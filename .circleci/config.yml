@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   samvera: samvera/circleci-orb@1.0
+  ruby: circleci/ruby@2
 jobs:
   bundle_and_test:
     parameters:
@@ -11,15 +12,13 @@ jobs:
         default: 2.3.26
       rails_version:
         type: string
-    executor:
-      name: 'samvera/ruby'
-      ruby_version: << parameters.ruby_version >>
-    working_directory: ~/project
+    docker:
+      - image: cimg/ruby:<< parameters.ruby_version >>
     environment:
       ENGINE_CART_RAILS_OPTIONS: --skip-git --skip-bundle --skip-listen --skip-spring --skip-yarn --skip-keeps --skip-coffee --skip-puma --skip-test
       RAILS_VERSION: << parameters.rails_version >>
     steps:
-      - samvera/cached_checkout
+      - checkout
 
       - run:
           name: Check for a branch named 'master'
@@ -34,36 +33,43 @@ jobs:
       - run: 'sudo apt-get update'
       - run: 'sudo apt-get install -y libsqlite3-dev'
 
-      - samvera/bundle:
-          ruby_version: << parameters.ruby_version >>
-          bundler_version: << parameters.bundler_version >>
+      - ruby/install-deps:
+          bundler-version: << parameters.bundler_version >>
+          with-cache: false
 
       - samvera/engine_cart_generate:
           cache_key: v7-internal-test-app-{{ checksum "qa.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "lib/generators/qa/install/install_generator.rb" }}-<< parameters.rails_version >>-<< parameters.ruby_version >>
 
-      - samvera/bundle:
-          ruby_version: << parameters.ruby_version >>
-          bundler_version: << parameters.bundler_version >>
+      - ruby/install-deps:
+          bundler-version: << parameters.bundler_version >>
 
-      - samvera/rubocop
-
-      - samvera/parallel_rspec
+      - ruby/rubocop-check
+      - ruby/rspec-test
 
 
 
 workflows:
   ci:
     jobs:
+      # Ruby 3.3
+      - bundle_and_test:
+          name: "ruby3-3_rails7-1"
+          ruby_version: 3.3.0
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-3_rails7-0"
+          ruby_version: 3.3.0
+          rails_version: 7.0.8
+
       # Ruby 3.2
       - bundle_and_test:
           name: "ruby3-2_rails7-1"
-          ruby_version: 3.2.2
-          rails_version: 7.1.1
-
+          ruby_version: 3.2.3
+          rails_version: 7.1.3
       - bundle_and_test:
           name: "ruby3-2_rails7-0"
-          ruby_version: 3.2.0
-          rails_version: 7.0.4
+          ruby_version: 3.2.3
+          rails_version: 7.0.8
 
       # Ruby 3.1 release
       - bundle_and_test:
@@ -149,11 +155,25 @@ workflows:
                 - main
 
     jobs:
-      # Ruby 3.1 release
+      # Ruby 3.3
       - bundle_and_test:
-          name: "ruby3-1_rails6-1"
-          ruby_version: 3.1.2
-          rails_version: 6.1.1
+          name: "ruby3-3_rails7-1"
+          ruby_version: 3.3.0
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-3_rails7-0"
+          ruby_version: 3.3.0
+          rails_version: 7.0.8
+
+      # Ruby 3.2
+      - bundle_and_test:
+          name: "ruby3-2_rails7-1"
+          ruby_version: 3.2.3
+          rails_version: 7.1.3
+      - bundle_and_test:
+          name: "ruby3-2_rails7-0"
+          ruby_version: 3.2.3
+          rails_version: 7.0.8
 
       # Ruby 3.0 release
       - bundle_and_test:
