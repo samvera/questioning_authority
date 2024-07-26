@@ -28,6 +28,9 @@ else
   end
 
   case ENV['RAILS_VERSION']
+  when /^7\.1/
+    # ought not to need this, not sure why we do
+    gem 'puma', '>= 6'
   when /^5.[12]/
     gem 'sass-rails', '~> 5.0'
   when /^4.2/

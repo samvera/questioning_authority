@@ -54,7 +54,7 @@ module Qa::Authorities
         end
       rescue StandardError => e
         cause = response.fetch('error', {}).fetch('cause', 'UNKNOWN')
-        cause = cause.present? ? cause : 'UNKNOWN'
+        cause = cause.presence || 'UNKNOWN'
         Rails.logger.warn "  ERROR fetching Getty response: #{e.message}; cause: #{cause}"
         {}
       end
