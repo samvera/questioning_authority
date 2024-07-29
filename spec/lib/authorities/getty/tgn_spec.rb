@@ -38,7 +38,7 @@ describe Qa::Authorities::Getty::TGN do
           # Rails 3.1 actually quotes the failing code in the error message,
           # so let's match this error message with a multiline regex instead of
           # a string.
-          expect(Rails.logger).to receive(:warn).with(/ERROR fetching Getty response: .*undefined method.*for nil:NilClass.*; cause: UNKNOWN/m)
+          expect(Rails.logger).to receive(:warn).with(/ERROR fetching Getty response: .*undefined method.*for nil.*; cause: UNKNOWN/m)
           expect(subject).to be {}
         end
       end
