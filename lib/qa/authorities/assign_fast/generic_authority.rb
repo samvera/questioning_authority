@@ -46,7 +46,10 @@ module Qa::Authorities
       index = AssignFast.index_for_authority(subauthority)
       return_data = "#{index}%2Cidroot%2Cauth%2Ctype"
       num_rows = 20 # max allowed by the API
-      "http://fast.oclc.org/searchfast/fastsuggest?&query=#{escaped_query}&queryIndex=#{index}&queryReturn=#{return_data}&suggest=autoSubject&rows=#{num_rows}"
+
+      # sort=usage+desc is not documented by OCLC but seems necessary to get the sort
+      # we formerly got without specifying, that is most useful in our use case.
+      "http://fast.oclc.org/searchfast/fastsuggest?&query=#{escaped_query}&queryIndex=#{index}&queryReturn=#{return_data}&suggest=autoSubject&rows=#{num_rows}&sort=usage+desc"
     end
 
     private

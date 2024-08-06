@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Qa::Authorities::AssignFast do
   let(:query) { "word (ling" }
-  let(:expected_url) { "http://fast.oclc.org/searchfast/fastsuggest?&query=word%20ling&queryIndex=suggestall&queryReturn=suggestall%2Cidroot%2Cauth%2Ctype&suggest=autoSubject&rows=20" }
+  let(:expected_url) { "http://fast.oclc.org/searchfast/fastsuggest?&query=word%20ling&queryIndex=suggestall&queryReturn=suggestall%2Cidroot%2Cauth%2Ctype&suggest=autoSubject&rows=20&sort=usage+desc" }
 
   # subauthority infrastructure
   describe "#new" do
@@ -60,7 +60,7 @@ describe Qa::Authorities::AssignFast do
 
     context "when query is blank" do
       let(:query) { "" }
-      let(:expected_url) { "http://fast.oclc.org/searchfast/fastsuggest?&query=&queryIndex=suggestall&queryReturn=suggestall%2Cidroot%2Cauth%2Ctype&suggest=autoSubject&rows=20" }
+      let(:expected_url) { "http://fast.oclc.org/searchfast/fastsuggest?&query=&queryIndex=suggestall&queryReturn=suggestall%2Cidroot%2Cauth%2Ctype&suggest=autoSubject&rows=20&sort=usage+desc" }
 
       # server returns results but no results header
       let :results do
@@ -104,7 +104,7 @@ describe Qa::Authorities::AssignFast do
 
     context "with topical results" do
       let(:query) { "word" }
-      let(:expected_url) { "http://fast.oclc.org/searchfast/fastsuggest?query=word&queryIndex=suggest50&queryReturn=suggest50,idroot,auth,type&rows=20&suggest=autoSubject" }
+      let(:expected_url) { "http://fast.oclc.org/searchfast/fastsuggest?query=word&queryIndex=suggest50&queryReturn=suggest50,idroot,auth,type&rows=20&suggest=autoSubject&sort=usage+desc" }
 
       let :results do
         stub_request(:get, expected_url)
