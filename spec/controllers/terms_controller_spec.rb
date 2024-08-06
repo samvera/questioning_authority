@@ -199,7 +199,7 @@ describe Qa::TermsController, type: :controller do
 
     context "assign_fast" do
       before do
-        stub_request(:get, "http://fast.oclc.org/searchfast/fastsuggest?query=word&queryIndex=suggest50&queryReturn=suggest50,idroot,auth,type&rows=20&suggest=autoSubject")
+        stub_request(:get, "http://fast.oclc.org/searchfast/fastsuggest?query=word&queryIndex=suggest50&queryReturn=suggest50,idroot,auth,type&rows=20&suggest=autoSubject&sort=usage+desc")
           .with(headers: { 'Accept' => 'application/json' })
           .to_return(body: webmock_fixture("assign-fast-topical-result.json"), status: 200, headers: {})
       end
