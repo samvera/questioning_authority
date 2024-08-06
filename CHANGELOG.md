@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.12.0](https://github.com/samvera/questioning_authority/tree/5.10.0) (2024-08-06)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.11.0...5.12.0)
+
+* Restored expected heading for AssignFAST results. https://github.com/samvera/questioning_authority/pull/390
+
+
 ## [5.11.0](https://github.com/samvera/questioning_authority/tree/5.10.0) (2023-11-09)
 
 [Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.10.0...5.11.0)
