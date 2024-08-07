@@ -35,7 +35,8 @@ module Qa::Authorities
     end
 
     def find_url(id)
-      "https://id.loc.gov/authorities/#{@subauthority}/#{id}.json"
+      root_fetch_slug = Loc.root_fetch_slug_for(@subauthority)
+      File.join("https://id.loc.gov/", root_fetch_slug, "/#{@subauthority}/#{id}.json")
     end
 
     private

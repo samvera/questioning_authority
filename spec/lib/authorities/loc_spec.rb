@@ -42,6 +42,18 @@ describe Qa::Authorities::Loc do
     end
   end
 
+  describe ".root_fetch_slug_for" do
+    it "raises an error for an invalid subauthority" do
+      expect do
+        described_class.root_fetch_slug_for("no-one-would-ever-have-this-one")
+      end.to raise_error Qa::InvalidSubAuthority
+    end
+
+    it "returns the corresponding type for the given subauthority" do
+      expect(described_class.root_fetch_slug_for("graphicMaterials")).to eq("vocabulary")
+    end
+  end
+
   describe "#response" do
     subject { authority.response(url) }
     let :authority do
