@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.13.0](https://github.com/samvera/questioning_authority/tree/5.13.0) (2024-08-20)
+
+[Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.13.0...5.13.0)
+
+* Allow and test Rails 7.2 https://github.com/samvera/questioning_authority/pull/392
+
 ## [5.12.0](https://github.com/samvera/questioning_authority/tree/5.10.0) (2024-08-06)
 
 [Full Changelog](https://github.com/samvera/questioning_authority/compare/v5.11.0...5.12.0)
