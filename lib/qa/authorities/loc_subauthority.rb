@@ -1,10 +1,28 @@
 module Qa::Authorities::LocSubauthority
+  # @todo Rename to reflect that this is a URI encoded url fragement used only for searching.
   def get_url_for_authority(authority)
     if authorities.include?(authority) then authority_base_url
     elsif vocabularies.include?(authority) then vocab_base_url
     elsif datatypes.include?(authority)    then datatype_base_url
     elsif preservation.include?(authority) then vocab_preservation_base_url
     end
+  end
+
+  # @note The returned value is the root directory of the URL.  The graphicMaterials sub-authority
+  #       has a "type" of vocabulary.  https://id.loc.gov/vocabulary/graphicMaterials/tgm008083.html
+  #       In some cases, this is plural and in others this is singular.
+  #
+  # @param authority [String] the LOC authority that matches one of the types
+  # @return [String]
+  #
+  # @note there is a relationship between the returned value and the encoded URLs returned by
+  #       {#get_url_for_authority}.
+  def root_fetch_slug_for(authority)
+    validate_subauthority!(authority)
+    return "authorities" if authorities.include?(authority)
+    return "vocabulary" if vocabularies.include?(authority)
+    return "datatype" if datatypes.include?(authority)
+    return "vocabulary/preservation" if preservation.include?(authority)
   end
 
   def authorities
