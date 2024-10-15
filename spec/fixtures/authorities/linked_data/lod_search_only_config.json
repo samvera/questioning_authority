@@ -1,5 +1,8 @@
 {
   "QA_CONFIG_VERSION": "2.0",
+  "prefixes": {
+    "loc": "http://id.loc.gov/vocabulary/identifiers/"
+  },
   "term": {},
   "search": {
     "url": {
@@ -39,10 +42,10 @@
     },
     "language": [ "en" ],
     "results": {
-      "id_predicate":       "http://id.loc.gov/vocabulary/identifiers/lccn",
-      "label_predicate":    "http://www.w3.org/2004/02/skos/core#prefLabel",
-      "altlabel_predicate": "http://www.w3.org/2004/02/skos/core#altLabel",
-      "sort_predicate":     "http://www.w3.org/2004/02/skos/core#prefLabel"
+      "id_ldpath":       "loc:lccn",
+      "label_ldpath":    "skos:prefLabel",
+      "altlabel_ldpath": "skos:altLabel",
+      "sort_ldpath":     "skos:prefLabel"
     },
     "subauthorities": {
       "subjects":           "subjects",
