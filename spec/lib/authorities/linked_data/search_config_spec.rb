@@ -11,12 +11,12 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
   let(:term_only_config) { Qa::Authorities::LinkedData::Config.new(:LOD_TERM_ONLY_CONFIG).search }
   let(:encoding_config) { Qa::Authorities::LinkedData::Config.new(:LOD_ENCODING_CONFIG).search }
 
-  let(:ldpath_results_config) do
+  let(:predicate_results_config) do
     {
-      id_ldpath: 'schema:identifier ::xsd:string',
-      label_ldpath: 'skos:prefLabel ::xsd:string',
-      altlabel_ldpath: 'skos:altLabel ::xsd:string',
-      sort_ldpath: 'skos:prefLabel ::xsd:string'
+      id_predicate: 'http://purl.org/dc/terms/identifier',
+      label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
+      altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
+      sort_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
     }
   end
 
@@ -75,10 +75,10 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
         language: ['en', 'fr', 'de'],
         total_count_ldpath: "vivo:count",
         results: {
-          id_predicate: 'http://purl.org/dc/terms/identifier',
-          label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
-          altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
-          sort_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+          id_ldpath: 'dcterms:identifier',
+          label_ldpath: 'skos:prefLabel',
+          altlabel_ldpath: 'skos:altLabel',
+          sort_ldpath: 'skos:prefLabel'
         },
         context: {
           groups: {
@@ -103,7 +103,7 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
               group_id: "dates",
               property_label_i18n: "qa.linked_data.authority.locnames_ld4l_cache.birth_date",
               property_label_default: "Birth",
-              ldpath: "madsrdf:identifiesRWO/madsrdf:birthDate/schema:label",
+              ldpath: "madsrdf:identifiesRWO/madsrdf:birthDate/rdfs:label",
               selectable: false,
               drillable: false
             },
@@ -178,22 +178,23 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
   describe '#results' do
     let(:results_config) do
       {
-        id_predicate: 'http://purl.org/dc/terms/identifier',
-        label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
-        altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
-        sort_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+        id_ldpath: 'dcterms:identifier',
+        label_ldpath: 'skos:prefLabel',
+        altlabel_ldpath: 'skos:altLabel',
+        sort_ldpath: 'skos:prefLabel'
       }
     end
 
     it 'returns nil if only term configuration is defined' do
       expect(term_only_config.results).to eq nil
     end
-    it 'returns hash of predicates' do
+    it 'returns hash of ldpaths' do
       expect(full_config.results).to eq results_config
     end
   end
 
   describe '#results_id_predicate' do
+    before { allow(full_config).to receive(:results).and_return(predicate_results_config) }
     it 'returns nil if only term configuration is defined' do
       expect(term_only_config.results_id_predicate).to eq nil
     end
@@ -208,14 +209,14 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
     end
 
     context 'when id specified as ldpath' do
-      before { allow(full_config).to receive(:results).and_return(ldpath_results_config) }
       it 'returns the ldpath' do
-        expect(full_config.results_id_ldpath).to eq 'schema:identifier ::xsd:string'
+        expect(full_config.results_id_ldpath).to eq 'dcterms:identifier'
       end
     end
   end
 
   describe '#results_label_predicate' do
+    before { allow(full_config).to receive(:results).and_return(predicate_results_config) }
     it 'returns nil if only term configuration is defined' do
       expect(term_only_config.results_label_predicate).to eq nil
     end
@@ -230,14 +231,14 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
     end
 
     context 'when label specified as ldpath' do
-      before { allow(full_config).to receive(:results).and_return(ldpath_results_config) }
       it 'returns the ldpath' do
-        expect(full_config.results_label_ldpath).to eq 'skos:prefLabel ::xsd:string'
+        expect(full_config.results_label_ldpath).to eq 'skos:prefLabel'
       end
     end
   end
 
   describe '#results_altlabel_predicate' do
+    before { allow(full_config).to receive(:results).and_return(predicate_results_config) }
     it 'returns nil if only term configuration is defined' do
       expect(term_only_config.results_altlabel_predicate).to eq nil
     end
@@ -258,9 +259,8 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
     end
 
     context 'when altlabel specified as ldpath' do
-      before { allow(full_config).to receive(:results).and_return(ldpath_results_config) }
       it 'returns the ldpath' do
-        expect(full_config.results_altlabel_ldpath).to eq 'skos:altLabel ::xsd:string'
+        expect(full_config.results_altlabel_ldpath).to eq 'skos:altLabel'
       end
     end
   end
@@ -269,15 +269,16 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
     it 'returns false if only term configuration is defined' do
       expect(term_only_config.supports_sort?).to eq false
     end
-    it 'returns false if sort predicate is NOT defined' do
+    it 'returns false if sort ldpath is NOT defined' do
       expect(min_config.supports_sort?).to eq false
     end
-    it 'returns true if sort predicate IS defined' do
+    it 'returns true if sort ldpath IS defined' do
       expect(full_config.supports_sort?).to eq true
     end
   end
 
   describe '#results_sort_predicate' do
+    before { allow(full_config).to receive(:results).and_return(predicate_results_config) }
     it 'returns nil if only term configuration is defined' do
       expect(term_only_config.results_sort_predicate).to eq nil
     end
@@ -298,9 +299,8 @@ RSpec.describe Qa::Authorities::LinkedData::SearchConfig do
     end
 
     context 'when sort specified as ldpath' do
-      before { allow(full_config).to receive(:results).and_return(ldpath_results_config) }
       it 'returns the ldpath' do
-        expect(full_config.results_sort_ldpath).to eq 'skos:prefLabel ::xsd:string'
+        expect(full_config.results_sort_ldpath).to eq 'skos:prefLabel'
       end
     end
   end
