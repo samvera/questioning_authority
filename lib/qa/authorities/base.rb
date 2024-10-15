@@ -29,5 +29,8 @@ module Qa::Authorities
     def find(_id)
       raise NotImplementedError, "#{self.class}#find is unimplemented."
     end
+
+    class_attribute :linked_data, instance_writer: false
+    self.linked_data = false
   end
 end

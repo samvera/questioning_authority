@@ -42,7 +42,7 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # get "/search/linked_data/:vocab(/:subauthority)"
   # @see Qa::Authorities::LinkedData::SearchQuery#search
   def search # rubocop:disable Metrics/MethodLength
-    terms = @authority.search(query, request_header: request_header_service.search_header)
+    terms = @authority.search(query)
     cors_allow_origin_header(response)
     render json: terms
   rescue Qa::ServiceUnavailable
@@ -65,7 +65,7 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # get "/show/linked_data/:vocab/:subauthority/:id
   # @see Qa::Authorities::LinkedData::FindTerm#find
   def show # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    term = @authority.find(id, request_header: request_header_service.fetch_header)
+    term = @authority.find(id)
     cors_allow_origin_header(response)
     render json: term, content_type: request_header_service.content_type_for_format
   rescue Qa::TermNotFound
@@ -95,7 +95,7 @@ class Qa::LinkedDataTermsController < ::ApplicationController
   # get "/fetch/linked_data/:vocab"
   # @see Qa::Authorities::LinkedData::FindTerm#find
   def fetch # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    term = @authority.find(uri, request_header: request_header_service.fetch_header)
+    term = @authority.find(uri)
     cors_allow_origin_header(response)
     render json: term, content_type: request_header_service.content_type_for_format
   rescue Qa::TermNotFound
@@ -157,9 +157,14 @@ class Qa::LinkedDataTermsController < ::ApplicationController
       @request_header_service = request_header_service_class.new(request: request, params: params)
     end
 
+    # @see Qa::AuthorityWrapper for these methods
+    delegate :search_header, :fetch_header, to: :request_header_service
+
     def init_authority
-      @authority = Qa::Authorities::LinkedData::GenericAuthority.new(vocab_param)
-    rescue Qa::InvalidLinkedDataAuthority => e
+      @authority = Qa.authority_for(vocab: params[:vocab],
+                                    subauthority: params[:subauthority],
+                                    context: self)
+    rescue Qa::InvalidAuthorityError, Qa::InvalidLinkedDataAuthority => e
       msg = e.message
       logger.warn msg
       render json: { errors: msg }, status: :bad_request
