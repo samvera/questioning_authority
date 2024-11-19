@@ -57,6 +57,10 @@ workflows:
     jobs:
       # Ruby 3.3
       - bundle_and_test:
+          name: "ruby3-3_rails8-0"
+          ruby_version: 3.3.3
+          rails_version: 8.0.0
+      - bundle_and_test:
           name: "ruby3-3_rails7-2"
           ruby_version: 3.3.3
           rails_version: 7.2.0
@@ -165,6 +169,10 @@ workflows:
 
     jobs:
       # Ruby 3.3
+      - bundle_and_test:
+          name: "ruby3-3_rails8-0"
+          ruby_version: 3.3.3
+          rails_version: 8.0.0
       - bundle_and_test:
           name: "ruby3-3_rails7-2"
           ruby_version: 3.3.3
