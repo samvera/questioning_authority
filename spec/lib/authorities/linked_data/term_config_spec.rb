@@ -8,14 +8,14 @@ describe Qa::Authorities::LinkedData::TermConfig do
   let(:encoding_config) { Qa::Authorities::LinkedData::Config.new(:LOD_ENCODING_CONFIG).term }
   let(:loc_config) { Qa::Authorities::LinkedData::Config.new(:LOC).term }
 
-  let(:ldpath_results_config) do
+  let(:predicate_results_config) do
     {
-      id_ldpath:       'schema:identifier ::xsd:string',
-      label_ldpath:    'skos:prefLabel ::xsd:string',
-      altlabel_ldpath: 'skos:altLabel ::xsd:string',
-      broader_ldpath:  'skos:broader ::xsd:string',
-      narrower_ldpath: 'skos:narrower ::xsd:string',
-      sameas_ldpath:   'skos:exactMatch ::xsd:string'
+      id_predicate: 'http://purl.org/dc/terms/identifier',
+      label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
+      altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
+      broader_predicate: 'http://www.w3.org/2004/02/skos/core#broader',
+      narrower_predicate: 'http://www.w3.org/2004/02/skos/core#narrower',
+      sameas_predicate: 'http://www.w3.org/2004/02/skos/core#exactMatch'
     }
   end
 
@@ -72,12 +72,12 @@ describe Qa::Authorities::LinkedData::TermConfig do
         term_id: 'ID',
         language: ['es'],
         results: {
-          id_predicate: 'http://purl.org/dc/terms/identifier',
-          label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
-          altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
-          broader_predicate: 'http://www.w3.org/2004/02/skos/core#broader',
-          narrower_predicate: 'http://www.w3.org/2004/02/skos/core#narrower',
-          sameas_predicate: 'http://www.w3.org/2004/02/skos/core#exactMatch'
+          id_ldpath:       'dcterms:identifier',
+          label_ldpath:    'skos:prefLabel',
+          altlabel_ldpath: 'skos:altLabel',
+          broader_ldpath:  'skos:broader',
+          narrower_ldpath: 'skos:narrower',
+          sameas_ldpath:   'skos:exactMatch'
         },
         subauthorities: {
           term_sub1_key: 'term_sub1_name',
@@ -191,23 +191,24 @@ describe Qa::Authorities::LinkedData::TermConfig do
   describe '#term_results' do
     let(:results_config) do
       {
-        id_predicate: 'http://purl.org/dc/terms/identifier',
-        label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
-        altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
-        broader_predicate: 'http://www.w3.org/2004/02/skos/core#broader',
-        narrower_predicate: 'http://www.w3.org/2004/02/skos/core#narrower',
-        sameas_predicate: 'http://www.w3.org/2004/02/skos/core#exactMatch'
+        id_ldpath:       'dcterms:identifier',
+        label_ldpath:    'skos:prefLabel',
+        altlabel_ldpath: 'skos:altLabel',
+        broader_ldpath:  'skos:broader',
+        narrower_ldpath: 'skos:narrower',
+        sameas_ldpath:   'skos:exactMatch'
       }
     end
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results).to eq nil
     end
-    it 'returns hash of predicates or ldpaths' do
+    it 'returns hash of ldpaths' do
       expect(full_config.term_results).to eq results_config
     end
   end
 
   describe '#term_results_id_predicates' do
+    before { allow(full_config).to receive(:term_results).and_return(predicate_results_config) }
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results_id_predicates).to eq []
     end
@@ -235,14 +236,14 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
 
     context 'when id specified as ldpath' do
-      before { allow(full_config).to receive(:term_results).and_return(ldpath_results_config) }
       it 'returns the ldpath' do
-        expect(full_config.term_results_id_ldpath).to eq 'schema:identifier ::xsd:string'
+        expect(full_config.term_results_id_ldpath).to eq 'dcterms:identifier'
       end
     end
   end
 
   describe '#term_results_label_predicate' do
+    before { allow(full_config).to receive(:term_results).and_return(predicate_results_config) }
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results_label_predicate).to eq nil
     end
@@ -257,14 +258,14 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
 
     context 'when label specified as ldpath' do
-      before { allow(full_config).to receive(:term_results).and_return(ldpath_results_config) }
       it 'returns the ldpath' do
-        expect(full_config.term_results_label_ldpath).to eq 'skos:prefLabel ::xsd:string'
+        expect(full_config.term_results_label_ldpath).to eq 'skos:prefLabel'
       end
     end
   end
 
   describe '#term_results_altlabel_predicate' do
+    before { allow(full_config).to receive(:term_results).and_return(predicate_results_config) }
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results_altlabel_predicate).to eq nil
     end
@@ -285,14 +286,14 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
 
     context 'when altlabel specified as ldpath' do
-      before { allow(full_config).to receive(:term_results).and_return(ldpath_results_config) }
       it 'returns the ldpath' do
-        expect(full_config.term_results_altlabel_ldpath).to eq 'skos:altLabel ::xsd:string'
+        expect(full_config.term_results_altlabel_ldpath).to eq 'skos:altLabel'
       end
     end
   end
 
   describe '#term_results_broader_predicate' do
+    before { allow(full_config).to receive(:term_results).and_return(predicate_results_config) }
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results_broader_predicate).to eq nil
     end
@@ -313,14 +314,14 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
 
     context 'when broader specified as ldpath' do
-      before { allow(full_config).to receive(:term_results).and_return(ldpath_results_config) }
       it 'returns the ldpath' do
-        expect(full_config.term_results_broader_ldpath).to eq 'skos:broader ::xsd:string'
+        expect(full_config.term_results_broader_ldpath).to eq 'skos:broader'
       end
     end
   end
 
   describe '#term_results_narrower_predicate' do
+    before { allow(full_config).to receive(:term_results).and_return(predicate_results_config) }
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results_narrower_predicate).to eq nil
     end
@@ -341,14 +342,14 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
 
     context 'when narrower specified as ldpath' do
-      before { allow(full_config).to receive(:term_results).and_return(ldpath_results_config) }
       it 'returns the ldpath' do
-        expect(full_config.term_results_narrower_ldpath).to eq 'skos:narrower ::xsd:string'
+        expect(full_config.term_results_narrower_ldpath).to eq 'skos:narrower'
       end
     end
   end
 
   describe '#term_results_sameas_predicate' do
+    before { allow(full_config).to receive(:term_results).and_return(predicate_results_config) }
     it 'returns nil if only search configuration is defined' do
       expect(search_only_config.term_results_sameas_predicate).to eq nil
     end
@@ -369,9 +370,8 @@ describe Qa::Authorities::LinkedData::TermConfig do
     end
 
     context 'when sameas specified as ldpath' do
-      before { allow(full_config).to receive(:term_results).and_return(ldpath_results_config) }
       it 'returns the ldpath' do
-        expect(full_config.term_results_sameas_ldpath).to eq 'skos:exactMatch ::xsd:string'
+        expect(full_config.term_results_sameas_ldpath).to eq 'skos:exactMatch'
       end
     end
   end
