@@ -13,10 +13,18 @@ module Qa::Authorities
       conn = Faraday.new "#{uri.scheme}://#{uri.host}"
       conn.options.params_encoder = Faraday::FlatParamsEncoder
       conn.get do |req|
+        unless connection_timeout_in_seconds.nil?
+          req.options.timeout = connection_timeout_in_seconds
+        end
         req.headers['Accept'] = 'application/json'
         req.url uri.path
         req.params = Rack::Utils.parse_query(uri.query)
       end
+    end
+
+    def connection_timeout_in_seconds
+      @connection_timeout_in_seconds ||= Qa.config.linked_data_authority_configs.
+        dig(:LOC, :search, :connection, :timeout).to_i
     end
 
     def search(q)

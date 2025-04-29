@@ -19,7 +19,15 @@ module Qa::Authorities
       Faraday.get(url) do |req|
         req.options.params_encoder = space_fix_encoder
         req.headers['Accept'] = 'application/json'
+        unless connection_timeout_in_seconds.nil?
+          req.options.timeout = connection_timeout_in_seconds
+        end
       end
+    end
+
+    def connection_timeout_in_seconds
+      @connection_timeout_in_seconds ||= Qa.config.linked_data_authority_configs.
+        dig(:OCLC_FAST, :search, :connection, :timeout).to_i
     end
 
     # Search the FAST api
