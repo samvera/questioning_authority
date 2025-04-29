@@ -50,5 +50,7 @@
       "music_performance": "performanceMediums"
     }
   },
-  "search": {}
+  "search": {
+    "connection": { "timeout":"5"}
+  }
 }
