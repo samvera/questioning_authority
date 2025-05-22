@@ -30,8 +30,6 @@ module Qa
         Qa.config.assign_fast_authority_configs = assign_fast_auth_cfg
       end
 
-      
-
       # load settings into a configuration array
       def self.process_config_file(file_path:, config_hash:)
         file_key = File.basename(file_path, '.json').upcase.to_sym
