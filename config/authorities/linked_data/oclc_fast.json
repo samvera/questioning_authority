@@ -79,6 +79,7 @@
       "period":         "oclc.period",
       "form":           "oclc.form",
       "alt_lc":         "oclc.altlc"
-    }
+    },
+    "connection": { "timeout":"5"}
   }
 }
