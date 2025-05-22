@@ -31,13 +31,21 @@ else
   when /^7\.1/
     # ought not to need this, not sure why we do
     gem 'puma', '>= 6'
-  when /^5.[12]/
+  when /^7\.0/
+    # concurrent-ruby 1.3.5 causes Rails versions below 7.1 to break
+    gem 'concurrent-ruby', '1.3.4'
+  when /^6\.[01]/
+    gem 'concurrent-ruby', '1.3.4'
+  when /^5\.[12]/
+    gem 'concurrent-ruby', '1.3.4'
     gem 'sass-rails', '~> 5.0'
   when /^4.2/
     gem 'coffee-rails', '~> 4.1.0'
+    gem 'concurrent-ruby', '1.3.4'
     gem 'responders', '~> 2.0'
     gem 'sass-rails', '>= 5.0'
   when /^4.[01]/
+    gem 'concurrent-ruby', '1.3.4'
     gem 'sass-rails', '< 5.0'
   end
   # rubocop:enable Bundler/DuplicatedGem
