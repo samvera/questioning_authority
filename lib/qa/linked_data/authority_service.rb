@@ -10,7 +10,7 @@ module Qa
 
       def self.load_linked_data_config
         ld_auth_cfg = {}
-          Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'linked_data', '*.json')].each do |fn|
+        Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'linked_data', '*.json')].each do |fn|
           process_config_file(file_path: fn, config_hash: ld_auth_cfg)
         end
         Dir[Rails.root.join('config', 'authorities', 'linked_data', '*.json')].each do |fn|
