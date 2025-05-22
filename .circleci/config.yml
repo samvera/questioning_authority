@@ -37,7 +37,7 @@ jobs:
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
-          cache_version: << parameters.rails_version >>_2
+          cache_version: << parameters.rails_version >>
 
       - samvera/engine_cart_generate:
           cache_key: v7-internal-test-app-{{ checksum "qa.gemspec" }}-{{ checksum "spec/test_app_templates/lib/generators/test_app_generator.rb" }}-{{ checksum "lib/generators/qa/install/install_generator.rb" }}-<< parameters.rails_version >>-<< parameters.ruby_version >>
@@ -45,7 +45,7 @@ jobs:
       - samvera/bundle:
           ruby_version: << parameters.ruby_version >>
           bundler_version: << parameters.bundler_version >>
-          cache_version: << parameters.rails_version >>_2
+          cache_version: << parameters.rails_version >>
 
       - samvera/rubocop
 
