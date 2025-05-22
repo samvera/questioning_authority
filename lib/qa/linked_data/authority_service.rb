@@ -4,32 +4,33 @@ module Qa
     class AuthorityService
       # Load or reload the linked data configuration files
       def self.load_authorities
-        ld_auth_cfg = {}
-        # load QA configured linked data authorities
-        Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'linked_data', '*.json')].each do |fn|
-          self.process_config_file(file_path:fn, config_hash: ld_auth_cfg)
-        end
+        load_linked_data_config
+        load_assign_fast_config
+      end
 
-        # load app configured linked data authorities and overrides
+      def self.load_linked_data_config
+        ld_auth_cfg = {}
+          Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'linked_data', '*.json')].each do |fn|
+          self.process_config_file(file_path: fn, config_hash: ld_auth_cfg)
+        end
         Dir[Rails.root.join('config', 'authorities', 'linked_data', '*.json')].each do |fn|
-          self.process_config_file(file_path:fn, config_hash: ld_auth_cfg)
+          self.process_config_file(file_path: fn, config_hash: ld_auth_cfg)
         end
         Qa.config.linked_data_authority_configs = ld_auth_cfg
+      end
 
-
-        # load QA configured assign_fast authorities
+      def self.load_assign_fast_config
         assign_fast_auth_cfg = {}
         Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'assign_fast', '*.json')].each do |fn|
-          self.process_config_file(file_path:fn, config_hash: assign_fast_auth_cfg)
+          self.process_config_file(file_path: fn, config_hash: assign_fast_auth_cfg)
         end
-
-        # load app configured assign_fast authorities and overrides
         Dir[Rails.root.join('config', 'authorities', 'assign_fast', '*.json')].each do |fn|
-          self.process_config_file(file_path:fn, config_hash: assign_fast_auth_cfg)
+          self.process_config_file(file_path: fn, config_hash: assign_fast_auth_cfg)
         end
         Qa.config.assign_fast_authority_configs = assign_fast_auth_cfg
       end
 
+      
 
       # load settings into a configuration array
       def self.process_config_file(file_path:, config_hash:)
