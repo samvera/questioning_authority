@@ -11,10 +11,10 @@ module Qa
       def self.load_linked_data_config
         ld_auth_cfg = {}
           Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'linked_data', '*.json')].each do |fn|
-          self.process_config_file(file_path: fn, config_hash: ld_auth_cfg)
+          process_config_file(file_path: fn, config_hash: ld_auth_cfg)
         end
         Dir[Rails.root.join('config', 'authorities', 'linked_data', '*.json')].each do |fn|
-          self.process_config_file(file_path: fn, config_hash: ld_auth_cfg)
+          process_config_file(file_path: fn, config_hash: ld_auth_cfg)
         end
         Qa.config.linked_data_authority_configs = ld_auth_cfg
       end
@@ -22,10 +22,10 @@ module Qa
       def self.load_assign_fast_config
         assign_fast_auth_cfg = {}
         Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'assign_fast', '*.json')].each do |fn|
-          self.process_config_file(file_path: fn, config_hash: assign_fast_auth_cfg)
+          process_config_file(file_path: fn, config_hash: assign_fast_auth_cfg)
         end
         Dir[Rails.root.join('config', 'authorities', 'assign_fast', '*.json')].each do |fn|
-          self.process_config_file(file_path: fn, config_hash: assign_fast_auth_cfg)
+          process_config_file(file_path: fn, config_hash: assign_fast_auth_cfg)
         end
         Qa.config.assign_fast_authority_configs = assign_fast_auth_cfg
       end
