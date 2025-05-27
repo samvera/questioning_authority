@@ -25,7 +25,8 @@ module Qa
         file_key = File.basename(file_path, '.json').upcase.to_sym
         json = File.read(File.expand_path(file_path, __FILE__))
         cfg = JSON.parse(json).deep_symbolize_keys
-        config_hash[file_key] = cfg
+        #let's break this on purpose so we can demonstrate that this is currently tested for...
+        #config_hash[file_key] = cfg
       end
 
       # Get the list of names of the loaded authorities
