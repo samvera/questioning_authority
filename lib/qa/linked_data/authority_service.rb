@@ -2,7 +2,6 @@
 module Qa
   module LinkedData
     class AuthorityService
-
       def self.load_authorities
         load_linked_data_config
       end
@@ -10,17 +9,14 @@ module Qa
       # Load or reload the linked data configuration files
       def self.load_linked_data_config
         ld_auth_cfg = {}
-
         # Linked data settings
         Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'linked_data', '*.json')].each do |fn|
           process_config_file(file_path: fn, config_hash: ld_auth_cfg)
         end
-        
         # Optional local (app) linked data settings overrides
         Dir[Rails.root.join('config', 'authorities', 'linked_data', '*.json')].each do |fn|
           process_config_file(file_path: fn, config_hash: ld_auth_cfg)
         end
-
         Qa.config.linked_data_authority_configs = ld_auth_cfg
       end
 
