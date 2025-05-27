@@ -2,25 +2,34 @@
 module Qa
   module LinkedData
     class AuthorityService
-      # Load or reload the linked data configuration files
+
       def self.load_authorities
-        auth_cfg = {}
-        # load QA configured linked data authorities
+        load_linked_data_config
+      end
+
+      # Load or reload the linked data configuration files
+      def self.load_linked_data_config
+        ld_auth_cfg = {}
+
+        # Linked data settings
         Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'linked_data', '*.json')].each do |fn|
-          auth = File.basename(fn, '.json').upcase.to_sym
-          json = File.read(File.expand_path(fn, __FILE__))
-          cfg = JSON.parse(json).deep_symbolize_keys
-          auth_cfg[auth] = cfg
+          process_config_file(file_path: fn, config_hash: ld_auth_cfg)
+        end
+        
+        # Optional local (app) linked data settings overrides
+        Dir[Rails.root.join('config', 'authorities', 'linked_data', '*.json')].each do |fn|
+          process_config_file(file_path: fn, config_hash: ld_auth_cfg)
         end
 
-        # load app configured linked data authorities and overrides
-        Dir[Rails.root.join('config', 'authorities', 'linked_data', '*.json')].each do |fn|
-          auth = File.basename(fn, '.json').upcase.to_sym
-          json = File.read(File.expand_path(fn, __FILE__))
-          cfg = JSON.parse(json).deep_symbolize_keys
-          auth_cfg[auth] = cfg
-        end
-        Qa.config.linked_data_authority_configs = auth_cfg
+        Qa.config.linked_data_authority_configs = ld_auth_cfg
+      end
+
+      # load settings into a configuration hash:
+      def self.process_config_file(file_path:, config_hash:)
+        file_key = File.basename(file_path, '.json').upcase.to_sym
+        json = File.read(File.expand_path(file_path, __FILE__))
+        cfg = JSON.parse(json).deep_symbolize_keys
+        config_hash[file_key] = cfg
       end
 
       # Get the list of names of the loaded authorities
