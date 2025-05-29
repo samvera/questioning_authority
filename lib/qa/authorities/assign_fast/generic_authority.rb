@@ -19,6 +19,7 @@ module Qa::Authorities
       Faraday.get(url) do |req|
         req.options.params_encoder = space_fix_encoder
         req.headers['Accept'] = 'application/json'
+        req.options.timeout = connection_timeout_in_seconds unless connection_timeout_in_seconds.nil?
       end
     end
 
@@ -58,6 +59,10 @@ module Qa::Authorities
       # for more info about config settings for this authority.
       def assign_fast_config
         Qa.config.assign_fast_authority_configs
+      end
+
+      def connection_timeout_in_seconds
+        assign_fast_config.dig(:OCLC_ASSIGN_FAST, :search, :connection, :timeout)&.to_i
       end
 
       def assign_fast_url
