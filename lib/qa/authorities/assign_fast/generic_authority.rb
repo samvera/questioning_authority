@@ -53,6 +53,7 @@ module Qa::Authorities
     end
 
     private
+
       # See https://github.com/samvera/questioning_authority/wiki/Connecting-to-OCLC-FAST
       # for more info about config settings for this authority.
       def assign_fast_config
