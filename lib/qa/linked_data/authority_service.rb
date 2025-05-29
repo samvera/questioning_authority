@@ -4,6 +4,7 @@ module Qa
     class AuthorityService
       def self.load_authorities
         load_linked_data_config
+        load_assign_fast_config
       end
 
       # Load or reload the linked data configuration files
@@ -18,6 +19,20 @@ module Qa
           process_config_file(file_path: fn, config_hash: ld_auth_cfg)
         end
         Qa.config.linked_data_authority_configs = ld_auth_cfg
+      end
+
+      # similar to the above; these settings are for getting (non-linked-data) FAST subject headings from OCLC.
+      def self.load_assign_fast_config
+        assign_fast_auth_cfg = {}
+        # assign_fast settings
+        Dir[File.join(Qa::Engine.root, 'config', 'authorities', 'assign_fast', '*.json')].each do |fn|
+          process_config_file(file_path: fn, config_hash: assign_fast_auth_cfg)
+        end
+        # Optional local (app) assign_fast settings overrides
+        Dir[Rails.root.join('config', 'authorities', 'assign_fast', '*.json')].each do |fn|
+          process_config_file(file_path: fn, config_hash: assign_fast_auth_cfg)
+        end
+        Qa.config.assign_fast_authority_configs = assign_fast_auth_cfg
       end
 
       # load settings into a configuration hash:
