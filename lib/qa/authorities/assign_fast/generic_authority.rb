@@ -55,10 +55,20 @@ module Qa::Authorities
 
       # sort=usage+desc is not documented by OCLC but seems necessary to get the sort
       # we formerly got without specifying, that is most useful in our use case.
-      "http://fast.oclc.org/searchfast/fastsuggest?&query=#{escaped_query}&queryIndex=#{index}&queryReturn=#{return_data}&suggest=autoSubject&rows=#{num_rows}&sort=usage+desc"
+      "#{assign_fast_url}?&query=#{escaped_query}&queryIndex=#{index}&queryReturn=#{return_data}&suggest=autoSubject&rows=#{num_rows}&sort=usage+desc"
     end
 
     private
+
+      # See https://github.com/samvera/questioning_authority/wiki/Connecting-to-OCLC-FAST
+      # for more info about config settings for this authority.
+      def assign_fast_config
+        Qa.config.assign_fast_authority_configs
+      end
+
+      def assign_fast_url
+        assign_fast_config.dig(:OCLC_ASSIGN_FAST, :search, :urls, :fastsuggest) || 'https://fast.oclc.org/searchfast/fastsuggest'
+      end
 
       # Removes characters from the query string that are not tolerated by the API
       #   See oclc sample code at

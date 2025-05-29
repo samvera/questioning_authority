@@ -1,0 +1,7 @@
+{
+  "search": {
+    "urls" : { "fastsuggest": "https://fast.oclc.org/searchfast/fastsuggest" }
+    // "connection": { "timeout":"5"},
+    // "follow_redirects": true,
+  }
+}
