@@ -62,8 +62,7 @@ module Qa::Authorities
       end
 
       def connection_timeout_in_seconds
-        timeout_str = assign_fast_config.dig(:OCLC_ASSIGN_FAST, :search, :connection, :timeout)
-        timeout_str.to_i unless timeout_str.nil?
+        assign_fast_config.dig(:OCLC_ASSIGN_FAST, :search, :connection, :timeout)&.to_i
       end
 
       def assign_fast_url
