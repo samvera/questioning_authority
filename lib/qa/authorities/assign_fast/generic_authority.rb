@@ -23,11 +23,6 @@ module Qa::Authorities
       end
     end
 
-    def connection_timeout_in_seconds
-      @connection_timeout_in_seconds ||= Qa.config.linked_data_authority_configs
-                                           .dig(:OCLC_FAST, :search, :connection, :timeout).to_i
-    end
-
     # Search the FAST api
     #
     # @param [String] the query
@@ -64,6 +59,11 @@ module Qa::Authorities
       # for more info about config settings for this authority.
       def assign_fast_config
         Qa.config.assign_fast_authority_configs
+      end
+
+      def connection_timeout_in_seconds
+        timeout_str = assign_fast_config.dig(:OCLC_ASSIGN_FAST, :search, :connection, :timeout)
+        timeout_str.to_i unless timeout_str.nil?
       end
 
       def assign_fast_url
