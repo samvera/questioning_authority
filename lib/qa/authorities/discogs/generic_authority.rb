@@ -76,7 +76,7 @@ module Qa::Authorities
       end
       escaped_q = ERB::Util.url_encode(q)
       url = "https://api.discogs.com/database/search?q=#{escaped_q}&type=#{tc.params['subauthority']}&page=#{page}&per_page=#{per_page}"
-      url += "&key=#{discogs_key}&secret=#{discogs_secret}" unless discogs_user_token.present?
+      url += "&key=#{discogs_key}&secret=#{discogs_secret}" if discogs_user_token.blank?
       url
     end
 
