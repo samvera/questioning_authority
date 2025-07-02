@@ -2,9 +2,6 @@ require 'rdf'
 module Qa::Authorities
   module Discogs
     module DiscogsUtils
-      DISCOGS_GENRE_MAPPING = YAML.load_file(Rails.root.join("config", "discogs-genres.yml"))
-      DISCOGS_FORMATS_MAPPING = YAML.load_file(Rails.root.join("config", "discogs-formats.yml"))
-
       # Constructs an RDF statement where the subject, predicate and object are all URIs
       # @param [String] either a string used to create a unique URI or an LOC uri in string format
       # @param [String] or [Class] either a BIBFRAME property uri in string format or an RDF::URI
@@ -78,11 +75,13 @@ module Qa::Authorities
       end
 
       def discogs_genres
-        DISCOGS_GENRE_MAPPING
+        return {} unless File.exist?(discogs_genres_path)
+        @discogs_genres ||= YAML.load_file(discogs_genres_path)
       end
 
       def discogs_formats
-        DISCOGS_FORMATS_MAPPING
+        return {} unless File.exist?(discogs_formats_path)
+        @discogs_formats ||= YAML.load_file(discogs_formats_path)
       end
 
       # @param json results
@@ -131,6 +130,16 @@ module Qa::Authorities
         stmts << contruct_stmt_literal_object("speed#{count}", rdfs_label_predicate, label)
         stmts # w/out this line, building the graph throws an undefined method `graph_name=' error
       end
+
+      private
+
+        def discogs_genres_path
+          Rails.root.join('config', 'discogs-genres.yml')
+        end
+
+        def discogs_formats_path
+          Rails.root.join('config', 'discogs-formats.yml')
+        end
     end
   end
 end

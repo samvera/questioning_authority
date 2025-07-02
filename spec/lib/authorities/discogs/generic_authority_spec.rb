@@ -4,6 +4,7 @@ describe Qa::Authorities::Discogs::GenericAuthority do
   before do
     described_class.discogs_key = 'dummy_key'
     described_class.discogs_secret = 'dummy_secret'
+    described_class.discogs_user_token = nil
   end
 
   let(:authority) { described_class.new "all" }
@@ -28,6 +29,18 @@ describe Qa::Authorities::Discogs::GenericAuthority do
       end
 
       it { is_expected.to eq 'https://api.discogs.com/database/search?q=foo&type=master&page=1&per_page=10&key=dummy_key&secret=dummy_secret' }
+    end
+
+    context "with a user token" do
+      subject { authority.build_query_url("foo", tc) }
+      let(:tc) { instance_double(Qa::TermsController) }
+      before do
+        described_class.discogs_user_token = 'dummy_token'
+        allow(Qa::TermsController).to receive(:new).and_return(tc)
+        allow(tc).to receive(:params).and_return('page' => "1", 'per_page' => "10", 'subauthority' => "master")
+      end
+
+      it { is_expected.to eq 'https://api.discogs.com/database/search?q=foo&type=master&page=1&per_page=10' }
     end
   end
 
@@ -363,6 +376,33 @@ describe Qa::Authorities::Discogs::GenericAuthority do
         end
       end
 
+      context "with user token authentication" do
+        let(:tc) { instance_double(Qa::TermsController) }
+        let :results do
+          described_class.discogs_user_token = 'dummy_token'
+          described_class.discogs_key = nil
+          described_class.discogs_secret = nil
+          stub_request(:get, "https://api.discogs.com/database/search?q=melody+gardot&type=all&page=&per_page=")
+            .with(
+              headers: {
+                'Authorization' => 'Discogs token=dummy_token',
+                'User-Agent' => 'HykuApp/1.0'
+              }
+            )
+            .to_return(status: 200, body: webmock_fixture("discogs-search-response-no-subauth.json"))
+          authority.search("melody gardot", tc)
+        end
+        before do
+          allow(Qa::TermsController).to receive(:new).and_return(tc)
+          allow(tc).to receive(:params).and_return('subauthority' => "all")
+        end
+
+        it "has id and label keys" do
+          expect(results.first["uri"]).to eq("https://www.discogs.com/Melody-Gardot-Who-Will-Comfort-Me-Over-The-Rainbow/release/1750352")
+          expect(results.first["id"]).to eq "1750352"
+        end
+      end
+
       context "when authentication isn't set" do
         let(:tc) { instance_double(Qa::TermsController) }
         let :results do
@@ -373,12 +413,13 @@ describe Qa::Authorities::Discogs::GenericAuthority do
         before do
           described_class.discogs_secret = nil
           described_class.discogs_key = nil
+          described_class.discogs_user_token = nil
           allow(Qa::TermsController).to receive(:new).and_return(tc)
           allow(tc).to receive(:params).and_return('subauthority' => "master")
         end
 
         it "logs an error" do
-          expect(Rails.logger).to receive(:error).with('Questioning Authority tried to call Discogs, but no secret and/or key were set.')
+          expect(Rails.logger).to receive(:error).with('Questioning Authority tried to call Discogs, but no user token, secret and/or key were set.')
           expect(results).to be_empty
         end
       end
