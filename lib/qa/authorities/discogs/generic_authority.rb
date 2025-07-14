@@ -1,12 +1,15 @@
 require 'rdf'
 require 'rdf/ntriples'
+require 'net/http'
+require 'json'
+
 module Qa::Authorities
   class Discogs::GenericAuthority < Base
     include WebServiceBase
     include Discogs::DiscogsTranslation
     include Discogs::DiscogsUtils
 
-    class_attribute :discogs_secret, :discogs_key
+    class_attribute :discogs_secret, :discogs_key, :discogs_user_token
     attr_accessor :primary_artists, :selected_format, :work_uri, :instance_uri
 
     # @param [String] subauthority to use
@@ -26,8 +29,8 @@ module Qa::Authorities
       # physical or digital object and a master represents a set of similar releases. Use of a
       # subauthority (e.g., /qa/search/discogs/master) will target a specific type. Using the "all"
       #  subauthority will search for both types.
-      unless discogs_key && discogs_secret
-        Rails.logger.error "Questioning Authority tried to call Discogs, but no secret and/or key were set."
+      unless discogs_user_token.present? || (discogs_key && discogs_secret)
+        Rails.logger.error "Questioning Authority tried to call Discogs, but no user token, secret and/or key were set."
         return []
       end
       response = json(build_query_url(q, tc))
@@ -72,7 +75,9 @@ module Qa::Authorities
         per_page = tc.params["per_page"]
       end
       escaped_q = ERB::Util.url_encode(q)
-      "https://api.discogs.com/database/search?q=#{escaped_q}&type=#{tc.params['subauthority']}&page=#{page}&per_page=#{per_page}&key=#{discogs_key}&secret=#{discogs_secret}"
+      url = "https://api.discogs.com/database/search?q=#{escaped_q}&type=#{tc.params['subauthority']}&page=#{page}&per_page=#{per_page}"
+      url += "&key=#{discogs_key}&secret=#{discogs_secret}" if discogs_user_token.blank?
+      url
     end
 
     # @param [String] the id of the selected item
@@ -80,6 +85,23 @@ module Qa::Authorities
     # @return [String] the url
     def find_url(id, subauthority)
       "https://api.discogs.com/#{subauthority}s/#{id}"
+    end
+
+    def json(url)
+      if discogs_user_token.present?
+        uri = URI(url)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+
+        request = Net::HTTP::Get.new(uri)
+        request['Authorization'] = "Discogs token=#{discogs_user_token}"
+        request['User-Agent'] = 'HykuApp/1.0'
+
+        response = http.request(request)
+        JSON.parse(response.body)
+      else
+        super
+      end
     end
 
     private
