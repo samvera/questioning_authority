@@ -22,7 +22,11 @@ require 'pry'
 Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
-  config.fixture_path = File.expand_path("../fixtures", __FILE__)
+  if config.respond_to?(:fixture_paths=)
+    config.fixture_paths = [File.expand_path("../fixtures", __FILE__)]
+  else
+    config.fixture_path = File.expand_path("../fixtures", __FILE__)
+  end
 
   config.use_transactional_fixtures = true
 
