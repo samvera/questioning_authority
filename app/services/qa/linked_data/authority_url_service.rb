@@ -65,9 +65,8 @@ module Qa
           # This is deprecated and will be removed in the next major release.
           def build_request_header(substitutions, subauthority, language) # rubocop:disable Metrics/CyclomaticComplexity
             return {} if substitutions.blank? && subauthority.blank? && language.blank?
-            Qa.deprecation_warning(
-              in_msg: 'Qa::LinkedData::AuthorityUrlService',
-              msg: "individual attributes for options (e.g. substitutions, subauthority, language) are deprecated; use request_header instead"
+            Deprecation.warn(
+              'individual attributes for options (e.g. substitutions, subauthority, language) are deprecated; use request_header instead'
             )
             request_header = {}
             request_header[:replacements] = substitutions unless substititions.blank?

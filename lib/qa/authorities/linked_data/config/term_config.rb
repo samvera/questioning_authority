@@ -86,11 +86,10 @@ module Qa::Authorities
       #       id predicates.  This method remains for backward compatibility only but may cause issues if used in places expecting an Array
       def term_results_id_predicate(suppress_deprecation_warning: false)
         unless suppress_deprecation_warning
-          Qa.deprecation_warning(
-            in_msg: 'Qa::Authorities::LinkedData::TermConfig',
-            msg: "`term_results_id_predicate` is deprecated; use `term_results_id_ldpath` by updating linked data " \
+          Deprecation.warn(
+              "`term_results_id_predicate` is deprecated; use `term_results_id_ldpath` by updating linked data " \
                  "term config results in authority #{authority_name} to specify as `id_ldpath`"
-          )
+            )
         end
         id_predicates = term_results_id_predicates
         id_predicates.first
@@ -106,11 +105,10 @@ module Qa::Authorities
       # @return [String] the configured predicate to use to extract label values from the results
       def term_results_label_predicate(suppress_deprecation_warning: false)
         unless suppress_deprecation_warning
-          Qa.deprecation_warning(
-            in_msg: 'Qa::Authorities::LinkedData::TermConfig',
-            msg: "`term_results_label_predicate` is deprecated; use `term_results_label_ldpath` by updating linked data " \
+          Deprecation.warn(
+              "`term_results_label_predicate` is deprecated; use `term_results_label_ldpath` by updating linked data " \
                  "term config results in authority #{authority_name} to specify as `label_ldpath`"
-          )
+            )
         end
         Config.predicate_uri(term_results, :label_predicate)
       end
@@ -124,11 +122,10 @@ module Qa::Authorities
       # Return results altlabel_predicate
       # @return [String] the configured predicate to use to extract altlabel values from the results
       def term_results_altlabel_predicate
-        Qa.deprecation_warning(
-          in_msg: 'Qa::Authorities::LinkedData::TermConfig',
-          msg: "`term_results_altlabel_predicate` is deprecated; use `term_results_altlabel_ldpath` by updating linked data " \
+        Deprecation.warn(
+            "`term_results_altlabel_predicate` is deprecated; use `term_results_altlabel_ldpath` by updating linked data " \
                "term config results in authority #{authority_name} to specify as `altlabel_ldpath`"
-        )
+          )
         Config.predicate_uri(term_results, :altlabel_predicate)
       end
 
@@ -141,11 +138,10 @@ module Qa::Authorities
       # Return results broader_predicate
       # @return [String] the configured predicate to use to extract URIs for broader terms from the results
       def term_results_broader_predicate
-        Qa.deprecation_warning(
-          in_msg: 'Qa::Authorities::LinkedData::TermConfig',
-          msg: "`term_results_broader_predicate` is deprecated; use `term_results_broader_ldpath` by updating linked data " \
+        Deprecation.warn(
+            "`term_results_broader_predicate` is deprecated; use `term_results_broader_ldpath` by updating linked data " \
                "term config results in authority #{authority_name} to specify as `broader_ldpath`"
-        )
+          )
         Config.predicate_uri(term_results, :broader_predicate)
       end
 
@@ -158,9 +154,8 @@ module Qa::Authorities
       # Return results narrower_predicate
       # @return [String] the configured predicate to use to extract URIs for narrower terms from the results
       def term_results_narrower_predicate
-        Qa.deprecation_warning(
-          in_msg: 'Qa::Authorities::LinkedData::TermConfig',
-          msg: "`term_results_narrower_predicate` is deprecated; use `term_results_narrower_ldpath` by updating linked data " \
+        Deprecation.warn(
+          "`term_results_narrower_predicate` is deprecated; use `term_results_narrower_ldpath` by updating linked data " \
                "term config results in authority #{authority_name} to specify as `narrower_ldpath`"
         )
         Config.predicate_uri(term_results, :narrower_predicate)
@@ -175,11 +170,10 @@ module Qa::Authorities
       # Return results sameas_predicate
       # @return [String] the configured predicate to use to extract URIs for sameas terms from the results
       def term_results_sameas_predicate
-        Qa.deprecation_warning(
-          in_msg: 'Qa::Authorities::LinkedData::TermConfig',
-          msg: "`term_results_sameas_predicate` is deprecated; use `term_results_sameas_ldpath` by updating linked data " \
-               "term config results in authority #{authority_name} to specify as `sameas_ldpath`"
-        )
+        Deprecation.warn(
+         "`term_results_sameas_predicate` is deprecated; use `term_results_sameas_ldpath` by updating linked data " \
+           "term config results in authority #{authority_name} to specify as `sameas_ldpath`"
+       )
         Config.predicate_uri(term_results, :sameas_predicate)
       end
 

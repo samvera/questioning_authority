@@ -87,7 +87,7 @@ module Qa::Authorities
         def convert_1_0_url_to_2_0_url(action_key)
           url_template = @authority_config.fetch(action_key, {}).fetch(:url, {}).fetch(:template, "")
           return if url_template.blank?
-          Qa.deprecation_warning(msg: "Linked data configuration #{authority_name} has 1.0 version format which is deprecated; update to version 2.0 configuration.")
+          Deprecation.warn("Linked data configuration #{authority_name} has 1.0 version format which is deprecated; update to version 2.0 configuration.")
           @authority_config[action_key][:url][:template] = url_template.gsub("{?", "{")
         end
     end

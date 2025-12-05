@@ -67,9 +67,8 @@ module Qa
             end
 
             def map_values_with_predicate_map(graph:, predicate_map:, subject_uri:)
-              Qa.deprecation_warning(
-                in_msg: 'Qa::LinkedData::Mapper::TermResultsMapperService',
-                msg: 'predicate_map is deprecated; update to use ldpath_map'
+              Deprecation.warn(
+                'predicate_map is deprecated; update to use ldpath_map'
               )
               graph_predicate_mapper_service.map_values(graph: graph, predicate_map: predicate_map, subject_uri: subject_uri)
             end

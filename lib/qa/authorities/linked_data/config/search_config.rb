@@ -58,9 +58,8 @@ module Qa::Authorities
       # Return results id_predicate
       # @return [String] the configured predicate to use to extract the id from the results
       def results_id_predicate
-        Qa.deprecation_warning(
-          in_msg: 'Qa::Authorities::LinkedData::SearchConfig',
-          msg: "`results_id_predicate` is deprecated; use `results_id_ldpath` by updating linked data search config results " \
+        Deprecation.warn(
+          "`results_id_predicate` is deprecated; use `results_id_ldpath` by updating linked data search config results " \
                "in authority #{authority_name} to specify as `id_ldpath`"
         )
         Config.predicate_uri(results, :id_predicate)
@@ -76,10 +75,9 @@ module Qa::Authorities
       # @return [String] the configured predicate to use to extract label values from the results
       def results_label_predicate(suppress_deprecation_warning: false)
         unless suppress_deprecation_warning
-          Qa.deprecation_warning(
-            in_msg: 'Qa::Authorities::LinkedData::SearchConfig',
-            msg: "`results_label_predicate` is deprecated; use `results_label_ldpath` by updating linked data search config results " \
-                 "in authority #{authority_name} to specify as `label_ldpath`"
+          Deprecation.warn(
+            "`results_label_predicate` is deprecated; use `results_label_ldpath` by updating linked data search config results " \
+               "in authority #{authority_name} to specify as `label_ldpath`"
           )
         end
         Config.predicate_uri(results, :label_predicate)
@@ -94,10 +92,9 @@ module Qa::Authorities
       # Return results altlabel_predicate
       # @return [String] the configured predicate to use to extract altlabel values from the results
       def results_altlabel_predicate
-        Qa.deprecation_warning(
-          in_msg: 'Qa::Authorities::LinkedData::SearchConfig',
-          msg: "`results_altlabel_predicate` is deprecated; use `results_altlabel_ldpath` by updating linked data " \
-               "search config results in authority #{authority_name} to specify as `altlabel_ldpath`"
+        Deprecation.warn(
+          "`results_altlabel_predicate` is deprecated; use `results_altlabel_ldpath` by updating linked data " \
+              "search config results in authority #{authority_name} to specify as `altlabel_ldpath`"
         )
         Config.predicate_uri(results, :altlabel_predicate)
       end
@@ -118,9 +115,8 @@ module Qa::Authorities
       # Return results sort_predicate
       # @return [String] the configured predicate to use for sorting results from the query search
       def results_sort_predicate
-        Qa.deprecation_warning(
-          in_msg: 'Qa::Authorities::LinkedData::SearchConfig',
-          msg: "`results_sort_predicate` is deprecated; use `results_sort_ldpath` by updating linked data " \
+        Deprecation.warn(
+          "`results_sort_predicate` is deprecated; use `results_sort_ldpath` by updating linked data " \
                "search config results in authority #{authority_name} to specify as `sort_ldpath`"
         )
         Config.predicate_uri(results, :sort_predicate)
