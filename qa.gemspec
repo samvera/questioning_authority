@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   s.metadata = { "rubygems_mfa_required" => "true" }
 
   s.add_dependency 'activerecord-import'
-  s.add_dependency 'deprecation'
   s.add_dependency 'faraday', '< 3.0', '!= 2.0.0'
   s.add_dependency 'geocoder'
   s.add_dependency 'ldpath'

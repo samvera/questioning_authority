@@ -78,9 +78,8 @@ module Qa::Authorities
           raise Qa::InvalidConfiguration, "must specify label_ldpath or label_predicate in search configuration for linked data authority #{authority_name} (label_ldpath is preferred)" unless ldpath_map.key?(:label) || predicate_map.key?(:label) # rubocop:disable Layout/LineLength
 
           if predicate_map.present?
-            Qa.deprecation_warning(
-              in_msg: 'Qa::Authorities::LinkedData::SearchQuery',
-              msg: "defining results using predicates in search config is deprecated; update to define using ldpaths (authority: #{authority_name})"
+            Deprecation.warn(
+              "defining results using predicates in search config is deprecated; update to define using ldpaths (authority: #{authority_name})"
             )
           end
 
@@ -207,9 +206,8 @@ module Qa::Authorities
         # This is deprecated and will be removed in the next major release.
         def build_request_header(language:, replacements:, subauth:, context:, performance_data:) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
           unless language.blank? && replacements.blank? && subauth.blank? && !context && !performance_data
-            Qa.deprecation_warning(
-              in_msg: 'Qa::Authorities::LinkedData::SearchQuery',
-              msg: "individual attributes for options (e.g. replacements, subauth, language) are deprecated; use request_header instead"
+            Deprecation.warn(
+              "individual attributes for options (e.g. replacements, subauth, language) are deprecated; use request_header instead"
             )
           end
           request_header = {}
