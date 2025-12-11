@@ -1,5 +1,8 @@
 {
   "QA_CONFIG_VERSION": "2.0",
+  "prefixes": {
+    "dcterms": "http://purl.org/dc/terms/"
+  },
   "term": {},
   "search": {
     "url": {
@@ -20,9 +23,9 @@
       "query": "query"
     },
     "results": {
-      "id_predicate":    "http://purl.org/dc/terms/identifier",
-      "label_predicate": "http://www.w3.org/2004/02/skos/core#prefLabel",
-      "sort_predicate":  "http://www.w3.org/2004/02/skos/core#prefLabel"
+      "id_ldpath":       "dcterms:identifier",
+      "label_ldpath":    "skos:prefLabel",
+      "sort_ldpath":     "skos:prefLabel"
     }
   }
 }
