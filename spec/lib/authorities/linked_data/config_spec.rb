@@ -28,8 +28,7 @@ describe Qa::Authorities::LinkedData::Config do
         QA_CONFIG_VERSION: "2.2",
         service_uri: "http://ld4l.org/ld4l_services/cache",
         prefixes: {
-          schema: "http://www.w3.org/2000/01/rdf-schema#",
-          skos: "http://www.w3.org/2004/02/skos/core#"
+          dcterms: "http://purl.org/dc/terms/"
         },
         term: {
           url: {
@@ -82,12 +81,12 @@ describe Qa::Authorities::LinkedData::Config do
           term_id: 'ID',
           language: ['es'],
           results: {
-            id_predicate: 'http://purl.org/dc/terms/identifier',
-            label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
-            altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
-            broader_predicate: 'http://www.w3.org/2004/02/skos/core#broader',
-            narrower_predicate: 'http://www.w3.org/2004/02/skos/core#narrower',
-            sameas_predicate: 'http://www.w3.org/2004/02/skos/core#exactMatch'
+            id_ldpath: 'dcterms:identifier',
+            label_ldpath: 'skos:prefLabel',
+            altlabel_ldpath: 'skos:altLabel',
+            broader_ldpath: 'skos:broader',
+            narrower_ldpath: 'skos:narrower',
+            sameas_ldpath: 'skos:exactMatch'
           },
           subauthorities: {
             term_sub1_key: 'term_sub1_name',
@@ -148,10 +147,10 @@ describe Qa::Authorities::LinkedData::Config do
           language: ['en', 'fr', 'de'],
           total_count_ldpath: "vivo:count",
           results: {
-            id_predicate: 'http://purl.org/dc/terms/identifier',
-            label_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel',
-            altlabel_predicate: 'http://www.w3.org/2004/02/skos/core#altLabel',
-            sort_predicate: 'http://www.w3.org/2004/02/skos/core#prefLabel'
+            id_ldpath: 'dcterms:identifier',
+            label_ldpath: 'skos:prefLabel',
+            altlabel_ldpath: 'skos:altLabel',
+            sort_ldpath: 'skos:prefLabel'
           },
           context: {
             groups: {
@@ -176,7 +175,7 @@ describe Qa::Authorities::LinkedData::Config do
                 group_id: "dates",
                 property_label_i18n: "qa.linked_data.authority.locnames_ld4l_cache.birth_date",
                 property_label_default: "Birth",
-                ldpath: "madsrdf:identifiesRWO/madsrdf:birthDate/schema:label",
+                ldpath: "madsrdf:identifiesRWO/madsrdf:birthDate/rdfs:label",
                 selectable: false,
                 drillable: false
               },
@@ -405,8 +404,7 @@ describe Qa::Authorities::LinkedData::Config do
   describe '#prefixes' do
     let(:expected_results) do
       {
-        schema: "http://www.w3.org/2000/01/rdf-schema#",
-        skos: "http://www.w3.org/2004/02/skos/core#"
+        dcterms: "http://purl.org/dc/terms/"
       }
     end
 
