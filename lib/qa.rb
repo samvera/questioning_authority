@@ -25,10 +25,22 @@ module Qa
     @config
   end
 
+  def self.deprecator
+    @deprecator ||= deprecator_instance
+  end
+
+  # TODO: refactor when support for Rails < 7.1.0 is dropped
+  def self.deprecator_instance
+    if Gem::Version.new(Rails.version) >= Gem::Version.new('7.1.0')
+      ActiveSupport::Deprecation.new("6.0.0", "Qa")
+    else
+      Rails.logger
+    end
+  end
+
   def self.deprecation_warning(in_msg: nil, msg:)
-    return if Rails.env == 'test'
     in_msg = in_msg.present? ? "In #{in_msg}, " : ''
-    warn "[DEPRECATED] #{in_msg}#{msg}  It will be removed in the next major release."
+    deprecator.warn "#{in_msg}#{msg}  It will be removed in the next major release."
   end
 
   # Raised when the authority is not valid

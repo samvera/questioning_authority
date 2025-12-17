@@ -17,5 +17,12 @@ module Qa
         Rails.autoloaders.main.ignore(Rails.root.join('lib', 'generators'))
       end
     end
+
+    # Allow main application to configure deprecation behavior
+    if Gem::Version.new(Rails.version) >= Gem::Version.new('7.1.0')
+      initializer "qa.deprecator" do |app|
+        app.deprecators[:qa] = Qa.deprecator
+      end
+    end
   end
 end
