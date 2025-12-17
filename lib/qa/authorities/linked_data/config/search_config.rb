@@ -105,7 +105,7 @@ module Qa::Authorities
       # Does this authority configuration support sorting of search results?
       # @return [True|False] true if sorting of search results is supported; otherwise, false
       def supports_sort?
-        return true unless results_sort_ldpath.present? || !results_sort_predicate.present?
+        return true if results_sort_ldpath.present? || results_sort_predicate.present?
         false
       end
 
