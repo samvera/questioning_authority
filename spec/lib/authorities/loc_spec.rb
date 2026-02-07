@@ -96,6 +96,7 @@ describe Qa::Authorities::Loc do
         end
 
         it "has :id and :label elements" do
+          expect(results.first["uri"]).to eq("http://id.loc.gov/vocabulary/geographicAreas/n-usp")
           expect(results.first["label"]).to eq("West (U.S.)")
           expect(results.first["id"]).to eq("info:lc/vocabulary/geographicAreas/n-usp")
           expect(results.last["label"]).to eq("Baltic States")
@@ -115,8 +116,10 @@ describe Qa::Authorities::Loc do
       it "has a URI for the id and a string label" do
         expect(results.count).to eq(20)
         expect(results.first["label"]).to eq("History--Philosophy--History--20th century")
+        expect(results.first["uri"]).to eq("http://id.loc.gov/authorities/subjects/sh2008121753")
         expect(results.first["id"]).to eq("info:lc/authorities/subjects/sh2008121753")
         expect(results[1]["label"]).to eq("History--Philosophy--History--19th century")
+        expect(results[1]["uri"]).to eq("http://id.loc.gov/authorities/subjects/sh2008121752")
         expect(results[1]["id"]).to eq("info:lc/authorities/subjects/sh2008121752")
       end
     end

@@ -95,10 +95,14 @@ describe Qa::Authorities::AssignFast do
       end
       it "is correctly parsed" do
         expect(results.count).to eq(1)
+        expect(results.first[:uri]).to eq('http://id.worldcat.org/fast/1180101')
         expect(results.first[:id]).to eq('fst01180101')
         expect(results.first[:label]).to eq('Word (Linguistics)')
         expect(results.first[:value]).to eq('Word (Linguistics)')
-        expect(results.first).to eq(id: "fst01180101", label: "Word (Linguistics)", value: "Word (Linguistics)")
+        expect(results.first).to eq(uri: 'http://id.worldcat.org/fast/1180101',
+                                    id: "fst01180101",
+                                    label: "Word (Linguistics)",
+                                    value: "Word (Linguistics)")
       end
     end
 
@@ -114,6 +118,7 @@ describe Qa::Authorities::AssignFast do
       end
       it "is correctly parsed" do
         expect(results.count).to eq(20)
+        expect(results.first[:uri]).to eq('http://id.worldcat.org/fast/1168328')
         expect(results.first[:id]).to eq('fst01168328')
         expect(results.first[:label]).to eq('Word books USE Vocabulary')
         expect(results.first[:value]).to eq('Vocabulary')

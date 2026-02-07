@@ -1,10 +1,14 @@
 module Qa::Authorities
   class Loc::GenericAuthority < Base
     attr_reader :subauthority
-    def initialize(subauthority)
+
+    class_attribute :id_base_url
+    self.id_base_url = "http://id.loc.gov"
+
+      def initialize(subauthority)
       super()
       @subauthority = subauthority
-    end
+      end
 
     include WebServiceBase
 
@@ -72,9 +76,14 @@ module Qa::Authorities
         OpenStruct.new(contents)
       end
 
+      def id_to_uri(id)
+        "#{id_base_url}#{id.sub('info:lc', '')}"
+      end
+
       # Simple conversion from LoC-based struct to QA hash
       def loc_response_to_qa(data)
         {
+          "uri" => id_to_uri(data.id),
           "id" => data.id || data.title,
           "label" => data.title
         }

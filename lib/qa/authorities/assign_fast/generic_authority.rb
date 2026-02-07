@@ -5,6 +5,9 @@ module Qa::Authorities
   class AssignFast::GenericAuthority < Base
     attr_reader :subauthority
 
+    class_attribute :id_base_url
+    self.id_base_url = "http://id.worldcat.org/fast"
+
     def initialize(subauthority)
       super()
       @subauthority = subauthority
@@ -76,12 +79,20 @@ module Qa::Authorities
         ERB::Util.url_encode(q.gsub(/-|\(|\)|:/, ""))
       end
 
+      def id_to_uri(id)
+        if id.is_a? Array
+          "#{id_base_url}/#{id.first.delete_prefix('fst').sub(/^0+/, '')}"
+        else
+          "#{id_base_url}/#{id.delete_prefix('fst').sub(/^0+/, '')}"
+        end
+      end
+
       def parse_authority_response(raw_response)
         raw_response['response']['docs'].map do |doc|
           index = AssignFast.index_for_authority(subauthority)
           term = doc[index].first
           term += ' USE ' + doc['auth'] if doc['type'] == 'alt'
-          { id: doc['idroot'], label: term, value: doc['auth'] }
+          { uri: id_to_uri(doc['idroot']), id: doc['idroot'], label: term, value: doc['auth'] }
         end
       end
   end
