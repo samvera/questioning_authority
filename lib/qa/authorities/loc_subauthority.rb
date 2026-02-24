@@ -47,6 +47,7 @@ module Qa::Authorities::LocSubauthority
       "languages",
       "iso639-1",
       "iso639-2",
+      "iso639-3",
       "iso639-5",
       "preservation",
       "actionsGranted",
