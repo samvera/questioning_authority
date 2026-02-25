@@ -30,7 +30,12 @@ jobs:
               echo "$(git branch --all --list master */master)"
             fi
             [[ -z "$(git branch --all --list master */master)" ]]
-
+      - run:
+          name: Add Google Chrome public key
+          command: |
+            sudo apt-get update -y
+            sudo apt-get install -y wget
+            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
       - run: 'sudo apt-get update'
       - run: 'sudo apt-get install -y libsqlite3-dev'
 
