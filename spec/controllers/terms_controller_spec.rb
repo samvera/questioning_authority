@@ -32,7 +32,7 @@ describe Qa::TermsController, type: :controller do
         msg = "Unable to initialize sub-authority non-existent-subauthority for Qa::Authorities::Loc. Valid sub-authorities are " \
               "[\"subjects\", \"names\", \"classification\", \"childrensSubjects\", \"genreForms\", \"performanceMediums\", " \
               "\"graphicMaterials\", \"organizations\", \"relators\", \"countries\", \"ethnographicTerms\", \"geographicAreas\", " \
-              "\"languages\", \"iso639-1\", \"iso639-2\", \"iso639-5\", \"preservation\", \"actionsGranted\", \"agentType\", " \
+              "\"languages\", \"iso639-1\", \"iso639-2\", \"iso639-3\", \"iso639-5\", \"preservation\", \"actionsGranted\", \"agentType\", " \
               "\"edtf\", \"contentLocationType\", \"copyrightStatus\", \"cryptographicHashFunctions\", " \
               "\"environmentCharacteristic\", \"environmentPurpose\", \"eventRelatedAgentRole\", \"eventRelatedObjectRole\", " \
               "\"eventType\", \"formatRegistryRole\", \"hardwareType\", \"inhibitorTarget\", \"inhibitorType\", \"objectCategory\", " \
