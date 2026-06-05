@@ -26,6 +26,10 @@ group :development do
     gem 'concurrent-ruby', '1.3.4'
   end
 
-  gem "multi_json", "1.17.0"
+  # 1) this passes on all versions:
+  #gem "multi_json", "1.17.0"
+
+  # 2) let's try this now:
+  gem "multi_json", "!= 1.19.1"
 
 end
