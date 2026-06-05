@@ -5,12 +5,12 @@ describe Qa::Authorities::Getty::AAT do
 
   describe "#build_query_url" do
     subject { authority.build_query_url("foo") }
-    it { is_expected.to match(/^http:\/\/vocab\.getty\.edu\//) }
+    it { is_expected.to match(/^https:\/\/vocab\.getty\.edu\//) }
   end
 
   describe "#find_url" do
     subject { authority.find_url("300053264") }
-    it { is_expected.to eq "http://vocab.getty.edu/download/json?uri=http://vocab.getty.edu/aat/300053264.json" }
+    it { is_expected.to eq "https://vocab.getty.edu/download/json?uri=https://vocab.getty.edu/aat/300053264.json" }
   end
 
   describe "#search" do
@@ -62,7 +62,7 @@ describe Qa::Authorities::Getty::AAT do
   describe "#find" do
     context "using a subject id" do
       before do
-        stub_request(:get, "http://vocab.getty.edu/download/json?uri=http://vocab.getty.edu/aat/300265560.json")
+        stub_request(:get, "https://vocab.getty.edu/download/json?uri=https://vocab.getty.edu/aat/300265560.json")
           .to_return(status: 200, body: webmock_fixture("getty-aat-find-response.json"))
       end
       subject { authority.find("300265560") }
