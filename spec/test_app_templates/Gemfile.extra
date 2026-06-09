@@ -26,4 +26,13 @@ group :development do
     gem 'concurrent-ruby', '1.3.4'
   end
 
+  # multi_json 1.19.x / json 2.19.x interaction causes
+  # RDF::Graph#dump(:jsonld, standard_prefixes: true) to raise:
+  # NoMethodError: undefined method `except' for JSON::Ext::Generator::State
+  # in e.g. lib/qa/authorities/linked_data/find_term.rb and
+  # lib/qa/authorities/discogs/discogs_translation.rb 
+  if RUBY_VERSION =~ /^3\.[01]\./
+    gem "multi_json", ">= 1.17", "< 1.19"
+  end
+
 end

@@ -1,9 +1,9 @@
-require 'benchmark'
-
 namespace :qa do
   namespace :mesh do
     desc "Import MeSH terms from the file $MESH_FILE, it will update any terms which are already in the database"
     task import: :environment do
+      require 'benchmark' # may require you to add benchmark dependency in ruby 4+
+
       fname = ENV['MESH_FILE']
       if fname.nil?
         puts "Need to set $MESH_FILE with path to file to ingest"
