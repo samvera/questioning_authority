@@ -64,7 +64,7 @@ module Qa::Authorities
       end
 
       def getty_vocab_url
-        @getty_vocab_url ||= (linked_data_authority_configs.dig(:GETTY_AAC, :search, :getty_vocab_url) || 'https://vocab.getty.edu')
+        @getty_vocab_url ||= (linked_data_authority_configs.dig(:GETTY_AAC, :search, :urls, :getty_vocab_url) || 'https://vocab.getty.edu')
       end
   end
 end
