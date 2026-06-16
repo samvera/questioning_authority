@@ -4,7 +4,7 @@ class TestAppGenerator < Rails::Generators::Base
   source_root Rails.root
 
   def update_app
-    Bundler.with_clean_env do
+    Bundler.with_unbundled_env do
       run "bundle install"
     end
   end

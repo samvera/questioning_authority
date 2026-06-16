@@ -11,7 +11,7 @@ This generator makes the following changes to your application:
   def add_to_gemfile
     gem 'swagger-docs'
 
-    Bundler.with_clean_env do
+    Bundler.with_unbundled_env do
       run "bundle install"
     end
   end
