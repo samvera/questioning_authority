@@ -74,8 +74,7 @@ RSpec.describe Qa::LinkedData::ResponseHeaderService do
 
   describe '#fetch_header' do
     let(:request_header) do
-      {
-      }.with_indifferent_access
+      {}.with_indifferent_access
     end
     let(:term_config) { double }
     let(:graph) { instance_double(RDF::Graph) }

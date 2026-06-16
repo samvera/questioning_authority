@@ -22,7 +22,7 @@ module Qa::Authorities::LocSubauthority
     return "authorities" if authorities.include?(authority)
     return "vocabulary" if vocabularies.include?(authority)
     return "datatype" if datatypes.include?(authority)
-    return "vocabulary/preservation" if preservation.include?(authority)
+    "vocabulary/preservation" if preservation.include?(authority)
   end
 
   def authorities
