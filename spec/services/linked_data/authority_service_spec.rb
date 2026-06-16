@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe Qa::LinkedData::AuthorityService do
   let(:auth_names) do
-    [:LOC,
+    [:GETTY_AAC,
+     :LOC,
      :LOD_ENCODING_CONFIG,
      :LOD_FULL_CONFIG,
      :LOD_FULL_CONFIG_1_0,

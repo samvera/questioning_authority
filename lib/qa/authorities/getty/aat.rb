@@ -7,7 +7,7 @@ module Qa::Authorities
     end
 
     def build_query_url(q)
-      "http://vocab.getty.edu/sparql.json?query=#{ERB::Util.url_encode(sparql(q))}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"
+      "#{getty_vocab_url}/sparql.json?query=#{ERB::Util.url_encode(sparql(q))}&_implicit=false&implicit=true&_equivalent=false&_form=%2Fsparql"
     end
 
     def sparql(q) # rubocop:disable Metrics/MethodLength
@@ -38,7 +38,7 @@ module Qa::Authorities
     end
 
     def find_url(id)
-      "http://vocab.getty.edu/download/json?uri=http://vocab.getty.edu/aat/#{id}.json"
+      "#{getty_vocab_url}/download/json?uri=#{getty_vocab_url}/aat/#{id}.json"
     end
 
     def request_options
@@ -57,6 +57,14 @@ module Qa::Authorities
         cause = cause.presence || 'UNKNOWN'
         Rails.logger.warn "  ERROR fetching Getty response: #{e.message}; cause: #{cause}"
         {}
+      end
+
+      def linked_data_authority_configs
+        Qa.config.linked_data_authority_configs
+      end
+
+      def getty_vocab_url
+        @getty_vocab_url ||= (linked_data_authority_configs.dig(:GETTY_AAC, :search, :urls, :getty_vocab_url) || 'https://vocab.getty.edu')
       end
   end
 end
