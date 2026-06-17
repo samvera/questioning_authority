@@ -433,7 +433,7 @@ module Qa
       #       linked_data module pagination).
       def requested_page_offset
         return @requested_page_offset if @requested_page_offset.present?
-        @requested_page_offset = (request_params['page_offset'] || request_params['startRecord'])
+        @requested_page_offset = request_params['page_offset'] || request_params['startRecord']
       end
 
       # @return [Integer] The first record to include in the response data as
@@ -470,7 +470,7 @@ module Qa
       #       linked_data module pagination).
       def requested_page_limit
         return @requested_page_limit if @requested_page_limit.present?
-        @requested_page_limit ||= (request_params['page_limit'] || request_params['maxRecords'])
+        @requested_page_limit ||= request_params['page_limit'] || request_params['maxRecords']
       end
 
       # @return [Integer] The max number of records to include in response data as

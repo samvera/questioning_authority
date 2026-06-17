@@ -179,7 +179,7 @@ module Qa::Authorities
         end
 
         def wrap_labels(labels)
-          lbl = "" if labels.nil? || labels.size.zero?
+          lbl = "" if labels.blank?
           lbl = labels.join(', ') if labels.size.positive?
           lbl = '[' + lbl + ']' if labels.size > 1
           lbl

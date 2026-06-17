@@ -1,21 +1,15 @@
 module Qa::Authorities
   module Local
     class Registry
+      delegate :keys, :fetch, to: :@hash
+
       def initialize
         @hash = {}
         yield self if block_given?
       end
 
-      def keys
-        @hash.keys
-      end
-
       def instance_for(key)
         fetch(key).instance
-      end
-
-      def fetch(key)
-        @hash.fetch(key)
       end
 
       def self.logger
