@@ -189,7 +189,7 @@ _Until a Product Owner has been identified, we ask that you please direct all re
 
 5. Commit these changes to the main branch
 
-6. Run `rake release`
+6. Run `bundle exec rake release`
 
 # Help
 
